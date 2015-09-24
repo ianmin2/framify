@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="StarterApp">
+<head>
+	<meta charset="UTF-8">
+    <link rel="stylesheet" href="assets/css/angular-material.min.css">
+	<!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic"> -->
+    <link rel="stylesheet" href="assets/css/app.css">
+	 <meta name="viewport" content="initial-scale=1" />
+	 
+	<title>{{nav.title}}</title>
+</head>
+<body>
+	
+	<navbar-top style="text-transform:uppercase; cursor: pointer; background-color:red;; "></navbar-top>
+	<div layout="row" flex>
+		
+     <sidebar-left ></sidebar-left> 
+		
+		<div id="content" flex layout="column">
+            <md-content layout="row" flex class="md-padding">
+                <md-card class="" >
+                    <voter-list style="border:0 auto;"></voter-list>
+                </md-card>
+                
+               <!--<md-card > 
+                    <md-card-content>
+                    
+                       <input type="text" style="md-input">
+                        <input type="password" style="md-input"> 
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input type="text" class="md-raised" placeholder="hello">
+                        </div>
+                        <md-button style="md-raised md-primary"> LOGIN </md-button>
+                    
+                    </md-card-content>
+                </md-card> -->
+            
+                <br>
+                  
+                    
+            </md-content>
+		</div>
+		
+	</div>
+	
+	<!-- Angular Material Dependencies -->
+    <script src="assets/js/angular.min.js"></script>
+    <script src="assets/js/angular-animate.min.js"></script>
+    <script src="assets/js/angular-aria.min.js"></script>
+    <script src="assets/js/angular-material.min.js"></script>
+    <script src="application.js"></script>
+   
+	
+</body>
+</html>

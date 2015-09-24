@@ -1,0 +1,22 @@
+{
+  "name": "bixbyte_framify",
+  "version": "1.0.0",
+  "description": "A simple project initializer",
+  "main": "index.html",
+  "dependencies": {
+    "gulp-browserify": "^0.5.1",
+    "del": "^1.2.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-imagemin": "^2.3.0",
+    "gulp": "^3.9.0",
+    "gulp-sourcemaps": "^1.5.2",
+    "gulp-uglify": "^1.2.0",
+    "express": "^4.12.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Bixbyte",
+  "license": "ISC"
+}

@@ -1,0 +1,26 @@
+##! The Bixbyte Framify .gitignore file
+
+#!  Ignore all node_module folders and their content
+**node_modules/
+
+#!  Ignore all shadow files
+**~
+
+#! Ignore the authentication token store folder
+**auth
+
+#! Ignore all IDE project files
+**.project
+**.buildpath
+**.log
+**.settings
+
+#! Ignore all project generated files
+sysinfo.txt
+
+#! Ignore all backup files
+**.bak
+
+#! Ignore all test files and folders
+**test**
+

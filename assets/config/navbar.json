@@ -1,0 +1,20 @@
+{
+	"top": {
+		"title" : "My SImple Angular App"
+	},
+    "left":{
+      "buttons": [
+                    { "title" : "Home", "link" : "index.html" },
+                    { "title": "Contacts", "link": "contacts.html"},
+                    { "title": "Some Realy long tag", "link": "contacts.html"},
+                    { "title": "Loki Here", "link": "contacts.html"},
+                    { "title": "Some other tag", "link": "contacts.html"}
+                 ]
+    },
+    "right":{
+        
+    },
+	"bottom":{
+		
+	}
+}
