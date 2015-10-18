@@ -1,9 +1,10 @@
 {
-  "name": "bixbyte_framify",
+  "name": "framify-child",
   "version": "1.0.0",
   "description": "A simple project initializer",
   "main": "index.html",
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
     "gulp-browserify": "^0.5.1",
     "del": "^1.2.0",
     "gulp-concat": "^2.6.0",
@@ -13,7 +14,6 @@
     "gulp-uglify": "^1.2.0",
     "express": "^4.12.3"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

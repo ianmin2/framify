@@ -24,3 +24,5 @@ sysinfo.txt
 #! Ignore all test files and folders
 **test**
 
+#! Ignore all webkit builder folders
+**webkit**

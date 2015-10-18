@@ -1,4 +1,4 @@
-app = require('./app.js');
-require('./controllers/controllers.js');
-require('./directives/directives.js');
-require('./services/services.js');
+app = require('./js/app.js');
+require('./js/controllers/controllers.js');
+require('./js/directives/directives.js');
+require('./js/services/services.js');

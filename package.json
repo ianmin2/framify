@@ -1,5 +1,5 @@
 {
-  "name": "@bixbyte/framify",
+  "name": "framify",
   "version": "1.0.0",
   "description": "The official project initialization tool for bixbyte",
   "main": "index.js",

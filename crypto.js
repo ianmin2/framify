@@ -39,6 +39,7 @@ var checksum = function ( stream , callback){
 		isComplete = true;
 	});
 	
+	//!!	STYLE UP AND USE PROMISES	!!/
 	var checkCompletion = setInterval(function(){
 		if( isComplete  ){
 			callback( shaSum );
