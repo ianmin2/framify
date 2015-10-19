@@ -7,6 +7,8 @@ function AppInfo( fs, home, c ){
 		
 		var data = JSON.parse(fs.readFileSync(home + "package.json") );
 	
+		//console.log( typeof(data) );
+
 		//application name
 		this.name 			= "\n\nApplication: ".info +"\t\tBixbyte Framify".yell;
 		
@@ -43,6 +45,7 @@ function AppInfo( fs, home, c ){
 											fs = null;		delete fs;
 											c = null;		delete c;
 										};
+	
 };
 
 module.exports = function( fs, home, c ){

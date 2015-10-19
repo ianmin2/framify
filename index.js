@@ -4,7 +4,7 @@ var fs   	= require("fs");
 var config	= require("./config.js");
 var home 	= config.home;
 var log  	= config.log;
-var framify = config.framify;
+var framify     = config.framify;
 var info 	= config.appinfo;
 var drivify 	= config.drivify;
 
