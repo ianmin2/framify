@@ -81,11 +81,32 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
     //!BASIC VALIDATION METHODS
     
     //*VALIDATE EMAIL ADDRESSES
+    this.isEmail = function( prospective_email ){
+      
+        return /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/.test( prospective_email );
+        
+    };
     
+    //*VALIDATE USERNAMES
+    this.isUsername= function( prospective_username ){
+        
+        return /^[a-z0-9_-]{4,16}$/.test( prospective_username );
+        
+    }
+    
+    //*VALIDATE PASSWORDS
+    this.isPassword = function( prospective_password ){
+        
+        return /^[-@./\!\$\%\^|#&,+\w\s]{6,50}$/.test( prospective_password );
+        
+    }
     
     //*VALIDATE VALUES FOR MATCHING
-    
-    
+    this.matches = function( val1, val2 ){
+        
+        return ( val1 === val2 );
+        
+    }
     
    
 }]);
