@@ -53,7 +53,7 @@ var Framify = function( home, fs, fse, cloud_init ){
 				
 				//FILE DESTINATIONS	
 				this.toFiles = {			
-									main: 		[ homedir, "assets" ]
+									main: 		[ homedir ]
 								};
 				
 							
