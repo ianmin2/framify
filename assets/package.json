@@ -1,9 +1,11 @@
 {
-  "name": "framify-child",
+  "name": "byte-child",
   "version": "1.0.0",
-  "description": "A simple project initializer",
-  "main": "index.html",
-  "dependencies": {},
+  "description": "Simple framify project",
+  "main": "server/server.js",
+  "dependencies": {
+      "express": "^4.12.3"
+  },
   "devDependencies": {
     "gulp-browserify": "^0.5.1",
     "del": "^1.2.0",
@@ -11,11 +13,10 @@
     "gulp-imagemin": "^2.3.0",
     "gulp": "^3.9.0",
     "gulp-sourcemaps": "^1.5.2",
-    "gulp-uglify": "^1.2.0",
-    "express": "^4.12.3"
+    "gulp-uglify": "^1.2.0"    
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Thank you for choosing framify\" && exit 1"
   },
   "author": "Bixbyte",
   "license": "ISC"
