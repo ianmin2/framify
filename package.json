@@ -32,9 +32,9 @@
     "bixbyte",
     "framify",
     "bixbyte_cli",
-    "project",
-    "generator",
-    "generator",
+    "project generator",
+    "drivify",
+    "gitify",
     "cli"
   ],
   "website" : "http://bixbyte.cf",
