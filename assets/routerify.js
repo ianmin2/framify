@@ -10,6 +10,7 @@ var routerify = function() {
     var getMenu = /menu=\"(.*?)\"/gi
     var getParent = /parent=\"(.*?)\"/gi
     var getPath = /path=\"(.*?)\"/gi
+    var getUrl = /url=\"(.*?)\"/gi
     var getTitle = /title=\"(.*?)\"/gi
 //    var getFrame = /<framify( [^<>]+)>(.*?)<\/framify>/gi
 //    var getMenu = /menu=\"(.*?)\"/gi
@@ -38,6 +39,7 @@ var routerify = function() {
                 menu = /(\\?")(.*?)\1/.exec( txt.match(getMenu) )[2]|| null;
                 parent = /(\\?")(.*?)\1/.exec( txt.match(getParent) )[2];
                 path = /(\\?")(.*?)\1/.exec( txt.match(getPath) )[2];
+                url = /(\\?")(.*?)\1/.exec( txt.match(getUrl) )[2];
                 title = /(\\?")(.*?)\1/.exec( txt.match(getTitle) )[2];
 //              menu = getMenu.exec(frame)[1] || null;
 //              parent = getParent.exec(frame)[1];
@@ -50,7 +52,7 @@ var routerify = function() {
                     "menu": menu || false,
                     "title": title || "",
                     "path": path || "",
-                    "url": path || "",
+                    "url": url || "",
                     "view": "views/" + frame
                 });
 
