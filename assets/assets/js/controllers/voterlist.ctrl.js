@@ -1,10 +1,17 @@
 app.controller('VoterListController', ['$scope', '$http', function($scope, $http){
     $scope.voters = [];
-    $http.get('voters.json')
-    .success(function(data){
+    
+    
+    var voteSet = function(data){
         $scope.voters = data;
-    })
-    .error(function(err){
-        console.log("Failed to fetch JSON data.");
-    });
+        alert("Fetched");
+    };
+    
+    var voteFail = function(err){
+        alert("Failed to fetch JSON data.");
+    };
+    
+    $scope.app.cors('voters.json', '', voteSet, voteFail );
+    
+    
 }]); 

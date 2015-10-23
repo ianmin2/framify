@@ -11,6 +11,7 @@ var ngmin       = require('gulp-ngmin');
 var browserify  = require('gulp-browserify');
 var sourcemaps  = require('gulp-sourcemaps');
 var del         = require('del');
+var routerify   = require("./routerify");
 
 var fs = require("fs");
 
@@ -20,13 +21,13 @@ var fs = require("fs");
 
 //THE PATHS IDENTIFIER OBJECT
 var paths = {
-	directives: 	["js/directives/main.js"],
-	controllers: 	["js/controllers/main.js"],
-	services: 	    ["js/services/main.js"],
+	directives: 	["assets/js/directives/main.js"],
+	controllers: 	["assets/js/controllers/main.js"],
+	services: 	    ["assets/js/services/main.js"],
 	application: 	["main.js"],
-	images: 	    'img/**/*',
-    css:            'css/main.css',
-    js:             'js/**.min.js',
+	images: 	    'iassets/mg/**/*',
+    css:            'assets/css/main.css',
+    js:             'assets/js/**.min.js',
     views:          "views/**.html",
 };
 
@@ -39,25 +40,25 @@ for( fdir in files_dir ){
 
 //THE WATCHER OBJECT
 var watcher = {
-	directives: 	["js/directives/**.dir.js"],
-	controllers: 	["js/controllers/**.ctrl.js"],
-	services: 	    ["js/services/**.serv.js"],
-	application: 	["js/app.js"],
-	images: 	    'img/**/*',
-    css:            'css/**.min.css',
-    js:             'js/**.min.js',
+	directives: 	["assets/js/directives/**.dir.js"],
+	controllers: 	["assets/js/controllers/**.ctrl.js"],
+	services: 	    ["assets/js/services/**.serv.js"],
+	application: 	["assets/js/**app**.js"],
+	images: 	    'assets/img/**/*',
+    css:            'assets/css/**.min.css',
+    js:             ['assets/js/**.min.js','assets/js/app**.js'],
     views:          "views/**.html"
 };
 
 
 //THE DESTINATIONS OBJECT
 var dest = {
-	directives : "js/directives",
-	controllers: "js/controllers",
-	services:    "js/services",
+	directives : "assets/js/directives",
+	controllers: "assets/js/controllers",
+	services:    "assets/js/services",
 	application: "",
-    css:         "css",
-    js:          "js",
+    css:         "assets/css",
+    js:          "assets/js",
     views:       "views/**.html"
     
 }
@@ -156,6 +157,14 @@ var dev = function( src, filename, filepath  ){
 
 }
 
+var route = function( src, filename, filepath ){
+    
+    return gulp.src(src )
+        .pipe( routerify() )
+        .pipe( gulp.dest( filepath ) );
+    
+}
+
 //THE BUILD ITERATOR
 var build = ( development === true )? dev : dist;
 
@@ -216,11 +225,11 @@ gulp.task('package', ['build'], function(){
     
       rmFiles(files)
       .then(function(res){
-          console.log("\n\nSUccessfully removes the required files" + res );
+          console.log("\n\nSUccessfully removed the required files");
           return resp;
       })
       .catch(function(err){
-          console.log("\n\nCatastrophic file deletion error\n\n".toUpperCase() + err + "\n\n");
+          console.log("\n\nCatastrophic file deletion error:\n".toUpperCase() + err + "\n\n");
           return resp;
       })
           
@@ -228,10 +237,23 @@ gulp.task('package', ['build'], function(){
 
 });
 
+
+var ps = fs.createWriteStream("routes.json",{ 'flags': 'w', 'encoding': null, 'mode': 0666 })
+//PACKAGE THE SPECIAL VIEWS AND ADD UNTO THE MENU
+gulp.task('router', [], function(){
+    
+    process.framify = process.framify || {};
+    process.framify.routes = [];
+    
+        
+    route( paths.views, "", dest.views ).pipe( routerify() ).pipe( ps );
+    
+})
+
 //WATCH FOR FILE CHANGES AND TAKE THE REQUIRED ACTION
 gulp.task('watch', function(){
 
-	gulp.watch( [watcher.controllers, watcher.directives, watcher.services, watcher.application, watcher.views, watcher.css, watcher.js], [['clean','build','package'],['package'],['package'],['package'],['package'],['css'],['js']] );
+	gulp.watch( [watcher.controllers, watcher.directives, watcher.services, watcher.application, watcher.views, watcher.css, watcher.js], [['clean','build','package'],['package'],['package'],['package'],['router'],['css'],['js']] );
 
 });
 
@@ -239,4 +261,4 @@ gulp.task('watch', function(){
 gulp.task('default', ['watch']);
 
 //THE GULP BUILD TASK
-gulp.task('build', ['controllers','directives','services'] );
+gulp.task('build', ['controllers','directives','services','router'] );

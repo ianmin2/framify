@@ -4,10 +4,16 @@ process.env.PORT    = 5000;
 
 var app = express();
 
-app.use( express.static( __dirname + "/../" ) );
+app.use(express.static(__dirname + '/../'));
+app.use(express.static(__dirname + '/../config/'));
 
 app.route("/").all(function(req,res){
 	res.sendFile( "index.html");
+});
+
+app.route("/config/:fname").all(function(req,res){
+    console.log("getting the file" + req.params.fname)
+    res.sendFile(req.params.fname, { "root": __dirname + "/../config/"} )
 });
 
 

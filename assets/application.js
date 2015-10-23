@@ -24,17 +24,41 @@
 }({
   1: [
     function (require, module, exports) {
-      app = require('./js/app.js');
-      require('./js/controllers/controllers.js');
-      require('./js/directives/directives.js');
-      require('./js/services/services.js');
+      //!CONFIGURE THE BNASIC PRE-RUNTIME STATES OF THE APPLICATION
+      app.config(function ($stateProvider, $urlRouterProvider) {
+        //!REDIRECT APP TO THE ROOT ROUTE
+        $urlRouterProvider.otherwise('/');
+        $stateProvider.state('/', {
+          url: '/app',
+          templateUrl: 'views/app.html'
+        });
+        //!THE DYNAMIC ROUTE SETTER
+        var setRoutes = function (routeArray) {
+          routeArray = routeArray || [];
+          for (r in routeArray) {
+            var rData = routeArray[r];
+            $stateProvider.state(rData.path, {
+              url: rData.url,
+              templateUrl: rData.view
+            });
+          }
+        };
+        //!CAPTURE THE DEFINED JSON ROUTES
+        $.ajax({
+          url: 'config/app-routes.json',
+          success: function (response) {
+            //SET THE ROUTES DYNAMICALLY
+            setRoutes(response);
+          }
+        });
+      });
+      //!DEFINE THE APPLICATION RUNTIME DEFAULTS
+      app.run(function (app, $rootScope) {
+        //!INHECT THE APPLICATION'S MAIN SERVICE TO THE ROOT SCOPE SUCH THAT ALL SCOPES MAY INHERIT IT
+        $rootScope.app = app;
+      });
     },
-    {
-      './js/app.js': 2,
-      './js/controllers/controllers.js': 4,
-      './js/directives/directives.js': 9,
-      './js/services/services.js': 14
-    }
+    {}
   ],
   2: [
     function (require, module, exports) {
@@ -59,6 +83,7 @@
           //!ESTABLISH APPLICATION UI COMPONENTS AND THEIR HANDLERS
           //*CALL A CUSTOM MODAL
           $scope.ui.modal = function (modal_template, modal_animation, modal_onHide, modal_onRemove) {
+            modal_template = modal_template || 'views/app.html';
             //~ Setup the custom modal
             $ionicModal.fromTemplateUrl(modal_template, {
               scope: $scope,
@@ -128,6 +153,7 @@
                 //!ESTABLISH APPLICATION UI COMPONENTS AND THEIR HANDLERS
                 //*CALL A CUSTOM MODAL
                 $scope.ui.modal = function (modal_template, modal_animation, modal_onHide, modal_onRemove) {
+                  modal_template = modal_template || 'views/app.html';
                   //~ Setup the custom modal
                   $ionicModal.fromTemplateUrl(modal_template, {
                     scope: $scope,
@@ -178,12 +204,25 @@
               '$http',
               function ($scope, $http) {
                 $scope.nav = [];
-                $http.get('config/navbar.json').success(function (data) {
-                  $scope.nav = data;
-                  console.log('Successfully captured navbar data.');
-                }).success(function () {
-                  console.log('Failed to capture navbar data.');
-                });
+                $scope.setRoute = function (i) {
+                  alert(i);
+                };
+                var setNav = function (data) {
+                  $scope.nav = data;  //console.dir( $scope.nav )
+                };
+                var setLinks = function (data) {
+                  $scope.links = data;  //console.dir($scope.links)
+                };
+                var failNav = function (errData) {
+                  console.log(errData);
+                  alert('FailNav');
+                };
+                var failLinks = function (errData) {
+                  console.log(errData);
+                  alert('failLinks');
+                };
+                $scope.app.cors('config/app.json', '', setNav, failNav);
+                $scope.app.cors('./config/app-routes.json', '', setLinks, failLinks);
               }
             ]);
           },
@@ -211,11 +250,14 @@
               '$http',
               function ($scope, $http) {
                 $scope.voters = [];
-                $http.get('voters.json').success(function (data) {
+                var voteSet = function (data) {
                   $scope.voters = data;
-                }).error(function (err) {
-                  console.log('Failed to fetch JSON data.');
-                });
+                  alert('Fetched');
+                };
+                var voteFail = function (err) {
+                  alert('Failed to fetch JSON data.');
+                };
+                $scope.app.cors('voters.json', '', voteSet, voteFail);
               }
             ]);
           },
@@ -237,12 +279,25 @@
         '$http',
         function ($scope, $http) {
           $scope.nav = [];
-          $http.get('config/navbar.json').success(function (data) {
-            $scope.nav = data;
-            console.log('Successfully captured navbar data.');
-          }).success(function () {
-            console.log('Failed to capture navbar data.');
-          });
+          $scope.setRoute = function (i) {
+            alert(i);
+          };
+          var setNav = function (data) {
+            $scope.nav = data;  //console.dir( $scope.nav )
+          };
+          var setLinks = function (data) {
+            $scope.links = data;  //console.dir($scope.links)
+          };
+          var failNav = function (errData) {
+            console.log(errData);
+            alert('FailNav');
+          };
+          var failLinks = function (errData) {
+            console.log(errData);
+            alert('failLinks');
+          };
+          $scope.app.cors('config/app.json', '', setNav, failNav);
+          $scope.app.cors('./config/app-routes.json', '', setLinks, failLinks);
         }
       ]);
     },
@@ -270,11 +325,14 @@
         '$http',
         function ($scope, $http) {
           $scope.voters = [];
-          $http.get('voters.json').success(function (data) {
+          var voteSet = function (data) {
             $scope.voters = data;
-          }).error(function (err) {
-            console.log('Failed to fetch JSON data.');
-          });
+            alert('Fetched');
+          };
+          var voteFail = function (err) {
+            alert('Failed to fetch JSON data.');
+          };
+          $scope.app.cors('voters.json', '', voteSet, voteFail);
         }
       ]);
     },
@@ -429,6 +487,22 @@
         '$http',
         '$ionicPopup',
         function ($http, $ionicPopup) {
+          //*MONTHS ARRAY
+          var $month_array = [
+              '',
+              'January',
+              'February',
+              'March',
+              'April',
+              'May',
+              'June',
+              'July',
+              'August',
+              'September',
+              'October',
+              'November',
+              'December'
+            ];
           //!HANDLE APPLICATION NATIVE SERVICE REQUESTS
           this.ajax = function (path, data, success_callback, error_callback, config) {
             //$http.post( bix_hlink + path, data, config).then( success_callback, error_callback );
@@ -436,9 +510,9 @@
               method: 'POST',
               url: app_hlink + path,
               data: data,
-              success: success_callback,
-              error: error_callback
-            });
+              success: success_callback
+            });  /*,
+            error: error_callback      */
           };
           //!HANDLE CROSS ORIGIN APPLICATION SERVICE REQUESTS
           this.cors = function (link, data, success_callback, error_callback, config) {
@@ -447,9 +521,9 @@
               method: 'POST',
               url: link,
               data: data,
-              success: success_callback,
-              error: error_callback
-            });
+              success: success_callback
+            });  /*,
+            error: error_callback      */
           };
           //!HANDLE THE DISPLAY OF DIALOG BOXES
           //*GENERATE A CUSTOM ALERT DIALOG
@@ -503,6 +577,14 @@
           this.matches = function (val1, val2) {
             return val1 === val2;
           };
+          //*TRANFORM NUMBER TO MONTH
+          this.num2month = function (month_number) {
+            if (!isNaN(month_number)) {
+              return $month_array[month_number];
+            } else {
+              return 'Invalid Month';
+            }
+          };
         }
       ]);
     },
@@ -540,6 +622,22 @@
               '$http',
               '$ionicPopup',
               function ($http, $ionicPopup) {
+                //*MONTHS ARRAY
+                var $month_array = [
+                    '',
+                    'January',
+                    'February',
+                    'March',
+                    'April',
+                    'May',
+                    'June',
+                    'July',
+                    'August',
+                    'September',
+                    'October',
+                    'November',
+                    'December'
+                  ];
                 //!HANDLE APPLICATION NATIVE SERVICE REQUESTS
                 this.ajax = function (path, data, success_callback, error_callback, config) {
                   //$http.post( bix_hlink + path, data, config).then( success_callback, error_callback );
@@ -547,9 +645,9 @@
                     method: 'POST',
                     url: app_hlink + path,
                     data: data,
-                    success: success_callback,
-                    error: error_callback
-                  });
+                    success: success_callback
+                  });  /*,
+            error: error_callback      */
                 };
                 //!HANDLE CROSS ORIGIN APPLICATION SERVICE REQUESTS
                 this.cors = function (link, data, success_callback, error_callback, config) {
@@ -558,9 +656,9 @@
                     method: 'POST',
                     url: link,
                     data: data,
-                    success: success_callback,
-                    error: error_callback
-                  });
+                    success: success_callback
+                  });  /*,
+            error: error_callback      */
                 };
                 //!HANDLE THE DISPLAY OF DIALOG BOXES
                 //*GENERATE A CUSTOM ALERT DIALOG
@@ -614,6 +712,14 @@
                 this.matches = function (val1, val2) {
                   return val1 === val2;
                 };
+                //*TRANFORM NUMBER TO MONTH
+                this.num2month = function (month_number) {
+                  if (!isNaN(month_number)) {
+                    return $month_array[month_number];
+                  } else {
+                    return 'Invalid Month';
+                  }
+                };
               }
             ]);
           },
@@ -628,5 +734,22 @@
       }, {}, [2]));
     },
     { './app.serv.js': 13 }
+  ],
+  15: [
+    function (require, module, exports) {
+      app_hlink = 'http://127.0.0.1:5000';
+      app = require('./assets/js/app.js');
+      require('./assets/js/app-router.js');
+      require('./assets/js/controllers/controllers.js');
+      require('./assets/js/directives/directives.js');
+      require('./assets/js/services/services.js');
+    },
+    {
+      './assets/js/app-router.js': 1,
+      './assets/js/app.js': 2,
+      './assets/js/controllers/controllers.js': 4,
+      './assets/js/directives/directives.js': 9,
+      './assets/js/services/services.js': 14
+    }
   ]
-}, {}, [1]));
+}, {}, [15]));

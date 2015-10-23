@@ -1,1 +1,12 @@
-<md-button ng-click="clicked(voter.id)" ng-repeat="voter in voters" class="md-raised md-success">{{voter.studentName}}</md-button>
+<framify menu="true" path="vote" url="/vote" title="Vote" parent="false" ></framify>
+<!--<md-button ng-click="clicked(voter.id)" ng-repeat="voter in voters" class="md-raised md-success">{{voter.studentName}}</md-button>-->
+<div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--12-col">
+       
+        <div class="mdl-card mdl-card-border mdl-shadow--16dp mdl-cell mdl-cell--12-col">
+           {{voters}}
+            <button class="mdl-button" ng-repeat="voter in voters" class="md-raised">{{voter.studentName}}</button>
+        </div>
+        
+    </div>
+</div>

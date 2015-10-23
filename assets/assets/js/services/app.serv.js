@@ -1,6 +1,9 @@
 app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
   
-  //!HANDLE APPLICATION NATIVE SERVICE REQUESTS
+    //*MONTHS ARRAY
+    var $month_array = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    
+   //!HANDLE APPLICATION NATIVE SERVICE REQUESTS
    this.ajax =function( path , data, success_callback, error_callback , config ){ 
 	   
       //$http.post( bix_hlink + path, data, config).then( success_callback, error_callback );
@@ -8,9 +11,10 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
             method: "POST",
             url:  app_hlink + path,
             data: data,
-            success: success_callback,
-            error: error_callback            
+            success: success_callback      
         });
+       /*,
+            error: error_callback      */
       
    };
    
@@ -22,10 +26,11 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
             method: "POST",
             url: link,
             data: data,
-            success: success_callback,
-            error: error_callback            
+            success: success_callback      
         });
-        
+       
+        /*,
+            error: error_callback      */
    };   
   
    //!HANDLE THE DISPLAY OF DIALOG BOXES
@@ -92,21 +97,33 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
         
         return /^[a-z0-9_-]{4,16}$/.test( prospective_username );
         
-    }
+    };
     
     //*VALIDATE PASSWORDS
     this.isPassword = function( prospective_password ){
         
         return /^[-@./\!\$\%\^|#&,+\w\s]{6,50}$/.test( prospective_password );
         
-    }
+    };
     
     //*VALIDATE VALUES FOR MATCHING
     this.matches = function( val1, val2 ){
         
         return ( val1 === val2 );
         
-    }
+    };
     
+    //*TRANFORM NUMBER TO MONTH
+    this.num2month = function( month_number ){
+        
+        if( !isNaN(month_number) ){
+            
+            return $month_array[month_number];
+            
+        }else{
+            return "Invalid Month";
+        }
+        
+    };   
    
 }]);

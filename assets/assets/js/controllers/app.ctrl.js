@@ -5,10 +5,12 @@ app.controller("appController", ['app','$scope','$location','$ionicModal',functi
     $scope.ui       = {};
         
     //!ESTABLISH APPLICATION UI COMPONENTS AND THEIR HANDLERS
-    
+        
     //*CALL A CUSTOM MODAL
     $scope.ui.modal = function( modal_template, modal_animation, modal_onHide, modal_onRemove ){
       
+        modal_template = modal_template || "views/app.html";
+        
         //~ Setup the custom modal
         $ionicModal.fromTemplateUrl( modal_template , {
             
