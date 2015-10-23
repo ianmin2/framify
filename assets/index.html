@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="bixFrame">
+<html lang="en" ng-app="bixFrame" ng-controller="appController">
 
 <head>
     <meta charset="UTF-8">
@@ -16,20 +16,7 @@
 </head>
 
 <body>
-    <!--
-    <navbar-top style="text-transform:uppercase; cursor: pointer; background-color:red;"></navbar-top>
-    <div layout="row" flex>
-
-        <sidebar-left></sidebar-left>
-
-        <div id="content" flex layout="column">
-
-               <ion-nav-view></ion-nav-view>
-
-        </div>
-
-    </div>
--->
+   
     <!-- Uses a transparent header that draws on top of the layout's background -->
     <style>
         .demo-layout-transparent,.mdl-layout__drawer,ion-nav-view{
@@ -43,7 +30,7 @@
         }
     </style>
 
-    <div class="demo-layout-transparent mdl-layout mdl-js-layout" ng-controller="NavbarTopController">
+    <div class="demo-layout-transparent mdl-layout mdl-js-layout">
         <header class="mdl-layout__header mdl-layout__header--transparent">
             <div class="mdl-layout__header-row">
                 <!-- Title -->
@@ -68,15 +55,9 @@
 
             <span class="mdl-layout-title">{{nav.alias || "Menu"}}</span>
             <nav class="mdl-navigation">
-                <!--      <a class="mdl-navigation__link" href="">Link</a>-->
-<!--
-                <div ng-repeat="d in nav.left.buttons" style="margin: 0 auto;">
-                    <md-button class="md-raised md-primary" style="min-width: 200px;" ng-click="app.alert(nav.top.title, d.title, 'okay')">{{d.title}}</md-button>
-                </div>
                 
--->
            <div ng-repeat="link in links" style="margin: 0 auto;">
-               <md-button class="md-raised md-primary" style="min-width: 200px;" ui-sref="{{link.path}}">{{link.title}}</md-button>
+               <md-button ng-show="link.menu != 'false'" class="md-raised md-primary" style="min-width: 200px;" ui-sref="{{link.path}}">{{link.title}}</md-button>
                 
             </div>
            

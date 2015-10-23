@@ -19,6 +19,33 @@ var routerify = function() {
 //    var getTitle = /title=\"(.*?)\"/gi
 
     allData = [];
+    
+    //!REMOVE DUPLICATES
+    var remove_duplicates = function (array_){
+        
+        var ret_array = new Array();
+        
+        for (var a = array_.length - 1; a >= 0; a--) {
+            
+            for (var b = array_.length - 1; b >= 0; b--) {
+                
+                if(array_[a] == array_[b] && a != b){
+                    
+                    delete array_[b];
+                    
+                }
+                
+            };
+            
+            if(array_[a] != undefined)
+                
+                ret_array.push(array_[a]);
+            
+        };
+        
+        return ret_array;
+        
+    }
 
     var catchPath = function(fileData) {
 
@@ -36,7 +63,7 @@ var routerify = function() {
             
             try{ 
             
-                menu = /(\\?")(.*?)\1/.exec( txt.match(getMenu) )[2]|| null;
+                menu = /(\\?")(.*?)\1/.exec( txt.match(getMenu) )[2]|| false;
                 parent = /(\\?")(.*?)\1/.exec( txt.match(getParent) )[2];
                 path = /(\\?")(.*?)\1/.exec( txt.match(getPath) )[2];
                 url = /(\\?")(.*?)\1/.exec( txt.match(getUrl) )[2];
@@ -57,9 +84,9 @@ var routerify = function() {
                 });
 
                 
-                    
-                process.framify.current++;
-                fs.writeFileSync("config/app-routes.json", JSON.stringify( process.framify.routes ), {
+                   
+                
+                fs.writeFileSync("config/app-routes.json", JSON.stringify( remove_duplicates( process.framify.routes ) ), {
                     flags: 'w'
                 })
 

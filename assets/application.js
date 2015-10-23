@@ -26,10 +26,8 @@
     function (require, module, exports) {
       //!CONFIGURE THE BNASIC PRE-RUNTIME STATES OF THE APPLICATION
       app.config(function ($stateProvider, $urlRouterProvider) {
-        //!REDIRECT APP TO THE ROOT ROUTE
-        $urlRouterProvider.otherwise('/');
-        $stateProvider.state('/', {
-          url: '/app',
+        $stateProvider.state('framify', {
+          url: '/framify',
           templateUrl: 'views/app.html'
         });
         //!THE DYNAMIC ROUTE SETTER
@@ -51,10 +49,14 @@
             setRoutes(response);
           }
         });
+        //!REDIRECT APP TO THE ROOT ROUTE
+        $urlRouterProvider.otherwise('/framify');
       });
       //!DEFINE THE APPLICATION RUNTIME DEFAULTS
-      app.run(function (app, $rootScope) {
-        //!INHECT THE APPLICATION'S MAIN SERVICE TO THE ROOT SCOPE SUCH THAT ALL SCOPES MAY INHERIT IT
+      app.run(function (app, $rootScope, $location) {
+        //!INJECT THE LOCATION SOURCE TO THE ROOT SCOPE
+        $rootScope.location = $location;
+        //!INJECT THE APPLICATION'S MAIN SERVICE TO THE ROOT SCOPE SUCH THAT ALL SCOPES MAY INHERIT IT
         $rootScope.app = app;
       });
     },
@@ -71,15 +73,50 @@
   ],
   3: [
     function (require, module, exports) {
+      app.controller('VoterListController', [
+        '$scope',
+        '$http',
+        function ($scope, $http) {
+          $scope.voters = [];
+          var voteSet = function (data) {
+            $scope.voters = data;
+            alert('Fetched');
+          };
+          var voteFail = function (err) {
+            alert('Failed to fetch JSON data.');
+          };
+          $scope.app.cors('voters.json', '', voteSet, voteFail);
+        }
+      ]);
+    },
+    {}
+  ],
+  4: [
+    function (require, module, exports) {
       app.controller('appController', [
         'app',
         '$scope',
         '$location',
         '$ionicModal',
-        function (app, $scope, $location, $ionicModal) {
+        '$rootScope',
+        function (app, $scope, $location, $ionicModal, $rootScope) {
           //!APPLICATION GLOBAL SCOPE COMPONENTS
           $scope.current = {};
           $scope.ui = {};
+          $rootScope.nav = [];
+          $rootScope.links = [];
+          var setRoutes = function (data) {
+            $scope.links = data;  //console.dir( $scope.nav )
+          };
+          var setData = function (data) {
+            $scope.nav = data;  //console.dir( $scope.links )
+                                //console.dir(appl.links)
+          };
+          //!FETCH THE NECESSARY APPLICATION DATA
+          $scope.app.getData(setData);
+          $scope.app.getRoutes(setRoutes);
+          //!RE-INITIALIZE APPLICATION DATA
+          $scope.location.path('/framify');
           //!ESTABLISH APPLICATION UI COMPONENTS AND THEIR HANDLERS
           //*CALL A CUSTOM MODAL
           $scope.ui.modal = function (modal_template, modal_animation, modal_onHide, modal_onRemove) {
@@ -113,7 +150,7 @@
     },
     {}
   ],
-  4: [
+  5: [
     function (require, module, exports) {
       (function e(t, n, r) {
         function s(o, u) {
@@ -141,15 +178,50 @@
       }({
         1: [
           function (require, module, exports) {
+            app.controller('VoterListController', [
+              '$scope',
+              '$http',
+              function ($scope, $http) {
+                $scope.voters = [];
+                var voteSet = function (data) {
+                  $scope.voters = data;
+                  alert('Fetched');
+                };
+                var voteFail = function (err) {
+                  alert('Failed to fetch JSON data.');
+                };
+                $scope.app.cors('voters.json', '', voteSet, voteFail);
+              }
+            ]);
+          },
+          {}
+        ],
+        2: [
+          function (require, module, exports) {
             app.controller('appController', [
               'app',
               '$scope',
               '$location',
               '$ionicModal',
-              function (app, $scope, $location, $ionicModal) {
+              '$rootScope',
+              function (app, $scope, $location, $ionicModal, $rootScope) {
                 //!APPLICATION GLOBAL SCOPE COMPONENTS
                 $scope.current = {};
                 $scope.ui = {};
+                $rootScope.nav = [];
+                $rootScope.links = [];
+                var setRoutes = function (data) {
+                  $scope.links = data;  //console.dir( $scope.nav )
+                };
+                var setData = function (data) {
+                  $scope.nav = data;  //console.dir( $scope.links )
+                                      //console.dir(appl.links)
+                };
+                //!FETCH THE NECESSARY APPLICATION DATA
+                $scope.app.getData(setData);
+                $scope.app.getRoutes(setRoutes);
+                //!RE-INITIALIZE APPLICATION DATA
+                $scope.location.path('/framify');
                 //!ESTABLISH APPLICATION UI COMPONENTS AND THEIR HANDLERS
                 //*CALL A CUSTOM MODAL
                 $scope.ui.modal = function (modal_template, modal_animation, modal_onHide, modal_onRemove) {
@@ -183,162 +255,36 @@
           },
           {}
         ],
-        2: [
-          function (require, module, exports) {
-            require('./app.ctrl.js');
-            require('./voterlist.ctrl.js');
-            require('./sidenavleft.ctrl.js');
-            require('./navbartop.ctrl.js');
-          },
-          {
-            './app.ctrl.js': 1,
-            './navbartop.ctrl.js': 3,
-            './sidenavleft.ctrl.js': 4,
-            './voterlist.ctrl.js': 5
-          }
-        ],
         3: [
           function (require, module, exports) {
-            app.controller('NavbarTopController', [
-              '$scope',
-              '$http',
-              function ($scope, $http) {
-                $scope.nav = [];
-                $scope.setRoute = function (i) {
-                  alert(i);
-                };
-                var setNav = function (data) {
-                  $scope.nav = data;  //console.dir( $scope.nav )
-                };
-                var setLinks = function (data) {
-                  $scope.links = data;  //console.dir($scope.links)
-                };
-                var failNav = function (errData) {
-                  console.log(errData);
-                  alert('FailNav');
-                };
-                var failLinks = function (errData) {
-                  console.log(errData);
-                  alert('failLinks');
-                };
-                $scope.app.cors('config/app.json', '', setNav, failNav);
-                $scope.app.cors('./config/app-routes.json', '', setLinks, failLinks);
-              }
-            ]);
+            require('./app.ctrl.js');
+            require('./app-sample.ctrl.js');
           },
-          {}
-        ],
-        4: [
-          function (require, module, exports) {
-            app.controller('SidenavLeftController', [
-              '$scope',
-              '$http',
-              '$mdSidenav',
-              function ($scope, $http, $mdSidenav) {
-                $scope.toggleSidenav = function (menuId) {
-                  $mdSidenav(menuId).toggle();
-                };
-              }
-            ]);
-          },
-          {}
-        ],
-        5: [
-          function (require, module, exports) {
-            app.controller('VoterListController', [
-              '$scope',
-              '$http',
-              function ($scope, $http) {
-                $scope.voters = [];
-                var voteSet = function (data) {
-                  $scope.voters = data;
-                  alert('Fetched');
-                };
-                var voteFail = function (err) {
-                  alert('Failed to fetch JSON data.');
-                };
-                $scope.app.cors('voters.json', '', voteSet, voteFail);
-              }
-            ]);
-          },
-          {}
+          {
+            './app-sample.ctrl.js': 1,
+            './app.ctrl.js': 2
+          }
         ]
-      }, {}, [2]));
+      }, {}, [3]));
     },
     {
-      './app.ctrl.js': 3,
-      './navbartop.ctrl.js': 5,
-      './sidenavleft.ctrl.js': 6,
-      './voterlist.ctrl.js': 7
+      './app-sample.ctrl.js': 3,
+      './app.ctrl.js': 4
     }
-  ],
-  5: [
-    function (require, module, exports) {
-      app.controller('NavbarTopController', [
-        '$scope',
-        '$http',
-        function ($scope, $http) {
-          $scope.nav = [];
-          $scope.setRoute = function (i) {
-            alert(i);
-          };
-          var setNav = function (data) {
-            $scope.nav = data;  //console.dir( $scope.nav )
-          };
-          var setLinks = function (data) {
-            $scope.links = data;  //console.dir($scope.links)
-          };
-          var failNav = function (errData) {
-            console.log(errData);
-            alert('FailNav');
-          };
-          var failLinks = function (errData) {
-            console.log(errData);
-            alert('failLinks');
-          };
-          $scope.app.cors('config/app.json', '', setNav, failNav);
-          $scope.app.cors('./config/app-routes.json', '', setLinks, failLinks);
-        }
-      ]);
-    },
-    {}
   ],
   6: [
     function (require, module, exports) {
-      app.controller('SidenavLeftController', [
-        '$scope',
-        '$http',
-        '$mdSidenav',
-        function ($scope, $http, $mdSidenav) {
-          $scope.toggleSidenav = function (menuId) {
-            $mdSidenav(menuId).toggle();
-          };
-        }
-      ]);
+      app.directive('appSample', function () {
+        return {
+          restrict: 'E',
+          controller: 'framifySampleController',
+          templateUrl: 'views/app-sample.html'
+        };
+      });
     },
     {}
   ],
   7: [
-    function (require, module, exports) {
-      app.controller('VoterListController', [
-        '$scope',
-        '$http',
-        function ($scope, $http) {
-          $scope.voters = [];
-          var voteSet = function (data) {
-            $scope.voters = data;
-            alert('Fetched');
-          };
-          var voteFail = function (err) {
-            alert('Failed to fetch JSON data.');
-          };
-          $scope.app.cors('voters.json', '', voteSet, voteFail);
-        }
-      ]);
-    },
-    {}
-  ],
-  8: [
     function (require, module, exports) {
       app.directive('appDirective', function () {
         return {
@@ -349,7 +295,7 @@
     },
     {}
   ],
-  9: [
+  8: [
     function (require, module, exports) {
       (function e(t, n, r) {
         function s(o, u) {
@@ -377,6 +323,18 @@
       }({
         1: [
           function (require, module, exports) {
+            app.directive('appSample', function () {
+              return {
+                restrict: 'E',
+                controller: 'framifySampleController',
+                templateUrl: 'views/app-sample.html'
+              };
+            });
+          },
+          {}
+        ],
+        2: [
+          function (require, module, exports) {
             app.directive('appDirective', function () {
               return {
                 restrict: 'E',
@@ -386,107 +344,46 @@
           },
           {}
         ],
-        2: [
-          function (require, module, exports) {
-            require('./app.dir.js');
-            require('./voterlist.dir.js');
-            require('./sidenavleft.dir.js');
-            require('./navbartop.dir.js');
-          },
-          {
-            './app.dir.js': 1,
-            './navbartop.dir.js': 3,
-            './sidenavleft.dir.js': 4,
-            './voterlist.dir.js': 5
-          }
-        ],
         3: [
           function (require, module, exports) {
-            app.directive('navbarTop', function () {
-              return {
-                restrict: 'E',
-                controller: 'NavbarTopController',
-                templateUrl: 'views/navbar-top.html'
-              };
-            });
+            require('./app.dir.js');
+            require('./app-sample.dir.js');
           },
-          {}
-        ],
-        4: [
-          function (require, module, exports) {
-            app.directive('sidebarLeft', function () {
-              return {
-                restrict: 'E',
-                controller: 'SidenavLeftController',
-                templateUrl: 'views/sidenav-left.html'
-              };
-            });
-          },
-          {}
-        ],
-        5: [
-          function (require, module, exports) {
-            app.directive('voterList', function () {
-              return {
-                restrict: 'E',
-                controller: 'VoterListController',
-                templateUrl: 'views/voters.html'
-              };
-            });
-          },
-          {}
+          {
+            './app-sample.dir.js': 1,
+            './app.dir.js': 2
+          }
         ]
-      }, {}, [2]));
+      }, {}, [3]));
     },
     {
-      './app.dir.js': 8,
-      './navbartop.dir.js': 10,
-      './sidenavleft.dir.js': 11,
-      './voterlist.dir.js': 12
+      './app-sample.dir.js': 6,
+      './app.dir.js': 7
     }
   ],
-  10: [
-    function (require, module, exports) {
-      app.directive('navbarTop', function () {
-        return {
-          restrict: 'E',
-          controller: 'NavbarTopController',
-          templateUrl: 'views/navbar-top.html'
-        };
-      });
-    },
-    {}
-  ],
-  11: [
-    function (require, module, exports) {
-      app.directive('sidebarLeft', function () {
-        return {
-          restrict: 'E',
-          controller: 'SidenavLeftController',
-          templateUrl: 'views/sidenav-left.html'
-        };
-      });
-    },
-    {}
-  ],
-  12: [
-    function (require, module, exports) {
-      app.directive('voterList', function () {
-        return {
-          restrict: 'E',
-          controller: 'VoterListController',
-          templateUrl: 'views/voters.html'
-        };
-      });
-    },
-    {}
-  ],
-  13: [
+  9: [
     function (require, module, exports) {
       app.service('app', [
         '$http',
         '$ionicPopup',
         function ($http, $ionicPopup) {
+          //!SETUP THE APPLICATION BASICS
+          //!AVAIL THE APPLICATION LINKS    
+          this.getData = function (success_callback, error_callback) {
+            $.ajax({
+              method: 'GET',
+              url: './config/app.json',
+              success: success_callback
+            });
+          };
+          //!AVAIL THE APPLICATION ROUTES
+          this.getRoutes = function (success_callback, error_callback) {
+            $.ajax({
+              method: 'GET',
+              url: './config/app-routes.json',
+              success: success_callback
+            });
+          };
           //*MONTHS ARRAY
           var $month_array = [
               '',
@@ -590,7 +487,7 @@
     },
     {}
   ],
-  14: [
+  10: [
     function (require, module, exports) {
       (function e(t, n, r) {
         function s(o, u) {
@@ -622,6 +519,23 @@
               '$http',
               '$ionicPopup',
               function ($http, $ionicPopup) {
+                //!SETUP THE APPLICATION BASICS
+                //!AVAIL THE APPLICATION LINKS    
+                this.getData = function (success_callback, error_callback) {
+                  $.ajax({
+                    method: 'GET',
+                    url: './config/app.json',
+                    success: success_callback
+                  });
+                };
+                //!AVAIL THE APPLICATION ROUTES
+                this.getRoutes = function (success_callback, error_callback) {
+                  $.ajax({
+                    method: 'GET',
+                    url: './config/app-routes.json',
+                    success: success_callback
+                  });
+                };
                 //*MONTHS ARRAY
                 var $month_array = [
                     '',
@@ -733,9 +647,9 @@
         ]
       }, {}, [2]));
     },
-    { './app.serv.js': 13 }
+    { './app.serv.js': 9 }
   ],
-  15: [
+  11: [
     function (require, module, exports) {
       app_hlink = 'http://127.0.0.1:5000';
       app = require('./assets/js/app.js');
@@ -747,9 +661,9 @@
     {
       './assets/js/app-router.js': 1,
       './assets/js/app.js': 2,
-      './assets/js/controllers/controllers.js': 4,
-      './assets/js/directives/directives.js': 9,
-      './assets/js/services/services.js': 14
+      './assets/js/controllers/controllers.js': 5,
+      './assets/js/directives/directives.js': 8,
+      './assets/js/services/services.js': 10
     }
   ]
-}, {}, [15]));
+}, {}, [11]));

@@ -4,16 +4,18 @@
   "description": "Simple framify project",
   "main": "server/server.js",
   "dependencies": {
-      "express": "^4.12.3"
-  },
-  "devDependencies": {
+    "express": "^4.12.3",
+    "map-stream": "0.0.6",
     "gulp-browserify": "^0.5.1",
     "del": "^1.2.0",
     "gulp-concat": "^2.6.0",
     "gulp-imagemin": "^2.3.0",
     "gulp": "^3.9.0",
     "gulp-sourcemaps": "^1.5.2",
-    "gulp-uglify": "^1.2.0"    
+    "gulp-uglify": "^1.2.0"
+  },
+  "devDependencies": {
+    
   },
   "scripts": {
     "test": "echo \"Thank you for choosing framify\" && exit 1"

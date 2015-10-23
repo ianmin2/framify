@@ -1,9 +1,48 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-app.controller("appController", ['app','$scope','$location','$ionicModal',function( app, $scope, $location, $ionicModal ){
+app.controller('VoterListController', ['$scope', '$http', function($scope, $http){
+    $scope.voters = [];
+    
+    
+    var voteSet = function(data){
+        $scope.voters = data;
+        alert("Fetched");
+    };
+    
+    var voteFail = function(err){
+        alert("Failed to fetch JSON data.");
+    };
+    
+    $scope.app.cors('voters.json', '', voteSet, voteFail );
+    
+    
+}]); 
+},{}],2:[function(require,module,exports){
+app.controller("appController", ['app','$scope','$location','$ionicModal','$rootScope',function( app, $scope, $location, $ionicModal, $rootScope ){
     
     //!APPLICATION GLOBAL SCOPE COMPONENTS
     $scope.current  = {};
     $scope.ui       = {};
+    
+    $rootScope.nav = [];
+    $rootScope.links = [];
+    
+    var setRoutes = function(data){
+        $scope.links = data;
+        //console.dir( $scope.nav )
+    }
+    
+    var setData = function(data){
+        $scope.nav = data;
+        //console.dir( $scope.links )
+        //console.dir(appl.links)
+    }
+    
+    //!FETCH THE NECESSARY APPLICATION DATA
+    $scope.app.getData(setData);
+    $scope.app.getRoutes(setRoutes);  
+    
+    //!RE-INITIALIZE APPLICATION DATA
+    $scope.location.path("/framify")
         
     //!ESTABLISH APPLICATION UI COMPONENTS AND THEIR HANDLERS
         
@@ -57,70 +96,7 @@ app.controller("appController", ['app','$scope','$location','$ionicModal',functi
    
     
 }])
-},{}],2:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 require("./app.ctrl.js");
-require('./voterlist.ctrl.js');
-require('./sidenavleft.ctrl.js');
-require('./navbartop.ctrl.js');
-},{"./app.ctrl.js":1,"./navbartop.ctrl.js":3,"./sidenavleft.ctrl.js":4,"./voterlist.ctrl.js":5}],3:[function(require,module,exports){
-app.controller("NavbarTopController", ['$scope', '$http', function($scope, $http){
-    
-    $scope.nav = [];
-
-    $scope.setRoute = function( i ){
-        alert( i )
-    }
-
-    var setNav = function(data){
-        $scope.nav = data;
-        //console.dir( $scope.nav )
-    }
-    
-    var setLinks = function(data){
-        $scope.links = data;
-        //console.dir($scope.links)
-    }
-    
-    var failNav = function( errData ){
-        console.log( errData )
-        alert("FailNav")
-    }
-    
-    var failLinks = function( errData ){
-        console.log( errData )
-        alert("failLinks")
-    }
-      
-     $scope.app.cors('config/app.json', '', setNav, failNav );
-     $scope.app.cors('./config/app-routes.json', '', setLinks, failLinks );
-    
-    
-    
-    
-        
-}]);
-},{}],4:[function(require,module,exports){
-app.controller("SidenavLeftController", ['$scope', '$http', '$mdSidenav', function($scope, $http, $mdSidenav){
-	$scope.toggleSidenav = function(menuId){
-        $mdSidenav(menuId).toggle();
-    }
-}]);
-},{}],5:[function(require,module,exports){
-app.controller('VoterListController', ['$scope', '$http', function($scope, $http){
-    $scope.voters = [];
-    
-    
-    var voteSet = function(data){
-        $scope.voters = data;
-        alert("Fetched");
-    };
-    
-    var voteFail = function(err){
-        alert("Failed to fetch JSON data.");
-    };
-    
-    $scope.app.cors('voters.json', '', voteSet, voteFail );
-    
-    
-}]); 
-},{}]},{},[2])
+require('./app-sample.ctrl.js');
+},{"./app-sample.ctrl.js":1,"./app.ctrl.js":2}]},{},[3])

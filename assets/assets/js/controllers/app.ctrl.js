@@ -1,8 +1,29 @@
-app.controller("appController", ['app','$scope','$location','$ionicModal',function( app, $scope, $location, $ionicModal ){
+app.controller("appController", ['app','$scope','$location','$ionicModal','$rootScope',function( app, $scope, $location, $ionicModal, $rootScope ){
     
     //!APPLICATION GLOBAL SCOPE COMPONENTS
     $scope.current  = {};
     $scope.ui       = {};
+    
+    $rootScope.nav = [];
+    $rootScope.links = [];
+    
+    var setRoutes = function(data){
+        $scope.links = data;
+        //console.dir( $scope.nav )
+    }
+    
+    var setData = function(data){
+        $scope.nav = data;
+        //console.dir( $scope.links )
+        //console.dir(appl.links)
+    }
+    
+    //!FETCH THE NECESSARY APPLICATION DATA
+    $scope.app.getData(setData);
+    $scope.app.getRoutes(setRoutes);  
+    
+    //!RE-INITIALIZE APPLICATION DATA
+    $scope.location.path("/framify")
         
     //!ESTABLISH APPLICATION UI COMPONENTS AND THEIR HANDLERS
         

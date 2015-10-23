@@ -1,11 +1,8 @@
 //!CONFIGURE THE BNASIC PRE-RUNTIME STATES OF THE APPLICATION
 app.config(function($stateProvider,$urlRouterProvider){
     
-    //!REDIRECT APP TO THE ROOT ROUTE
-    $urlRouterProvider.otherwise('/');
-    
-    $stateProvider.state( "/" , {
-               url          : "/app",
+    $stateProvider.state( "framify" , {
+               url          :"/framify",
                templateUrl  : "views/app.html"
             }); 
     
@@ -25,8 +22,8 @@ app.config(function($stateProvider,$urlRouterProvider){
             
         }
         
-    };
-        
+    }; 
+    
     	
     //!CAPTURE THE DEFINED JSON ROUTES
     $.ajax({
@@ -34,17 +31,24 @@ app.config(function($stateProvider,$urlRouterProvider){
         success: function( response ){
             //SET THE ROUTES DYNAMICALLY
             setRoutes( response )
+            
         }
     });
     
+    
+    //!REDIRECT APP TO THE ROOT ROUTE
+    $urlRouterProvider.otherwise('/framify');
     
 	
 });
 
 //!DEFINE THE APPLICATION RUNTIME DEFAULTS
-app.run( function(app, $rootScope ){
+app.run( function(app, $rootScope, $location ){
     
-    //!INHECT THE APPLICATION'S MAIN SERVICE TO THE ROOT SCOPE SUCH THAT ALL SCOPES MAY INHERIT IT
+    //!INJECT THE LOCATION SOURCE TO THE ROOT SCOPE
+    $rootScope.location = $location;
+    
+    //!INJECT THE APPLICATION'S MAIN SERVICE TO THE ROOT SCOPE SUCH THAT ALL SCOPES MAY INHERIT IT
     $rootScope.app = app;
 
 })

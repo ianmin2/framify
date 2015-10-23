@@ -1,6 +1,32 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
   
+    //!SETUP THE APPLICATION BASICS
+    
+    //!AVAIL THE APPLICATION LINKS    
+    this.getData = function( success_callback , error_callback ){
+       
+        $.ajax({
+            method: "GET",
+            url:  './config/app.json', 
+            success: success_callback      
+        });
+        
+    }
+    
+    //!AVAIL THE APPLICATION ROUTES
+    this.getRoutes = function( success_callback , error_callback ){
+        
+        $.ajax({
+            method: "GET",
+            url:  './config/app-routes.json',
+            success: success_callback      
+        });
+        
+    }
+      
+    
+        
     //*MONTHS ARRAY
     var $month_array = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     

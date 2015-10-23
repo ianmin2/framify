@@ -1,5 +1,31 @@
 app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
   
+    //!SETUP THE APPLICATION BASICS
+    
+    //!AVAIL THE APPLICATION LINKS    
+    this.getData = function( success_callback , error_callback ){
+       
+        $.ajax({
+            method: "GET",
+            url:  './config/app.json', 
+            success: success_callback      
+        });
+        
+    }
+    
+    //!AVAIL THE APPLICATION ROUTES
+    this.getRoutes = function( success_callback , error_callback ){
+        
+        $.ajax({
+            method: "GET",
+            url:  './config/app-routes.json',
+            success: success_callback      
+        });
+        
+    }
+      
+    
+        
     //*MONTHS ARRAY
     var $month_array = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     
