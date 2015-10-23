@@ -15,12 +15,13 @@
     <title>{{nav.title}}</title>
 </head>
 
-<body>
+<body class="mdl-demo mdl-color--grey-100 mdl-color-text--grey-700 mdl-base">
    
     <!-- Uses a transparent header that draws on top of the layout's background -->
     <style>
         .demo-layout-transparent,.mdl-layout__drawer,ion-nav-view{
             background: url('./assets/img/bg3.png') !important;
+            height:100%;
         }
         .demo-layout-transparent .mdl-layout__header,
         .demo-layout-transparent .mdl-layout__drawer-button {
@@ -63,9 +64,9 @@
            
             </nav>
         </div>
-        <main class="mdl-layout__content">
-        <ion-nav-view></ion-nav-view>
-        </main>
+<!--        <main class="mdl-layout__content"  >-->
+        <ion-nav-view class="mdl-layout__content" style="overflow:scroll;"></ion-nav-view>
+<!--        </main>-->
     </div>
 
 </body>

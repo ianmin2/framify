@@ -28,7 +28,7 @@
       app.config(function ($stateProvider, $urlRouterProvider) {
         $stateProvider.state('framify', {
           url: '/framify',
-          templateUrl: 'views/app.html'
+          templateUrl: 'views/1app.html'
         });
         //!THE DYNAMIC ROUTE SETTER
         var setRoutes = function (routeArray) {
@@ -73,19 +73,30 @@
   ],
   3: [
     function (require, module, exports) {
-      app.controller('VoterListController', [
+      app.controller('framifySampleController', [
         '$scope',
         '$http',
         function ($scope, $http) {
           $scope.voters = [];
           var voteSet = function (data) {
             $scope.voters = data;
-            alert('Fetched');
           };
           var voteFail = function (err) {
             alert('Failed to fetch JSON data.');
           };
-          $scope.app.cors('voters.json', '', voteSet, voteFail);
+          $scope.customify = function (data) {
+            $scope.app.alert('Framify Child', '<center>DONE!</center>', 'continue');
+          };
+          $scope.sav = function () {
+            $scope.app.confirm('Framify Child', 'Do you really want to save this widget', $scope.customify, $scope.customify);
+          };
+          $scope.del = function () {
+            $scope.app.confirm('Framify Child', 'Are you sure you want to DELETE this widget', $scope.customify, $scope.customify);
+          };
+          $scope.app.ajax('/sample/sample.json', '', voteSet, voteFail);
+          $scope.testify = function () {
+            return 'Correct!!';
+          };
         }
       ]);
     },
@@ -178,19 +189,30 @@
       }({
         1: [
           function (require, module, exports) {
-            app.controller('VoterListController', [
+            app.controller('framifySampleController', [
               '$scope',
               '$http',
               function ($scope, $http) {
                 $scope.voters = [];
                 var voteSet = function (data) {
                   $scope.voters = data;
-                  alert('Fetched');
                 };
                 var voteFail = function (err) {
                   alert('Failed to fetch JSON data.');
                 };
-                $scope.app.cors('voters.json', '', voteSet, voteFail);
+                $scope.customify = function (data) {
+                  $scope.app.alert('Framify Child', '<center>DONE!</center>', 'continue');
+                };
+                $scope.sav = function () {
+                  $scope.app.confirm('Framify Child', 'Do you really want to save this widget', $scope.customify, $scope.customify);
+                };
+                $scope.del = function () {
+                  $scope.app.confirm('Framify Child', 'Are you sure you want to DELETE this widget', $scope.customify, $scope.customify);
+                };
+                $scope.app.ajax('/sample/sample.json', '', voteSet, voteFail);
+                $scope.testify = function () {
+                  return 'Correct!!';
+                };
               }
             ]);
           },
@@ -278,7 +300,7 @@
         return {
           restrict: 'E',
           controller: 'framifySampleController',
-          templateUrl: 'views/app-sample.html'
+          templateUrl: 'views/2app-sample.html'
         };
       });
     },
@@ -327,7 +349,7 @@
               return {
                 restrict: 'E',
                 controller: 'framifySampleController',
-                templateUrl: 'views/app-sample.html'
+                templateUrl: 'views/2app-sample.html'
               };
             });
           },
@@ -437,14 +459,14 @@
           //*GENERATE A CUSTOM CONFIRM DIALOG
           this.confirm = function (title, message, success_cb, error_cb) {
             var confirmPopup = $ionicPopup.confirm({
-                title: 'Consume Ice Cream',
-                template: 'Are you sure you want to eat this ice cream?'
+                title: title,
+                template: message
               });
             confirmPopup.then(function (res) {
               if (res) {
-                success_cb();
+                success_cb(res);
               } else {
-                error_cb();
+                error_cb(res);
               }
             });
           };
@@ -481,6 +503,22 @@
             } else {
               return 'Invalid Month';
             }
+          };
+          //*REMOVE DUPLICATES
+          this.unique = function (array_) {
+            var ret_array = new Array();
+            for (var a = array_.length - 1; a >= 0; a--) {
+              for (var b = array_.length - 1; b >= 0; b--) {
+                if (array_[a] == array_[b] && a != b) {
+                  delete array_[b];
+                }
+              }
+              ;
+              if (array_[a] != undefined)
+                ret_array.push(array_[a]);
+            }
+            ;
+            return ret_array.reverse();
           };
         }
       ]);
@@ -589,14 +627,14 @@
                 //*GENERATE A CUSTOM CONFIRM DIALOG
                 this.confirm = function (title, message, success_cb, error_cb) {
                   var confirmPopup = $ionicPopup.confirm({
-                      title: 'Consume Ice Cream',
-                      template: 'Are you sure you want to eat this ice cream?'
+                      title: title,
+                      template: message
                     });
                   confirmPopup.then(function (res) {
                     if (res) {
-                      success_cb();
+                      success_cb(res);
                     } else {
-                      error_cb();
+                      error_cb(res);
                     }
                   });
                 };
@@ -633,6 +671,22 @@
                   } else {
                     return 'Invalid Month';
                   }
+                };
+                //*REMOVE DUPLICATES
+                this.unique = function (array_) {
+                  var ret_array = new Array();
+                  for (var a = array_.length - 1; a >= 0; a--) {
+                    for (var b = array_.length - 1; b >= 0; b--) {
+                      if (array_[a] == array_[b] && a != b) {
+                        delete array_[b];
+                      }
+                    }
+                    ;
+                    if (array_[a] != undefined)
+                      ret_array.push(array_[a]);
+                  }
+                  ;
+                  return ret_array.reverse();
                 };
               }
             ]);

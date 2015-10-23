@@ -3,7 +3,7 @@ app.config(function($stateProvider,$urlRouterProvider){
     
     $stateProvider.state( "framify" , {
                url          :"/framify",
-               templateUrl  : "views/app.html"
+               templateUrl  : "views/1app.html"
             }); 
     
     //!THE DYNAMIC ROUTE SETTER
@@ -30,8 +30,7 @@ app.config(function($stateProvider,$urlRouterProvider){
         url: "config/app-routes.json",
         success: function( response ){
             //SET THE ROUTES DYNAMICALLY
-            setRoutes( response )
-            
+            setRoutes( response );            
         }
     });
     

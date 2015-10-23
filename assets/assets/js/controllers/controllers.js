@@ -1,18 +1,35 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-app.controller('VoterListController', ['$scope', '$http', function($scope, $http){
+app.controller('framifySampleController', ['$scope', '$http', function($scope, $http){
+   
     $scope.voters = [];
-    
-    
+        
     var voteSet = function(data){
         $scope.voters = data;
-        alert("Fetched");
     };
     
     var voteFail = function(err){
         alert("Failed to fetch JSON data.");
     };
     
-    $scope.app.cors('voters.json', '', voteSet, voteFail );
+    $scope.customify = function( data ){
+        $scope.app.alert("Framify Child", "<center>DONE!</center>", "continue");
+    }
+    
+    $scope.sav = function(){
+        $scope.app.confirm('Framify Child', 'Do you really want to save this widget', $scope.customify, $scope.customify )
+    }
+    
+    $scope.del = function(){
+        $scope.app.confirm('Framify Child', 'Are you sure you want to DELETE this widget', $scope.customify, $scope.customify )
+    }   
+    
+    
+    $scope.app.ajax('/sample/sample.json', '', voteSet, voteFail );
+    
+    
+    $scope.testify = function(){
+        return "Correct!!";
+    }
     
     
 }]); 

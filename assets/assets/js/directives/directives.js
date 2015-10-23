@@ -3,7 +3,7 @@ app.directive('appSample', function(){
    return{
        restrict: 'E',
        controller: 'framifySampleController',
-       templateUrl: 'views/app-sample.html' 
+       templateUrl: 'views/2app-sample.html' 
    } 
 });
 },{}],2:[function(require,module,exports){

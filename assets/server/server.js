@@ -11,6 +11,11 @@ app.route("/").all(function(req,res){
 	res.sendFile( "index.html");
 });
 
+app.route("/sample/:iara").all(function(req,res){
+    var i = req.params.iara;
+    res.sendFile( i ,{ "root": __dirname + "/../" });
+})
+
 app.route("/config/:fname").all(function(req,res){
     console.log("getting the file" + req.params.fname)
     res.sendFile(req.params.fname, { "root": __dirname + "/../config/"} )

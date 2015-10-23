@@ -1,6 +1,6 @@
 {
   "name": "framify",
-  "version": "1.1.3",
+  "version": "1.2.3",
   "description": "A simple project generation tool for bixbyte",
   "main": "index.js",
   "directories": {
@@ -16,7 +16,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Thank you for choosing framify\" && exit 1"
+    "test": "echo \"\nThank you for choosing framify\n\""
   },
   "repository": {
     "type": "git",

@@ -43,7 +43,7 @@ var routerify = function() {
             
         };
         
-        return ret_array;
+        return ret_array.reverse();
         
     }
 

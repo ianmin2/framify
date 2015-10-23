@@ -12,7 +12,7 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
             success: success_callback      
         });
         
-    }
+    };
     
     //!AVAIL THE APPLICATION ROUTES
     this.getRoutes = function( success_callback , error_callback ){
@@ -23,7 +23,7 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
             success: success_callback      
         });
         
-    }
+    };
       
     
         
@@ -84,14 +84,14 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
    this.confirm = function( title, message, success_cb, error_cb ) {
        
        var confirmPopup = $ionicPopup.confirm({
-         title: 'Consume Ice Cream',
-         template: 'Are you sure you want to eat this ice cream?'
+         title: title,
+         template: message
        });
        confirmPopup.then(function(res) {
          if(res) {
-            success_cb();
+            success_cb(res);
          } else {
-            error_cb();
+            error_cb(res);
          }
        });
        
@@ -151,7 +151,35 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
             return "Invalid Month";
         }
         
-    };   
+    }; 
+    
+    //*REMOVE DUPLICATES
+    this.unique = function (array_ ){
+        
+        var ret_array = new Array();
+        
+        for (var a = array_.length - 1; a >= 0; a--) {
+            
+            for (var b = array_.length - 1; b >= 0; b--) {
+                
+                if(array_[a] == array_[b] && a != b){
+                    
+                    delete array_[b];
+                    
+                }
+                
+            };
+            
+            if(array_[a] != undefined)
+                
+                ret_array.push(array_[a]);
+            
+        };
+        
+        return ret_array.reverse();
+        
+    };
+
    
 }]);
 },{}],2:[function(require,module,exports){

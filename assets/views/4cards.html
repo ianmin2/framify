@@ -1,0 +1,15 @@
+<framify menu="true" path="cards" url="/cards" title="Cards" parent="false"></framify>
+<ion-content ng-controller="framifySampleController">
+    <md-card ng-repeat="link in links">
+
+        <md-card-content>
+            {{link.title}}
+        </md-card-content>
+
+        <div class="md-actions" layout="row" layout-align="end center">
+            <md-button ng-click="sav()">SAVE</md-button>
+            <md-button ng-click="del()">DELETE</md-button>
+        </div>
+
+    </md-card>
+</ion-content>

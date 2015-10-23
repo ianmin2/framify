@@ -18,7 +18,7 @@
     
   },
   "scripts": {
-    "test": "echo \"Thank you for choosing framify\" && exit 1"
+    "test": "echo \"\n\nThank you for using framify\n\n\""
   },
   "author": "Bixbyte",
   "license": "ISC"
