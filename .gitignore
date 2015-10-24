@@ -22,7 +22,7 @@ sysinfo.txt
 **.bak
 
 #! Ignore all test folders
-**test**/
+**tests/
 
 #! Ignore all webkit builder folders
 **webkit**
