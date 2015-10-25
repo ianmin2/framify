@@ -492,7 +492,7 @@
           this.isPassword = function (prospective_password) {
             return /^[-@.\/\!\$\%\^|#&,+\w\s]{6,50}$/.test(prospective_password);
           };
-          //*VALIDATE VALUES FOR MATCHING
+          //*VALIDATE WHETHER VALUES MATCH
           this.matches = function (val1, val2) {
             return val1 === val2;
           };
@@ -504,7 +504,7 @@
               return 'Invalid Month';
             }
           };
-          //*REMOVE DUPLICATES
+          //*REMOVE DUPLICATES FROM ARRAY
           this.unique = function (array_) {
             var ret_array = new Array();
             for (var a = array_.length - 1; a >= 0; a--) {
@@ -660,7 +660,7 @@
                 this.isPassword = function (prospective_password) {
                   return /^[-@.\/\!\$\%\^|#&,+\w\s]{6,50}$/.test(prospective_password);
                 };
-                //*VALIDATE VALUES FOR MATCHING
+                //*VALIDATE WHETHER VALUES MATCH
                 this.matches = function (val1, val2) {
                   return val1 === val2;
                 };
@@ -672,7 +672,7 @@
                     return 'Invalid Month';
                   }
                 };
-                //*REMOVE DUPLICATES
+                //*REMOVE DUPLICATES FROM ARRAY
                 this.unique = function (array_) {
                   var ret_array = new Array();
                   for (var a = array_.length - 1; a >= 0; a--) {

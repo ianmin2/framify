@@ -110,6 +110,7 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
         
     };
     //*EO - CALL CUSTOM MODAL 
+    
    
     
 }])

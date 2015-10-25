@@ -29,7 +29,7 @@ var gitify = function( repo_name ){
 	exec( 'curl -u "'+ username +':'+ token +'" https://api.github.com/user/repos -d ' + data );
 	
 	//PUSH LOCAL CODE TO REMOTE REPOSITORY
-	exec( 'git remote add origin git@githum.com:'+username+"/"+repo_name+".git ");
+	exec( 'git remote add origin git@github.com:'+username+"/"+repo_name+".git ");
 	exec( 'git push -u origin master ' );
 	
 };

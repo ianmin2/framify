@@ -132,7 +132,7 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
         
     };
     
-    //*VALIDATE VALUES FOR MATCHING
+    //*VALIDATE WHETHER VALUES MATCH
     this.matches = function( val1, val2 ){
         
         return ( val1 === val2 );
@@ -152,7 +152,7 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
         
     }; 
     
-    //*REMOVE DUPLICATES
+    //*REMOVE DUPLICATES FROM ARRAY
     this.unique = function (array_ ){
         
         var ret_array = new Array();
