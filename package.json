@@ -1,6 +1,6 @@
 {
   "name": "framify",
-  "version": "1.2.5",
+  "version": "1.2.9",
   "description": "A simple project generation tool for bixbyte",
   "main": "index.js",
   "directories": {
@@ -20,12 +20,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ianmin2/framify.git"
+    "url": "https://github.com/ianmin2/framify.git"
   },
   "bin": {
     "framify": "index.js",
     "git-framify": "git.js",
-    "testify": "test.js",
     "drivify": "drive_init.js"
   },
   "keywords": [

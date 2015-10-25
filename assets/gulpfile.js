@@ -12,6 +12,7 @@ var browserify  = require('gulp-browserify');
 var sourcemaps  = require('gulp-sourcemaps');
 var del         = require('del');
 var routerify   = require("./routerify");
+var browserSync = require('browser-sync').create();
 
 var fs = require("fs");
 
@@ -262,3 +263,17 @@ gulp.task('default', ['watch']);
 
 //THE GULP BUILD TASK
 gulp.task('build', ['controllers','directives','services','router'] );
+
+//THE BROWSER SYNC FUNCTION
+gulp.task('serve', function() {
+    browserSync.init({
+        server: {
+//            baseDir: "./"
+            proxy: "127.0.0.1:5000"
+        }
+    });
+    gulp.watch("*").on('change', browserSync.reload)
+});
+
+//LOAD DEVELOPMENT SERVER
+gulp.task('dev', ['package','watch']);
