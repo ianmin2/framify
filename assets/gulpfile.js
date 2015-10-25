@@ -14,7 +14,8 @@ var del         = require('del');
 var routerify   = require("./routerify");
 var browserSync = require('browser-sync').create();
 
-var fs = require("fs");
+var exec        = require('child_process').exec;
+var fs          = require("fs");
 
 /*
  * SETTING OF THE GLOBALS
@@ -266,13 +267,19 @@ gulp.task('build', ['controllers','directives','services','router'] );
 
 //THE BROWSER SYNC FUNCTION
 gulp.task('serve', function() {
-    browserSync.init({
-        server: {
-//            baseDir: "./"
-            proxy: "127.0.0.1:5000"
-        }
-    });
-    gulp.watch("*").on('change', browserSync.reload)
+    
+    var child = exec("node server/server.js", function(err, stdout, stderr){
+    })
+    
+     browserSync.init({
+                server: {
+        //            baseDir: "./"
+                    proxy: "127.0.0.1:5000"
+                }
+            });
+            gulp.watch("*").on('change', browserSync.reload)
+    
+    
 });
 
 //LOAD DEVELOPMENT SERVER
