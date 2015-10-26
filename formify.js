@@ -24,12 +24,12 @@ Array.prototype.has = function( needle ){
 var Formify =  function( dbConfig ){
     
     dbConfig = dbConfig || null;
-   
+
     //~ GET FIELDS NAMES METHOD   
     this.getFields = function( table_name ){
-        
+
        return new Promise(function(resolve, reject){
-           
+
             db.single( dbConfig, "SELECT * FROM " + table_name + " LIMIT 1")
             .then(function( response ){
 
@@ -42,26 +42,44 @@ var Formify =  function( dbConfig ){
 
             })
         }) 
-        
+
     };
     
-    //~ CREATE THE 
+    //~ CAPTURE THE FORM FIELDS 
+    this.setForm = function( form_data ){
+        
+        /*
+            expects a JSON object with the following fields
+            
+            {
+                form_name : "form_name",
+                
+            }
+        */
+        
+        return new Promise(function(resolve, reject){
+            
+            
+            
+        })
+        
+    };
         
     
 };
 //# EO - FORMIFY FACTORY
 
-var f = new Formify({  
-    dbUser: "postgres",
-    dbPass: "",
-    dbHost: "localhost",
-    dbName: "codepamoja"
-})
-
-f.getFields("entitys")
-.then(function(r){
-    console.log(r)
-})
+//var f = new Formify({  
+//    dbUser: "postgres",
+//    dbPass: "",
+//    dbHost: "localhost",
+//    dbName: "codepamoja"
+//})
+//
+//f.getFields("entitys")
+//.then(function(r){
+//    console.log(r)
+//})
 
 //var dbConfig = {  
 //    dbUser: "postgres",
