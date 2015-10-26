@@ -53,13 +53,13 @@ var sQuery = function( db_cred, F_QUERY ){
     //!Prevent a no such object error
     db_cred = db_cred || {};
     
-    //!Ensure that the db credentials are always filled
-    db_cred = {
-                dbUser: db_cred.dbUser || "postgres",
-                dbPass: db_cred.dbPass || "",
-                dbName: db_cred.dbName || "postgres",
-                dbHost: db_cred.dbHost || "localhost"
-               };
+//    //!Ensure that the db credentials are always filled
+//    db_cred = {
+//                dbUser: db_cred.dbUser || "postgres",
+//                dbPass: db_cred.dbPass || "",
+//                dbName: db_cred.dbName || "postgres",
+//                dbHost: db_cred.dbHost || "localhost"
+//               };
     
     //!Ensure that the provided query is valid
     if( typeof(F_QUERY) == "undefined" ){
@@ -71,7 +71,7 @@ var sQuery = function( db_cred, F_QUERY ){
     var cString = "postgres://"+db_cred.dbUser+":"+db_cred.dbPass+"@"+db_cred.dbHost+"/"+db_cred.dbName;
     
     //!Create a new db connection client
-    var fClient = new pg.Client(connString);
+    var fClient = new pg.Client( cString  );
     
     
     //!Set up the promise 
@@ -82,14 +82,15 @@ var sQuery = function( db_cred, F_QUERY ){
 
             //!Log the current process
             console.log("Framify is running a query");
-
+            
             //!If faced by an error
             if(err){
 
                 //!Handle the error occurance
-                fClient.close();
+                
                 resolve({ status: 500, message: "There was an error trying to establish a database connection.\nCause:\n" + err.message + "\nConnection String: " + cString });
-
+                fClient.end();
+                
             //!If things are good to go
             }else{
 
@@ -100,16 +101,15 @@ var sQuery = function( db_cred, F_QUERY ){
                     if(err){
 
                          //!handle the error occurance
-                         fClient.close();
-                         resolve({ status: 500, message: "There was an error trying to execute a query.\nCause:\n" + err.message + "\nQuery: " + F_QUERY });
-
+                          resolve({ status: 500, message: "There was an error trying to execute a query.\nCause:\n".err + err.message + "\nQuery: ".err + F_QUERY });
+                          fClient.end();
                     }
                     //!If things are good to go
                     else{
 
-                        //!Handle the successfull event
-                        fClient.close();
-                        resolve({ status: 200, message: "Query Successfully executed!\nDETAILS:\n" + F_QUERY, data: result });
+                        //!Handle the successfull event                        
+                        resolve({ status: 200, message: "Query Successfully executed!\nDETAILS:\n".succ + F_QUERY, data: result });
+                        fClient.end();
                         
                     //!EO - Query Executed   
                     }

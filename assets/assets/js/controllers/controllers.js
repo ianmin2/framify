@@ -51,7 +51,6 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
     var setData = function(data){
         $scope.nav = data;
         //console.dir( $scope.links )
-        //console.dir(appl.links)
     }
     
     //!FETCH THE NECESSARY APPLICATION DATA

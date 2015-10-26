@@ -7,7 +7,13 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
        
         $.ajax({
             method: "GET",
-            url:  './config/app.json', 
+            url:  './config/app.json',
+            converters: {
+                'text script': function(text){
+                    jQuery.globalEval(text);
+                    return text;
+                }
+            },
             success: success_callback      
         });
         
@@ -19,17 +25,35 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
         $.ajax({
             method: "GET",
             url:  './config/app-routes.json',
+            converters: {
+              'text script': function(text){
+                  jQuery.globalEval(text);
+                  return text;
+              }  
+            },
             success: success_callback      
         });
         
     };
       
+    //! BASIC RESPONSE FORMATTER
+    this.makeResponse = function( response, message, command ){
+        
+        return {
+            response: response,
+            data: {
+                message: message,
+                command: command
+            }
+        };
+        
+    };
     
         
-    //*MONTHS ARRAY
+    //* MONTHS ARRAY
     var $month_array = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     
-   //!HANDLE APPLICATION NATIVE SERVICE REQUESTS
+   //! HANDLE APPLICATION NATIVE SERVICE REQUESTS
    this.ajax =function( path , data, success_callback, error_callback , config ){ 
 	   
       //$http.post( bix_hlink + path, data, config).then( success_callback, error_callback );
@@ -178,6 +202,6 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
         return ret_array.reverse();
         
     };
-
-   
+    
+       
 }]);

@@ -121,7 +121,6 @@
           };
           var setData = function (data) {
             $scope.nav = data;  //console.dir( $scope.links )
-                                //console.dir(appl.links)
           };
           //!FETCH THE NECESSARY APPLICATION DATA
           $scope.app.getData(setData);
@@ -237,7 +236,6 @@
                 };
                 var setData = function (data) {
                   $scope.nav = data;  //console.dir( $scope.links )
-                                      //console.dir(appl.links)
                 };
                 //!FETCH THE NECESSARY APPLICATION DATA
                 $scope.app.getData(setData);
@@ -705,8 +703,25 @@
   ],
   11: [
     function (require, module, exports) {
+      //! APP CONFIGURATIONS
       app_hlink = 'http://127.0.0.1:5000';
       app = require('./assets/js/app.js');
+      //! CUSTOM EXTENTIONS HERE
+      //* EXTEND Object to cater for {{Object}}.keys
+      function keys() {
+        var k = [];
+        for (var p in this) {
+          if (this.hasOwnProperty(p))
+            k.push(p);
+        }
+        return k;
+      }
+      Object.defineProperty(Object.prototype, 'keys', {
+        value: keys,
+        enumerable: false
+      });
+      //! EO - CUSTOM EXTENSIONS
+      //! APP IMPORTS
       require('./assets/js/app-router.js');
       require('./assets/js/controllers/controllers.js');
       require('./assets/js/directives/directives.js');
