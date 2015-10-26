@@ -1,5 +1,5 @@
 var db  = require("./dbfy.js");
-var log = require("./logger.js")("bixbyte/logs/formify.logs");
+var log = require("./logger.js")("bixbyte/logs/formify.log");
 
 //* EXTEND Object to cater for {{Object}}.keys
 function keys(){
