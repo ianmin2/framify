@@ -10,7 +10,7 @@ app.config(function($stateProvider,$urlRouterProvider){
     var setRoutes = function( routeArray ){
         
         routeArray = routeArray || [];
-        
+               
         for( r in routeArray ){
             
             var rData = routeArray[r]
@@ -26,19 +26,13 @@ app.config(function($stateProvider,$urlRouterProvider){
     
     	
     //!CAPTURE THE DEFINED JSON ROUTES
-    $.ajax({
-        url: "config/app-routes.json",
-        success: function( response ){
-            //SET THE ROUTES DYNAMICALLY
-            setRoutes( response );            
-        }
+    $.getJSON( "config/app-routes.json", function( response ){
+         setRoutes( response );
     });
-    
-    
+        
     //!REDIRECT APP TO THE ROOT ROUTE
     $urlRouterProvider.otherwise('/framify');
     
-	
 });
 
 //!DEFINE THE APPLICATION RUNTIME DEFAULTS

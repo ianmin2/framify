@@ -12,19 +12,19 @@ app.controller('framifySampleController', ['$scope', '$http', function($scope, $
     };
     
     $scope.customify = function( data ){
-        $scope.app.alert("Framify Child", "<center>DONE!</center>", "continue");
+        $scope.app.alert( $scope.nav.title, "<center>DONE!</center>", $scope.app.doNothing );
     }
     
     $scope.sav = function(){
-        $scope.app.confirm('Framify Child', 'Do you really want to save this widget', $scope.customify, $scope.customify )
+        $scope.app.confirm( $scope.nav.title, 'Do you really want to save this widget', $scope.customify, $scope.customify )
     }
     
     $scope.del = function(){
-        $scope.app.confirm('Framify Child', 'Are you sure you want to DELETE this widget', $scope.customify, $scope.customify )
+        $scope.app.confirm( $scope.nav.title, 'Are you sure you want to DELETE this widget', $scope.customify, $scope.customify )
     }   
     
+    $scope.app.getJSON('./sample/sample.json', voteSet );
     
-    $scope.app.ajax('/sample/sample.json', '', voteSet, voteFail );
     
     
     $scope.testify = function(){

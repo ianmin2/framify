@@ -1,5 +1,12 @@
+/* global app */
+/* global app_hlink */
+/* global app_ip */
+/* global app_port */
+
 //! APP CONFIGURATIONS
-app_hlink = "http://127.0.0.1:5000";
+app_ip = "127.0.0.1";
+app_port = 5000;
+app_hlink = "http://"+app_ip+":" + app_port;
 app = require('./assets/js/app.js');
 
 //! CUSTOM EXTENTIONS HERE
@@ -28,6 +35,6 @@ app = require('./assets/js/app.js');
 
 //! APP IMPORTS
 require("./assets/js/app-router.js");
-require('./assets/js/controllers/controllers.js');
-require('./assets/js/directives/directives.js');
 require('./assets/js/services/services.js');
+require('./assets/js/directives/directives.js');
+require('./assets/js/controllers/controllers.js');

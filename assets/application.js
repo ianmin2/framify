@@ -42,12 +42,8 @@
           }
         };
         //!CAPTURE THE DEFINED JSON ROUTES
-        $.ajax({
-          url: 'config/app-routes.json',
-          success: function (response) {
-            //SET THE ROUTES DYNAMICALLY
-            setRoutes(response);
-          }
+        $.getJSON('config/app-routes.json', function (response) {
+          setRoutes(response);
         });
         //!REDIRECT APP TO THE ROOT ROUTE
         $urlRouterProvider.otherwise('/framify');
@@ -85,15 +81,15 @@
             alert('Failed to fetch JSON data.');
           };
           $scope.customify = function (data) {
-            $scope.app.alert('Framify Child', '<center>DONE!</center>', 'continue');
+            $scope.app.alert($scope.nav.title, '<center>DONE!</center>', $scope.app.doNothing);
           };
           $scope.sav = function () {
-            $scope.app.confirm('Framify Child', 'Do you really want to save this widget', $scope.customify, $scope.customify);
+            $scope.app.confirm($scope.nav.title, 'Do you really want to save this widget', $scope.customify, $scope.customify);
           };
           $scope.del = function () {
-            $scope.app.confirm('Framify Child', 'Are you sure you want to DELETE this widget', $scope.customify, $scope.customify);
+            $scope.app.confirm($scope.nav.title, 'Are you sure you want to DELETE this widget', $scope.customify, $scope.customify);
           };
-          $scope.app.ajax('/sample/sample.json', '', voteSet, voteFail);
+          $scope.app.getJSON('./sample/sample.json', voteSet);
           $scope.testify = function () {
             return 'Correct!!';
           };
@@ -200,15 +196,15 @@
                   alert('Failed to fetch JSON data.');
                 };
                 $scope.customify = function (data) {
-                  $scope.app.alert('Framify Child', '<center>DONE!</center>', 'continue');
+                  $scope.app.alert($scope.nav.title, '<center>DONE!</center>', $scope.app.doNothing);
                 };
                 $scope.sav = function () {
-                  $scope.app.confirm('Framify Child', 'Do you really want to save this widget', $scope.customify, $scope.customify);
+                  $scope.app.confirm($scope.nav.title, 'Do you really want to save this widget', $scope.customify, $scope.customify);
                 };
                 $scope.del = function () {
-                  $scope.app.confirm('Framify Child', 'Are you sure you want to DELETE this widget', $scope.customify, $scope.customify);
+                  $scope.app.confirm($scope.nav.title, 'Are you sure you want to DELETE this widget', $scope.customify, $scope.customify);
                 };
-                $scope.app.ajax('/sample/sample.json', '', voteSet, voteFail);
+                $scope.app.getJSON('./sample/sample.json', voteSet);
                 $scope.testify = function () {
                   return 'Correct!!';
                 };
@@ -390,21 +386,35 @@
           //!SETUP THE APPLICATION BASICS
           //!AVAIL THE APPLICATION LINKS    
           this.getData = function (success_callback, error_callback) {
-            $.ajax({
-              method: 'GET',
-              url: './config/app.json',
-              success: success_callback
+            $.getJSON('config/app.json', function (data) {
+              success_callback(data);
             });
           };
           //!AVAIL THE APPLICATION ROUTES
           this.getRoutes = function (success_callback, error_callback) {
-            $.ajax({
-              method: 'GET',
-              url: './config/app-routes.json',
-              success: success_callback
+            // $http.get("config/app-routes.json")
+            //     .success(function(data){
+            //         success_callback(data);
+            //     })
+            //     .error(function(data){
+            //         alert("Failed to load route data.")
+            //         console.dir(data)
+            //     })
+            $.getJSON('config/app-routes.json', function (data) {
+              success_callback(data);
             });
           };
-          //*MONTHS ARRAY
+          //! BASIC RESPONSE FORMATTER
+          this.makeResponse = function (response, message, command) {
+            return {
+              response: response,
+              data: {
+                message: message,
+                command: command
+              }
+            };
+          };
+          //* MONTHS ARRAY
           var $month_array = [
               '',
               'January',
@@ -420,7 +430,7 @@
               'November',
               'December'
             ];
-          //!HANDLE APPLICATION NATIVE SERVICE REQUESTS
+          //! HANDLE APPLICATION NATIVE SERVICE REQUESTS
           this.ajax = function (path, data, success_callback, error_callback, config) {
             //$http.post( bix_hlink + path, data, config).then( success_callback, error_callback );
             $.ajax({
@@ -442,22 +452,37 @@
             });  /*,
             error: error_callback      */
           };
+          //!HANDLE JSON REQUESTS OF ANY CALIBER
+          this.getJSON = function (link, callback_function) {
+            $.getJSON(link, function (response) {
+              callback_function(response);
+            });
+          };
+          //! EMPTY CALLBACK
+          this.doNothing = function () {
+          };
           //!HANDLE THE DISPLAY OF DIALOG BOXES
+          //* SHOW A "LOADING" ELEMENT
+          this.loadify = function (el) {
+            el.html('<ion-spinner icon="lines" class="spinner-energized"></ion-spinner>');
+          };
           //*GENERATE A CUSTOM ALERT DIALOG
           this.alert = function (title, message, cb, ok) {
             var alertPopup = $ionicPopup.alert({
-                title: title,
+                title: title || $scope.nav.title,
                 template: message,
                 okText: ok || 'OK'
               });
             alertPopup.then(function (res) {
-              cb(res);
+              if (typeof cb == 'function') {
+                cb(res);
+              }
             });
           };
           //*GENERATE A CUSTOM CONFIRM DIALOG
           this.confirm = function (title, message, success_cb, error_cb) {
             var confirmPopup = $ionicPopup.confirm({
-                title: title,
+                title: title || $scope.nav.title,
                 template: message
               });
             confirmPopup.then(function (res) {
@@ -471,7 +496,7 @@
           //*GENERATE A CUSTOM PROMPT DIALOG
           this.prompt = function (title, message, i_type, i_pholder, cb) {
             $ionicPopup.prompt({
-              title: title,
+              title: title || $scope.nav.title,
               template: message,
               inputType: i_type,
               inputPlaceholder: i_pholder
@@ -518,6 +543,16 @@
             ;
             return ret_array.reverse();
           };
+          //* COUNT OCCURANCES IN AN ARRAY
+          this.count = function (val, obj) {
+            var cnt = 0;
+            for (v in obj) {
+              if (val === obj[v]) {
+                cnt += 1;
+              }
+            }
+            return cnt;
+          };
         }
       ]);
     },
@@ -558,21 +593,35 @@
                 //!SETUP THE APPLICATION BASICS
                 //!AVAIL THE APPLICATION LINKS    
                 this.getData = function (success_callback, error_callback) {
-                  $.ajax({
-                    method: 'GET',
-                    url: './config/app.json',
-                    success: success_callback
+                  $.getJSON('config/app.json', function (data) {
+                    success_callback(data);
                   });
                 };
                 //!AVAIL THE APPLICATION ROUTES
                 this.getRoutes = function (success_callback, error_callback) {
-                  $.ajax({
-                    method: 'GET',
-                    url: './config/app-routes.json',
-                    success: success_callback
+                  // $http.get("config/app-routes.json")
+                  //     .success(function(data){
+                  //         success_callback(data);
+                  //     })
+                  //     .error(function(data){
+                  //         alert("Failed to load route data.")
+                  //         console.dir(data)
+                  //     })
+                  $.getJSON('config/app-routes.json', function (data) {
+                    success_callback(data);
                   });
                 };
-                //*MONTHS ARRAY
+                //! BASIC RESPONSE FORMATTER
+                this.makeResponse = function (response, message, command) {
+                  return {
+                    response: response,
+                    data: {
+                      message: message,
+                      command: command
+                    }
+                  };
+                };
+                //* MONTHS ARRAY
                 var $month_array = [
                     '',
                     'January',
@@ -588,7 +637,7 @@
                     'November',
                     'December'
                   ];
-                //!HANDLE APPLICATION NATIVE SERVICE REQUESTS
+                //! HANDLE APPLICATION NATIVE SERVICE REQUESTS
                 this.ajax = function (path, data, success_callback, error_callback, config) {
                   //$http.post( bix_hlink + path, data, config).then( success_callback, error_callback );
                   $.ajax({
@@ -610,22 +659,37 @@
                   });  /*,
             error: error_callback      */
                 };
+                //!HANDLE JSON REQUESTS OF ANY CALIBER
+                this.getJSON = function (link, callback_function) {
+                  $.getJSON(link, function (response) {
+                    callback_function(response);
+                  });
+                };
+                //! EMPTY CALLBACK
+                this.doNothing = function () {
+                };
                 //!HANDLE THE DISPLAY OF DIALOG BOXES
+                //* SHOW A "LOADING" ELEMENT
+                this.loadify = function (el) {
+                  el.html('<ion-spinner icon="lines" class="spinner-energized"></ion-spinner>');
+                };
                 //*GENERATE A CUSTOM ALERT DIALOG
                 this.alert = function (title, message, cb, ok) {
                   var alertPopup = $ionicPopup.alert({
-                      title: title,
+                      title: title || $scope.nav.title,
                       template: message,
                       okText: ok || 'OK'
                     });
                   alertPopup.then(function (res) {
-                    cb(res);
+                    if (typeof cb == 'function') {
+                      cb(res);
+                    }
                   });
                 };
                 //*GENERATE A CUSTOM CONFIRM DIALOG
                 this.confirm = function (title, message, success_cb, error_cb) {
                   var confirmPopup = $ionicPopup.confirm({
-                      title: title,
+                      title: title || $scope.nav.title,
                       template: message
                     });
                   confirmPopup.then(function (res) {
@@ -639,7 +703,7 @@
                 //*GENERATE A CUSTOM PROMPT DIALOG
                 this.prompt = function (title, message, i_type, i_pholder, cb) {
                   $ionicPopup.prompt({
-                    title: title,
+                    title: title || $scope.nav.title,
                     template: message,
                     inputType: i_type,
                     inputPlaceholder: i_pholder
@@ -686,6 +750,16 @@
                   ;
                   return ret_array.reverse();
                 };
+                //* COUNT OCCURANCES IN AN ARRAY
+                this.count = function (val, obj) {
+                  var cnt = 0;
+                  for (v in obj) {
+                    if (val === obj[v]) {
+                      cnt += 1;
+                    }
+                  }
+                  return cnt;
+                };
               }
             ]);
           },
@@ -703,8 +777,14 @@
   ],
   11: [
     function (require, module, exports) {
+      /* global app */
+      /* global app_hlink */
+      /* global app_ip */
+      /* global app_port */
       //! APP CONFIGURATIONS
-      app_hlink = 'http://127.0.0.1:5000';
+      app_ip = '127.0.0.1';
+      app_port = 5000;
+      app_hlink = 'http://' + app_ip + ':' + app_port;
       app = require('./assets/js/app.js');
       //! CUSTOM EXTENTIONS HERE
       //* EXTEND Object to cater for {{Object}}.keys
@@ -720,12 +800,16 @@
         value: keys,
         enumerable: false
       });
+      //* EXTEND THE Array TO CATER FOR {{Array}}.inArray
+      Array.prototype.has = function (needle) {
+        return Array(this).join(',').indexOf(needle) > -1;
+      };
       //! EO - CUSTOM EXTENSIONS
       //! APP IMPORTS
       require('./assets/js/app-router.js');
-      require('./assets/js/controllers/controllers.js');
-      require('./assets/js/directives/directives.js');
       require('./assets/js/services/services.js');
+      require('./assets/js/directives/directives.js');
+      require('./assets/js/controllers/controllers.js');
     },
     {
       './assets/js/app-router.js': 1,
