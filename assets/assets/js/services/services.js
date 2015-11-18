@@ -6,10 +6,8 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
     //!AVAIL THE APPLICATION LINKS    
     this.getData = function( success_callback , error_callback ){
        
-        $.ajax({
-            method: "GET",
-            url:  './config/app.json', 
-            success: success_callback      
+       $.getJSON("config/app.json", function( data ){
+            success_callback(data);
         });
         
     };
@@ -17,20 +15,39 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
     //!AVAIL THE APPLICATION ROUTES
     this.getRoutes = function( success_callback , error_callback ){
         
-        $.ajax({
-            method: "GET",
-            url:  './config/app-routes.json',
-            success: success_callback      
+        // $http.get("config/app-routes.json")
+        //     .success(function(data){
+        //         success_callback(data);
+        //     })
+        //     .error(function(data){
+        //         alert("Failed to load route data.")
+        //         console.dir(data)
+        //     })
+        
+        $.getJSON("config/app-routes.json", function( data ){
+            success_callback(data);
         });
         
     };
       
+    //! BASIC RESPONSE FORMATTER
+    this.makeResponse = function( response, message, command ){
+        
+        return {
+            response: response,
+            data: {
+                message: message,
+                command: command
+            }
+        };
+        
+    };
     
         
-    //*MONTHS ARRAY
+    //* MONTHS ARRAY
     var $month_array = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     
-   //!HANDLE APPLICATION NATIVE SERVICE REQUESTS
+   //! HANDLE APPLICATION NATIVE SERVICE REQUESTS
    this.ajax =function( path , data, success_callback, error_callback , config ){ 
 	   
       //$http.post( bix_hlink + path, data, config).then( success_callback, error_callback );
@@ -46,7 +63,7 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
    };
    
    //!HANDLE CROSS ORIGIN APPLICATION SERVICE REQUESTS
-   this.cors =function( link , data, success_callback, error_callback , config ){ 
+   this.cors = function( link , data, success_callback, error_callback , config ){ 
 	   
       //$http.post( link, data, config).then( success_callback, error_callback );
        $.ajax({
@@ -58,15 +75,34 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
        
         /*,
             error: error_callback      */
-   };   
+   };  
+   
+   //!HANDLE JSON REQUESTS OF ANY CALIBER
+   this.getJSON = function( link, callback_function ){
+       
+       $.getJSON( link, function( response ){
+           callback_function(response);
+       });
+       
+   };
+   
+   //! EMPTY CALLBACK
+   this.doNothing = function(){
+       
+   };
   
    //!HANDLE THE DISPLAY OF DIALOG BOXES
+   
+   //* SHOW A "LOADING" ELEMENT
+   this.loadify = function( el ){
+       el.html('<ion-spinner icon="lines" class="spinner-energized"></ion-spinner>');
+   } 
    
    //*GENERATE A CUSTOM ALERT DIALOG
    this.alert = function( title, message, cb ,ok ) {
        
         var alertPopup = $ionicPopup.alert({
-            title: title,
+            title: title || $scope.nav.title,
             template: message,
             okText: ok || "OK"
             /*cssClass: '', // String, The custom CSS class name
@@ -75,7 +111,9 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
             okType: '', // String (default: 'button-positive'). The type of the OK button.*/
         });
         alertPopup.then(function(res) {
-           cb(res);
+            if( typeof(cb) == "function"){
+                cb(res);
+            }           
         });
        
     };
@@ -84,7 +122,7 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
    this.confirm = function( title, message, success_cb, error_cb ) {
        
        var confirmPopup = $ionicPopup.confirm({
-         title: title,
+         title: title || $scope.nav.title,
          template: message
        });
        confirmPopup.then(function(res) {
@@ -101,7 +139,7 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
     this.prompt = function( title, message, i_type, i_pholder, cb ){
         
          $ionicPopup.prompt({
-           title: title,
+           title: title || $scope.nav.title,
            template: message,
            inputType: i_type,
            inputPlaceholder: i_pholder
@@ -180,8 +218,22 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
         
     };
     
+    //* COUNT OCCURANCES IN AN ARRAY
+    this.count = function( val, obj ){
+      
+        var cnt = 0;
+      
+        for( v in obj ){
+            if( val === obj[v] ){
+                cnt +=1;
+            }
+        }
+        return cnt;
+    }
+    
        
 }]);
+
 },{}],2:[function(require,module,exports){
 require("./app.serv.js");
 },{"./app.serv.js":1}]},{},[2])
