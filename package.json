@@ -1,6 +1,6 @@
 {
   "name": "framify",
-  "version": "1.2.9",
+  "version": "1.3.9",
   "description": "A simple project generation tool for bixbyte",
   "main": "index.js",
   "directories": {
