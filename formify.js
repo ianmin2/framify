@@ -3,6 +3,7 @@ var log = require("./logger.js")("bixbyte/logs/formify.log");
 
 //* EXTEND Object to cater for {{Object}}.keys
 function keys(){
+    
     var k = [];
     for(var p in this) {
         if(this.hasOwnProperty(p))
@@ -11,6 +12,7 @@ function keys(){
     return k;
 }
 Object.defineProperty(Object.prototype, "keys", { value : keys, enumerable:false });
+
 
 //* EXTEND THE Array TO CATER FOR {{Array}}.inArray
 Array.prototype.has = function( needle ){
@@ -33,17 +35,18 @@ var Formify =  function( dbConfig ){
             db.single( dbConfig, "SELECT * FROM " + table_name + " LIMIT 1")
             .then(function( response ){
 
-                resolve( response.data.rows[0].keys() )
+                resolve( { form_name: table_name, form_data: response.data.rows[0].keys() } );
 
             })
             .catch(function(err){
 
-                resolve( err )
+                reject( err )
 
             })
         }) 
 
     };
+    
     
     //~ CAPTURE THE FORM FIELDS 
     this.setForm = function( form_data ){
@@ -53,33 +56,70 @@ var Formify =  function( dbConfig ){
             
             {
                 form_name : "form_name",
+                form_data:  JSON OBJECT 
                 
             }
         */
         
         return new Promise(function(resolve, reject){
             
+            var  form = '<form name="'+ form_data.form_name +'" id="'+ form_data.form_name +'" > <table class="table table-striped"> ';
+
+            //!ITERATE THROUGH ELEMENTS
+            for( f_elem in form_data.form_data ){
+                
+                //!SPECIALLY HANDLE AUTHENTICATION ELEMENTS
+                if( (form_data.form_data[f_elem].toString()).match(/.key./g) || form_data.form_data[f_elem].toString().match(/.pass./g)  ){
+                    
+                    //!
+                   form += '<tr><td><input type="password" name="'+ form_data.form_data[f_elem] +'" id="'+ form_data.form_data[f_elem] +'" ></td></tr>';
+                    
+                }else{
+                    
+                    form += '<tr><td><input type="input" name="'+ form_data.form_data[f_elem] +'" id="'+ form_data.form_data[f_elem] +'" ></td></tr>';
+                    
+                }
+                
+            }
+
+            form += '</table></form>';
             
+            resolve( {form_data: form_data.form_data , form: form } );
             
-        })
+        });
         
     };
         
     
 };
+
+
 //# EO - FORMIFY FACTORY
 
-//var f = new Formify({  
-//    dbUser: "postgres",
-//    dbPass: "",
-//    dbHost: "localhost",
-//    dbName: "codepamoja"
-//})
-//
-//f.getFields("entitys")
-//.then(function(r){
-//    console.log(r)
-//})
+var f = new Formify({  
+    dbUser: "postgres",
+    dbPass: "",
+    dbHost: "localhost",
+    dbName: "codepamoja"
+})
+
+f.getFields("entitys")
+.then(function(r){
+    
+    //console.log(r)
+    f.setForm(r)
+    .then(function(data){
+        console.log("\nFRAMIFY 'SETFORM' RESULTS\n\n")
+        console.log(data)
+    })
+    .catch(function(err){
+        console.log( "\nFRAMIFY 'SETFORM' EXPERIENCED A CRITICAL ERROR:\n\n" + JSON.stringify(err.message) );
+    });
+    
+})
+.catch(function(err){
+    console.log( "\nFRAMIFY 'SETFORM' EXPERIENCED A CRITICAL ERROR:\n\n" + JSON.stringify(err.message) );
+});
 
 //var dbConfig = {  
 //    dbUser: "postgres",
@@ -87,8 +127,8 @@ var Formify =  function( dbConfig ){
 //    dbHost: "localhost",
 //    dbName: "codepamoja"
 //};
-
-
+//
+//
 //db.multiple(dbConfig)
 //.then(function(resp){
 //    //console.log(resp)
@@ -99,10 +139,10 @@ var Formify =  function( dbConfig ){
 //    conn.query("SELECT * FROM entitys LIMIT 1", function(err,done){
 //
 //        if(err){
-//            console.log("\nFailed at " + i )
+//            console.log("\nFailed with the error " +  err.message );
 //        }else{
 //
-//            console.log("\n\n" + JSON.stringify(Object.getOwnPropertyNames(done.rows[0])) + "\n\n")
+//            //console.log("\n\n" + JSON.stringify(Object.getOwnPropertyNames(done.rows[0])) + "\n\n");
 //
 //        }
 //        close();

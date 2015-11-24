@@ -78,18 +78,19 @@
             $scope.voters = data;
           };
           var voteFail = function (err) {
-            alert('Failed to fetch JSON data.');
+            $scope.app.alert($scope.app.title, 'Failed to fetch JSON data.', $scope.app.doNothing);
           };
           $scope.customify = function (data) {
-            $scope.app.alert($scope.nav.title, '<center>DONE!</center>', $scope.app.doNothing);
+            $scope.app.alert($scope.nav.alias || $scope.nav.title, '<center>DONE!</center>', $scope.app.doNothing);
           };
           $scope.sav = function () {
-            $scope.app.confirm($scope.nav.title, 'Do you really want to save this widget', $scope.customify, $scope.customify);
+            $scope.app.confirm($scope.nav.alias || $scope.nav.title, 'Do you really want to save this widget', $scope.customify);
           };
           $scope.del = function () {
-            $scope.app.confirm($scope.nav.title, 'Are you sure you want to DELETE this widget', $scope.customify, $scope.customify);
+            $scope.app.confirm($scope.nav.alias || $scope.nav.title, 'Are you sure you want to DELETE this widget', $scope.customify);
           };
           $scope.app.getJSON('./sample/sample.json', voteSet);
+          x;
           $scope.testify = function () {
             return 'Correct!!';
           };
@@ -193,18 +194,19 @@
                   $scope.voters = data;
                 };
                 var voteFail = function (err) {
-                  alert('Failed to fetch JSON data.');
+                  $scope.app.alert($scope.app.title, 'Failed to fetch JSON data.', $scope.app.doNothing);
                 };
                 $scope.customify = function (data) {
-                  $scope.app.alert($scope.nav.title, '<center>DONE!</center>', $scope.app.doNothing);
+                  $scope.app.alert($scope.nav.alias || $scope.nav.title, '<center>DONE!</center>', $scope.app.doNothing);
                 };
                 $scope.sav = function () {
-                  $scope.app.confirm($scope.nav.title, 'Do you really want to save this widget', $scope.customify, $scope.customify);
+                  $scope.app.confirm($scope.nav.alias || $scope.nav.title, 'Do you really want to save this widget', $scope.customify);
                 };
                 $scope.del = function () {
-                  $scope.app.confirm($scope.nav.title, 'Are you sure you want to DELETE this widget', $scope.customify, $scope.customify);
+                  $scope.app.confirm($scope.nav.alias || $scope.nav.title, 'Are you sure you want to DELETE this widget', $scope.customify);
                 };
                 $scope.app.getJSON('./sample/sample.json', voteSet);
+                x;
                 $scope.testify = function () {
                   return 'Correct!!';
                 };
@@ -392,14 +394,6 @@
           };
           //!AVAIL THE APPLICATION ROUTES
           this.getRoutes = function (success_callback, error_callback) {
-            // $http.get("config/app-routes.json")
-            //     .success(function(data){
-            //         success_callback(data);
-            //     })
-            //     .error(function(data){
-            //         alert("Failed to load route data.")
-            //         console.dir(data)
-            //     })
             $.getJSON('config/app-routes.json', function (data) {
               success_callback(data);
             });
@@ -469,34 +463,40 @@
           //*GENERATE A CUSTOM ALERT DIALOG
           this.alert = function (title, message, cb, ok) {
             var alertPopup = $ionicPopup.alert({
-                title: title || $scope.nav.title,
+                title: title,
                 template: message,
                 okText: ok || 'OK'
               });
             alertPopup.then(function (res) {
               if (typeof cb == 'function') {
                 cb(res);
+              } else {
+                console.error('Invalid callback function passed for an alert dialog.\nCALLBACK DATA:\n\n' + cb + '\n\nData Type:\t\t' + typeof cb + '\nExpected:\t\tfunction');
               }
             });
           };
           //*GENERATE A CUSTOM CONFIRM DIALOG
           this.confirm = function (title, message, success_cb, error_cb) {
             var confirmPopup = $ionicPopup.confirm({
-                title: title || $scope.nav.title,
+                title: title,
                 template: message
               });
             confirmPopup.then(function (res) {
               if (res) {
                 success_cb(res);
               } else {
-                error_cb(res);
+                if (error_cb) {
+                  error_cb(res);
+                } else {
+                  success_cb(res);
+                }
               }
             });
           };
           //*GENERATE A CUSTOM PROMPT DIALOG
           this.prompt = function (title, message, i_type, i_pholder, cb) {
             $ionicPopup.prompt({
-              title: title || $scope.nav.title,
+              title: title,
               template: message,
               inputType: i_type,
               inputPlaceholder: i_pholder
@@ -515,7 +515,7 @@
           this.isPassword = function (prospective_password) {
             return /^[-@.\/\!\$\%\^|#&,+\w\s]{6,50}$/.test(prospective_password);
           };
-          //*VALIDATE WHETHER VALUES MATCH
+          //*VALIDATE WHETHER TWO GIVEN VALUES MATCH
           this.matches = function (val1, val2) {
             return val1 === val2;
           };
@@ -599,14 +599,6 @@
                 };
                 //!AVAIL THE APPLICATION ROUTES
                 this.getRoutes = function (success_callback, error_callback) {
-                  // $http.get("config/app-routes.json")
-                  //     .success(function(data){
-                  //         success_callback(data);
-                  //     })
-                  //     .error(function(data){
-                  //         alert("Failed to load route data.")
-                  //         console.dir(data)
-                  //     })
                   $.getJSON('config/app-routes.json', function (data) {
                     success_callback(data);
                   });
@@ -676,34 +668,40 @@
                 //*GENERATE A CUSTOM ALERT DIALOG
                 this.alert = function (title, message, cb, ok) {
                   var alertPopup = $ionicPopup.alert({
-                      title: title || $scope.nav.title,
+                      title: title,
                       template: message,
                       okText: ok || 'OK'
                     });
                   alertPopup.then(function (res) {
                     if (typeof cb == 'function') {
                       cb(res);
+                    } else {
+                      console.error('Invalid callback function passed for an alert dialog.\nCALLBACK DATA:\n\n' + cb + '\n\nData Type:\t\t' + typeof cb + '\nExpected:\t\tfunction');
                     }
                   });
                 };
                 //*GENERATE A CUSTOM CONFIRM DIALOG
                 this.confirm = function (title, message, success_cb, error_cb) {
                   var confirmPopup = $ionicPopup.confirm({
-                      title: title || $scope.nav.title,
+                      title: title,
                       template: message
                     });
                   confirmPopup.then(function (res) {
                     if (res) {
                       success_cb(res);
                     } else {
-                      error_cb(res);
+                      if (error_cb) {
+                        error_cb(res);
+                      } else {
+                        success_cb(res);
+                      }
                     }
                   });
                 };
                 //*GENERATE A CUSTOM PROMPT DIALOG
                 this.prompt = function (title, message, i_type, i_pholder, cb) {
                   $ionicPopup.prompt({
-                    title: title || $scope.nav.title,
+                    title: title,
                     template: message,
                     inputType: i_type,
                     inputPlaceholder: i_pholder
@@ -722,7 +720,7 @@
                 this.isPassword = function (prospective_password) {
                   return /^[-@.\/\!\$\%\^|#&,+\w\s]{6,50}$/.test(prospective_password);
                 };
-                //*VALIDATE WHETHER VALUES MATCH
+                //*VALIDATE WHETHER TWO GIVEN VALUES MATCH
                 this.matches = function (val1, val2) {
                   return val1 === val2;
                 };
