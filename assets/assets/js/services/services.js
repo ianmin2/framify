@@ -14,16 +14,7 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
     
     //!AVAIL THE APPLICATION ROUTES
     this.getRoutes = function( success_callback , error_callback ){
-        
-        // $http.get("config/app-routes.json")
-        //     .success(function(data){
-        //         success_callback(data);
-        //     })
-        //     .error(function(data){
-        //         alert("Failed to load route data.")
-        //         console.dir(data)
-        //     })
-        
+              
         $.getJSON("config/app-routes.json", function( data ){
             success_callback(data);
         });
@@ -95,42 +86,62 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
    
    //* SHOW A "LOADING" ELEMENT
    this.loadify = function( el ){
+       
        el.html('<ion-spinner icon="lines" class="spinner-energized"></ion-spinner>');
-   } 
+       
+   };
    
    //*GENERATE A CUSTOM ALERT DIALOG
-   this.alert = function( title, message, cb ,ok ) {
+   this.alert = function( title ,message, cb ,ok ) {
        
         var alertPopup = $ionicPopup.alert({
-            title: title || $scope.nav.title,
+            
+            title: title,
             template: message,
             okText: ok || "OK"
             /*cssClass: '', // String, The custom CSS class name
             subTitle: '', // String (optional). The sub-title of the popup.
             templateUrl: '', // String (optional). The URL of an html template to place in the popup   body.
             okType: '', // String (default: 'button-positive'). The type of the OK button.*/
+            
         });
+       
         alertPopup.then(function(res) {
+            
             if( typeof(cb) == "function"){
                 cb(res);
-            }           
+            }else{
+                console.error("Invalid callback function passed for an alert dialog.\nCALLBACK DATA:\n\n" + cb + "\n\nData Type:\t\t" + typeof(cb) + "\nExpected:\t\tfunction" );
+            }
+            
         });
        
     };
     
    //*GENERATE A CUSTOM CONFIRM DIALOG
-   this.confirm = function( title, message, success_cb, error_cb ) {
+   this.confirm = function( title ,message, success_cb, error_cb ) {
        
        var confirmPopup = $ionicPopup.confirm({
-         title: title || $scope.nav.title,
+         title: title,
          template: message
        });
+       
        confirmPopup.then(function(res) {
+           
          if(res) {
+             
             success_cb(res);
+             
          } else {
-            error_cb(res);
+             
+            if(error_cb){
+                error_cb(res);
+            }else{
+                success_cb(res);
+            }
+            
          }
+           
        });
        
     };    
@@ -139,7 +150,7 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
     this.prompt = function( title, message, i_type, i_pholder, cb ){
         
          $ionicPopup.prompt({
-           title: title || $scope.nav.title,
+           title: title,
            template: message,
            inputType: i_type,
            inputPlaceholder: i_pholder
@@ -171,7 +182,7 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
         
     };
     
-    //*VALIDATE WHETHER VALUES MATCH
+    //*VALIDATE WHETHER TWO GIVEN VALUES MATCH
     this.matches = function( val1, val2 ){
         
         return ( val1 === val2 );
@@ -229,7 +240,8 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
             }
         }
         return cnt;
-    }
+        
+    };
     
        
 }]);
