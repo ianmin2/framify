@@ -17,7 +17,7 @@ if( create_git == "" || create_git == undefined || create_git == null ){
 var init_repo = function( repo_name, drivecb, gitcb ){
 	
 	//initialize the directory structure
-	framify( repo_name, drivecb, gitcb );
+	framify( repo_name, { drive:drivecb, git:gitcb } );
 	
 };
 

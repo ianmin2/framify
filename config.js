@@ -46,12 +46,12 @@ global.cloud_init = function( repo_data ){
 				};
 
 //FETCH THE BASIC PROJECT DIRECTORY CREATOR
-global.framify = require("./framify.js")(home, fs, fse, cloud_init );
+global.framify = require("./framify.js");
 
 //FETCH THE BIXBYTE DRIVIFY APPLICATION OBJECT
 global.drivify = function( callback ){
 	
-				return require("./drivify.js")(fs, fse, color, callback);
+				return require("./drivify.js")(callback);
 				
 			};
 		
