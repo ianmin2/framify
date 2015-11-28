@@ -1,19 +1,20 @@
 #! /usr/bin/env node
 
-var readline 	= require('readline');
-var google 		= require('googleapis');
-var GoogleAuth 	= require('google-auth-library');
+//!LOAD THE APPLICATION CONFIGURATION FILES
+require("./config.js");
+require("./config_drive.js");
 
-var SCOPES 		= ['https://www.googleapis.com/auth/drive.metadata.readonly'];
-var TOKEN_DIR 	= (process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE) + '/.bixbyte/.framify/';
-var TOKEN_PATH 	= TOKEN_DIR + 'auth.json';
 
-var Drivify = function( fs, fse, color, callback ){
+var Drivify = function( callback ){
 
-  //ENSURE THAT THE TOKEN SAVING PATH EXISTS
-if( !fs.existsSync(TOKEN_DIR) ){
-  fse.mkdirRecursiveSync(TOKEN_DIR);
-}
+    log();
+    
+    //ENSURE THAT THE TOKEN SAVING PATH EXISTS
+    if( !fs.existsSync( TOKEN_DIR ) ){       
+     
+      fse.mkdirRecursiveSync(TOKEN_DIR); 
+      
+    };
 
   	// Load client secrets from a local file.
     fs.readFile( __dirname + '/drive_auth.json', function processClientSecrets(err, content) {
@@ -21,10 +22,12 @@ if( !fs.existsSync(TOKEN_DIR) ){
       if (err) {
         console.log('Error loading the google drive authentication file. \n'.err + err + "\n");
         return;
-      }
+      };
+   
       // Authorize a client with the loaded credentials, then call the
       // Drive API.
       authorize(JSON.parse(content), callback );
+      
     });
   
       /**
@@ -36,11 +39,11 @@ if( !fs.existsSync(TOKEN_DIR) ){
      */
     function authorize(credentials, callback) {
       
-        var clientSecret = credentials.installed.client_secret;
-        var clientId = credentials.installed.client_id;
-        var redirectUrl = credentials.installed.redirect_uris[0];
-        var auth = new GoogleAuth();
-        var oauth2Client = new auth.OAuth2(clientId, clientSecret, redirectUrl);
+        var clientSecret  = credentials.installed.client_secret;
+        var clientId      = credentials.installed.client_id;
+        var redirectUrl   = credentials.installed.redirect_uris[0];
+        var auth          = new GoogleAuth();
+        var oauth2Client  = new auth.OAuth2(clientId, clientSecret, redirectUrl);
       
         // Check if we have previously stored a token.
         fs.readFile(TOKEN_PATH, function(err, token) {
@@ -66,15 +69,19 @@ if( !fs.existsSync(TOKEN_DIR) ){
        *     client.
        */
       function getNewToken(oauth2Client, callback) {
+        
         var authUrl = oauth2Client.generateAuthUrl({
           access_type: 'offline',
           scope: SCOPES
         });
+        
         console.log('Authorize this app by visiting this url: '.info, authUrl);
+        
         var rl = readline.createInterface({
           input: process.stdin,
           output: process.stdout
         });
+        
         rl.question('Enter the code from that page here: ', function(code) {
           rl.close();
           oauth2Client.getToken(code, function(err, token) {
@@ -110,6 +117,6 @@ if( !fs.existsSync(TOKEN_DIR) ){
 }
 
 
-module.exports = function( fs, fse, color, callback ){
-    return new Drivify(fs, fse, color,callback);
+module.exports = function( callback ){
+    return new Drivify( callback );
 }

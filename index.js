@@ -5,11 +5,12 @@ require("./config.js");
 repo_name 		= ( process.argv[2] || "-h" ).replace(/ +/g, '_').toLowerCase();
 create_git 		= process.argv[2];
 
+
 if( create_git == "" || create_git == undefined || create_git == null ){
 	
 	
-	
-}
+		
+};
 
 
 //THE NEW PROJECT INITIALIZER
