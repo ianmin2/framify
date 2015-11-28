@@ -46,7 +46,6 @@ var  mQuery = function( db_cred ){
 //EO - MULTI CLIENT QUERY EXECUTOR
 };
 
-
 //FRAMIFY SINGLE CLIENT QUERY EXECUTOR
 var sQuery = function( db_cred, F_QUERY ){
     

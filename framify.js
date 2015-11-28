@@ -1,6 +1,8 @@
+//!Dev Branch
 var Framify = function( home, fs, fse, cloud_init ){
 	
-	fs 		= fs || require("fs");
+	//fs 		= fs || require("fs");
+    
 	fse 	= fse || require("fs.extra");
 	home 	= home || require('path').dirname(fs.realpathSync(__filename));
 	

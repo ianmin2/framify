@@ -1,10 +1,10 @@
 <framify menu="true" path="sample" url="/sample" title="Sample App" parent="false"></framify>
-<ion-content scrollbar-x="false" scrollbar-y="false">
+<ion-content scrollbar-x="false" scrollbar-y="false" style="padding-bottom:20px;">
 
 <!---->
 <div class="mdl-grid" ng-controller="framifySampleController">
     <div class="mdl-cell mdl-cell--12-col">
-        <md-button ng-click="app.alert(' {{voter.student}}\'s voter Profile', '<center>Name: {{voter.studentName}}<br><br>Department: {{voter.department}}</center>')" ng-repeat="voter in voters" class="md-raised md-success">{{voter.studentName}}</md-button>
+        <md-button ng-click="app.alert(' {{voter.student}}\'s voter Profile', '<center>Name: {{voter.studentName}}<br><br>Department: {{voter.department}}</center>')" ng-repeat="voter in voters" class="md-raised md-success button-assertive">{{voter.studentName}}</md-button>
     </div>
 </div>
 </ion-content>

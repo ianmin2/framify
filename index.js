@@ -1,15 +1,18 @@
 #! /usr/bin/env node
 
-var fs   	= require("fs");
-var config	= require("./config.js");
-var home 	= config.home;
-var log  	= config.log;
-var framify     = config.framify;
-var info 	= config.appinfo;
-var drivify 	= config.drivify;
+global.fs   	= require("fs");
+global.config	= require("./config.js");
 
-var repo_name 	= ( process.argv[2] || "-h" ).replace(/ +/g, '_').toLowerCase();
-var create_git 	= process.argv[2];
+global.log      = config.log;
+
+global.home 	= config.home;
+
+global.framify     = config.framify;
+global.info 	= config.appinfo;
+global.drivify 	= config.drivify;
+
+global.repo_name 	= ( process.argv[2] || "-h" ).replace(/ +/g, '_').toLowerCase();
+global.create_git 	= process.argv[2];
 
 if( create_git == "" || create_git == undefined || create_git == null ){
 	
@@ -30,14 +33,14 @@ var init_repo = function( repo_name, drivecb, gitcb ){
 var init_drive = function( auth_data ){
 	
 	//initialize a google drive repository
-	console.log("Drivify returned auth data:\n".success + JSON.stringify( auth_data ) );
+	log("Drivify returned auth data:\n".success + JSON.stringify( auth_data ) );
 	
 };
 
 //THE GITHUB PROJECT REPOSITORY INITIATOR
 var init_git = function(){
 
-	console.log("The git method is yet to be initialized.");
+	log("The git method is yet to be initialized.");
 	
 };
 
