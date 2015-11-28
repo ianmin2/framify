@@ -1,13 +1,6 @@
 #! /usr/bin/env node
 
-global.fs   		= require("fs");
-var config 			= require("./config.js");
-
-global.log      	= config.log;
-global.home 		= config.home;
-global.framify     	= config.framify;
-global.info 		= config.appinfo;
-global.drivify 		= config.drivify;
+require("./config.js");
 
 repo_name 		= ( process.argv[2] || "-h" ).replace(/ +/g, '_').toLowerCase();
 create_git 		= process.argv[2];
@@ -23,7 +16,7 @@ if( create_git == "" || create_git == undefined || create_git == null ){
 var init_repo = function( repo_name, drivecb, gitcb ){
 	
 	//initialize the directory structure
-	global.framify( repo_name, drivecb, gitcb );
+	framify( repo_name, drivecb, gitcb );
 	
 };
 
@@ -31,34 +24,34 @@ var init_repo = function( repo_name, drivecb, gitcb ){
 var init_drive = function( auth_data ){
 	
 	//initialize a google drive repository
-	global.log("Drivify returned auth data:\n".success + JSON.stringify( auth_data ) );
+	log("Drivify returned auth data:\n".success + JSON.stringify( auth_data ) );
 	
 };
 
 //THE GITHUB PROJECT REPOSITORY INITIATOR
 var init_git = function(){
 
-	global.log("The git method is yet to be initialized.");
+	log("The git method is yet to be initialized.");
 	
 };
 
 //HANDLE  A CLI CALL TO ACTION
 switch (repo_name ) {
 	
-	//HANDLE A CALL FOR VERSION INFORMATION
+	//HANDLE A CALL FOR VERSION appInfoRMATION
 	case "-i":
-	case "--info":
+	case "--appInfo":
 		
-		global.log( global.info.info );
+		log( appInfo.appInfo );
 		
 	break;
 
-	//SHOW THE PRODUCT HELP INFORMATION
+	//SHOW THE PRODUCT HELP appInfoRMATION
 	case "-h":
 	case "--help":
 	
-		var hlp = global.info.name + global.info.version + global.info.description;
-		global.log( hlp );
+		var hlp = appInfo.name + appInfo.version + appInfo.description;
+		log( hlp );
 			
 	break;
 
