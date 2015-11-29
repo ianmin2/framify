@@ -4,35 +4,49 @@
 //require("./config.js");
 require("./config_drive.js");
 
-if( !fs.existsSync( __dirname + '/auth/drive_auth.json' ) ){
+var startify = function(){
+ 
+    if( !fs.existsSync( __dirname + '/auth/drive_auth.json' ) ){
     
-    fs.mkdirSync("auth");
-    
-    var http = require('http');
-    var file = fs.createWriteStream(__dirname + '/auth/drive_auth.json');
-    
-    var request = http.get( app.drive , function(response) {
+          fs.mkdir("auth",function(err){});
+          
+          var http = require('http');
+          var file = fs.createWriteStream(__dirname + '/auth/drive_auth.json');
+          
+          var request = http.get( app.drive , function(response) {
+                                      
+                  response.pipe(file);
+              
+                  response.on("end", function(){
+                     
+                     console.log("\n@framify".success + "\nSuccessfully Configured Drive API for first use with this version.".yell );
                     
-            response.pipe(file);
-        
-            response.on("end", function(){
-
-                console.log("@Framify\n\nSuccessfully Configured Drive API for first use with this version.");
-                
-            });          
-
-        });
+                  });          
+                  
+                  // Add timeout.
+                  request.setTimeout(12000, function () {
+                      request.abort();
+                      console.log("\n@framify\n".yell + "Cannot initialize th Google drive Parameter".err + "\nPlease ensure that:".info + "\n\tYou are connected to the internet".yell + "\n\tYou are using the latest version of framify".yell );
+                 
+      
+              });
     
-}
+        });
+        
+      }else{
+     console.log("\n...\n");
+    };
 
+  
+};
 
 var Drivify = function( callback ){
     
     //ENSURE THAT THE TOKEN SAVING PATH EXISTS
     if( !fs.existsSync( TOKEN_DIR ) ){       
      
-      fse.mkdirRecursiveSync(TOKEN_DIR); 
-      
+       fse.mkdirRecursiveSync(TOKEN_DIR); 
+    
     };
     
     console.log( "\nThe relevant token directory is\t\t".yell + TOKEN_DIR )
@@ -41,8 +55,10 @@ var Drivify = function( callback ){
     fs.readFile( __dirname + '/auth/drive_auth.json', function processClientSecrets(err, content) {
       
       if (err) {
+             
         console.log('Error loading the google drive authentication file. \n'.err + err + "\n");
         return;
+        
       };
    
       // Authorize a client with the loaded credentials, then call the
@@ -139,5 +155,8 @@ var Drivify = function( callback ){
 
 
 module.exports = function( callback ){
-    return new Drivify( callback );
+    
+    startify()    
+    //return new Drivify( callback );
+    
 }
