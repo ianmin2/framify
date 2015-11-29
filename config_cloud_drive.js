@@ -6,7 +6,37 @@ global.init_drive = function( ){
     var driveData = function( auth_data ){
         
         //initialize a google drive repository
-	    log("Google Drive authentication complete.\n".success );
+	    console.log("@framify".yell + "\nGoogle Drive authentication complete.\n".success );
+        
+        
+
+        /**
+        * Lists the names and IDs of up to 10 files.
+        *
+        * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
+        */
+        
+        var service = google.drive('v2');
+        
+        service.files.list({
+            auth: auth_data,
+            maxResults: 1000,
+        }, function(err, response) {
+            if (err) {
+            console.log('The API returned an error: ' + err);
+            return;
+            }
+            var files = response.items;
+            if (files.length == 0) {
+            console.log('No files found.');
+            } else {
+            console.log('\n@framify\n'.info + 'Files:'.success);
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                console.log('%s (%s)', file.title, file.id);
+            }
+            }
+        });   
         
     };
     

@@ -8,8 +8,7 @@ require("./config_drive.js");
 if( !fs.existsSync(global.TOKEN_DIR) ){
   fse.mkdirRecursiveSync(global.TOKEN_DIR);
 };
-  
-  log(TOKEN_PATH);
+
 
 var Drivify = function( callback ){
 

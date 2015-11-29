@@ -1,6 +1,6 @@
 {
   "name": "framify",
-  "version": "1.4.9",
+  "version": "1.4.17",
   "description": "A simple project development tool",
   "main": "index.js",
   "directories": {
@@ -12,7 +12,8 @@
     "github-api": "^0.10.6",
     "google-auth-library": "^0.9.6",
     "mongoose": "^4.1.6",
-    "pg": "^4.4.1"
+    "pg": "^4.4.1",
+    "googleapis":"^2.1.6"
   },
   "devDependencies": {},
   "scripts": {

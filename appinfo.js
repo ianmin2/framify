@@ -1,10 +1,6 @@
 //EXPOSE THE BASIC APPLICATION INFO
-function AppInfo( fs, home, c ){
+function AppInfo( ){
 	
-		fs 		= fs || require("fs");
-		home 	= home + "/" || ( require('path').dirname( fs.realpathSync( __filename ) ) + "/" );
-		c 		= c || require("colors").setTheme({ success:'green', err:'red', info:'blue', gray:'gray', yell:'yellow'});
-		
 		var data = JSON.parse(fs.readFileSync(home + "package.json") );
 	
 		//console.log( typeof(data) );
@@ -48,8 +44,8 @@ function AppInfo( fs, home, c ){
 	
 };
 
-module.exports = function( fs, home, c ){
+module.exports = function( ){
 	
-	return new AppInfo( fs, home, c );
+	return new AppInfo();
 	
 };
