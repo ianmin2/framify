@@ -2,37 +2,22 @@
 
 require("./config.js");
 
-repo_name 		= ( process.argv[2] || "-h" ).replace(/ +/g, '_').toLowerCase();
-create_git 		= process.argv[2];
-
-
 if( create_git == "" || create_git == undefined || create_git == null ){
 	
-	
+	console.log("@framify\n".info + "Skipping over github repo creation\n".err );
 		
+}else{
+    
+    init_git();
+    
 };
 
 
 //THE NEW PROJECT INITIALIZER
-var init_repo = function( repo_name, drivecb, gitcb ){
+var init_repo = function( repo_name ){
 	
 	//initialize the directory structure
-	framify( repo_name, { drive:drivecb, git:gitcb } );
-	
-};
-
-//THE GOOGLE DRIVE PROJECT BACKUP INITIATOR
-var init_drive = function( auth_data ){
-	
-	//initialize a google drive repository
-	log("Drivify returned auth data:\n".success + JSON.stringify( auth_data ) );
-	
-};
-
-//THE GITHUB PROJECT REPOSITORY INITIATOR
-var init_git = function(){
-
-	log("The git method is yet to be initialized.");
+	framify( repo_name );
 	
 };
 
@@ -59,7 +44,7 @@ switch (repo_name ) {
 	//INITIATE A PROJECT
 	default:
 		
-		init_repo( repo_name, init_drive, init_git );
+		init_repo( repo_name );
 		
 	
 	break;

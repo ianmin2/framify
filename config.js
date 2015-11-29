@@ -6,17 +6,24 @@ global.c   		= require("colors");
 global.crypto  	= require("./crypto.js");
 
 
+require("./config_cloud.js");
+
+//!PICK THE CLI VARIABLES
+global.repo_name 		= ( process.argv[2] || "-h" ).replace(/ +/g, '_').toLowerCase();
+global.create_git 		= process.argv[3];
+
+
 //SET THE MODE FOR THE EVENT LOGGER { true === "verbose mode" && false === "log to file only" }
-global.dev	 	= true;
+global.dev	    = true;
 
 //GET THE SCRIPT INSTALLATION DIRECTORY
-global.home = path.dirname( fs.realpathSync( __filename ) ) + "/";
+global.home     = path.dirname( fs.realpathSync( __filename ) ) + "/";
 
 //THE PATH TO THE LOG FILE
 global.log_path = global.home + "bixbyte/logs/main.log";
 
 //DEFINE THE COLOR SCHEME
-global.cs = c.setTheme({ success:'green', err:'red', info:'blue', gray:'gray', yell:'yellow'});
+global.cs       = c.setTheme({ success:'green', err:'red', info:'blue', gray:'gray', yell:'yellow'});
 	
 	
 	/*!
@@ -24,10 +31,10 @@ global.cs = c.setTheme({ success:'green', err:'red', info:'blue', gray:'gray', y
 	*/
 	
 //FETCH THE BIXBYTE EVENT LOGGER
-global.log = require("./logger.js")(global.log_path, global.dev);
+global.log      = require("./logger.js")(global.log_path, global.dev);
 
 //FETCH THE BIXBYTE APPLICATION INFO OBJECT
-global.appInfo = require("./appinfo.js")(global.fs, global.home, global.cs);
+global.appInfo  = require("./appinfo.js")(global.fs, global.home, global.cs);
 	
 
 //THE BIXBYTE CLOUD INITIALIZER SERVICE
@@ -35,18 +42,23 @@ global.cloud_init = function( repo_data ){
 	
 					if( repo_data.response ){
 						
-						log("@framify".success + "\nInitializing cloud services for the project ".info + repo_data.message.name );
+						console.log("@framify".success + "\nInitializing cloud services for the project ".info + global.repo_name + "\n" );
+                                            
+                        
+                        repo_data.data.message.drive();
+                        repo_data.data.message.git();
+                        
 					
 					}else{
 						
-						log('@framify\nFailed to initialize cloud services for the project '.err + repo_data.message.name + '\nYou have to ' + 'set'.info +' the' + ' github '.yell +' and ' +'google drive'.yell + ' services '+ 'manually'.info + '.\n')
+						console.log('@framify\nFailed to initialize cloud services for the project '.err + global.repo_name + '\nYou have to ' + 'set'.info +' the' + ' github '.yell +' and ' +'google drive'.yell + ' services '+ 'manually'.info + '.\n');
 					
 					};
 					
 				};
 
 //FETCH THE BASIC PROJECT DIRECTORY CREATOR
-global.framify = require("./framify.js");
+global.framify = require("./framify.js")( global.home );
 
 //FETCH THE BIXBYTE DRIVIFY APPLICATION OBJECT
 global.drivify = function( callback ){

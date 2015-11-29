@@ -1,13 +1,11 @@
 #! /usr/bin/env node
 
 //!LOAD THE APPLICATION CONFIGURATION FILES
-require("./config.js");
+//require("./config.js");
 require("./config_drive.js");
 
 
 var Drivify = function( callback ){
-
-    log();
     
     //ENSURE THAT THE TOKEN SAVING PATH EXISTS
     if( !fs.existsSync( TOKEN_DIR ) ){       
@@ -17,7 +15,7 @@ var Drivify = function( callback ){
     };
 
   	// Load client secrets from a local file.
-    fs.readFile( __dirname + '/drive_auth.json', function processClientSecrets(err, content) {
+    fs.readFile( __dirname + '/auth/drive_auth.json', function processClientSecrets(err, content) {
       
       if (err) {
         console.log('Error loading the google drive authentication file. \n'.err + err + "\n");
