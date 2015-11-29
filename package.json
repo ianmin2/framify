@@ -1,6 +1,6 @@
 {
   "name": "framify",
-  "version": "1.4.15",
+  "version": "1.4.17",
   "description": "A simple project development tool",
   "main": "index.js",
   "directories": {

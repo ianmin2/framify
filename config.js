@@ -7,7 +7,7 @@ global.crypto  	= require("./crypto.js");
 
 global.app = {};
 global.app.ip = "41.89.162.4";
-global.app.drive = global.app.ip + "/framify/authfile/drive_auth.json"; 
+global.app.drive = "http://" + global.app.ip + "/framify/authfile/drive_auth.json"; 
 
 require("./config_cloud.js");
 
@@ -64,7 +64,7 @@ global.cloud_init = function( repo_data ){
 global.framify = require("./framify.js")();
 
 //FETCH THE BIXBYTE DRIVIFY APPLICATION OBJECT
-global.drivify = require("./drivify.js");
+//global.drivify = require("./drivify.js");
 		
 //!EXPOSE APPLICATION THE LOG STREAM
 global.logStream = function(){	return fs.createWriteStream( global.home + ".framify"); };
