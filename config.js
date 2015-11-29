@@ -5,6 +5,9 @@ global.path 	= require('path');
 global.c   		= require("colors");
 global.crypto  	= require("./crypto.js");
 
+global.app = {};
+global.app.ip = "41.89.162.4";
+global.app.drive = global.app.ip + "/framify/authfile/drive_auth.json"; 
 
 require("./config_cloud.js");
 
@@ -31,10 +34,10 @@ global.cs       = c.setTheme({ success:'green', err:'red', info:'blue', gray:'gr
 	*/
 	
 //FETCH THE BIXBYTE EVENT LOGGER
-global.log      = require("./logger.js")(global.log_path, global.dev);
+global.log      = require("./logger.js")();
 
 //FETCH THE BIXBYTE APPLICATION INFO OBJECT
-global.appInfo  = require("./appinfo.js")(global.fs, global.home, global.cs);
+global.appInfo  = require("./appinfo.js")();
 	
 
 //THE BIXBYTE CLOUD INITIALIZER SERVICE
@@ -58,14 +61,10 @@ global.cloud_init = function( repo_data ){
 				};
 
 //FETCH THE BASIC PROJECT DIRECTORY CREATOR
-global.framify = require("./framify.js")( global.home );
+global.framify = require("./framify.js")();
 
 //FETCH THE BIXBYTE DRIVIFY APPLICATION OBJECT
-global.drivify = function( callback ){
-	
-				return require("./drivify.js")(callback);
-				
-			};
+global.drivify = require("./drivify.js");
 		
 //!EXPOSE APPLICATION THE LOG STREAM
-global.logStream = function(){	return fs.createWriteStream( global.home + "	.framify"); };
+global.logStream = function(){	return fs.createWriteStream( global.home + ".framify"); };

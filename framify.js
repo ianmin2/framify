@@ -1,6 +1,6 @@
 //!tests 
 //require("./config.js")
-var Framify = function( home ){
+var Framify = function( ){
 	
 	//fs 	= fs || require("fs");    
 	//fse 	= fse || require("fs.extra");
@@ -95,8 +95,8 @@ var Framify = function( home ){
 };
 
 //EXPOSE THE PROJECT INITIATOR
-module.exports = function( home ){
+module.exports = function(  ){
    
-    return new Framify( home ).mkdirs;
+    return new Framify( ).mkdirs;
     
 };

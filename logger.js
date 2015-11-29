@@ -3,7 +3,7 @@ var Log = function ( log_path, dev ){
 	log_path = log_path || "bixbyte/logs/main.log";
 	dev 	 = dev || true;
 	
-	 var fs = require('fs');
+	var fs = require('fs');
 	
 	//LOG FILE INITIALIZER
 	var log_init = function(){
@@ -42,7 +42,8 @@ var Log = function ( log_path, dev ){
 		    ls = fs.createWriteStream( log_path , {flags: 'a'}); 
 		}
 		
-	}
+	};
+    set_log();
 	
 	//THE SYSTEM EVENT LOGGER 
 	this.log = function( logMessage , term ){
@@ -64,5 +65,5 @@ var Log = function ( log_path, dev ){
 };
 
 module.exports = function( log_path, dev ){
-			 	return new Log( log_path, dev ).log;	 
+				return new Log( log_path, dev ).log;	 
 			};

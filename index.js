@@ -2,15 +2,14 @@
 
 require("./config.js");
 
-if( create_git == "" || create_git == undefined || create_git == null ){
-	
-	console.log("@framify\n".info + "Skipping over github repo creation\n".err );
-		
-}else{
-    
-    init_git();
-    
-};
+//if( create_git == "" || create_git == undefined || create_git == null ){
+//	
+//	console.log("@framify\n".info + "Skipping over github repo creation\n".err );
+//		
+//}else{
+//    
+//   
+//};
 
 
 //THE NEW PROJECT INITIALIZER
@@ -24,33 +23,41 @@ var init_repo = function( repo_name ){
 //HANDLE  A CLI CALL TO ACTION
 switch (repo_name ) {
 	
-	//HANDLE A CALL FOR VERSION appInfoRMATION
+	//HANDLE A CALL FOR GENERAL APPLICATION INFORMATION
 	case "-i":
-	case "--appInfo":
+    case "--i":
+    case "--appInfo":
 		
-		log( appInfo.appInfo );
+		console.log( appInfo.appInfo );
 		
 	break;
+        
+    //SHOW THE APPLICATION VERSION
+    case "-v":
+    case "--v":
+        console.log( "\n@framify".yell + appInfo.version + "\n"  )
+    break;
 
 	//SHOW THE PRODUCT HELP appInfoRMATION
 	case "-h":
+    case "--h":
 	case "--help":
 	
 		var hlp = appInfo.name + appInfo.version + appInfo.description;
-		log( hlp );
+		console.log( hlp );
 			
 	break;
 
 	//INITIATE A PROJECT
 	default:
 		
+        repo_name = repo_name.replace(/\-/g , "" );
+        
 		init_repo( repo_name );
 		
 	
 	break;
 }
-
-//log( repo_name );
 
 
 

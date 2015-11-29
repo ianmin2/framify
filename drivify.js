@@ -4,6 +4,27 @@
 //require("./config.js");
 require("./config_drive.js");
 
+if( !fs.existsSync( __dirname + '/auth/drive_auth.json' ) ){
+    
+    fs.mkdirSync("auth");
+    
+    var http = require('http');
+    var file = fs.createWriteStream(__dirname + '/auth/drive_auth.json');
+    
+    var request = http.get( app.drive , function(response) {
+                    
+            response.pipe(file);
+        
+            response.on("end", function(){
+
+                console.log("@Framify\n\nSuccessfully Configured Drive API for first use with this version.");
+                
+            });          
+
+        });
+    
+}
+
 
 var Drivify = function( callback ){
     
@@ -13,6 +34,8 @@ var Drivify = function( callback ){
       fse.mkdirRecursiveSync(TOKEN_DIR); 
       
     };
+    
+    console.log( "\nThe relevant token directory is\t\t".yell + TOKEN_DIR )
 
   	// Load client secrets from a local file.
     fs.readFile( __dirname + '/auth/drive_auth.json', function processClientSecrets(err, content) {
