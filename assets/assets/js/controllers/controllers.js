@@ -13,21 +13,21 @@ app.controller('framifySampleController', ['$scope', '$http', function($scope, $
     
     $scope.customify = function( data ){
         $scope.app.alert( ($scope.nav.alias || $scope.nav.title)  , "<center>DONE!</center>", $scope.app.doNothing );
-    }
+    };
     
     $scope.sav = function(){
-        $scope.app.confirm(($scope.nav.alias || $scope.nav.title), 'Do you really want to save this widget', $scope.customify )
-    }
+        $scope.app.confirm(($scope.nav.alias || $scope.nav.title), 'Do you really want to save this widget', $scope.customify );
+    };
     
     $scope.del = function(){
-        $scope.app.confirm( ($scope.nav.alias || $scope.nav.title), 'Are you sure you want to DELETE this widget', $scope.customify)
-    }   
+        $scope.app.confirm( ($scope.nav.alias || $scope.nav.title), 'Are you sure you want to DELETE this widget', $scope.customify);
+    };   
     
     $scope.app.getJSON('./sample/sample.json', voteSet );
-    x    
+    
     $scope.testify = function(){
         return "Correct!!";
-    }
+    };
     
     
 }]); 
@@ -41,22 +41,24 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
     $rootScope.nav = [];
     $rootScope.links = [];
     
+    //!INITIALIZE THE APPLICATION ROUTES
     var setRoutes = function(data){
         $scope.links = data;
         //console.dir( $scope.nav )
-    }
+    };
     
+    //!INITIALIZE THE APPLICATION DATA
     var setData = function(data){
         $scope.nav = data;
         //console.dir( $scope.links )
-    }
+    };
     
     //!FETCH THE NECESSARY APPLICATION DATA
     $scope.app.getData(setData);
     $scope.app.getRoutes(setRoutes);  
     
     //!RE-INITIALIZE APPLICATION DATA
-    $scope.location.path("/framify")
+    $scope.location.path("/framify");
         
     //!ESTABLISH APPLICATION UI COMPONENTS AND THEIR HANDLERS
         

@@ -1,70 +1,50 @@
 #! /usr/bin/env node
 
-var fs   	= require("fs");
-var config	= require("./config.js");
-var home 	= config.home;
-var log  	= config.log;
-var framify     = config.framify;
-var info 	= config.appinfo;
-var drivify 	= config.drivify;
-
-var repo_name 	= ( process.argv[2] || "-h" ).replace(/ +/g, '_').toLowerCase();
-var create_git 	= process.argv[2];
+require("./config.js");
 
 if( create_git == "" || create_git == undefined || create_git == null ){
 	
-	
-	
-}
+	console.log("@framify\n".info + "Skipping over github repo creation\n".err );
+		
+}else{
+    
+    init_git();
+    
+};
 
 
 //THE NEW PROJECT INITIALIZER
-var init_repo = function( repo_name, drivecb, gitcb ){
+var init_repo = function( repo_name ){
 	
 	//initialize the directory structure
-	framify( repo_name, drivecb, gitcb );
-	
-};
-
-//THE GOOGLE DRIVE PROJECT BACKUP INITIATOR
-var init_drive = function( auth_data ){
-	
-	//initialize a google drive repository
-	console.log("Drivify returned auth data:\n".success + JSON.stringify( auth_data ) );
-	
-};
-
-//THE GITHUB PROJECT REPOSITORY INITIATOR
-var init_git = function(){
-
-	console.log("The git method is yet to be initialized.");
+	framify( repo_name );
 	
 };
 
 //HANDLE  A CLI CALL TO ACTION
 switch (repo_name ) {
 	
-	//HANDLE A CALL FOR VERSION INFORMATION
+	//HANDLE A CALL FOR VERSION appInfoRMATION
 	case "-i":
-	case "--info":
+	case "--appInfo":
 		
-		console.log( info.info );
+		log( appInfo.appInfo );
 		
 	break;
 
-	//SHOW THE PRODUCT HELP INFORMATION
+	//SHOW THE PRODUCT HELP appInfoRMATION
 	case "-h":
 	case "--help":
 	
-		var hlp = info.name + info.version + info.description;
-		console.log( hlp );
+		var hlp = appInfo.name + appInfo.version + appInfo.description;
+		log( hlp );
 			
 	break;
 
 	//INITIATE A PROJECT
 	default:
 		
-		init_repo( repo_name, init_drive, init_git );
+		init_repo( repo_name );
 		
 	
 	break;

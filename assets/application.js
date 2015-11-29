@@ -90,7 +90,6 @@
             $scope.app.confirm($scope.nav.alias || $scope.nav.title, 'Are you sure you want to DELETE this widget', $scope.customify);
           };
           $scope.app.getJSON('./sample/sample.json', voteSet);
-          x;
           $scope.testify = function () {
             return 'Correct!!';
           };
@@ -113,9 +112,11 @@
           $scope.ui = {};
           $rootScope.nav = [];
           $rootScope.links = [];
+          //!INITIALIZE THE APPLICATION ROUTES
           var setRoutes = function (data) {
             $scope.links = data;  //console.dir( $scope.nav )
           };
+          //!INITIALIZE THE APPLICATION DATA
           var setData = function (data) {
             $scope.nav = data;  //console.dir( $scope.links )
           };
@@ -206,7 +207,6 @@
                   $scope.app.confirm($scope.nav.alias || $scope.nav.title, 'Are you sure you want to DELETE this widget', $scope.customify);
                 };
                 $scope.app.getJSON('./sample/sample.json', voteSet);
-                x;
                 $scope.testify = function () {
                   return 'Correct!!';
                 };
@@ -229,9 +229,11 @@
                 $scope.ui = {};
                 $rootScope.nav = [];
                 $rootScope.links = [];
+                //!INITIALIZE THE APPLICATION ROUTES
                 var setRoutes = function (data) {
                   $scope.links = data;  //console.dir( $scope.nav )
                 };
+                //!INITIALIZE THE APPLICATION DATA
                 var setData = function (data) {
                   $scope.nav = data;  //console.dir( $scope.links )
                 };

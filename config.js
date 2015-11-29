@@ -1,74 +1,71 @@
 //BASIC IMPORTS
-	var fs 		= require("fs");
-	var fse 	= require("fs.extra");
-	var path 	= require('path');
-	var c   	= require("colors");
-	var crypto  = require("./crypto.js");
+global.fs 		= require("fs");
+global.fse 		= require("fs.extra");
+global.path 	= require('path');
+global.c   		= require("colors");
+global.crypto  	= require("./crypto.js");
+
+
+require("./config_cloud.js");
+
+//!PICK THE CLI VARIABLES
+global.repo_name 		= ( process.argv[2] || "-h" ).replace(/ +/g, '_').toLowerCase();
+global.create_git 		= process.argv[3];
+
+
+//SET THE MODE FOR THE EVENT LOGGER { true === "verbose mode" && false === "log to file only" }
+global.dev	    = true;
+
+//GET THE SCRIPT INSTALLATION DIRECTORY
+global.home     = path.dirname( fs.realpathSync( __filename ) ) + "/";
+
+//THE PATH TO THE LOG FILE
+global.log_path = global.home + "bixbyte/logs/main.log";
+
+//DEFINE THE COLOR SCHEME
+global.cs       = c.setTheme({ success:'green', err:'red', info:'blue', gray:'gray', yell:'yellow'});
 	
-	//DEFINE THE COLOR SCHEME
-	var cs = c.setTheme({ success:'green', err:'red', info:'blue', gray:'gray', yell:'yellow'});
+	
+	/*!
+		DEPENDENT CONFIGURATIONS
+	*/
+	
+//FETCH THE BIXBYTE EVENT LOGGER
+global.log      = require("./logger.js")(global.log_path, global.dev);
+
+//FETCH THE BIXBYTE APPLICATION INFO OBJECT
+global.appInfo  = require("./appinfo.js")(global.fs, global.home, global.cs);
 	
 
-	//SET THE MODE FOR THE EVENT LOGGER { true === "verbose mode" && false === "log to file only" }
-	var dev	 	= true;
+//THE BIXBYTE CLOUD INITIALIZER SERVICE
+global.cloud_init = function( repo_data ){
 	
-	//GET THE SCRIPT INSTALLATION DIRECTORY
-	 var home = path.dirname( fs.realpathSync( __filename ) );
-	
-	//THE PATH TO THE LOG FILE
-	var log_path = "bixbyte/logs/main.log";
-	//var log_path = this.log_path;
-	
-	//FETCH THE BIXBYTE EVENT LOGGER
-	var log = require("./logger.js")(log_path, dev);
-	
-	//THE BIXBYTE CLOUD INITIALIZER SERVICE
-	var cloud_init = function( repo_data ){
-						if( repo_data.response ){
-							console.log("@framify".success + "\nInitializing cloud services for the project ".info + repo_data.message.name );
-						}else{
-							console.log('@framify\nFailed to initialize cloud services for the project '.err + repo_data.message.name + '\nYou have to ' + 'set'.info +' the' + ' github '.yell +' and ' +'google drive'.yell + ' services '+ 'manually'.info + '.\n')
-						}
+					if( repo_data.response ){
+						
+						console.log("@framify".success + "\nInitializing cloud services for the project ".info + global.repo_name + "\n" );
+                                            
+                        
+                        repo_data.data.message.drive();
+                        repo_data.data.message.git();
+                        
+					
+					}else{
+						
+						console.log('@framify\nFailed to initialize cloud services for the project '.err + global.repo_name + '\nYou have to ' + 'set'.info +' the' + ' github '.yell +' and ' +'google drive'.yell + ' services '+ 'manually'.info + '.\n');
+					
 					};
+					
+				};
 
-	//FETCH THE BASIC PROJECT DIRECTORY CREATOR
-	var framify = require("./framify.js")(home, fs, fse, cloud_init );
+//FETCH THE BASIC PROJECT DIRECTORY CREATOR
+global.framify = require("./framify.js")( global.home );
 
-	//FETCH THE BIXBYTE APPLICATION INFO OBJECT
-	var appinfo = require("./appinfo.js")(fs, home, cs);
-		appinfo.gc();
-
-	//FETCH THE BIXBYTE DRIVIFY APPLICATION OBJECT
-	var drivify = function( callback ){
-					return require("./drivify.js")(fs, fse, color, callback);
-				}
-
-//EXPOSE THE ACTUAL SCRIPT PATH
-exports.home = home + "/";
-
-//EXPOSE THE MAIN APPLICATION LOGGER
-exports.logStream = function(){	return fs.createWriteStream( home + "/.framify"); };
-
-//EXPOSE THE EVENT LOGGER
-exports.log = log;
-
-//EXPOSE THE COLORIFY OBJECT
-exports.color = cs;
-
-//EXPOSE THE ADVANCED FILE SYSTEM OBJECT
-exports.fse = fse;
-
-//EXPOSE THE REGULAR FILE SYSTEM OBJECT
-exports.fs = fs;
-
-//EXPOSE THE CRYPTO MODULE 
-exports.crypto = crypto;
-
-//EXPOSE THE FRAMIFY MODULE
-exports.framify = framify;
-
-//EXPOSE THE APPINFO MODULE
-exports.appinfo = appinfo;
-
-//EXPOSE THE DRIVIFY MODULE
-exports.drivify = drivify;
+//FETCH THE BIXBYTE DRIVIFY APPLICATION OBJECT
+global.drivify = function( callback ){
+	
+				return require("./drivify.js")(callback);
+				
+			};
+		
+//!EXPOSE APPLICATION THE LOG STREAM
+global.logStream = function(){	return fs.createWriteStream( global.home + "	.framify"); };

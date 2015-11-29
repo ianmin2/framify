@@ -101,7 +101,8 @@ var f = new Formify({
     dbPass: "",
     dbHost: "localhost",
     dbName: "codepamoja"
-})
+});
+
 
 f.getFields("entitys")
 .then(function(r){
