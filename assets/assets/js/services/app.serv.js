@@ -5,7 +5,7 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
     //!AVAIL THE APPLICATION LINKS    
     this.getData = function( success_callback , error_callback ){
        
-       $.getJSON("config/app.json", function( data ){
+       $.getJSON("./config/app.json", function( data ){
             success_callback(data);
         });
         
@@ -14,7 +14,7 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
     //!AVAIL THE APPLICATION ROUTES
     this.getRoutes = function( success_callback , error_callback ){
               
-        $.getJSON("config/app-routes.json", function( data ){
+        $.getJSON("./config/app-routes.json", function( data ){
             success_callback(data);
         });
         

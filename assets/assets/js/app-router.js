@@ -26,7 +26,7 @@ app.config(function($stateProvider,$urlRouterProvider){
     
     	
     //!CAPTURE THE DEFINED JSON ROUTES
-    $.getJSON( "config/app-routes.json", function( response ){
+    $.getJSON( "./config/app-routes.json", function( response ){
          setRoutes( response );
     });
         

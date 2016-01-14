@@ -240,7 +240,8 @@ gulp.task('package', ['build'], function(){
 });
 
 
-var ps = fs.createWriteStream("routes.json",{ 'flags': 'w', 'encoding': null, 'mode': 0666 })
+var ps = fs.createWriteStream("routes.json",{ 'flags': 'w', 'encoding': null, 'mode': 0666 });
+
 //PACKAGE THE SPECIAL VIEWS AND ADD UNTO THE MENU
 gulp.task('router', [], function(){
     
@@ -273,7 +274,7 @@ gulp.task('serve', function() {
     
      browserSync.init({
                 server: {
-        //            baseDir: "./"
+                    baseDir: "./",
                     proxy: "127.0.0.1:5000"
                 }
             });
