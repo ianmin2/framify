@@ -32,14 +32,35 @@ app.controller('framifySampleController', ['$scope', '$http', function($scope, $
     
 }]); 
 },{}],2:[function(require,module,exports){
-app.controller("appController", ['app','$scope','$location','$ionicModal','$rootScope',function( app, $scope, $location, $ionicModal, $rootScope ){
+app.controller("appController", ['app','$scope','$location','$ionicModal','$rootScope','$ionicSideMenuDelegate',function( app, $scope, $location, $ionicModal, $rootScope, $ionicSideMenuDelegate ){
     
     //!APPLICATION GLOBAL SCOPE COMPONENTS
     $scope.current  = {};
     $scope.ui       = {};
     
     $rootScope.nav = [];
+    //$rootScope.nav.search; 
     $rootScope.links = [];
+    
+    $scope.nav.hasFilters = false;
+    
+    //** MANAGE THE SIDENAV TOGGLE EVENTS
+    //!Right sidenav
+    $scope.nav.right = {};
+    $scope.nav.right.toggle = function(){
+        $ionicSideMenuDelegate.toggleRight();
+    }
+    
+    //!Left sidenav
+    $scope.nav.left = {};
+    $scope.nav.left.toggle = function(){
+        $ionicSideMenuDelegate.toggleLeft();
+    }
+    
+    //** MANAGE THE NAVIGATION SEARCH STATUS
+    $scope.openFilters = function(hasFilters){
+        if(hasFilters === true) { $scope.nav.hasFilters = false; }else{ $scope.nav.hasFilters = true; }
+    };
     
     //!INITIALIZE THE APPLICATION ROUTES
     var setRoutes = function(data){

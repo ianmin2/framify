@@ -42,7 +42,7 @@
           }
         };
         //!CAPTURE THE DEFINED JSON ROUTES
-        $.getJSON('config/app-routes.json', function (response) {
+        $.getJSON('./config/app-routes.json', function (response) {
           setRoutes(response);
         });
         //!REDIRECT APP TO THE ROOT ROUTE
@@ -106,12 +106,34 @@
         '$location',
         '$ionicModal',
         '$rootScope',
-        function (app, $scope, $location, $ionicModal, $rootScope) {
+        '$ionicSideMenuDelegate',
+        function (app, $scope, $location, $ionicModal, $rootScope, $ionicSideMenuDelegate) {
           //!APPLICATION GLOBAL SCOPE COMPONENTS
           $scope.current = {};
           $scope.ui = {};
           $rootScope.nav = [];
+          //$rootScope.nav.search; 
           $rootScope.links = [];
+          $scope.nav.hasFilters = false;
+          //** MANAGE THE SIDENAV TOGGLE EVENTS
+          //!Right sidenav
+          $scope.nav.right = {};
+          $scope.nav.right.toggle = function () {
+            $ionicSideMenuDelegate.toggleRight();
+          };
+          //!Left sidenav
+          $scope.nav.left = {};
+          $scope.nav.left.toggle = function () {
+            $ionicSideMenuDelegate.toggleLeft();
+          };
+          //** MANAGE THE NAVIGATION SEARCH STATUS
+          $scope.openFilters = function (hasFilters) {
+            if (hasFilters === true) {
+              $scope.nav.hasFilters = false;
+            } else {
+              $scope.nav.hasFilters = true;
+            }
+          };
           //!INITIALIZE THE APPLICATION ROUTES
           var setRoutes = function (data) {
             $scope.links = data;  //console.dir( $scope.nav )
@@ -223,12 +245,34 @@
               '$location',
               '$ionicModal',
               '$rootScope',
-              function (app, $scope, $location, $ionicModal, $rootScope) {
+              '$ionicSideMenuDelegate',
+              function (app, $scope, $location, $ionicModal, $rootScope, $ionicSideMenuDelegate) {
                 //!APPLICATION GLOBAL SCOPE COMPONENTS
                 $scope.current = {};
                 $scope.ui = {};
                 $rootScope.nav = [];
+                //$rootScope.nav.search; 
                 $rootScope.links = [];
+                $scope.nav.hasFilters = false;
+                //** MANAGE THE SIDENAV TOGGLE EVENTS
+                //!Right sidenav
+                $scope.nav.right = {};
+                $scope.nav.right.toggle = function () {
+                  $ionicSideMenuDelegate.toggleRight();
+                };
+                //!Left sidenav
+                $scope.nav.left = {};
+                $scope.nav.left.toggle = function () {
+                  $ionicSideMenuDelegate.toggleLeft();
+                };
+                //** MANAGE THE NAVIGATION SEARCH STATUS
+                $scope.openFilters = function (hasFilters) {
+                  if (hasFilters === true) {
+                    $scope.nav.hasFilters = false;
+                  } else {
+                    $scope.nav.hasFilters = true;
+                  }
+                };
                 //!INITIALIZE THE APPLICATION ROUTES
                 var setRoutes = function (data) {
                   $scope.links = data;  //console.dir( $scope.nav )
@@ -390,13 +434,13 @@
           //!SETUP THE APPLICATION BASICS
           //!AVAIL THE APPLICATION LINKS    
           this.getData = function (success_callback, error_callback) {
-            $.getJSON('config/app.json', function (data) {
+            $.getJSON('./config/app.json', function (data) {
               success_callback(data);
             });
           };
           //!AVAIL THE APPLICATION ROUTES
           this.getRoutes = function (success_callback, error_callback) {
-            $.getJSON('config/app-routes.json', function (data) {
+            $.getJSON('./config/app-routes.json', function (data) {
               success_callback(data);
             });
           };
@@ -595,13 +639,13 @@
                 //!SETUP THE APPLICATION BASICS
                 //!AVAIL THE APPLICATION LINKS    
                 this.getData = function (success_callback, error_callback) {
-                  $.getJSON('config/app.json', function (data) {
+                  $.getJSON('./config/app.json', function (data) {
                     success_callback(data);
                   });
                 };
                 //!AVAIL THE APPLICATION ROUTES
                 this.getRoutes = function (success_callback, error_callback) {
-                  $.getJSON('config/app-routes.json', function (data) {
+                  $.getJSON('./config/app-routes.json', function (data) {
                     success_callback(data);
                   });
                 };

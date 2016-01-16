@@ -6,17 +6,14 @@ var fs = require("fs")
 
 var routerify = function() {
 
-    var getFrame = /<framify( [^<>]+)>(.*?)<\/framify>/gi
-    var getMenu = /menu=\"(.*?)\"/gi
-    var getParent = /parent=\"(.*?)\"/gi
-    var getPath = /path=\"(.*?)\"/gi
-    var getUrl = /url=\"(.*?)\"/gi
-    var getTitle = /title=\"(.*?)\"/gi
-//    var getFrame = /<framify( [^<>]+)>(.*?)<\/framify>/gi
-//    var getMenu = /menu=\"(.*?)\"/gi
-//    var getParent = /parent=\"(.*?)\"/gi
-//    var getPath = /path=\"(.*?)\"/gi
-//    var getTitle = /title=\"(.*?)\"/gi
+    var getFrame    = /<framify( [^<>]+)>(.*?)<\/framify>/gi
+    var getMenu     = /menu=\"(.*?)\"/gi    
+    var getParent   = /parent=\"(.*?)\"/gi  
+    var getPath     = /path=\"(.*?)\"/gi    
+    var getUrl      = /url=\"(.*?)\"/gi     
+    var getTitle    = /title=\"(.*?)\"/gi   
+    var getIcon     = /icon=\"(.*?)\"/gi    
+    var getCtrl     = /controller=\"(.*?)\"/gi
 
     allData = [];
     
@@ -45,29 +42,30 @@ var routerify = function() {
         
         return ret_array.reverse();
         
-    }
+    };
 
     var catchPath = function(fileData) {
 
         var frame, menu, parent, path, title;   
-        //console.log("Processing " + fileData[0])
+        console.log("Processing " + fileData[0])
 
         var txt = fs.readFileSync(fileData[0]).toString();
 
 
         frame = txt.match(/<framify [^<]+><\/framify>/); 
-        //console.log( "\n\n" + frame[0] + "\n\n" )
-        //frame = getFrame.exec(txt); console.log( "\n\n" + frame + "\n\n" )
-
+        var gTest = /(\\?")(.*?)\1/;
+        
         if (frame) {
             
             try{ 
             
-                menu = /(\\?")(.*?)\1/.exec( txt.match(getMenu) )[2]|| false;
-                parent = /(\\?")(.*?)\1/.exec( txt.match(getParent) )[2];
-                path = /(\\?")(.*?)\1/.exec( txt.match(getPath) )[2];
-                url = /(\\?")(.*?)\1/.exec( txt.match(getUrl) )[2];
-                title = /(\\?")(.*?)\1/.exec( txt.match(getTitle) )[2];
+                menu    = gTest.exec( txt.match(getMenu) )[2]   //|| (gTest.exec( txt.match(/menu=\'(.*?)\'/gi))[2] || false)  ;
+                parent  = gTest.exec( txt.match(getParent) )[2] //|| gTest.exec( txt.match(/parent=\'(.*?)\'/gi) )[2];
+                path    = gTest.exec( txt.match(getPath) )[2]   //|| gTest.exec( txt.match(/path=\'(.*?)\'/gi) )[2];
+                url     = gTest.exec( txt.match(getUrl) )[2]    //|| gTest.exec( txt.match(/url=\'(.*?)\'/gi) )[2];
+                title   = gTest.exec( txt.match(getTitle) )[2]  //|| gTest.exec( txt.match(/title=\'(.*?)\'/gi) )[2];
+                icon    = gTest.exec( txt.match(getIcon) )[2]   //|| (gTest.exec( txt.match(/icon=\'(.*?)\'/gi) )[2] || "exit-to-app");
+                ctrl    = gTest.exec( txt.match(getCtrl) )[2]   //|| (gTest.exec( txt.match(/controller=\'(.*?)\'/gi) )[2] || "appController");
 //              menu = getMenu.exec(frame)[1] || null;
 //              parent = getParent.exec(frame)[1];
 //              path = getPath.exec(frame)[1];
@@ -80,7 +78,9 @@ var routerify = function() {
                     "title": title || "",
                     "path": path || "",
                     "url": url || "",
-                    "view": "views/" + frame
+                    "view": "views/" + frame,
+                    "icon": icon,
+                    "controller": ctrl
                 });
 
                 
@@ -105,13 +105,15 @@ var routerify = function() {
         }
 
 
-    }
+    };
 
     return map(function(file, cb) {
 
         var lint = catchPath([file.path])
 
-        });
+    });
+    
+    
 };
 
 // Export the plugin main function

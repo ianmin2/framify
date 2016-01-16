@@ -6,6 +6,7 @@
 
     <link rel="stylesheet" href="assets/css/ionic.min.css">
     <link rel="stylesheet" href="assets/css/angular-material.min.css">
+    <link rel="stylesheet" href="assets/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="assets/css/material.min.css">
     <link rel="stylesheet" href="assets/css/font-awesome.min.css">
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
@@ -14,68 +15,62 @@
 
     <title>{{nav.title}}</title>
     
-    <!-- Uses a transparent header that draws on top of the layout's background -->
-    <style>
-        .demo-layout-transparent,
-        .mdl-layout__drawer,
-        ion-nav-view {
-            background: url('./assets/img/bg3.png') !important;
-            height: 100%;
-        }
-        .demo-layout-transparent .mdl-layout__header,
-        .demo-layout-transparent .mdl-layout__drawer-button {
-            /* This background is dark, so we set text to white. Use 87% black instead if
-     your background is light. */
-            color: black;
-        }
-    </style>
-    
 </head>
 
 
-<body class="mdl-layout mdl-color--grey-100 mdl-color-text--grey-700 mdl-base">
-
+<body>
    
-    <div class="demo-layout-transparent mdl-layout mdl-js-layout mdl-layout--fixed-header">
-        <header class="mdl-layout__header mdl-layout__header--transparent" >
-            <div class="mdl-layout__header-row">
-                <!-- Title -->
-                <span class="">{{ nav.title }} </span>
-                <!-- Add spacer, to align navigation to the right -->
-<!--
-                <div class="mdl-layout-spacer"></div>
-                 Navigation 
-                <nav class="mdl-navigation">
-                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
-                  mdl-textfield--floating-label mdl-textfield--align-right">
-                        <label class="mdl-button mdl-js-button mdl-button--icon" for="header-drawer-exp">
-                            <i class="material-icons">search</i>
+   <ion-side-menus>
+		
+		<ion-side-menu-content>
+			 <ion-nav-bar class="bar bar-positive">
+                
+                <ion-nav-buttons side="left">
+                    <div class="bar bar-header item-input-inset" ng-if="nav.hasFilters">
+                        <label for="" class="item-input-wrapper textbox-search">
+                            <i class="icon ion-ios7-search placeholder-icon" ></i>
+                            <input type="search" ng-model="nav.search" placeholder="Search">
                         </label>
-                        <div class="mdl-textfield__expandable-holder">
-                            <input class="mdl-textfield__input" type="text" name="sample" id="fixed-header-drawer-exp" />
-                        </div>
-                    </div>
-                </nav>
--->
-            </div>
-        </header>
-        <div class="mdl-layout__drawer">
-
-            <span class="mdl-layout-title">{{nav.alias || "Menu"}}</span>
-            <nav class="mdl-navigation">
-
-                <div ng-repeat="link in links" style="margin: 0 auto;">
-                    <md-button ng-show="link.menu != 'false'" class="md-raised md-primary" style="min-width: 200px;" ui-sref="{{link.path}}">{{link.title}}</md-button>
-
-                </div>
-
-            </nav>
-        </div>
-        <div class="mdl-layout__content" >
+                   </div>
+                   <a data-tap-disabled="true" class="button button-icon icon positive outline" ng-click="openFilters(nav.hasFilters);" ng-class="{'ion-search':!nav.hasFilters, 'ion-close-circled': nav.hasFilters}"> </a>
+                </ion-nav-buttons>
+                
+                <ion-nav-title ng-show="!nav.hasFilters">
+                       {{ nav.title }}
+                </ion-nav-title>
+                
+                <ion-nav-buttons side="right">
+                   <button menu-toggle="right" class="button button-icon icon ion-navicon"ng-click="nav.right.toggle()" ></button>
+                </ion-nav-buttons>
+                
+            </ion-nav-bar>
+            <br><br>
+            <ion-nav-view  animation="slide-left-right"></ion-nav-view>
+            
+		</ion-side-menu-content>
         
-            <ion-nav-view class="page-content"></ion-nav-view>
-        </div>
-    </div>
+        <ion-side-menu side="right">
+            
+			<header class="bar bar-header bar-positive">
+                <h1 class="title">{{nav.alias}}</h1>
+            </header>
+            
+            <ion-content class="has-header">
+                
+                    <ul class="list">
+                        <a class="item dropdown-link dropdown-link--is-large" href="#{{link.url}}" ng-repeat="link in links" ng-show="link.menu == 'true'">
+                           
+                            <i class="mdi mdi-{{link.icon}}"></i>
+                            <span>{{link.title}}</span>
+                            
+                        </a>
+                    </ul>
+                
+            </ion-content>
+            
+		</ion-side-menu>
+           
+   </ion-side-menus>
 
 </body>
 
@@ -86,5 +81,26 @@
 <script src="assets/js/angular-material.min.js"></script>
 <script src="assets/js/jquery.js"></script>
 <script src="application.js"></script>
+<script>
+  
+    // var scrollTo = function(top) {
+    //   var content = $(".mdl-layout__content");
+    //   var target = top ? 0 : $(".page-content").height();
+    //   content.stop().animate({ scrollTop: target }, "slow");
+    // };
 
+    // var scrollToTop = function() {
+    //   scrollTo(true);
+    // };
+
+    // var scrollToBottom = function() {
+    //   scrollTo(false);
+    // };
+
+    // $(function() {
+    //   $("#scroll-up-btn").on("click",function(){ scrollToTop(); });
+    //   $("#scroll-down-btn").on("click", function(){scrollToBottom();});
+    // });
+    
+</script>
 </html>

@@ -1,4 +1,64 @@
-<framify menu="true" path="home" url="/" title="Home" parent="false" ></framify>
-<div class="mdl-grid" ng-init=" app.alert('Welcome to Framify', '<center>Thank you for giving Framify a chance<br><br>We at Bixbyte Appreciate it</center>', 'function(){}')">
-  
-</div>
+<framify menu="true" path="home" url="/" title="Home" parent="false" icon="home"  controller="" ></framify>
+<ion-content scrollbar-x="false" scrollbar-y="false" style="padding-bottom:20px;">
+    <div class="mdl-grid" ng-initi=" app.alert('Welcome to Framify', '<center>Thank you for giving Framify a chance<br><br>We at Bixbyte Appreciate it</center>', 'function(){}')">
+        
+        <form class="mdl-layout">
+            
+            <div class="md-card mdl-shadow--2dp mdl-cell mdl-cell--12-col">
+            
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell mdl-cell--3-col">
+                <input class="mdl-textfield__input" type="text" id="from_name">
+                <label class="mdl-textfield__label" for="from_name">From Name</label>
+            </div>
+    
+    
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell mdl-cell--3-col">
+                <input class="mdl-textfield__input" type="email" id="from_email">
+                <label class="mdl-textfield__label" for="from_email">From Email</label>
+                <span class="mdl-textfield__error">invalid email</span>
+            </div>
+    
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell mdl-cell--3-col">
+                <input class="mdl-textfield__input" type="email" id="reply_to">
+                <label class="mdl-textfield__label" for="reply_to">Reply To</label>
+                <span class="mdl-textfield__error">invalid email</span>
+            </div>
+            
+            </div>
+            
+        
+        
+        
+        
+            
+            <div class="md-card mdl-shadow--2dp mdl-cell mdl-cell--12-col ">
+            
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell mdl-cell--3-col">
+                    <input class="mdl-textfield__input" type="text" id="to_name">
+                    <label class="mdl-textfield__label" for="from_name">To Name</label>
+                </div>
+    
+    
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell mdl-cell--3-col">
+                    <input class="mdl-textfield__input" type="email" id="to_email">
+                    <label class="mdl-textfield__label" for="from_email">To Email</label>
+                    <span class="mdl-textfield__error">invalid email</span>
+                </div>
+    
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell mdl-cell--3-col">
+                    <input class="mdl-textfield__input" type="email" id="reply_to">
+                    <label class="mdl-textfield__label" for="reply_to">Reply To</label>
+                    <span class="mdl-textfield__error">invalid email</span>
+                </div>
+    
+            </div>
+        
+        
+        
+        
+        
+        </form>
+    
+    
+    </div>
+</ion-content>
