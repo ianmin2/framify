@@ -1,5 +1,6 @@
 var http = require("http");
 var express =require("express");
+var compression  = require("compression");
 process.env.PORT    = 5000;
 
 var app = express();
@@ -11,6 +12,9 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Methods", "GET, POST");
   next();
 });
+
+//!COMPRESS FILES BEFORE SERVING THEM
+app.use( compression() );
 
 //!SET THE BASIC DIRECTORY MIDDLEWARE
 app.use(express.static(__dirname + '/../'));

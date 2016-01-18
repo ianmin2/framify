@@ -6,6 +6,7 @@
 
     <link rel="stylesheet" href="assets/css/ionic.min.css">
     <link rel="stylesheet" href="assets/css/angular-material.min.css">
+    <link rel="stylesheet" href="assets/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="assets/css/material.min.css">
     <link rel="stylesheet" href="assets/css/font-awesome.min.css">
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
@@ -18,9 +19,11 @@
 
 
 <body>
-    <ion-view>
-        <!--<ion-content>-->
-            <ion-nav-bar class="bar bar-positive">
+   
+   <ion-side-menus>
+		
+		<ion-side-menu-content>
+			 <ion-nav-bar class="bar bar-positive">
                 
                 <ion-nav-buttons side="left">
                     <div class="bar bar-header item-input-inset" ng-if="nav.hasFilters">
@@ -41,31 +44,56 @@
                 </ion-nav-buttons>
                 
             </ion-nav-bar>
+            <br><br>
+            <ion-nav-view  animation="slide-left-right"></ion-nav-view>
             
-            <ion-nav-view class="page-content" style="padding-bottom:40px;">
-                <ion-side-menus enable-menu-with-back-views="true">
-                    <ion-side-menu side="right"></ion-side-menu>
-                    <ion-side-menu-content>
-                        <div ng-repeat="link in links" style="margin: 0 auto;">
-                            
-                            <button ng-show="link.menu != 'false'" class="button" style="min-width: 200px; margin-bottom:10px;" ui-sref="{{link.path}}">{{link.title}}</button>
+		</ion-side-menu-content>
         
-                        </div>  
-                    </ion-side-menu-content>
-                </ion-side-menus>
-            </ion-nav-view>
-             
-        <!--</ion-content> -->
-    </ion-view>
+        <ion-side-menu side="right">
+            
+			<header class="bar bar-header bar-positive">
+                <h1 class="title">{{nav.alias}}</h1>
+            </header>
+            
+            <ion-content class="has-header">
+                
+                    <ul class="list">
+                        <a class="item dropdown-link dropdown-link--is-large" href="#{{link.url}}" ng-repeat="link in links" ng-show="link.menu == 'true'">
+                           
+                            <i class="mdi mdi-{{link.icon}}"></i>
+                            <span>{{link.title}}</span>
+                            
+                        </a>
+                    </ul>
+                
+            </ion-content>
+            
+		</ion-side-menu>
+           
+   </ion-side-menus>
 
 </body>
 
-<!-- Angular Material Dependencies -->
+<!--FORFEITED IMPORTS [ ngRoute & MDL ] -->
+<!--<script src="assets/js/angular-route.min.js"></script>-->
+<!--<script src="assets/js/material.min.js"></script>-->
+
+<!--jQuery Framework-->
+<script src="assets/js/jquery.js"></script>
+
+<!--ionic & Basic Angular-->
 <script src="assets/js/ionic.bundle.min.js"></script>
 <script src="assets/js/angular-aria.min.js"></script>
-<script src="assets/js/material.min.js"></script>
+<script src="assets/js/angular-messages.min.js"></script>
+
+<!--Api-Check & ngFormly-->
+<script src="assets/js/api-check.min.js"></script>
+<script src="assets/js/formly.min.js"></script>
+<script src="assets/js/angular-formly-templates-ionic.min.js"></script>
+
+<!--Angular Material-->
 <script src="assets/js/angular-material.min.js"></script>
-<script src="assets/js/jquery.js"></script>
+
 <script src="application.js"></script>
 <script>
   

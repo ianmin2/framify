@@ -1,10 +1,41 @@
-/* ROBOTO font setup */
+/* 
+    **** B!xbyte @framify ****
+          main css file.
+ */
 
+/* ROBOTO font setup */
 @font-face {
   font-family: 'Roboto';
   font-style: normal;
   font-weight: 300;
-  src: local('Roboto Light'), local('Roboto-Light'), url(./../fonts/Roboto-Light.ttf) format('truetype');
+  src: local('Roboto Light'), local('Roboto-Light'), url("./../fonts/Roboto-Light.ttf") format('truetype');
 }
-
 /* EO ROBOTO font setup */
+
+/* FRAMIFY FONT SETUP */
+@font-face {
+  font-family: 'Framify';
+  font-style: normal;
+  font-weight: 500;
+  src: local('framify'),url('./../fonts/Sweetly_Broken.ttf') format('truetype');
+}
+/*EO FRAMIFY FONT SETUP*/
+
+.framify{
+  font-family: framify;
+  font-size: 10em;
+  color:#387EF5;
+  text-shadow: 3px 3px white;
+}
+.framify2{
+  font-family: framify;
+  font-size: 7em;
+  color: white;
+  text-shadow: 3px 3px midnightblue;
+}
+.bixbyte{
+  font-family: framify;
+  font-size: 7em;
+  color: black;
+  text-shadow: 3px 3px deepskyblue;
+}

@@ -37,7 +37,8 @@
             var rData = routeArray[r];
             $stateProvider.state(rData.path, {
               url: rData.url,
-              templateUrl: rData.view
+              templateUrl: rData.view,
+              controller: rData.controller
             });
           }
         };
@@ -49,12 +50,52 @@
         $urlRouterProvider.otherwise('/framify');
       });
       //!DEFINE THE APPLICATION RUNTIME DEFAULTS
-      app.run(function (app, $rootScope, $location) {
-        //!INJECT THE LOCATION SOURCE TO THE ROOT SCOPE
-        $rootScope.location = $location;
-        //!INJECT THE APPLICATION'S MAIN SERVICE TO THE ROOT SCOPE SUCH THAT ALL SCOPES MAY INHERIT IT
-        $rootScope.app = app;
-      });
+      app.run([
+        'app',
+        '$rootScope',
+        '$location',
+        'formlyConfig',
+        function (app, $rootScope, $location, formlyConfig) {
+          //!INJECT THE LOCATION SOURCE TO THE ROOT SCOPE
+          $rootScope.location = $location;
+          //!INJECT THE APPLICATION'S MAIN SERVICE TO THE ROOT SCOPE SUCH THAT ALL SCOPES MAY INHERIT IT
+          $rootScope.app = app;
+          //!ANGULAR FORMLY CONFIGURATION
+          /*formlyConfig.setWrapper({
+        template: '<formly-transclude></formly-transclude><!--<div my-messages="options"></div>-->',
+        types: ["input","checkbox","select","textarea","radio"]
+    })*/
+          formlyConfig.setType({
+            name: 'stats',
+            template: '<div class="p+ bgc-green-100" style="margin:10px; max-width:450px;" ng-repeat="(key,val) in this">$scope.{{key}} = {{val | json}}</div><br><br>'
+          });
+          /* formlyConfig.setType({
+        name: "checkbox",
+        template: '<br><div class="switch">\
+            <input type="checkbox" class="switch__input" id="model[options.key]" ng-model="model[options.key]">\
+            <label for="model[options.key]" class="switch__label">{{options.templateOptions.label}}</label>\
+            <switch class="switch__help">{{options.templateOptions.description}}</switch>\
+        </div>'
+    })*/
+          formlyConfig.setType({
+            name: 'submit',
+            template: '<br><button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--blue mdl-cell mdl-cell--2-col" style="min-width: 200px; margin:10px; min-height:25px; color:whitesmoke; font-weight:bold;" ng-hide="{{options.templateOptions.disabled}}">{{options.templateOptions.label}}</button>',
+            defaultOptions: { templateOptions: { label: 'SUBMIT' } }
+          });
+          formlyConfig.setType({
+            name: 'terms',
+            extends: 'checkbox',
+            defaultOptions: {
+              'templateOptions': {
+                'label': 'Accept Terms and conditions',
+                'description': 'I Agree to all the terms of use',
+                'disabled': false,
+                'checked': false
+              }
+            }
+          });
+        }
+      ]);
     },
     {}
   ],
@@ -62,7 +103,8 @@
     function (require, module, exports) {
       module.exports = angular.module('bixFrame', [
         'ionic',
-        'ngMaterial'
+        'ngMaterial',
+        'formlyIonic'
       ]);
     },
     {}
@@ -75,6 +117,7 @@
         function ($scope, $http) {
           $scope.voters = [];
           var voteSet = function (data) {
+            console.log('SETTING VOTERS');
             $scope.voters = data;
           };
           var voteFail = function (err) {
@@ -107,7 +150,8 @@
         '$ionicModal',
         '$rootScope',
         '$ionicSideMenuDelegate',
-        function (app, $scope, $location, $ionicModal, $rootScope, $ionicSideMenuDelegate) {
+        '$ionicSlideBoxDelegate',
+        function (app, $scope, $location, $ionicModal, $rootScope, $ionicSideMenuDelegate, $ionicSlideBoxDelegate) {
           //!APPLICATION GLOBAL SCOPE COMPONENTS
           $scope.current = {};
           $scope.ui = {};
@@ -146,7 +190,13 @@
           $scope.app.getData(setData);
           $scope.app.getRoutes(setRoutes);
           //!RE-INITIALIZE APPLICATION DATA
-          $scope.location.path('/framify');
+          $rootScope.app.reinit = function () {
+            $scope.location.path('/framify');
+          };
+          //!MOVE TO THE NEXT SLIDE
+          $rootScope.app.navSlide = function (index) {
+            $ionicSlideBoxDelegate.slide(index, 500);
+          };
           //!ESTABLISH APPLICATION UI COMPONENTS AND THEIR HANDLERS
           //*CALL A CUSTOM MODAL
           $scope.ui.modal = function (modal_template, modal_animation, modal_onHide, modal_onRemove) {
@@ -214,6 +264,7 @@
               function ($scope, $http) {
                 $scope.voters = [];
                 var voteSet = function (data) {
+                  console.log('SETTING VOTERS');
                   $scope.voters = data;
                 };
                 var voteFail = function (err) {
@@ -246,7 +297,8 @@
               '$ionicModal',
               '$rootScope',
               '$ionicSideMenuDelegate',
-              function (app, $scope, $location, $ionicModal, $rootScope, $ionicSideMenuDelegate) {
+              '$ionicSlideBoxDelegate',
+              function (app, $scope, $location, $ionicModal, $rootScope, $ionicSideMenuDelegate, $ionicSlideBoxDelegate) {
                 //!APPLICATION GLOBAL SCOPE COMPONENTS
                 $scope.current = {};
                 $scope.ui = {};
@@ -285,7 +337,13 @@
                 $scope.app.getData(setData);
                 $scope.app.getRoutes(setRoutes);
                 //!RE-INITIALIZE APPLICATION DATA
-                $scope.location.path('/framify');
+                $rootScope.app.reinit = function () {
+                  $scope.location.path('/framify');
+                };
+                //!MOVE TO THE NEXT SLIDE
+                $rootScope.app.navSlide = function (index) {
+                  $ionicSlideBoxDelegate.slide(index, 500);
+                };
                 //!ESTABLISH APPLICATION UI COMPONENTS AND THEIR HANDLERS
                 //*CALL A CUSTOM MODAL
                 $scope.ui.modal = function (modal_template, modal_animation, modal_onHide, modal_onRemove) {
@@ -323,20 +381,179 @@
           function (require, module, exports) {
             require('./app.ctrl.js');
             require('./app-sample.ctrl.js');
+            require('./formly.ctrl.js');
           },
           {
             './app-sample.ctrl.js': 1,
-            './app.ctrl.js': 2
+            './app.ctrl.js': 2,
+            './formly.ctrl.js': 4
           }
+        ],
+        4: [
+          function (require, module, exports) {
+            app.controller('formController', [
+              '$scope',
+              function ($scope) {
+                $scope.vm = {};
+                $scope.vm.onSubmit = function () {
+                  alert(JSON.stringify($scope.vm.model), null, 2);
+                };
+                $scope.vm.model = { terms: true };
+                $scope.vm.fields = [
+                  {
+                    key: 'firstName',
+                    type: 'inline-input',
+                    templateOptions: {
+                      label: 'First Name',
+                      type: 'text',
+                      placeholder: 'First Name',
+                      required: 'true'
+                    }
+                  },
+                  {
+                    key: 'lastName',
+                    type: 'inline-input',
+                    templateOptions: {
+                      label: 'Last Name',
+                      type: 'text',
+                      placeholder: 'Last Name',
+                      required: 'true'
+                    }
+                  },
+                  {
+                    'key': 'password',
+                    'type': 'inline-input',
+                    'templateOptions': {
+                      'type': 'password',
+                      'label': 'Password',
+                      'placeholder': 'Password',
+                      'disabled': false,
+                      'required': false
+                    }
+                  },
+                  {
+                    'key': 'terms',
+                    'type': 'terms'
+                  },
+                  {
+                    'type': 'submit',
+                    'key': 'submit',
+                    'templateOptions': {
+                      'label': 'Join Bixbyte',
+                      'disabled': '!model.terms'
+                    }
+                  }
+                ];
+                // $scope.vm.fields = [
+                //             {
+                //                 "key": "username",
+                //                 "type": "inline-input",
+                //                 "templateOptions": {
+                //                     "type": "text",
+                //                     "label": "Username"
+                //                 }
+                //             }, {
+                //                 "key": "password",
+                //                 "type": "inline-input",
+                //                 "templateOptions": {
+                //                     "type": "password",
+                //                     "label": "Password"
+                //                 }
+                //             }
+                //         ];
+                $scope.vm.originalFields = angular.copy($scope.vm.fields);
+              }
+            ]);
+          },
+          {}
         ]
       }, {}, [3]));
     },
     {
       './app-sample.ctrl.js': 3,
-      './app.ctrl.js': 4
+      './app.ctrl.js': 4,
+      './formly.ctrl.js': 6
     }
   ],
   6: [
+    function (require, module, exports) {
+      app.controller('formController', [
+        '$scope',
+        function ($scope) {
+          $scope.vm = {};
+          $scope.vm.onSubmit = function () {
+            alert(JSON.stringify($scope.vm.model), null, 2);
+          };
+          $scope.vm.model = { terms: true };
+          $scope.vm.fields = [
+            {
+              key: 'firstName',
+              type: 'inline-input',
+              templateOptions: {
+                label: 'First Name',
+                type: 'text',
+                placeholder: 'First Name',
+                required: 'true'
+              }
+            },
+            {
+              key: 'lastName',
+              type: 'inline-input',
+              templateOptions: {
+                label: 'Last Name',
+                type: 'text',
+                placeholder: 'Last Name',
+                required: 'true'
+              }
+            },
+            {
+              'key': 'password',
+              'type': 'inline-input',
+              'templateOptions': {
+                'type': 'password',
+                'label': 'Password',
+                'placeholder': 'Password',
+                'disabled': false,
+                'required': false
+              }
+            },
+            {
+              'key': 'terms',
+              'type': 'terms'
+            },
+            {
+              'type': 'submit',
+              'key': 'submit',
+              'templateOptions': {
+                'label': 'Join Bixbyte',
+                'disabled': '!model.terms'
+              }
+            }
+          ];
+          // $scope.vm.fields = [
+          //             {
+          //                 "key": "username",
+          //                 "type": "inline-input",
+          //                 "templateOptions": {
+          //                     "type": "text",
+          //                     "label": "Username"
+          //                 }
+          //             }, {
+          //                 "key": "password",
+          //                 "type": "inline-input",
+          //                 "templateOptions": {
+          //                     "type": "password",
+          //                     "label": "Password"
+          //                 }
+          //             }
+          //         ];
+          $scope.vm.originalFields = angular.copy($scope.vm.fields);
+        }
+      ]);
+    },
+    {}
+  ],
+  7: [
     function (require, module, exports) {
       app.directive('appSample', function () {
         return {
@@ -348,7 +565,7 @@
     },
     {}
   ],
-  7: [
+  8: [
     function (require, module, exports) {
       app.directive('appDirective', function () {
         return {
@@ -359,7 +576,7 @@
     },
     {}
   ],
-  8: [
+  9: [
     function (require, module, exports) {
       (function e(t, n, r) {
         function s(o, u) {
@@ -421,11 +638,11 @@
       }, {}, [3]));
     },
     {
-      './app-sample.dir.js': 6,
-      './app.dir.js': 7
+      './app-sample.dir.js': 7,
+      './app.dir.js': 8
     }
   ],
-  9: [
+  10: [
     function (require, module, exports) {
       app.service('app', [
         '$http',
@@ -604,7 +821,7 @@
     },
     {}
   ],
-  10: [
+  11: [
     function (require, module, exports) {
       (function e(t, n, r) {
         function s(o, u) {
@@ -817,9 +1034,9 @@
         ]
       }, {}, [2]));
     },
-    { './app.serv.js': 9 }
+    { './app.serv.js': 10 }
   ],
-  11: [
+  12: [
     function (require, module, exports) {
       /* global app */
       /* global app_hlink */
@@ -859,8 +1076,8 @@
       './assets/js/app-router.js': 1,
       './assets/js/app.js': 2,
       './assets/js/controllers/controllers.js': 5,
-      './assets/js/directives/directives.js': 8,
-      './assets/js/services/services.js': 10
+      './assets/js/directives/directives.js': 9,
+      './assets/js/services/services.js': 11
     }
   ]
-}, {}, [11]));
+}, {}, [12]));
