@@ -1,7 +1,12 @@
 {
   "name": "framify",
+<<<<<<< HEAD
+  "version": "1.4.18-alpha.1",
+  "description": "A simple project development tool",
+=======
   "version": "1.4.19",
   "description": "A tool to quickly spawn responsive web applications.",
+>>>>>>> dev
   "main": "index.js",
   "directories": {
     "test": "tests"
