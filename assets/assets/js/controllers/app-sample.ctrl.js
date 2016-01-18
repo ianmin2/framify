@@ -3,6 +3,7 @@ app.controller('framifySampleController', ['$scope', '$http', function($scope, $
     $scope.voters = [];
         
     var voteSet = function(data){
+        console.log("SETTING VOTERS")
         $scope.voters = data;
     };
     

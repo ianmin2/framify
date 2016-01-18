@@ -4,6 +4,7 @@ app.controller('framifySampleController', ['$scope', '$http', function($scope, $
     $scope.voters = [];
         
     var voteSet = function(data){
+        console.log("SETTING VOTERS")
         $scope.voters = data;
     };
     
@@ -32,7 +33,7 @@ app.controller('framifySampleController', ['$scope', '$http', function($scope, $
     
 }]); 
 },{}],2:[function(require,module,exports){
-app.controller("appController", ['app','$scope','$location','$ionicModal','$rootScope','$ionicSideMenuDelegate',function( app, $scope, $location, $ionicModal, $rootScope, $ionicSideMenuDelegate ){
+app.controller("appController", ['app','$scope','$location','$ionicModal','$rootScope','$ionicSideMenuDelegate',"$ionicSlideBoxDelegate",function( app, $scope, $location, $ionicModal, $rootScope, $ionicSideMenuDelegate, $ionicSlideBoxDelegate ){
     
     //!APPLICATION GLOBAL SCOPE COMPONENTS
     $scope.current  = {};
@@ -78,8 +79,16 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
     $scope.app.getData(setData);
     $scope.app.getRoutes(setRoutes);  
     
+    
     //!RE-INITIALIZE APPLICATION DATA
-    $scope.location.path("/framify");
+    $rootScope.app.reinit = function(){
+      $scope.location.path("/framify");  
+    };
+    
+    //!MOVE TO THE NEXT SLIDE
+    $rootScope.app.navSlide =  function(index){
+			$ionicSlideBoxDelegate.slide(index,500);
+	};
         
     //!ESTABLISH APPLICATION UI COMPONENTS AND THEIR HANDLERS
         
@@ -137,4 +146,90 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
 },{}],3:[function(require,module,exports){
 require("./app.ctrl.js");
 require('./app-sample.ctrl.js');
-},{"./app-sample.ctrl.js":1,"./app.ctrl.js":2}]},{},[3])
+require('./formly.ctrl.js');
+},{"./app-sample.ctrl.js":1,"./app.ctrl.js":2,"./formly.ctrl.js":4}],4:[function(require,module,exports){
+app.controller("formController",["$scope", function($scope){
+    
+   $scope.vm = {};
+    
+    $scope.vm.onSubmit =  function (){
+        
+        alert( JSON.stringify($scope.vm.model),null,2 );
+        
+    };
+    
+    $scope.vm.model = { terms: true};
+    
+    $scope.vm.fields = [
+        {
+            key: "firstName",
+            type: "inline-input",            
+            templateOptions: {
+                label: "First Name",
+                type: "text",
+                placeholder: "First Name",
+                required: "true"
+            }
+        },
+        {
+             key: "lastName",
+            type: "inline-input",           
+            templateOptions: {
+                label: "Last Name",
+                type: "text",
+                placeholder: "Last Name",
+                required: "true"
+            }
+        },
+        {
+          'key': 'password',
+          'type': 'inline-input',
+          'templateOptions': {
+            'type': 'password', // html input type values [text, email, password, url, number]
+            'label': 'Password', // acts as a placeholder & label
+            'placeholder': "Password",
+            'disabled': false, // ng-disabled
+            'required': false, // ng-required
+          }
+        },
+        {
+          'key': 'terms',
+          'type': 'terms', 
+          
+        },
+        {
+            'type': "submit",
+            'key': "submit",
+            'templateOptions': {
+                'label' : "Join Bixbyte" ,
+                'disabled' : '!model.terms'
+            }
+        }
+    ];
+    
+    // $scope.vm.fields = [
+    //             {
+    //                 "key": "username",
+    //                 "type": "inline-input",
+    //                 "templateOptions": {
+    //                     "type": "text",
+    //                     "label": "Username"
+    //                 }
+    //             }, {
+    //                 "key": "password",
+    //                 "type": "inline-input",
+    //                 "templateOptions": {
+    //                     "type": "password",
+    //                     "label": "Password"
+    //                 }
+    //             }
+    //         ];
+    
+    
+    
+    $scope.vm.originalFields = angular.copy($scope.vm.fields);      
+    
+   
+    
+}]);
+},{}]},{},[3])

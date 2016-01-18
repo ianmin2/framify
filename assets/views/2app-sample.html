@@ -3,10 +3,9 @@
 
     <div class="mdl-grid">
         <div class="mdl-cell mdl-cell--12-col" style="text-align:center;">
-            <button  ng-repeat="voter in voters" ng-click="app.alert(' {{voter.student}}\'s voter Profile', '<center>Name: {{voter.studentName}}<br><br>Department: {{voter.department}}</center>')" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--blue mdl-cell mdl-cell--2-col" style="min-width: 200px; margin:10px; color:whitesmoke;" >{{voter.studentName}}</button>
+            <button  ng-repeat="voter in voters | filter: nav.search" ng-click="app.alert(' {{voter.student}}\'s voter Profile', '<center>Name: {{voter.studentName}}<br><br>Department: {{voter.department}}</center>')" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--blue mdl-cell mdl-cell--2-col" style="min-width: 200px; margin:10px; color:whitesmoke;" >{{voter.studentName}}</button>
         </div>
     </div>
    
 </ion-content>
 <br><br>
-{{nav.search}}

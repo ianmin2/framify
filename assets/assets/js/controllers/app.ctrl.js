@@ -1,4 +1,4 @@
-app.controller("appController", ['app','$scope','$location','$ionicModal','$rootScope','$ionicSideMenuDelegate',function( app, $scope, $location, $ionicModal, $rootScope, $ionicSideMenuDelegate ){
+app.controller("appController", ['app','$scope','$location','$ionicModal','$rootScope','$ionicSideMenuDelegate',"$ionicSlideBoxDelegate",function( app, $scope, $location, $ionicModal, $rootScope, $ionicSideMenuDelegate, $ionicSlideBoxDelegate ){
     
     //!APPLICATION GLOBAL SCOPE COMPONENTS
     $scope.current  = {};
@@ -44,8 +44,16 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
     $scope.app.getData(setData);
     $scope.app.getRoutes(setRoutes);  
     
+    
     //!RE-INITIALIZE APPLICATION DATA
-    $scope.location.path("/framify");
+    $rootScope.app.reinit = function(){
+      $scope.location.path("/framify");  
+    };
+    
+    //!MOVE TO THE NEXT SLIDE
+    $rootScope.app.navSlide =  function(index){
+			$ionicSlideBoxDelegate.slide(index,500);
+	};
         
     //!ESTABLISH APPLICATION UI COMPONENTS AND THEIR HANDLERS
         
