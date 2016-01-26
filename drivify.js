@@ -1,8 +1,6 @@
 #! /usr/bin/env node
 
 //!LOAD THE APPLICATION CONFIGURATION FILES
-//require("./config.js");
-require("./config_drive.js");
 
 var startify = function(){
  
@@ -14,8 +12,6 @@ var startify = function(){
             fs.mkdirSync(__dirname + "/auth");
         };
       
-        
-        var http = require('http');
         var file = fs.createWriteStream( __dirname + '/auth/drive_auth.json' );
       
         var request = http.get( app.drive , function(response) {
@@ -59,7 +55,7 @@ var Drivify = function( callback ){
       
       if (err) {
              
-        console.log("\n@framify".yell + '\nError loading the google drive authentication file. \n'.err + err + "\n");
+        log("\n@framify".yell + '\nError loading the google drive authentication file. \n'.err + err + "\n");
         return;
         
       };
@@ -82,7 +78,7 @@ var Drivify = function( callback ){
         var clientSecret  = credentials.installed.client_secret;
         var clientId      = credentials.installed.client_id;
         var redirectUrl   = credentials.installed.redirect_uris[0];
-        var auth          = new GoogleAuth();
+        var auth          = new googleAuth();
         var oauth2Client  = new auth.OAuth2(clientId, clientSecret, redirectUrl);
       
         // Check if we have previously stored a token.
@@ -115,7 +111,7 @@ var Drivify = function( callback ){
           scope: SCOPES
         });
         
-        console.log("@framify".yell + '\nAuthorize this app by visiting this url: '.info, authUrl);
+        log("@framify".yell + '\nAuthorize this app by visiting this url: '.info, authUrl);
         
         var rl = readline.createInterface({
           input: process.stdin,
@@ -126,7 +122,7 @@ var Drivify = function( callback ){
           rl.close();
           oauth2Client.getToken(code, function(err, token) {
             if (err) {
-              console.log("\n@framify".err + '\nError while trying to retrieve google drive access token\n'.err, err);
+              log("\n@framify".err + '\nError while trying to retrieve google drive access token\n'.err, err);
               return;
             }
             oauth2Client.credentials = token;
@@ -150,7 +146,7 @@ var Drivify = function( callback ){
           }
         }
         fs.writeFile(TOKEN_PATH, JSON.stringify(token));
-        console.log("\n@framify".yell +'\nGoogle drive token stored to '.success + TOKEN_PATH + "\n");
+        log("\n@framify".yell +'\nGoogle drive token stored to '.success + TOKEN_PATH + "\n");
       } 
       
 
@@ -161,11 +157,11 @@ module.exports = function( callback ){
     
     return startify()
     .then(function(data){
-      console.log(data);
+      log(data);
       return new Drivify( callback );
     })
     .catch(function(data){
-      console.log(data);
+      log(data);
     })
     ;
 };

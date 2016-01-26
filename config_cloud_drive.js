@@ -6,7 +6,7 @@ global.init_drive = function( ){
     var driveData = function( auth_data ){
         
         //initialize a google drive repository
-	    console.log("@framify".yell + "\nGoogle Drive authentication complete.\n".success );
+	    log("@framify".yell + "\nGoogle Drive authentication complete.\n".success );
         
         
 
@@ -23,17 +23,17 @@ global.init_drive = function( ){
             maxResults: 1000,
         }, function(err, response) {
             if (err) {
-            console.log('The API returned an error: ' + err);
+                log('The API returned an error: ' + err);
             return;
             }
             var files = response.items;
             if (files.length == 0) {
-            console.log('No files found.');
+                log('No files found.');
             } else {
-            console.log('\n@framify\n'.info + 'Files:'.success);
+                log('\n@framify\n'.info + 'Files:'.success);
             for (var i = 0; i < files.length; i++) {
                 var file = files[i];
-                console.log('%s (%s)', file.title, file.id);
+                log('%s (%s)', file.title, file.id);
             }
             }
         });   

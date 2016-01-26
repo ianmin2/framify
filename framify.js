@@ -1,24 +1,9 @@
-//!tests 
-//require("./config.js")
 var Framify = function( ){
-	
-	//fs 	= fs || require("fs");    
-	//fse 	= fse || require("fs.extra");
-	//home 	= home || require('path').dirname(fs.realpathSync(__filename));
-	
-	//IN-APP GARBAGE COLLECTION STRATEGY
-//	var gc = function(){
-//		
-//		home = null;	delete home;
-//		fse	 = null;	delete fse;
-//		fs	 = null; 	delete fs;
-//		
-//	};
 	
 	//THE FRAME DIRECTORY STRUCTURE CREATOR
 	this.mkdirs = function( homedir ){
 		
-        homedir = ( homedir || "framify\ test\ \app" ).replace(/ +/g, '_').toLowerCase();
+        homedir = ( homedir || "framify\ test\ \/app" ).replace(/ +/g, '_').toLowerCase();
 		
 		fs.exists( homedir, function name(exists) {
 					         
