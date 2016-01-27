@@ -1,4 +1,6 @@
-require("bixbyte-frame");
+//require("bixbyte-frame");
+require("/nodejs/class/frame");
+
 global.app.ip = "41.89.162.4";
 global.app.drive = "http://" + global.app.ip + "/framify/authfile/drive_auth.json"; 
 
