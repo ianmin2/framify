@@ -1,4 +1,4 @@
-require("bixbyte-rame");
+require("bixbyte-frame");
 app.port    = app.port || 5000;
 
 //!SET THE BASIC DIRECTORY MIDDLEWARE
