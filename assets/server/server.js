@@ -1,20 +1,5 @@
-var http = require("http");
-var express =require("express");
-var compression  = require("compression");
-process.env.PORT    = 5000;
-
-var app = express();
-
-//!ALLOW CORS
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Content-Type");
-  res.header("Access-Control-Allow-Methods", "GET, POST");
-  next();
-});
-
-//!COMPRESS FILES BEFORE SERVING THEM
-app.use( compression() );
+require("bixbyte-rame");
+app.port    = app.port || 5000;
 
 //!SET THE BASIC DIRECTORY MIDDLEWARE
 app.use(express.static(__dirname + '/../'));
@@ -38,8 +23,8 @@ app.route("/config/:fname").all(function(req,res){
 });
 
 //!THE SERVER STARTUP FILE
-var server = http.createServer(app).listen(process.env.PORT ,function(err){
+server.listen(app.port ,function(err){
 	if(!err){
-		console.log("Listening on port "+ process.env.PORT );
+		console.log("Listening on port "+ app.port );
 	}
 });
