@@ -2,6 +2,26 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
   
     //!SETUP THE APPLICATION BASICS
     
+    //!APPLICATION PORT 
+    this.port = 1357
+    
+    //!APPLICATION URL
+    //this.url = "http://41.89.162.4:3000";
+    this.url = "http://localhost:" + this.port;
+    
+    
+    //! EMPTY CALLBACK
+   this.doNothing = function(){
+       
+   };    
+    
+    //!WRITE TO THE UI
+    this.UID = function( objectID, pageContent, c ){
+        
+        document.getElementById(objectID).innerHTML = "<div class='alert alert-"+ c +"'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +  pageContent + "</div>";
+        
+    }; 
+    
     //!AVAIL THE APPLICATION LINKS    
     this.getData = function( success_callback , error_callback ){
        
@@ -45,7 +65,8 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
             method: "POST",
             url:  app_hlink + path,
             data: data,
-            success: success_callback      
+            success: success_callback,
+            error: success_callback  
         });
        /*,
             error: error_callback      */
@@ -60,7 +81,8 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
             method: "POST",
             url: link,
             data: data,
-            success: success_callback      
+            success: success_callback,
+            error: success_callback   
         });
        
         /*,
@@ -76,10 +98,6 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
        
    };
    
-   //! EMPTY CALLBACK
-   this.doNothing = function(){
-       
-   };
   
    //!HANDLE THE DISPLAY OF DIALOG BOXES
    
@@ -161,25 +179,41 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
     //!BASIC VALIDATION METHODS
     
     //*VALIDATE EMAIL ADDRESSES
+    this.isemail = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/;
     this.isEmail = function( prospective_email ){
       
-        return /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/.test( prospective_email );
+        return this.isemail.test( prospective_email );
         
     };
     
     //*VALIDATE USERNAMES
+    this.isusername= /^[a-z0-9_-]{4,16}$/;
     this.isUsername= function( prospective_username ){
         
-        return /^[a-z0-9_-]{4,16}$/.test( prospective_username );
+        return this.isusername.test( prospective_username );
         
-    };
+    };    
+    
     
     //*VALIDATE PASSWORDS
+    
+    this.ispassword = /^[-@./\!\$\%\^|#&,+\w\s]{6,50}$/;
+    
     this.isPassword = function( prospective_password ){
         
-        return /^[-@./\!\$\%\^|#&,+\w\s]{6,50}$/.test( prospective_password );
+        return this.ispassword.test( prospective_password );
         
     };
+
+
+    //*VALIDATE TELEPHONE NUMBERS
+
+    this.istelephone = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im
+    this.isTelephone = function( prospective_telephone ){
+
+	return this.istelephone.test( prospective_telephone );
+
+    }
     
     //*VALIDATE WHETHER TWO GIVEN VALUES MATCH
     this.matches = function( val1, val2 ){
@@ -242,5 +276,15 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
         
     };
     
-       
+    
+    //* CONDITIONALLY TRANSFORM TO STRING
+    this.str = function( obj ){
+        return  ( typeof(obj) === "object" ) ? JSON.stringify(obj) : obj ;
+    };
+    
+     //* CONDITIONALLY TRANSFORM TO JSON
+    this.json = function( obj ){
+        return ( typeof(obj) === 'object' ) ? obj : JSON.parse( obj );
+    };
+           
 }]);

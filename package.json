@@ -1,13 +1,13 @@
 {
   "name": "framify",
-  "version": "1.6.0-alpha.2",
+  "version": "1.6.2",
   "description": "The official bixbyte application bootstrap tool.",
   "main": "index.js",
   "directories": {
     "test": "tests"
   },
   "dependencies": {
-    "bixbyte-frame": "*"
+    "bixbyte-frame": "^0.0.2-beta.16"
   },
   "devDependencies": {},
   "scripts": {

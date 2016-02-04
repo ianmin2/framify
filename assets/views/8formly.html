@@ -1,19 +1,22 @@
-<framify menu="true"  path="formify" url="/formify" title="Forms" parent="false" icon="book" controller="formController" ></framify>
-<br>
-<!-- {{vm.fields}}-->
- <div class="mdl-grid">
-        <div class="mdl-cell mdl-cell--12-col" style="text-align:center;">
-    		<form flex-item="10"  name="vm.form" ng-submit="vm.onSubmit()" novalidate>
-
-        		<formly-form model="vm.model" fields="vm.fields"></formly-form>
-
-			<!--        <button type="submit" ng-disabled="!vm.model.terms" class="btn btn--l btn--blue btn--raised">JOIN</button>-->
-
-    		</form>
+<framify menu="true"  path="formify" url="/signup" title="Signup" parent="false" icon="book" controller="AuthController" ></framify>
+<ion-content scrollbar-x="false" scrollbar-y="false" style="padding-bottom:20px;">
+	<br>
+	<!-- {{vm.fields}}-->
+	
+	<div class="mdl-grid">
+			<div class="mdl-cell mdl-cell--12-col" style="text-align:center;">
+				<form flex-item="10"  name="vm.form" ng-submit="vm.onSubmit()" novalidate> 
+	
+					<formly-form model="vm.model" fields="vm.fields"></formly-form>
+	
+				<!--        <button type="submit" ng-disabled="!vm.model.terms" class="btn btn--l btn--blue btn--raised">JOIN</button>-->
+	
+				</form>
+		</div>
 	</div>
-</div>
-
-
-<div>
-<!--    {{inputs}}-->
-</div>
+	
+	
+	<div>
+	<!--    {{inputs}}-->
+	</div>
+</ion-content>

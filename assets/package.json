@@ -4,7 +4,7 @@
   "description": "Simple framify project",
   "main": "server/server.js",
   "dependencies": {
-    "bixbyte-frame": "*",
+    "bixbyte-frame": "^0.0.2-beta.16",
     "gulp": "^3.9.0",
     "gulp-browserify": "^0.5.1",
     "gulp-concat": "^2.6.0",
