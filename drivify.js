@@ -157,10 +157,12 @@ module.exports = function( callback ){
     
     return startify()
     .then(function(data){
+      log("\nSUCCESS:\n");
       log(data);
       return new Drivify( callback );
     })
     .catch(function(data){
+      log("\nERROR:\n");
       log(data);
     })
     ;

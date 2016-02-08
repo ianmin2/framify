@@ -1,6 +1,6 @@
 {
   "name": "framify",
-  "version": "1.6.2",
+  "version": "1.6.3",
   "description": "The official bixbyte application bootstrap tool.",
   "main": "index.js",
   "directories": {

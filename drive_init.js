@@ -2,7 +2,7 @@
 
 //!LOAD THE RELEVANT CONFIGURATION FILES
 require("./config.js");
-require("./config_drive.js");
+require("./config_cloud_drive.js");
 
 //ENSURE THAT THE TOKEN SAVING PATH EXISTS
 if( !fs.existsSync(global.TOKEN_DIR) ){
