@@ -22,6 +22,10 @@ app = require('./assets/js/app.js');
     }
     Object.defineProperty(Object.prototype, "keys", { value : keys, enumerable:false });
 
+    //* CLONE A JAVASCRIPT OBJECT
+    var clone = function( obj ){
+        return JSON.parse(JSON.stringify(obj));
+    };    
 
     //* EXTEND THE Array TO CATER FOR {{Array}}.inArray
     Array.prototype.has = function( needle ){
