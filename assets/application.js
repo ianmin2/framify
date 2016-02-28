@@ -25,30 +25,34 @@
   1: [
     function (require, module, exports) {
       //!CONFIGURE THE BNASIC PRE-RUNTIME STATES OF THE APPLICATION
-      app.config(function ($stateProvider, $urlRouterProvider) {
-        $stateProvider.state('framify', {
-          url: '/framify',
-          templateUrl: 'views/1app.html'
-        });
-        //!THE DYNAMIC ROUTE SETTER
-        var setRoutes = function (routeArray) {
-          routeArray = routeArray || [];
-          for (r in routeArray) {
-            var rData = routeArray[r];
-            $stateProvider.state(rData.path, {
-              url: rData.url,
-              templateUrl: rData.view,
-              controller: rData.controller
-            });
-          }
-        };
-        //!CAPTURE THE DEFINED JSON ROUTES
-        $.getJSON('./config/app-routes.json', function (response) {
-          setRoutes(response);
-        });
-        //!REDIRECT APP TO THE ROOT ROUTE
-        $urlRouterProvider.otherwise('/framify');
-      });
+      app.config([
+        '$stateProvider',
+        '$urlRouterProvider',
+        function ($stateProvider, $urlRouterProvider) {
+          $stateProvider.state('framify', {
+            url: '/framify',
+            templateUrl: 'views/1app.html'
+          });
+          //!THE DYNAMIC ROUTE SETTER
+          var setRoutes = function (routeArray) {
+            routeArray = routeArray || [];
+            for (r in routeArray) {
+              var rData = routeArray[r];
+              $stateProvider.state(rData.path, {
+                url: rData.url,
+                templateUrl: rData.view,
+                controller: rData.controller
+              });
+            }
+          };
+          //!CAPTURE THE DEFINED JSON ROUTES
+          $.getJSON('./config/app-routes.json', function (response) {
+            setRoutes(response);
+          });
+          //!REDIRECT APP TO THE ROOT ROUTE
+          $urlRouterProvider.otherwise('/framify');
+        }
+      ]);
       //!DEFINE THE APPLICATION RUNTIME DEFAULTS
       app.run([
         'app',
@@ -1970,6 +1974,11 @@
           this.isPassword = function (prospective_password) {
             return this.ispassword.test(prospective_password);
           };
+          //*VALIDATE TELEPHONE NUMBERS
+          this.istelephone = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+          this.isTelephone = function (prospective_telephone) {
+            return this.istelephone.test(prospective_telephone);
+          };
           //*VALIDATE WHETHER TWO GIVEN VALUES MATCH
           this.matches = function (val1, val2) {
             return val1 === val2;
@@ -2197,6 +2206,11 @@
                 this.isPassword = function (prospective_password) {
                   return this.ispassword.test(prospective_password);
                 };
+                //*VALIDATE TELEPHONE NUMBERS
+                this.istelephone = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+                this.isTelephone = function (prospective_telephone) {
+                  return this.istelephone.test(prospective_telephone);
+                };
                 //*VALIDATE WHETHER TWO GIVEN VALUES MATCH
                 this.matches = function (val1, val2) {
                   return val1 === val2;
@@ -2283,6 +2297,10 @@
         value: keys,
         enumerable: false
       });
+      //* CLONE A JAVASCRIPT OBJECT
+      var clone = function (obj) {
+        return JSON.parse(JSON.stringify(obj));
+      };
       //* EXTEND THE Array TO CATER FOR {{Array}}.inArray
       Array.prototype.has = function (needle) {
         return Array(this).join(',').indexOf(needle) > -1;

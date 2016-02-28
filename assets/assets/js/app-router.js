@@ -1,5 +1,5 @@
 //!CONFIGURE THE BNASIC PRE-RUNTIME STATES OF THE APPLICATION
-app.config(function($stateProvider,$urlRouterProvider){
+app.config(["$stateProvider","$urlRouterProvider",function($stateProvider,$urlRouterProvider){
     
     $stateProvider.state( "framify" , {
                url          :"/framify",
@@ -34,7 +34,7 @@ app.config(function($stateProvider,$urlRouterProvider){
     //!REDIRECT APP TO THE ROOT ROUTE
     $urlRouterProvider.otherwise('/framify');
     
-});
+}]);
 
 //!DEFINE THE APPLICATION RUNTIME DEFAULTS
 app.run(["app","$rootScope","$location", "formlyConfig","formlyValidationMessages",function( app, $rootScope, $location, formlyConfig, formlyValidationMessages ){

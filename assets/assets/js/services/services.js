@@ -193,8 +193,7 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
         
         return this.isusername.test( prospective_username );
         
-    };
-    
+    };    
     
     
     //*VALIDATE PASSWORDS
@@ -206,6 +205,16 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
         return this.ispassword.test( prospective_password );
         
     };
+
+
+    //*VALIDATE TELEPHONE NUMBERS
+
+    this.istelephone = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im
+    this.isTelephone = function( prospective_telephone ){
+
+	return this.istelephone.test( prospective_telephone );
+
+    }
     
     //*VALIDATE WHETHER TWO GIVEN VALUES MATCH
     this.matches = function( val1, val2 ){
@@ -280,6 +289,7 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
     };
            
 }]);
+
 },{}],2:[function(require,module,exports){
 require("./app.serv.js");
 },{"./app.serv.js":1}]},{},[2])
