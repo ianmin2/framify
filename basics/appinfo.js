@@ -1,7 +1,7 @@
 //EXPOSE THE BASIC APPLICATION INFO
 function AppInfo( ){
 	
-		var data = json(fs.readFileSync( `${__dirname}/../package.json` ).toString('utf8') );
+		var data = json(fs.readFileSync( `${__dirname}/../package.json` ).toString() );
 	
 		//console.log( typeof(data) );
 

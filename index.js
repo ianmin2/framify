@@ -17,7 +17,7 @@ switch( app.vars.repository ){
     case "-info":
 	case "--info":
 
-		console.dir( appInfo.info );
+		console.log( appInfo.info );
 
 	break;
 	
