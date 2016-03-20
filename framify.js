@@ -1,87 +1,108 @@
-var Framify = function( ){
-	
-	//THE FRAME DIRECTORY STRUCTURE CREATOR
-	this.mkdirs = function( homedir ){
+var Framify = function(){
+
+	//WRENCH COPY CONFIGURATION
+	var copy_config = {
+						forceDelete: 		false,	//force file deletion
+						excludeHiddenUnix: 	true,	//exclude hidden *nix files
+						preserveFiles: 		true,	//preserve already existing files
+						preserveTimestamps: true,	//Keep the original file timestamps
+						inflateSymlinks: 	true,	//Translate symbolic links into files
+						//exclude: 			/\.(*~|git)$/i		//Exclusion filter ( regex || function )
+						//filter: 			"",   	//Filter against an expression such that if( filter == true ){ do nothing; }
+						//whitelist: 			false,	//if( whitelist == true && ( filter != true ) ) { ignore file }
+						//include: 			"",		//Include filter ( regex || function )						
+				  };
+
+	//!THE BASIC DIRECTORY STRUCTURE CREATOR
+	this.mkdirs = function ( homedir ){
 		
-        homedir = ( homedir || "framify\ test\ \/app" ).replace(/ +/g, '_').toLowerCase();
+		homedir = ( homedir || "framify\ test\ \/app" ).replace(/ +/g, '_').toLowerCase();
 		
+		homedir = ( homedir || "framify\ test\ \/app" ).replace(/ +/g, '_').toLowerCase();
+		
+		//# ONLY CREATE A DIRECTORY WHERE NECESSARY 	
 		fs.exists( homedir, function name(exists) {
 					         
-			if(!exists){
-				
+			if(!exists){				
 				//INITIALIZE  THE PROJECT DIRECTORY IF NOT EXISTS ALREADY
-				mkdir(homedir);
-				
+				mkdir(homedir);				
 			}else{
-				
 				//INFORM THE USER THAT THE DIRECTORY ALREADY EXISTS 
-				console.log("@framify\n".err + "Failed to initialize project: ".err + "A directory by that name already exists in the current path.\n" + "Please try another".info + "\n");
-				
-					
+				console.log("@framify\n".err + "Failed to initialize project: ".err + "A directory by that name already exists in the current path.\n" + "Please try another".info + "\n");				
 			};
             
 		});
 		
-        
-		//THE DIRECTORY INITIALIZER
-		var mkdir = function( homedir ){
+		//# THE ACTUAL DIRECTORY CREATION EVALUATOR
+		var mkdir = function (homedir){
 			
 			console.log("@framify\n".success + "Initializing Project ".info + homedir + "\n");
-	
-	
-				//FILE SOURCES		
-				this.fromFiles = { 			
-									main: 		[ home, "assets" ]
-								};
+			
+			//# FILE SOURCES		
+				this.fromFiles 	= 	{ 			
+										main: 		[ __dirname, "assets" ]
+									};
 				
-				//FILE DESTINATIONS	
-				this.toFiles = {			
-									main: 		[ homedir ]
-								};
-				
-							
-				//CREATE THE REQUIRED FILES RECURSSIVELY
-				for (var key in this.fromFiles ) {
+				//# FILE DESTINATIONS	
+				this.toFiles 	=   {			
+										main: 		[ homedir ]
+									};
+								
+				//# COPY THE FILES RECCURSIVELY IF SIMILAR KEYS EXIST
+				this.fromFiles.foreach( (fileValue, fileKey) => {
 					
-					if (this.toFiles.hasOwnProperty(key)) {	
-                        
-						doFiles(  this.fromFiles[key].join().replace(/,/g, "/").replace( /\/\//g, "/").toString(), this.toFiles[key].join().replace(/,/g, "/").replace( /\/\//g, "/").toString()  );
-                        
-					};	
+					//console.log( `${fileValue} ++> ${fileKey}` )
+					
+					//# COPY FROM ++> TO
+					if( this.toFiles.hasOwnProperty( fileKey ) ){
 							
-				};
+						var from = this.fromFiles[fileKey].join().replace(/,/g, "/").replace(/\/\//g, "/").toString("utf8");
+						var to 	 = this.toFiles[fileKey].join().replace(/,/g, "/").replace( /\/\//g, "/").toString("utf8");
+						
+						console.log( `Copying initialization files ${from} ++> ${to}` )
+											
+						doFiles( from , to );
+						
+					}
+					
+				});
+			
 			
 		};
 		
-		//MOVE THE INITIALIZATION FILES TO THE RESPECTIVE DIRECTORIES
-		var doFiles = function( fromFiles, toFiles ){
-			
-			fse.copyRecursive( fromFiles, toFiles, function(err){
-                
-				if(!err){
-                                        
-					console.log("@framify\n".success + "initialized \t".info +  toFiles + "\n" );
-					cloud_init( { response: true, data: { message: cloud_callbacks, command: '' }});
-                    
-				}else{
-                    
-					console.log("@framify\n".err + "Failed \t" + err.message + "\n");
-					cloud_init( { response: false, data: { message: cloud_callbacks, command: '' } });
-                    
-				}
-                
-			});
-			
-		};	
+		//@ SUCCESSFUL DIRECTORY EVALUATOR
+		var evaluateCopy = (err) =>{
+				
+								if(err){
+									
+									console.log("@framify\n".err + "Failed \t" + err.message + "\n");
+									app.cloud.init( { response: false, data: { message: app.cloud.callbacks, command: '' } });
+									
+								}else{
+									
+									console.log("@framify\n".success + "initialized \t".info +  this.toPath + "\n" );
+									app.cloud.init( { response: true, data: { message: app.cloud.callbacks, command: '' }});
+									
+								}
+								
+							};
 		
+		//# COPY THE FILES TO THE REQUIRED DIRECTORY [ `${app.vars.home}/${app.vars.repository}` ]
+		var doFiles = function(  fromPath, toPath ){
+		
+			//fse.copyRecursive( fromPath, toPath, evaluateCopy );
+			//wrench.mkdirSyncRecursive(toPath[0], 0777);
+			evaluateCopy = evaluateCopy.bind( this );
+			wrench.copyDirRecursive(fromPath , toPath, copy_config, evaluateCopy );
+			
+			
+		};		
 		
 	};
 	
 };
 
-//EXPOSE THE PROJECT INITIATOR
-module.exports = function(  ){
-   
-    return new Framify( ).mkdirs;
-    
+//# EXPOSE THE PROJECT INITIATOR 
+module.exports = () => {
+	return new Framify().mkdirs;
 };

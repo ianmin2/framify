@@ -1,47 +1,50 @@
+//@BASIC PROJECT REQUIREMENTS
 require("bixbyte-frame");
-//require("/nodejs/class/frame");
 
-global.app.ip = "41.89.162.4";
-global.app.drive = "http://" + global.app.ip + "/framify/authfile/drive_auth.json"; 
+//@PROJECT SPECIFIC IMPORTS
+global.wrench = require("wrench");
 
-require("./config_cloud.js");
+//# BASIC DRIVE AUTHENTICATION CONFIG FILE SETUP
+app.ip = "41.89.162.4";
 
-//!PICK THE CLI VARIABLES
-global.repo_name 		= ( process.argv[2] || "-h" ).replace(/ +/g, '_').toLowerCase();
-global.create_git 		= process.argv[3];
+//# FETCH THE BASIC CLOUD APP CONFIGURATIONS
+require("./cloud_config.js");
 
-//GET THE SCRIPT INSTALLATION DIRECTORY
-global.home     = path.dirname( fs.realpathSync( __filename ) ) + "/";
+//# FETCH THE CLI APP VARIABLES
+app.vars.repository =   ( process.argv[2] || "-h" ).replace(/ +/g, '_').toLowerCase();
+app.vars.git 		=	process.argv[3] || null;
 
-//FETCH THE BIXBYTE APPLICATION INFO OBJECT
-global.appInfo  = require("./appinfo.js")();
-	
+//# FETCH THE SCRIPT INSTALLATION DIRECTORY
+app.vars.home 		= path.dirname( fs.realpathSync( __filename ) ) + '/';
 
-//THE BIXBYTE CLOUD INITIALIZER SERVICE
-global.cloud_init = function( repo_data ){
-	
-					if( repo_data.response ){
-						
-						console.log("@framify".success + "\nInitializing cloud services for the project ".info + global.repo_name + "\n" );
-                                            
-                        
-                        repo_data.data.message.drive();
-                        repo_data.data.message.git();
-                        
-					
-					}else{
-						
-						console.log('@framify\nFailed to initialize cloud services for the project '.err + global.repo_name + '\nYou have to ' + 'set'.info +' the' + ' github '.yell +' and ' +'google drive'.yell + ' services '+ 'manually'.info + '.\n');
-					
-					};
-					
-				};
+//FETCH THE APPLICATION INFO OBJECT
+app.vars.appInfo = require("./basics/appinfo.js")();
+global.appInfo = app.vars.appInfo;
 
-//FETCH THE BASIC PROJECT DIRECTORY CREATOR
-global.framify = require("./framify.js")();
+//# FETCH THE BASIC PROJECT DIRECTORY CREATOR
+global.Framify = require("./framify.js")();
 
-//FETCH THE BIXBYTE DRIVIFY APPLICATION OBJECT
-//global.drivify = require("./drivify.js");
+//# SINCE THE DRIVIFY OBJECT REQUIRES AN ACTIVE CALLBACK( oAuth_client ), IT SHOULD BE STORED BEFORE USE 
+global.Drivify 	= require("./drive/drivify.js");
+
+// //#EXPOSE THE APPLICATION LOG STREAM 
+// global.logStream = () => {
+// 	return fs.createWriteStream( `${app.vars.home}.framify` );
+// };
+
+//# CLOUD INITIALIZATION FUNCTION
+app.cloud.init = ( repoData ) => {
+
+	if( repoData.response ){
 		
-//!EXPOSE APPLICATION THE LOG STREAM
-global.logStream = function(){	return fs.createWriteStream( global.home + ".framify"); };
+		console.log("@framify".success + "\nInitializing cloud services for the project ".info + app.vars.repository + "\n" );
+		repoData.data.message.drive();
+		repoData.data.message.git();
+		
+	}else{
+		
+		console.log('@framify\nFailed to initialize cloud services for the project '.err + app.vars.repository + '\nYou have to ' + 'set'.info +' the' + ' github '.yell +' and ' +'google drive'.yell + ' services '+ 'manually'.info + '.\n');
+		
+	}	
+	
+};
