@@ -6,7 +6,7 @@
 
     <link rel="stylesheet" href="assets/css/ionic.min.css">
     <link rel="stylesheet" href="assets/css/angular-material.min.css">
-    <link rel="stylesheet" href="assets/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="assets/css/material-icons.css">
     <link rel="stylesheet" href="assets/css/material.min.css">
     <link rel="stylesheet" href="assets/css/font-awesome.min.css">
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
@@ -61,7 +61,7 @@
                     <ul class="list">
                         <a class="item dropdown-link dropdown-link--is-large" href="#{{link.url}}" ng-repeat="link in links" ng-show="link.menu == 'true'">
                            
-                            <i class="mdi mdi-{{link.icon}}"></i>
+                            <i class="material-icons">{{link.icon}}</i>
                             <span>{{link.title}}</span>
                             
                         </a>

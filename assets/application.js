@@ -31,7 +31,7 @@
         function ($stateProvider, $urlRouterProvider) {
           $stateProvider.state('framify', {
             url: '/framify',
-            templateUrl: 'views/1app.html'
+            templateUrl: 'views/001Intro.html'
           });
           //!THE DYNAMIC ROUTE SETTER
           var setRoutes = function (routeArray) {
@@ -60,9 +60,12 @@
         '$location',
         'formlyConfig',
         'formlyValidationMessages',
-        function (app, $rootScope, $location, formlyConfig, formlyValidationMessages) {
+        '$localStorage',
+        function (app, $rootScope, $location, formlyConfig, formlyValidationMessages, $localStorage) {
           //!INJECT THE LOCATION SOURCE TO THE ROOT SCOPE
           $rootScope.location = $location;
+          //!INJECT THE $localStorage instance into the root scope
+          $rootScope.storage = $localStorage;
           //!INJECT THE APPLICATION'S MAIN SERVICE TO THE ROOT SCOPE SUCH THAT ALL SCOPES MAY INHERIT IT
           $rootScope.app = app;
           //! FORMLY ERROR MESSAGE CONFIGURATION
@@ -73,34 +76,35 @@
           // };
           // formlyValidationMessages.addTemplateOptionValueMessage('minlength', 'minlength', '', 'is the minimum length', 'Too short');
           //!ANGULAR FORMLY CONFIGURATION
-          formlyConfig.setWrapper([
-            {
-              template: [
-                '<div class="formly-template-wrapper form-group"',
-                'ng-class="{\'has-error\': options.validation.errorExistsAndShouldBeVisible}">',
-                '<formly-transclude></formly-transclude>',
-                '<div class="validation"',
-                'ng-if="options.validation.errorExistsAndShouldBeVisible"',
-                'ng-messages="options.formControl.$error">',
-                '<div ng-messages-include="validation.html"></div>',
-                '<div ng-message="{{::name}}" ng-repeat="(name, message) in ::options.validation.messages"><font color="red" style="text-align:left;" >',
-                '{{message(options.formControl.$viewValue, options.formControl.$modelValue, this)}} </font>',
-                '</div>',
-                '</div>',
-                '</div>'
-              ].join(' ')
-            },
-            {
-              template: [
-                '<div class="checkbox formly-template-wrapper-for-checkboxes form-group">',
-                '<label for="{{::id}}">',
-                '<formly-transclude></formly-transclude>',
-                '</label>',
-                '</div>'
-              ].join(' '),
-              types: 'checkbox'
-            }
-          ]);
+          // formlyConfig.setWrapper([
+          //   {
+          //     template: [
+          //       '<div class="formly-template-wrapper form-group"',
+          //       'ng-class="{\'has-error\': options.validation.errorExistsAndShouldBeVisible}">',
+          //       //'<label for="{{::id}}">{{options.templateOptions.label}} {{options.templateOptions.required ? \'*\' : \'\'}}//</label>',
+          //       '<formly-transclude></formly-transclude>',
+          //       '<div class="validation"',
+          //       'ng-if="options.validation.errorExistsAndShouldBeVisible"',
+          //       'ng-messages="options.formControl.$error">',
+          //       '<div ng-messages-include="validation.html"></div>',
+          //       '<div ng-message="{{::name}}" ng-repeat="(name, message) in ::options.validation.messages"><font color="red" style="text-align:left;" >',
+          //       '{{message(options.formControl.$viewValue, options.formControl.$modelValue, this)}} </font>',
+          //       '</div>',
+          //       '</div>',
+          //       '</div>'
+          //     ].join(' ')
+          //   },
+          //   {
+          //     template: [
+          //       '<div class="checkbox formly-template-wrapper-for-checkboxes form-group">',
+          //       '<label for="{{::id}}">',
+          //       '<formly-transclude></formly-transclude>',
+          //       '</label>',
+          //       '</div>'
+          //     ].join(' '),
+          //     types: 'checkbox'
+          //   }
+          // ]);
           /*formlyConfig.setType({
         name: "stats",
         template: '<div class="p+ bgc-green-100" style="margin:10px; max-width:450px;" ng-repeat="(key,val) in this">$scope.{{key}} = {{val | json}}</div><br><br>'       
@@ -116,7 +120,7 @@
           formlyConfig.setType({
             name: 'submit',
             template: '<div id="resp"></div><br><button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--blue mdl-cell mdl-cell--2-col" style="min-width: 200px; margin:10px; min-height:25px; color:whitesmoke; font-weight:bold;" ng-hide="{{options.templateOptions.disabled}}">{{options.templateOptions.label}}</button>',
-            defaultOptions: { templateOptions: { label: 'SUBMIT' } }
+            defaultOptions: { templateOptions: { label: 'SAVE' } }
           });
           formlyConfig.setType({
             name: 'countries',
@@ -1118,7 +1122,9 @@
       module.exports = angular.module('bixFrame', [
         'ionic',
         'ngMaterial',
-        'formlyIonic'
+        'formlyIonic',
+        'ngStorage',
+        'jsonFormatter'
       ]);
     },
     {}

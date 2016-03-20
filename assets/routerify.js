@@ -64,7 +64,7 @@ var routerify = function() {
                 path    = gTest.exec( txt.match(getPath) )[2]   //|| gTest.exec( txt.match(/path=\'(.*?)\'/gi) )[2];
                 url     = gTest.exec( txt.match(getUrl) )[2]    //|| gTest.exec( txt.match(/url=\'(.*?)\'/gi) )[2];
                 title   = gTest.exec( txt.match(getTitle) )[2]  //|| gTest.exec( txt.match(/title=\'(.*?)\'/gi) )[2];
-                icon    = gTest.exec( txt.match(getIcon) )[2] || "exit-to-app"; //|| (gTest.exec( txt.match(/icon=\'(.*?)\'/gi) )[2] || "exit-to-app");
+                icon    = gTest.exec( txt.match(getIcon) )[2] || "exit_to_app"; //|| (gTest.exec( txt.match(/icon=\'(.*?)\'/gi) )[2] || "exit-to-app");
                 ctrl    = gTest.exec( txt.match(getCtrl) )[2] || "appController"; //|| (gTest.exec( txt.match(/controller=\'(.*?)\'/gi) )[2] || "appController");
 //              menu = getMenu.exec(frame)[1] || null;
 //              parent = getParent.exec(frame)[1];

@@ -3,7 +3,7 @@
 	"alias": "Framify Child",
     "navbar": {
             "title" : "Bixbyte Child Application",
-	    "alias": "Framify Child",
+	    "alias": "Framify Child"
     },
     "version" : "1.0.0"	
 }

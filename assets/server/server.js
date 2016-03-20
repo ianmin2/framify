@@ -3,7 +3,7 @@ require( __dirname + "/../schema/mother.js");
 var formGen 	= require( __dirname + "/formGenerator.js");
 var formPack 	= require( __dirname + "/formStacker.js");
 
-db("mongo","mama")
+db("mongo","bixbyte-frame")
 .then(function(e){
 	
 	db.framify({
