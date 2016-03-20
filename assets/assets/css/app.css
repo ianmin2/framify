@@ -8,7 +8,7 @@
   font-family: 'Roboto';
   font-style: normal;
   font-weight: 300;
-  src: local('Roboto Light'), local('Roboto-Light'), url("./../fonts/Roboto-Light.ttf") format('truetype');
+  src: local('Roboto Light'), local('Roboto-Light'), url("fonts/Roboto-Light.ttf") format('truetype');
 }
 /* EO ROBOTO font setup */
 
@@ -17,7 +17,7 @@
   font-family: 'Framify';
   font-style: normal;
   font-weight: 500;
-  src: local('framify'),url('./../fonts/Sweetly_Broken.ttf') format('truetype');
+  src: local('framify'),url('fonts/Sweetly_Broken.ttf') format('truetype');
 }
 /*EO FRAMIFY FONT SETUP*/
 
