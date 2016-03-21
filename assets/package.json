@@ -5,15 +5,19 @@
   "main": "server/server.js",
   "dependencies": {
     "bixbyte-frame": "*",
-    "gulp": "*",
-    "gulp-browserify": "0.5.1",
-    "gulp-concat": "2.6.0",
-    "gulp-imagemin": "2.3.0",
-    "gulp-sourcemaps": "1.5.2",
-    "gulp-uglify": "0.3.2",
-    "map-stream": "0.0.6"
+    "del": "^2.2.0",
+    "browser-sync":"^2.11.1",   
+    "gulp-browserify": "^0.5.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-imagemin": "^2.3.0",
+    "gulp-ngmin": "^0.3.0",
+    "gulp-sourcemaps": "^1.5.2",
+    "gulp-uglify": "^0.3.2",
+    "map-stream": "^0.0.6"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "gulp": "*"    
+  },
   "scripts": {
     "test": "node server/server.js"
   },
