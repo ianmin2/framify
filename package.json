@@ -1,6 +1,6 @@
 {
   "name": "framify",
-  "version": "1.7.2",
+  "version": "1.7.3",
   "description": "A simple application bootstrapping tool by b!xbyte",
   "main": "index.js",
   "scripts": {
