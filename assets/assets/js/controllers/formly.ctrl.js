@@ -15,7 +15,7 @@ app.controller("AuthController",["$scope", "$http", function($scope,$http){
              
             }else{
                 
-                $scope.app.UID( "resp", $scope.app.str(resp.data.message) , "danger" );
+                $scope.app.UID( "resp", $scope.app.str(resp.data.message) , "danger" ); 
                 
             }
             

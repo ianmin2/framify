@@ -162,10 +162,11 @@ app.controller("AuthController",["$scope", "$http", function($scope,$http){
             if( resp.response ===  200 || resp.response === "SUCCESS" ){
             
                 $scope.app.UID( "resp", $scope.app.str(resp.data.message), "success" );
+                $scope.vm.model = {};
              
             }else{
                 
-                $scope.app.UID( "resp", $scope.app.str(resp.data.message) , "danger" );
+                $scope.app.UID( "resp", $scope.app.str(resp.data.message) , "danger" ); 
                 
             }
             
@@ -182,8 +183,18 @@ app.controller("AuthController",["$scope", "$http", function($scope,$http){
     $scope.vm.model = { terms: true};
     
     $scope.vm.fields = [
+	{
+            'key': "username",
+            'type': "inline-input",           
+            'templateOptions': {
+                'label': "Username*",
+                'type': "text",
+                'placeholder': "Username",
+                'required': true
+            }
+        },
         {
-            'key': "firstName",
+            'key': "first_name",
             'type': "inline-input",            
             'templateOptions': {
                 'label': "First Name*",
@@ -193,7 +204,7 @@ app.controller("AuthController",["$scope", "$http", function($scope,$http){
             }
         },
         {
-             'key': "lastName",
+             'key': "last_name",
             'type': "inline-input",           
             'templateOptions': {
                 'label': "Last Name",
@@ -202,7 +213,7 @@ app.controller("AuthController",["$scope", "$http", function($scope,$http){
                 'required': false
             }
         },
-        {
+ 	{
           'key': 'password',
           'type': 'inline-input',
           'templateOptions': {
@@ -305,29 +316,10 @@ app.controller("AuthController",["$scope", "$http", function($scope,$http){
         }
     ];
     
-    // $scope.vm.fields = [
-    //             {
-    //                 "key": "username",
-    //                 "type": "inline-input",
-    //                 "templateOptions": {
-    //                     "type": "text",
-    //                     "label": "Username"
-    //                 }
-    //             }, {
-    //                 "key": "password",
-    //                 "type": "inline-input",
-    //                 "templateOptions": {
-    //                     "type": "password",
-    //                     "label": "Password"
-    //                 }
-    //             }
-    //         ];
-    
-    
-    
     $scope.vm.originalFields = angular.copy($scope.vm.fields);      
     
    
     
 }]);
+
 },{}]},{},[3])
