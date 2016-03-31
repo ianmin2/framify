@@ -4,6 +4,8 @@ var development = false;
  * BASIC DEPENDENCY IMPORTATION
 */
 var gulp        = require("gulp");
+var gutil       = require('gulp-util');
+var babel       = require('gulp-babel');
 var concat      = require("gulp-concat");
 var uglify      = require('gulp-uglify');
 var imagemin    = require('gulp-imagemin');
@@ -139,10 +141,11 @@ gulp.task("clean", function(cb){
  */
 var dist = function( src, filename, filepath ){
     return gulp.src( src )
-            .pipe( browserify() )
-            .pipe( concat( filename ) )
-            .pipe( ngmin() )
-            .pipe( gulp.dest( filepath ) );
+            .pipe( browserify().on('error', gutil.log) )
+            .pipe( babel({ presets: ['es2015'] }).on('error', gutil.log) )
+            .pipe( concat( filename ).on('error', gutil.log) )
+            .pipe( ngmin().on('error', gutil.log) )
+            .pipe( gulp.dest( filepath ).on('error', gutil.log) );
 }
 
 /*
@@ -152,8 +155,9 @@ var dev = function( src, filename, filepath  ){
     return gulp.src( src )
         .pipe( sourcemaps.init() )
         .pipe( browserify({ insertGlobals: true, debug: true }) )
+        .pipe( babel({ presets: ['es2015'] }) )
         .pipe( concat( filename ) )
-	.pipe( ngmin() ) 
+	    .pipe( ngmin() ) 
         //.pipe( uglify({mangle: false}) )
         .pipe( sourcemaps.write() )
         .pipe( gulp.dest( filepath ));
@@ -163,8 +167,8 @@ var dev = function( src, filename, filepath  ){
 var route = function( src, filename, filepath ){
     
     return gulp.src(src )
-        .pipe( routerify() )
-        .pipe( gulp.dest( filepath ) );
+        .pipe( routerify().on('error', gutil.log) )
+        .pipe( gulp.dest( filepath ).on('error', gutil.log) );
     
 }
 
@@ -223,7 +227,13 @@ gulp.task('package', ['build'], function(){
         var resp = []
     
        for( fdir in files_dir ){
-           resp.push( build( paths.application, "application.js", dest.application ).pipe( ngmin() ).pipe( uglify() ).pipe( gulp.dest( files_dir[fdir] ) ));
+           resp.push( 
+                build( paths.application, "application.js", dest.application )
+                .pipe( ngmin().on('error', gutil.log) )
+                .pipe( babel({ presets: ['es2015'] }).on('error', gutil.log) )
+                .pipe( uglify().on('error', gutil.log) )
+                .pipe( gulp.dest( files_dir[fdir] ).on('error', gutil.log) ) 
+           );
        }
     
       rmFiles(files)
@@ -276,7 +286,7 @@ gulp.task('serve', function() {
      browserSync.init({
                 server: {
                     baseDir: "./",
-                    proxy: "127.0.0.1:5000"
+                    proxy: "127.0.0.1:1357"
                 }
             });
             gulp.watch("*").on('change', browserSync.reload)
