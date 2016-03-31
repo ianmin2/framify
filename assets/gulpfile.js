@@ -7,7 +7,7 @@ var gulp        = require("gulp");
 var concat      = require("gulp-concat");
 var uglify      = require('gulp-uglify');
 var imagemin    = require('gulp-imagemin');
-var ngmin       = require('gulp-ngmin');
+var ngmin       = require('gulp-ng-annotate');
 var browserify  = require('gulp-browserify');
 var sourcemaps  = require('gulp-sourcemaps');
 var del         = require('del');
@@ -141,7 +141,7 @@ var dist = function( src, filename, filepath ){
     return gulp.src( src )
             .pipe( browserify() )
             .pipe( concat( filename ) )
-            //.pipe( ngmin({dynamic: true}) )
+            .pipe( ngmin() )
             .pipe( gulp.dest( filepath ) );
 }
 
