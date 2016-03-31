@@ -1,6 +1,6 @@
 {
   "name": "framify",
-  "version": "1.8.2",
+  "version": "1.8.3",
   "description": "A simple application bootstrapping tool by b!xbyte",
   "main": "index.js",
   "scripts": {
@@ -31,7 +31,7 @@
   "dependencies": {
     "bixbyte-frame": "*",
     "shelljs": "^0.6.0",
-    "wrench": "^1.5.8"
+    "wrench": "^1.5.9"
   },
   "bin": {
     "framify": "index.js",
