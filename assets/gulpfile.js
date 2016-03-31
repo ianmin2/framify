@@ -153,6 +153,7 @@ var dev = function( src, filename, filepath  ){
         .pipe( sourcemaps.init() )
         .pipe( browserify({ insertGlobals: true, debug: true }) )
         .pipe( concat( filename ) )
+	.pipe( ngmin() ) 
         //.pipe( uglify({mangle: false}) )
         .pipe( sourcemaps.write() )
         .pipe( gulp.dest( filepath ));
@@ -222,7 +223,7 @@ gulp.task('package', ['build'], function(){
         var resp = []
     
        for( fdir in files_dir ){
-           resp.push( build( paths.application, "application.js", dest.application ).pipe( ngmin() ).pipe( gulp.dest( files_dir[fdir] ) ));
+           resp.push( build( paths.application, "application.js", dest.application ).pipe( ngmin() ).pipe( uglify() ).pipe( gulp.dest( files_dir[fdir] ) ));
        }
     
       rmFiles(files)
