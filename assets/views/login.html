@@ -1,0 +1,60 @@
+<framify menu="false" path="login" url="/admin" title="Admin" parent="false" icon="enhanced_encryption" controller="voteAdminController" ></framify>
+<ion-content scrollbar-x="false" scrollbar-y="false" style="padding-bottom:40px;">
+    <br><br ng-init="miniAuth()">
+    
+    <div class="list" ng-if="!adminAuth">
+        <label class="item item-input item-floating-label">
+            <span class="input-label">Username</span>
+            <input type="text" ng--model="auth.username" placeholder="Username">
+        </label>
+        <label class="item item-input item-floating-label">
+            <span class="input-label">Password</span>
+            <input type="password" ng-model="auth.password" placeholder="Password">
+        </label>
+        <button ng-if="auth.username && auth.password" class="button button-block button-calm" ng-click="doAuth()">LOGIN</button>
+    </div>
+    
+    <div class="container container-fluid" ng-if="adminAuth">
+        
+        <div class="col-lg12">
+            
+            <ion-item class="item-profile assertive card col-lg-3" ng-click="logout()" >
+						
+                <a class="item" href="#/">
+                    
+                    <div style="margin:1em;text-align:center;">
+                        
+                        <h2><b style="text-transform:capitalize;"><i class="material-icons">no_encryption</i></b></h2>
+                        <div style="padding-top:1em;padding-left:1em;text-transform:uppercase;">
+                            LOGOUT
+                        </div>
+                    </div>
+                </a> 
+                
+            </ion-item>
+            
+            <ion-item class="item-profile card col-lg-3" ng-repeat="link in links" ng-if="link.parent=='true' && link.menu=='true'" >
+						
+                <a class="item bx-hov" href="#{{link.url}}">
+                    
+                    <div style="margin:1em;text-align:center;">
+                        
+                        <h2><b style="text-transform:capitalize;"><i class="material-icons">{{link.icon}}</i></b></h2>
+                        <div style="padding-top:1em;padding-left:1em;text-transform:uppercase;">
+                            {{link.title}}
+                        </div>
+                    </div>
+                </a> 
+                
+            </ion-item>
+            
+            
+            
+        </div>
+        
+    </div>
+    
+    <br>
+    <br>
+    <br>
+</ion-content>

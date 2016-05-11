@@ -78,6 +78,7 @@ var routerify = function() {
                     "title": title || "",
                     "path": path || "",
                     "url": url || "",
+                    "parent": parent || false,
                     "view": "views/" + frame,
                     "icon": icon,
                     "controller": ctrl

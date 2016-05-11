@@ -21,6 +21,17 @@
 }
 /*EO FRAMIFY FONT SETUP*/
 
+button{
+  transition-duration: 0.3s;
+}
+
+button:hover{
+  transition-duration: 0.3s;
+  box-shadow: 2px 3px grey;
+}
+input{
+  border: 0;
+}
 .framify{
   font-family: framify;
   font-size: 10em;
@@ -38,4 +49,23 @@
   font-size: 7em;
   color: black;
   text-shadow: 3px 3px deepskyblue;
+}
+
+.item-profile{
+  height: 150px;
+}
+
+.item-profile > .item-avatar > img:first-child {
+  max-width: 100px;
+  max-height: 100px; 
+}
+
+#resp{
+  color: grey;
+  display: block;
+  margin: 0 auto;
+  text-align: center;
+}
+.bx-hov:hover {
+  text-decoration: snow !important;
 }

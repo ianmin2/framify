@@ -9,6 +9,8 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
     $rootScope.links = [];
     
     $scope.nav.hasFilters = false;
+
+    //  && ( link.parent == 'false' || ( auth.mainAdmin != null  && auth.mainAdmin != undefined ) )
     
     //** MANAGE THE SIDENAV TOGGLE EVENTS
     //!Right sidenav
@@ -59,8 +61,8 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
         
     //*CALL A CUSTOM MODAL
     $scope.ui.modal = function( modal_template, modal_animation, modal_onHide, modal_onRemove ){
-      
-        modal_template = modal_template || "views/app.html";
+      console.dir("started")
+        modal_template = modal_template || "views/login.html";
         
         //~ Setup the custom modal
         $ionicModal.fromTemplateUrl( modal_template , {
@@ -105,6 +107,24 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
     };
     //*EO - CALL CUSTOM MODAL 
     
-   
+    //@ FUNCTION EXECUTOR
+    $rootScope.exec = f=>f();    
+    
+    /**
+     * SECURE THE PARENTAL CONTROLLED URLS
+     */
+    $rootScope.secure = ( securityFunc )=>{
+        
+        var parts = window.location.href.split('/');
+        var part = parts[(parts.length-1)];
+        if( $scope.links.indexOf(part) >= 0  ){
+            
+          $rootScope.exec( securityFunc ); 
+            
+        }
+        
+        
+    }
+ 
     
 }])

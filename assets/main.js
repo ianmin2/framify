@@ -3,11 +3,7 @@
 /* global app_ip */
 /* global app_port */
 
-//! APP CONFIGURATIONS
-app_ip = "127.0.0.1";
-app_port = 5000;
-app_hlink = "http://"+app_ip+":" + app_port;
-app = require('./assets/js/app.js');
+global.app = require('./assets/js/app.js');
 
 //! CUSTOM EXTENTIONS HERE
 
@@ -23,7 +19,7 @@ app = require('./assets/js/app.js');
     Object.defineProperty(Object.prototype, "keys", { value : keys, enumerable:false });
 
     //* CLONE A JAVASCRIPT OBJECT
-    var clone = function( obj ){
+    global.clone = function( obj ){
         return JSON.parse(JSON.stringify(obj));
     };    
 
@@ -32,6 +28,30 @@ app = require('./assets/js/app.js');
 
         return Array(this).join(",").indexOf(needle) >-1;
 
+    };
+
+   //* COUNT INSTANCES IN ARRAY
+    Array.prototype.count = function( val ){
+       
+	  if( val === undefined ){
+		  return this.length;
+	  }else{
+		 
+		 var counter = 0;
+		 
+		 this.forEach(function(ElementValue,ElementPosition){
+		  
+		  	if( val == ElementValue ){
+				counter++;	  
+			}
+		  
+	  	 });
+		   
+		return counter;
+		  
+	  }
+      
+        
     };
 
 //! EO - CUSTOM EXTENSIONS

@@ -1,0 +1,42 @@
+{
+  "name": "framify",
+  "version": "1.8.5
+",
+  "description": "A simple application bootstrapping tool by b!xbyte",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"\nThank you for choosing framify\n\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ianmin2/framify.git"
+  },
+  "keywords": [
+    "bixbyte",
+    "framify",
+    "bixbyte-cli",
+    "project generator",
+    "generator",
+    "drivify",
+    "gitify",
+    "cli"
+  ],
+  "author": "Ian Innocent",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ianmin2/framify/issues"
+  },
+  "website": "https://ianmin2.cf/framify",
+  "homepage": "https://github.com/ianmin2/framify#readme",
+  "email": "info@ianmin2.cf",
+  "dependencies": {
+    "bixbyte-frame": "*",
+    "shelljs": "^0.6.0",
+    "wrench": "^1.5.9"
+  },
+  "bin": {
+    "framify": "index.js",
+    "git-framify": "git/git_cli.js",
+    "drivify": "drive/drive_cli.js"
+  }
+}

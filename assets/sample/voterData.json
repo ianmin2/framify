@@ -1,0 +1,85 @@
+{
+  "response": "200",
+  "data": {
+    "message": {
+      "positions": [
+        {
+          "id": "1",
+          "title": "President"
+        },
+        {
+          "id": "2",
+          "title": "Deputy President"
+        },
+        {
+          "id": "3",
+          "title": "Mannerless"
+        },
+        {
+          "id": "ACCT",
+          "title": "ACCOUNTING"
+        },
+        {
+          "id": "INSY",
+          "title": "INFORMATION SYSTEMS AND COMPUTING"
+        }
+      ],
+      "candidates": [
+        {
+          "id": "4",
+          "school_id": "JB",
+          "name": "bib",
+          "position": "2"
+        },
+        {
+          "id": "1",
+          "school_id": "SKAMIA1321",
+          "name": "Ian Innocent",
+          "position": "1"
+        },
+        {
+          "id": "2",
+          "school_id": "IANMIN2",
+          "name": "ian innocent mbae",
+          "position": "1"
+        },
+        {
+          "id": "3",
+          "school_id": "IANMIN3",
+          "name": "ian innocent mbae",
+          "position": "1"
+        },
+        {
+          "id": "5",
+          "school_id": "skitem1211",
+          "name": "Kitua Emil Gabriel",
+          "position": "1"
+        },
+        {
+          "id": "1",
+          "school_id": "SKAMIA1321",
+          "name": "Ian Innocent",
+          "position": "ACCT"
+        },
+        {
+          "id": "2",
+          "school_id": "SKAMIA111A",
+          "name": "KAMAU IAN MBAE",
+          "position": "INSY"
+        },
+        {
+          "id": "3",
+          "school_id": "SCHIEM1321",
+          "name": "Emmanuel Chifamba",
+          "position": "INSY"
+        }
+      ],
+      "userData": {
+        "username": "SKAMIA1321",
+        "accessKey": "153797e5fc6433812172aa8d47ec69e1",
+        "name": "Ian Innocent Mbae"
+      }
+    },
+    "command": "startVote"
+  }
+}

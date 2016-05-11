@@ -1,9 +1,9 @@
 {	
-	"title" : "Bixbyte Child Application",
-	"alias": "Framify Child",
+	"title" : "Framify",
+	"alias": "Bixbyte Framify",
     "navbar": {
-            "title" : "Bixbyte Child Application",
-	    "alias": "Framify Child"
+            "title" : "Framify Child Application",
+	    "alias": "Bixbyte Framify"
     },
-    "version" : "1.0.0"
+    "version" : "0.0.0"
 }

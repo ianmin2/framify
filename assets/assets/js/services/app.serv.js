@@ -1,13 +1,18 @@
 app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
   
     //!SETUP THE APPLICATION BASICS
+    var url = window.location.href.split('/').filter(function(urlPortion){ return ( urlPortion != '' && urlPortion != 'http:' && urlPortion !=  'https:'  )  }) ;
+	
+    //! APP CONFIGURATIONS
+    this.ip = url[0].split(':')[0];
+    this.port = url[0].split(':')[1];
+    this.hlink = "http://"+this.ip+":"+this.port;
     
-    //!APPLICATION PORT 
-    this.port = 1357
-    
+    //global hlink = this.hlink;
+      
     //!APPLICATION URL
     //this.url = "http://41.89.162.4:3000";
-    this.url = "http://localhost:" + this.port;
+    this.url = this.hlink;
     
     
     //! EMPTY CALLBACK
@@ -18,8 +23,8 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
     //!WRITE TO THE UI
     this.UID = function( objectID, pageContent, c ){
         
-        document.getElementById(objectID).innerHTML = "<div class='alert alert-"+ c +"'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +  pageContent + "</div>";
-        
+        document.getElementById(objectID).innerHTML = `<div class='alert alert-${c}'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>${pageContent}</div>`;
+      
     }; 
     
     //!AVAIL THE APPLICATION LINKS    
@@ -63,7 +68,7 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
       //$http.post( bix_hlink + path, data, config).then( success_callback, error_callback );
       $.ajax({
             method: "POST",
-            url:  app_hlink + path,
+            url: this.hlink + path,
             data: data,
             success: success_callback,
             error: success_callback  
@@ -98,6 +103,25 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
        
    };
    
+   
+   //!HANDLE JSON REQUESTS OF ANY CALIBER
+   this.JSON = function( link ){
+       
+       return $.getJSON( link );
+       
+   };
+   
+   //! HANDLE CORS CALLS TO THE PHP FCGI MODULE
+   this.cgi = ( url, data ) => {
+       
+      return $.ajax({
+                method: "GET",
+                url: url,
+                data: data,
+                dataType: 'jsonp',
+            });
+       
+   }
   
    //!HANDLE THE DISPLAY OF DIALOG BOXES
    
@@ -127,8 +151,6 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
             
             if( typeof(cb) == "function"){
                 cb(res);
-            }else{
-                console.error("Invalid callback function passed for an alert dialog.\nCALLBACK DATA:\n\n" + cb + "\n\nData Type:\t\t" + typeof(cb) + "\nExpected:\t\tfunction" );
             }
             
         });

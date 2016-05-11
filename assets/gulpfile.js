@@ -142,9 +142,11 @@ gulp.task("clean", function(cb){
 var dist = function( src, filename, filepath ){
     return gulp.src( src )
             .pipe( browserify().on('error', gutil.log) )
+	    .pipe( sourcemaps.write().on('error', gutil.log) )
             .pipe( babel({ presets: ['es2015'] }).on('error', gutil.log) )
             .pipe( concat( filename ).on('error', gutil.log) )
             .pipe( ngmin().on('error', gutil.log) )
+            .pipe( uglify().on('error', gutil.log) )
             .pipe( gulp.dest( filepath ).on('error', gutil.log) );
 }
 
@@ -153,14 +155,14 @@ var dist = function( src, filename, filepath ){
  */
 var dev = function( src, filename, filepath  ){
     return gulp.src( src )
-        .pipe( sourcemaps.init() )
-        .pipe( browserify({ insertGlobals: true, debug: true }) )
-        .pipe( babel({ presets: ['es2015'] }) )
-        .pipe( concat( filename ) )
-	    .pipe( ngmin() ) 
-        //.pipe( uglify({mangle: false}) )
-        .pipe( sourcemaps.write() )
-        .pipe( gulp.dest( filepath ));
+        .pipe( sourcemaps.init().on('error', gutil.log) )
+        .pipe( browserify({ insertGlobals: true, debug: true }).on('error', gutil.log) )
+        .pipe( babel({ presets: ['es2015'] }).on('error', gutil.log) )
+        .pipe( concat( filename ).on('error', gutil.log) )
+        .pipe( ngmin().on('error', gutil.log) ) 
+        .pipe( uglify().on('error', gutil.log) )
+        .pipe( sourcemaps.write().on('error', gutil.log) )
+        .pipe( gulp.dest( filepath ).on('error', gutil.log));
 
 }
 
@@ -215,11 +217,18 @@ gulp.task('css', [], function(){
 //PACKAGE THE JS into one manageable file
 gulp.task('js', [], function(){
 
-    return build( paths.js, "import.js", dest.js );
+    return build( paths.js, "import.js", dest.js )
 
 });
 
 
+//!TEST FILE PACKAGING
+gulp.task('test',[],function(){
+    return gulp.src(`${__dirname}/test.js` )
+            .pipe( babel({ presets: ['es2015'] }).on('error', gutil.log) )
+            .pipe( uglify().on('error', gutil.log) )
+            .pipe( gulp.dest( `${__dirname}/tests` ).on('error', gutil.log) )
+})
 
 //PACKAGE THE FINAL PAGE DEPENDENCIES INTO A SINGLE FILE
 gulp.task('package', ['build'], function(){
@@ -229,10 +238,11 @@ gulp.task('package', ['build'], function(){
        for( fdir in files_dir ){
            resp.push( 
                 build( paths.application, "application.js", dest.application )
+	    	    .pipe( sourcemaps.write().on('error', gutil.log) )
                 .pipe( ngmin().on('error', gutil.log) )
                 .pipe( babel({ presets: ['es2015'] }).on('error', gutil.log) )
                 .pipe( uglify().on('error', gutil.log) )
-                .pipe( gulp.dest( files_dir[fdir] ).on('error', gutil.log) ) 
+                .pipe( gulp.dest( files_dir[fdir] ).on('error', gutil.log) )
            );
        }
     
