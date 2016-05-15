@@ -1,5 +1,9 @@
 <?php 
 
+ini_set('display_errors', 0);
+ini_set('display_startup_errors', 0);
+error_reporting(0);	
+
 	$id         = "conn";
 	$connect    = true;
 			
@@ -19,6 +23,8 @@
 				exit;
 		}
 		file_put_contents(".access_log.log", "\n".date('l F j Y h:i:s A')."\t".json_encode($_REQUEST), FILE_APPEND);
+		
 	}
+	
 		
 ?>
