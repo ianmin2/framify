@@ -71,7 +71,7 @@ var routerify = function() {
 //              path = getPath.exec(frame)[1];
 //              title = getTitle.exec(frame)[1];
 
-                frame = fileData[0].split("/")[fileData[0].split("/").length - 1];
+                frame = fileData[0].split("/")[fileData[0].split("/").length - 1].replace(/\\/ig,'/').replace('/','');
                 
                 process.framify.routes.push({
                     "menu": menu || false,
@@ -79,7 +79,14 @@ var routerify = function() {
                     "path": path || "",
                     "url": url || "",
                     "parent": parent || false,
-                    "view": "views/" + frame,
+                    "view": `views/${frame}`.split('/')
+                                .reduce((obj,elem)=>{
+                                    if(obj.indexOf(elem)){
+                                        obj.push(elem)
+                                    }
+                                    return obj;
+                                },[])
+                                .join("/"),
                     "icon": icon,
                     "controller": ctrl
                 });
