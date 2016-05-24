@@ -54,6 +54,23 @@ global.app = require('./assets/js/app.js');
         
     };
 
+    //** EXTEND Object to cater for {{Object}}.forEach
+    var foreach = function( cb ){
+    
+        if( cb ){
+            
+            for( var objKey in this ){
+                cb( this[objKey], objKey );
+            }
+    
+        }else{
+            console.log("\nCannot run a forEach on an object where no callback is defined.\n".err);
+            return false;
+        }
+    
+    };
+    Object.defineProperty(Object.prototype, 'foreach', { value: foreach, enumerable: false });
+
 //! EO - CUSTOM EXTENSIONS
 
 

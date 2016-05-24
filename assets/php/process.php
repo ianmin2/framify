@@ -71,8 +71,9 @@ error_reporting(0);
 			
 			$field_name  = array_keys( $getData )[0];
 			$field_value = $getData[$field_name];
+			$conditions = ($field) ? " WHERE ".$field_name."='".$field_value."'" : '';
 			
-			$query = "SELECT ".$pecifics." FROM ".$table." WHERE ".$field_name."='".$field_value."' ".@$extras;
+			$query = "SELECT ".$specifics." FROM ".$table." ".$conditions."".@$extras;
 			
 			return $this->c->printQueryResults( $query, true, true );
 			
