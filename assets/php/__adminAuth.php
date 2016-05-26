@@ -1,14 +1,18 @@
 <?php 
 
-ini_set('display_errors', 0);
-ini_set('display_startup_errors', 0);
-error_reporting(0);	
+	ini_set('display_errors', 0);
+	ini_set('display_startup_errors', 0);
+	error_reporting(0);	
+
+	header("Content-Type:application/json");
 
 	$id         = "conn";
 	$connect    = true;
 			
 	include ("crypto.php");
 	include ("classes/r_main.php");  
+	
+	unset($_REQUEST["password2"]);
 	
 //ADD FILTERS TO PREVENT PIGGYBACKING ON ALL PARAMS
 	$secure = ["add","del","update","truncate","drop"];  

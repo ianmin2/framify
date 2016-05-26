@@ -1,10 +1,4 @@
 <?php 
-ini_set('display_errors', 0);
-ini_set('display_startup_errors', 0);
-error_reporting(0);	
-		
-	
-
 	class Process {
 		
 		public $c;		
@@ -23,6 +17,7 @@ error_reporting(0);
 						
 			unset( $addData["table"] );
 			unset( $addData["extras"] );
+			unset( $addData["specifics"]);
 			
 			
 			$keys   = [];
@@ -69,12 +64,28 @@ error_reporting(0);
 			unset( $getData["extras"] );
 			unset( $getData["specifics"] );
 			
-			$field_name  = array_keys( $getData )[0];
-			$field_value = $getData[$field_name];
-			$conditions = ($field) ? " WHERE ".$field_name."='".$field_value."'" : '';
+			$keys   = [];
+			$values = [];
 			
+			while( $field_name = current($getData) ) {   
+				//echo key($addData).' '.$field_name.'<br>';
+				array_push( $keys, key($getData) );
+				array_push( $values, $field_name );
+				next($getData);
+			}
+			
+			$conditions = [];
+			
+			forEach( $keys as $pos => $field ){
+				
+				array_push($conditions, $field."='".$values[$pos]."'");
+				
+			}
+			$conditions = ( sizeof($conditions) > 0 )? ( " WHERE ".implode(" AND ", $conditions)  ) : "";			
+						
 			$query = "SELECT ".$specifics." FROM ".$table." ".$conditions."".@$extras;
 			
+			//return $this->c->wrapResponse(200,$query,"");
 			return $this->c->printQueryResults( $query, true, true );
 			
 		} 
@@ -109,11 +120,29 @@ error_reporting(0);
 			unset( $deleteData["extras"] );
 			unset( $deleteData["specifics"] );
 			
-			$field_name  = array_keys( $deleteData )[0];
-			$field_value = $deleteData[$field_name];
+			$keys   = [];
+			$values = [];
 			
-			$query = "DELETE ".$pecifics." FROM ".$table." WHERE ".$field_name."='".$field_value."' ".@$extras;
+			while( $field_name = current($deleteData) ) {   
+				//echo key($addData).' '.$field_name.'<br>';
+				array_push( $keys, key($deleteData) );
+				array_push( $values, $field_name );
+				next($deleteData);
+			}
 			
+			$conditions = [];
+			
+			forEach( $keys as $pos => $field ){
+				
+				array_push($conditions, $field."='".$values[$pos]."'");
+				
+			}
+			
+			$conditions = ( sizeof($conditions) > 0 )? ( " WHERE ".implode(" AND ", $conditions)  ) : "";			
+			
+			$query = "DELETE FROM ".$table.$conditions." ".@$extras;
+			
+			//return $this->c->wrapResponse(200,$query,"");
 			return $this->c->aQuery($query, true,"Done.","Failed.");
 			
 		}
@@ -126,6 +155,7 @@ error_reporting(0);
 			
 			unset( $updateData["table"] );
 			unset( $updateData["extras"] );
+			unset($updateData["specifics"]);
 			
 			
 			$keys   = [];
@@ -164,6 +194,7 @@ error_reporting(0);
 			
 			unset( $truncateData["table"] );
 			unset( $truncateData["extras"] );
+			unset($truncateData["specifics"]);
 			
 			$field_name  = array_keys( $truncateData )[0];
 			$field_value = $truncateData[$field_name];
@@ -182,6 +213,7 @@ error_reporting(0);
 			
 			unset( $dropData["table"] );
 			unset( $dropData["extras"] );
+			unset( $dropData["specifics"] );
 			
 			$field_name  = array_keys( $dropData )[0];
 			$field_value = $dropData[$field_name];
@@ -196,3 +228,4 @@ error_reporting(0);
 	};
 
 ?>
+

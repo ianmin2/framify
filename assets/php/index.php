@@ -1,16 +1,16 @@
 <?php
-//@ ALLOW CORS REQUESTS
-header("Content-Type:application/json");
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Headers: *");
-header("Access-Control-Allow-Methods: *");
-
-
 //@ HANDLE RUNTIME ERROR DISPLAY
-
 ini_set('display_errors', 0);
 ini_set('display_startup_errors', 0);
 error_reporting(0);	
+
+//@ ALLOW CORS REQUESTS
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: *");
+header("Access-Control-Allow-Methods: *");
+header('Content-Type: application/json');
+
+
 
 
 
@@ -54,7 +54,7 @@ error_reporting(0);
 			break;
 			
 			//# DELETION HANDLER
-			case 'del':
+			case 'del':				
 				echo $proc->delFunc( $_REQUEST );
 				exit;
 			break;
@@ -86,7 +86,7 @@ error_reporting(0);
 		
 	}else{
 		
-		echo $connection->wrapResponse( 500, "The required parameters were not met. Please ensure that they are defined" );
+		echo $connection->wrapResponse( 500, "The main action definition parameter was not defined. Could not proceed with the command." );
 		exit;
 		
 	}
