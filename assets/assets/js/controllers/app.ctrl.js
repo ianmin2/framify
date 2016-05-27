@@ -126,5 +126,195 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
         
     }
  
+    /**
+     * DATABASE CENTRIC ADDITION AND DELETION
+     */
+    //Define the main application objects
+    $scope.add      = {};
+    $scope.fetch    = {};
+    $scope.fetched  = {};
+    $scope.data     = {};
+     
+    $scope.data.login   = {};
+    $scope.data.admin   = {};
+    
+    $rootScope.frame.changeAdmin(false);
+    $scope.logedin  = false;    
+    
+     //! BASIC ADDITION
+     $scope.add = (table,data,UID)=>{
+                    data = (data)?$scope.app.json(data):{};
+                    data.command   = "add";
+                    data.table     = (table != undefined)?table.toString().replace(/vw_/ig,''):"";
+                    data.token     = $scope.storage.admin._;
+                    data.extras    =  (data)? ( (data.extras)?data.extras.replace(/LIMIT 1/ig,''): undefined ):undefined;
+                    console.dir(data)
+                    $scope.cgi.ajax( data )
+                    .then( (r) => {           
+                        $scope.app.UID(UID,`<center>${(r.response != 200)?r.data.message: "Record Successfully Added."}</center>`, (r.response == 200) ? "success" : "danger");
+                       if(r.response == 200){
+                           $scope.fetch(table,{specifics: data.specifics}); 
+                           $scope.data[data.toString().replace(/vw_/ig,'')] = {};
+                       };           
+                        $scope.$apply();
+                    })        
+                };
+    
+    
+    //! BASIC FETCHING
+    $scope.fetch = (table,data,UID)=>{
+        data = (data)?$scope.app.json(data):{};
+        data.command    = "get";
+        data.table      = table;        
+        $scope.cgi.ajax(data)
+        .then(function(r){
+            r = $scope.app.json(r);
+            if(r.response == 200){
+                $scope.fetched[table] = r.data.message;
+            }else{
+                $scope.app.alert("ERROR",`<center>${r.data.message}</center>`,$scope.app.doNothing,"CONTINUE");
+            }
+            $scope.$apply();
+        }) 
+    };
+      
+      
+    //! BASIC DELETION  
+    $scope.del = (table,data,UID,delID)=>{
+        data = (data)?$scope.app.json(data):{};
+        //console.dir(data)
+        data.command    = "del";
+        data.table      = (table != undefined)?table.toString().replace(/vw_/ig,''):"";
+        data.token      = $scope.storage.admin._;
+        $scope.cgi.ajax(data)
+        .then(function(r){
+            r = $scope.app.json(r);
+            if(r.response == 200){                           
+                $scope.fetched[table].splice(delID,1);  
+                $scope.app.UID('response',`<center>Deleted.</center>`,"info");                           
+            }else{
+                $scope.app.UID('response',`<center>${r.data.message}</center>`,"danger");
+            }
+            $scope.$apply();
+                
+        })
+    };
+
+    //Basic User Login
+    $scope.login = () => {
+        
+        $scope.data.login.command   = "get";
+        $scope.data.login.table     = "users";
+        $scope.data.login.extras    = " AND status=1 LIMIT 1";
+        $scope.cgi.ajax( $scope.data.login )
+        .then((r)=>{
+                r = $scope.app.json(r);
+                if(r.response == 200){
+                                        
+                    if(r.data.message.length > 0 && typeof(r.data.message[0]) == "object" ){
+                        if(  r.data.message[0]['telephone_number'] == $scope.data.login.telephone_number  ){
+                            $scope.storage.user = r.data.message[0];
+                            $scope.logedin      = true;
+                        }else{
+                           delete $scope.storage.user;
+                           window.location = "/#/";
+                        }
+                        
+                    }else{
+                        delete $scope.storage.user;
+                        $scope.app.UID('response',`<center>You have entered the wrong login credentials.</center>`,"danger");
+                    }
+                    
+                }else{
+                    $scope.app.alert("ERROR",`<center>Application error.<br>Failed to log you in.<br></center>`,$scope.app.doNothing,"CONTINUE");
+                    delete $scope.storage.users;
+                }
+                $scope.$apply();
+                
+            })
+    };
+
+    //Basic admin login
+    $scope.adminLogin = () => {
+        $scope.data.admin.command   = "get"
+        $scope.data.admin.table     = "admin"
+        $scope.data.admin.extras    = "LIMIT 1"
+        $scope.cgi.ajax($scope.data.admin)
+        .then((r)=>{
+            r = $scope.app.json(r);
+            if(r.response == 200){
+                
+                if(r.data.message.length > 0 && typeof(r.data.message[0]) == "object" ){
+                    
+                    if(  r.data.message[0]['password'] === $scope.data.admin.password  ){
+                        $scope.storage.admin        = r.data.message[0];
+                        $scope.storage.admin._      = {};
+                        $scope.storage.admin._.user = r.data.message[0].admin_name;
+                        $scope.storage.admin._.key  = r.data.message[0].password;
+                        $rootScope.frame.changeAdmin(true);
+                    }else{
+                        delete $scope.data.admin;
+                        delete $scope.storage.admin;
+                        window.location = "/#/admin"; 
+                    }
+                    
+                }else{
+                    delete $scope.data.admin;
+                    delete $scope.storage.admin;
+                    $scope.app.UID('response',`<center>You have entered the wrong login credentials.</center>`,"danger");
+                    window.location = "/#/admin";                       
+                    
+                }
+                
+            }else{
+                //console.dir(r)
+                $scope.app.alert("ERROR",`<center>${r.data.message}</center>`,$scope.app.doNothing,"CONTINUE");
+                delete $scope.storage.admin;
+            }
+            $scope.$apply();
+        })
+    };
+
+    $scope.islogedin = () => {
+        if($scope.storage.user){
+            $scope.data.login.telephone_number = $scope.storage.user.telephone_number;
+            $scope.data.login.password         = $scope.storage.user.password;
+            $scope.login();
+        }
+    };
+    
+    $scope.logout = () => {
+        $scope.islogedin = false;
+        delete $scope.storage.user;
+        window.location = '/#/';
+    };
+
+    // Basic Admin Auth
+    $scope.authorize = () => {
+        if($scope.storage.admin){
+           $scope.data.admin        = {}; 
+           $scope.data.admin.admin_name    = $scope.storage.admin.admin_name;
+           $scope.data.admin.password      = $scope.storage.admin.password;
+           $scope.adminLogin();
+        }else{
+            $scope.location = "/#/admin";
+        }
+    };
+    
+    $scope.deauthorize = () => {
+        delete $scope.storage.admin; 
+        $rootScope.frame.changeAdmin(false);               
+        window.location = '/#/';
+    };
+    
+    
+   /**
+    * TABLE SORTER
+    */
+    $scope.sort = function(keyname){
+        $scope.sortKey = keyname;   //set the sortKey to the param passed
+        $scope.reverse = !$scope.reverse; //if true make it false and vice versa
+    }
+ 
     
 }])

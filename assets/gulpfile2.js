@@ -230,12 +230,13 @@ gulp.task('imports',[],function(e){
     // if(fs.existsSync("./packaged.min.js")){
     //     fs.unlinkSync("./packaged.min.js");
     // }
-     return gulp.src(paths.imports)
-                .pipe( babel({ presets: ['es2015'] }).on('error', gutil.log) )
-                .pipe( browserify({ insertGlobals: true, debug: true }).on('error', gutil.log) )
-                .pipe( ngmin().on('error',gutil.log))                
-                .pipe( uglify().on('error', gutil.log) )
-                .pipe( gulp.dest( "packaged.min.js" ).on('error', gutil.log))
+    return true;
+    //  return gulp.src(paths.imports)
+    //             .pipe( babel({ presets: ['es2015'] }).on('error', gutil.log) )
+    //             .pipe( browserify({ insertGlobals: true, debug: true }).on('error', gutil.log) )
+    //             .pipe( ngmin().on('error',gutil.log))                
+    //             .pipe( uglify().on('error', gutil.log) )
+    //             .pipe( gulp.dest( "packaged.min.js" ).on('error', gutil.log))
 
         // return build( paths.imports, "packaged.min.js", dest.imports )
         //         //.pipe( browserify({ insertGlobals: true, debug: true }).on('error', gutil.log) );

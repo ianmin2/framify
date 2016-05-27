@@ -3,16 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" href="favicon.ico">
-    <!--<link rel="stylesheet" href="assets/css/ionic.min.css">
-    <link rel="stylesheet" href="assets/css/angular-material.min.css">
-    <link rel="stylesheet" href="assets/css/material-icons.css">
-    <link rel="stylesheet" href="assets/css/material.min.css">
-    <link rel="stylesheet" href="assets/css/font-awesome.min.css">
-    <link rel="stylesheet" href="assets/css/json-formatter.min.css">
-    <link rel="stylesheet" href="assets/css/app.css">
-    <link rel="stylesheet" href="assets/css/ionic.material.min.css">    
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">-->
+    <link rel="icon" href="favicon.ico">   
     <link rel="stylesheet" href="assets/css/css.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -26,6 +17,7 @@
    <ion-side-menus>
 		
 		<ion-side-menu-content>
+            
 			 <ion-nav-bar class="bar bar-positive">
                 
                 <ion-nav-buttons side="left">                    
@@ -48,6 +40,7 @@
                 </ion-nav-buttons>
                 
             </ion-nav-bar>
+            
             <br><br>
             <ion-nav-view  animation="slide-left-right"></ion-nav-view>
             
@@ -68,12 +61,18 @@
                             <span>{{link.title}}</span>
                             
                         </a>
-                        <!--<a class="item dropdown-link dropdown-link--is-large" href="#/admin" >
-                           <i class="material-icons">enhanced_encryption</i>
+                        <a class="item dropdown-link dropdown-link--is-large" href="#/admin" >
+                           <i class="material-icons">settings_applications</i>
                             <span>Admin Portal</span>
-                        </a>-->
+                        </a>
+                        <a class="item dropdown-link dropdown-link--is-large" href="#/" ng-if="frame.isAdmin()" ng-click="frame.reset()" >
+                           <i class="material-icons">exit_to_app</i>
+                            <span>Logout</span>
+                        </a>
+                        
                     </ul>
                 
+            </ion-content>
             </ion-content>
             
 		</ion-side-menu>
@@ -81,33 +80,6 @@
    </ion-side-menus>
 
 </body>
-
-<!--<script src="assets/js/angular-route.min.js"></script>
-<script src="assets/js/material.min.js"></script>
-
-<script src="assets/js/jquery.js"></script>
-
-<script src="assets/js/ionic.bundle.min.js"></script>
-<script src="assets/js/angular-aria.min.js"></script>
-<script src="assets/js/angular-messages.min.js"></script>
-
-
-<script src="assets/js/api-check.min.js"></script>
-<script src="assets/js/formly.min.js"></script>
-<script src="assets/js/angular-formly-templates-ionic.min.js"></script>
-
-
-<script src="assets/js/angular-material.min.js"></script>
-
-
-<script src="assets/js/ngStorage.min.js"></script>
-
-
-<script src="assets/js/json-formatter.min.js"></script>
-
-<script src="assets/js/bootstrap.min.js"></script>
-<script src="assets/js/ionic.material.min.js"></script>
-<script src="/assets/js/crypto.js"></script>-->
 
 <script src="assets/js/js.js"></script>
 <script src="application.js"></script>

@@ -1,0 +1,91 @@
+<framify menu="false" path="admin" url="/admin" title="Admin" parent="false" icon="home"  controller="appController" ></framify>
+<ion-content scrollbar-x="false" scrollbar-y="false" style="padding-bottom:40px;">
+   <div ng-init="authorize();" id="response"></div>
+    
+    <div class="list" ng-if="!frame.isAdmin()">
+       
+        <h3 style="padding-left:1em;">Administrator Login</h3>
+    <form name="adminForm" class="col-lg-10" style="" novalidate>
+       
+        <div class="form-group">
+            <label>Username</label>
+            <input type="text" name="name" class="form-control" 
+                ng-model="data.admin.admin_name"
+                ng-minlength="3"
+                ng-maxlength="25"
+                required>
+            <div class="help-block" ng-messages="adminForm.name.$error" ng-if="adminForm.name.$touched">
+                <p ng-message="minlength">Please Enter a valid username.</p>
+                <p ng-message="maxlength">The username you entered is too long.</p>
+                <p ng-message="required">The username is required.</p>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" name="password" class="form-control" 
+                ng-model="data.admin.password"
+                ng-minlength="5"
+                ng-maxlength="50"
+                required>
+                
+           <div class="help-block" ng-messages="adminForm.password.$error" ng-if="adminForm.password.$touched">
+                <p ng-message="minlength">That password is too short.</p>
+                <p ng-message="maxlength">That password is too long.</p>
+                <p ng-message="required">A password is required.</p>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <button ng-click="adminLogin()" class=" button button-positive" ng-hide="adminForm.$invalid">Submit</button>
+        </div>
+        
+    </form>
+    
+        
+    </div>
+    
+    <div class="" ng-if="frame.isAdmin()">
+               
+        <div class="col-lg12">
+            <center>
+                
+                
+            <ion-item class="item-profile assertive card col-lg-3" ng-click="deauthorize()" >
+						
+                <a class="item" href="#/">
+                    
+                    <div style="margin:1em;text-align:center;">
+                        
+                        <h2><b style="text-transform:capitalize;"><i class="material-icons">no_encryption</i></b></h2>
+                        <div style="padding-top:1em;padding-left:1em;text-transform:uppercase;">
+                            LOGOUT
+                        </div>
+                    </div>
+                </a> 
+                
+            </ion-item>
+            
+            <ion-item class="item-profile card col-lg-3" ng-repeat="link in links" ng-if="link.parent=='true' && link.menu=='true'" >
+						
+                <a class="item bx-hov" href="#{{link.url}}">
+                    
+                    <div style="margin:1em;text-align:center;">
+                        
+                        <h2><b style="text-transform:capitalize;"><i class="material-icons">{{link.icon}}</i></b></h2>
+                        <div style="padding-top:1em;padding-left:1em;text-transform:uppercase;">
+                            {{link.title}}
+                        </div>
+                    </div>
+                </a> 
+                
+            </ion-item>
+            
+            
+            </center> 
+        </div>
+        
+        
+    </div>
+    
+</ion-content>

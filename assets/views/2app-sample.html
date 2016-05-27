@@ -1,11 +1,41 @@
 <framify menu="true" path="sample" url="/sample" title="Sample App" parent="false" icon="apps" controller="framifySampleController" ></framify>
 <ion-content scrollbar-x="false" scrollbar-y="false" style="padding-bottom:20px;">
 
-    <div class="mdl-grid">
-        <div class="mdl-cell mdl-cell--12-col" style="text-align:center;">
-            <button  ng-repeat="voter in voters | filter: nav.search" ng-click="app.alert(' {{voter.student}}\'s voter Profile', '<center>Name: {{voter.studentName}}<br><br>Department: {{voter.department}}</center>')" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--blue mdl-cell mdl-cell--2-col" style="min-width: 200px; margin:10px; color:whitesmoke;" >{{voter.studentName}}</button>
-        </div>
-    </div>
-   
+ <div class="" ng-init="fetch('vw_food',{},'response')" ></div>
+        <table id="table-id" width='800' align='center'  class="table table-striped" border='2' name="content">
+            <tr bgcolor='gray' style="font-weight:bold; text-transform:uppercase;">                           
+                <th ng-click="sort('id')">#
+                    <span class="icon " ng-show="sortKey=='id'" ng-class="{'ion-arrow-up-b':reverse,'ion-arrow-down-b':!reverse}"></span>
+                </th>
+                <th ng-click="sort('student')">ID
+                    <span class="icon " ng-show="sortKey=='student'" ng-class="{'ion-arrow-up-b':reverse,'ion-arrow-down-b':!reverse}"></span>
+                </th>
+                <th ng-click="sort('studentName')">Name
+                    <span class="icon " ng-show="sortKey=='studentName'" ng-class="{'ion-arrow-up-b':reverse,'ion-arrow-down-b':!reverse}"></span>
+                </th>
+                <th ng-click="sort('department')">Department
+                    <span class="icon " ng-show="sortKey=='department'" ng-class="{'ion-arrow-up-b':reverse,'ion-arrow-down-b':!reverse}"></span>
+                </th>
+                <th ng-click="sort('time')">Time
+                    <span class="icon " ng-show="sortKey=='time'" ng-class="{'ion-arrow-up-b':reverse,'ion-arrow-down-b':!reverse}"></span>
+                </th>
+                <td class="noprint" style="margin:0 auto;text-align:center;"></td>
+            </tr>
+            <tr dir-paginate="voter in voters |orderBy:sortKey:reverse|filter:search|itemsPerPage:15">
+                <td>{{voter.id}}</td>
+                <td>{{voter.student | uppercase}}</td>
+                <td>{{voter.studentName | uppercase}}</td>
+                <td>{{voter.department| uppercase}}</td>
+                <td>{{voter.time | lowercase}}</td>
+                <td class="noprint" style="margin:0 auto;text-align:center;">
+                    <button class="button button-calm icon ion-information-circled style="font-weight:bold; font-size:3em !important; text-align:center;" ng-click="app.alert(' {{voter.student}}\'s voter Profile', '<center>Name: {{voter.studentName}}<br><br>Department: {{voter.department}}</center>')" ></button>
+                </td>
+            </tr>
+        </table>
+        <dir-pagination-controls
+            max-size="5"
+            direction-links="true"
+            boundary-links="true" >
+        </dir-pagination-controls>
+   <br><br><br><br>
 </ion-content>
-<br><br>

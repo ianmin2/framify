@@ -93,7 +93,7 @@ var css = [
                 "ionic.min.css","json-formatter.min.css",
                 "material-icons.css",    
                 "angular-material.min.css",
-                "material.min.css",
+                "bootstrap-material-design.min.css","ripples.min.css",
                 "ionic.material.min.css",
                 "bootstrap.min.css",
                 "app.css"

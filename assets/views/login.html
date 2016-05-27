@@ -1,60 +1,53 @@
-<framify menu="false" path="login" url="/admin" title="Admin" parent="false" icon="enhanced_encryption" controller="voteAdminController" ></framify>
+<framify menu="true" path="login" url="/login" title="Login" parent="false" icon="home"  controller="appController" ></framify>
 <ion-content scrollbar-x="false" scrollbar-y="false" style="padding-bottom:40px;">
-    <br><br ng-init="miniAuth()">
-    
-    <div class="list" ng-if="!adminAuth">
-        <label class="item item-input item-floating-label">
-            <span class="input-label">Username</span>
-            <input type="text" ng--model="auth.username" placeholder="Username">
-        </label>
-        <label class="item item-input item-floating-label">
-            <span class="input-label">Password</span>
-            <input type="password" ng-model="auth.password" placeholder="Password">
-        </label>
-        <button ng-if="auth.username && auth.password" class="button button-block button-calm" ng-click="doAuth()">LOGIN</button>
-    </div>
-    
-    <div class="container container-fluid" ng-if="adminAuth">
+    <div ng-init="islogedin();" id="response"></div>
+    <div class="list" ng-if="!logedin">
+       
+       <form name="loginForm" class="col-lg-10" style="" novalidate>
         
-        <div class="col-lg12">
-            
-            <ion-item class="item-profile assertive card col-lg-3" ng-click="logout()" >
-						
-                <a class="item" href="#/">
-                    
-                    <div style="margin:1em;text-align:center;">
-                        
-                        <h2><b style="text-transform:capitalize;"><i class="material-icons">no_encryption</i></b></h2>
-                        <div style="padding-top:1em;padding-left:1em;text-transform:uppercase;">
-                            LOGOUT
-                        </div>
-                    </div>
-                </a> 
-                
-            </ion-item>
-            
-            <ion-item class="item-profile card col-lg-3" ng-repeat="link in links" ng-if="link.parent=='true' && link.menu=='true'" >
-						
-                <a class="item bx-hov" href="#{{link.url}}">
-                    
-                    <div style="margin:1em;text-align:center;">
-                        
-                        <h2><b style="text-transform:capitalize;"><i class="material-icons">{{link.icon}}</i></b></h2>
-                        <div style="padding-top:1em;padding-left:1em;text-transform:uppercase;">
-                            {{link.title}}
-                        </div>
-                    </div>
-                </a> 
-                
-            </ion-item>
-            
-            
-            
+        <!-- name field -->
+        <div class="form-group">
+            <label>Username</label>
+            <input type="tel" name="name" class="form-control" 
+                ng-model="data.login.telephone_number"
+                ng-minlength="10"
+                ng-maxlength="15"
+                required>
+            <div class="help-block" ng-messages="loginForm.name.$error" ng-if="loginForm.name.$touched">
+                <p ng-message="minlength">Please Enter a valid telephone number.</p>
+                <p ng-message="maxlength">The telephone number you entered is too long.</p>
+                <p ng-message="required">The username is required.</p>
+            </div>
         </div>
         
+        <!-- email field -->
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" name="password" class="form-control" 
+                ng-model="data.login.password"
+                ng-minlength="5"
+                ng-maxlength="50"
+                required>
+                
+           <div class="help-block" ng-messages="loginForm.password.$error" ng-if="loginForm.password.$touched">
+                <p ng-message="minlength">That password is too short.</p>
+                <p ng-message="maxlength">That password is too long.</p>
+                <p ng-message="required">A password is required.</p>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <button ng-click="login()" class=" button button-positive" ng-hide="loginForm.$invalid">Submit</button>
+        </div>
+        
+    </form>
+    
     </div>
     
-    <br>
-    <br>
-    <br>
+    <div class="" ng-if="logedin">
+        <button class="button button-assertive pull-right" ng-click="logout()">Logout</button>
+       
+       
+    </div>
+    
 </ion-content>

@@ -3,7 +3,7 @@ app.config(["$stateProvider","$urlRouterProvider",function($stateProvider,$urlRo
     
     $stateProvider.state( "framify" , {
                url          :"/framify",
-               templateUrl  : "views/1app.html"
+               templateUrl  : "views/redir.html"
             }); 
     
     //!THE DYNAMIC ROUTE SETTER
@@ -36,7 +36,7 @@ app.config(["$stateProvider","$urlRouterProvider",function($stateProvider,$urlRo
 }]);
 
 //!DEFINE THE APPLICATION RUNTIME DEFAULTS
-app.run(["app","$rootScope","$location", "formlyConfig","formlyValidationMessages","$localStorage",function( app, $rootScope, $location, formlyConfig, formlyValidationMessages,$localStorage ){
+app.run(["app","cgi","$rootScope","$location", "formlyConfig","formlyValidationMessages","$localStorage",function( app,cgi, $rootScope, $location, formlyConfig, formlyValidationMessages,$localStorage ){
     
     //!INJECT THE LOCATION SOURCE TO THE ROOT SCOPE
     $rootScope.location = $location;
@@ -46,6 +46,31 @@ app.run(["app","$rootScope","$location", "formlyConfig","formlyValidationMessage
     
     //!INJECT THE APPLICATION'S MAIN SERVICE TO THE ROOT SCOPE SUCH THAT ALL SCOPES MAY INHERIT IT
     $rootScope.app = app;
+    
+     //! INJECT THE APP BASICS SERVICE
+    $rootScope.cgi   = cgi;
+     
+    //! SIMPLE APPLICATION BEHAVIOR SETUP
+    $rootScope.frame    = {};
+    
+    //! ADMIN HANDLING  
+     $rootScope.frame.is_admin   = false;
+    
+     //! ADMIN STATUS CHECKER 
+    $rootScope.frame.isAdmin = ()=>($rootScope.frame.is_admin)?true:false;
+    
+    //! ADMIN STATUS SWITCH
+    $rootScope.frame.changeAdmin = (bool)=>{
+         $rootScope.frame.is_admin = bool;
+     }; 
+    
+    //! RESET THE ADMIN STATUS
+    $rootScope.frame.reset = ()=>{
+        delete $rootScope.storage.admin;
+        delete $rootScope.storage.user;
+        $rootScope.frame.changeAdmin(false);
+        window.location = "/#/";
+    };   
     
     //! FORMLY ERROR MESSAGE CONFIGURATION
    // formlyConfig.extras.ngModelAttrsManipulatorPreferBound = true;
