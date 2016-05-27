@@ -3,7 +3,7 @@ var minify      = require("minify");
 var browserify  = require("browserify");
 
 //* FINAL DESTINATIONS
-var jsf = fs.createWriteStream(__dirname+"/assets/js/js.js");
+//var jsf = fs.createWriteStream(__dirname+"/assets/js/js.js");
 var csf = fs.createWriteStream(__dirname+"/assets/css/css.css");
 
 var concat = function(pathArr,writePath){
@@ -100,13 +100,13 @@ var css = [
             ];
 
 
-Promise.all( [ brow(js,`${__dirname}/assets/js/js`) ] )
-.then((d)=>{
-    console.dir(d)
-})
-.catch((e)=>{
-    console.dir(e)
-})
+// Promise.all( [ brow(js,`${__dirname}/assets/js/js`) ] )
+// .then((d)=>{
+//     console.dir(d)
+// })
+// .catch((e)=>{
+//     console.dir(e)
+// })
 
 Promise.all([concat(css,`${__dirname}/assets/css/css.css`)])
 .then((s)=>{
