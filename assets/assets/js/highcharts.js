@@ -1,10 +1,3 @@
-/*
- Highcharts JS v4.2.4 (2016-04-14)
-
- (c) 2009-2016 Torstein Honsi
-
- License: www.highcharts.com/license
-*/
 (function(C,Z){typeof module==="object"&&module.exports?module.exports=C.document?Z(C):Z:C.Highcharts=Z(C)})(typeof window!=="undefined"?window:this,function(C){function Z(a,b){var c="Highcharts error #"+a+": www.highcharts.com/errors/"+a;if(b)throw Error(c);C.console&&console.log(c)}function qb(a,b,c){this.options=b;this.elem=a;this.prop=c}function D(){var a,b=arguments,c,d={},e=function(a,b){var c,d;typeof a!=="object"&&(a={});for(d in b)b.hasOwnProperty(d)&&(c=b[d],a[d]=c&&typeof c==="object"&&
 Object.prototype.toString.call(c)!=="[object Array]"&&d!=="renderTo"&&typeof c.nodeType!=="number"?e(a[d]||{},c):b[d]);return a};b[0]===!0&&(d=b[1],b=Array.prototype.slice.call(b,2));c=b.length;for(a=0;a<c;a++)d=e(d,b[a]);return d}function F(a,b){return parseInt(a,b||10)}function xa(a){return typeof a==="string"}function X(a){return a&&typeof a==="object"}function Da(a){return Object.prototype.toString.call(a)==="[object Array]"}function ma(a){return typeof a==="number"}function na(a,b){for(var c=
 a.length;c--;)if(a[c]===b){a.splice(c,1);break}}function r(a){return a!==z&&a!==null}function K(a,b,c){var d,e;if(xa(b))r(c)?a.setAttribute(b,c):a&&a.getAttribute&&(e=a.getAttribute(b));else if(r(b)&&X(b))for(d in b)a.setAttribute(d,b[d]);return e}function ta(a){return Da(a)?a:[a]}function Oa(a,b,c){if(b)return setTimeout(a,b,c);a.call(0,c)}function L(a,b){if(ya&&!ca&&b&&b.opacity!==z)b.filter="alpha(opacity="+b.opacity*100+")";s(a.style,b)}function $(a,b,c,d,e){a=A.createElement(a);b&&s(a,b);e&&

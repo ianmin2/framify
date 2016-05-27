@@ -29,6 +29,7 @@ var paths = {
 	controllers: 	["assets/js/controllers/main.js"],
 	services: 	    ["assets/js/services/main.js"],
 	application: 	["main.js"],
+    imports:        ["imports.js"],
 	images: 	    'iassets/mg/**/*',
     css:            'assets/css/main.css',
     js:             'assets/js/**.min.js',
@@ -37,6 +38,7 @@ var paths = {
 
 var files_dir = [""];
 var files = [];
+
 
 for( fdir in files_dir ){
     files.push( files_dir[fdir] + "application.js" );
@@ -48,6 +50,7 @@ var watcher = {
 	controllers: 	["assets/js/controllers/**.ctrl.js"],
 	services: 	    ["assets/js/services/**.serv.js"],
 	application: 	["assets/js/**app**.js"],
+    imports:        ["imports.js"],
 	images: 	    'assets/img/**/*',
     css:            'assets/css/**.min.css',
     js:             ['assets/js/**.min.js','assets/js/app**.js'],
@@ -60,6 +63,7 @@ var dest = {
 	directives : "assets/js/directives",
 	controllers: "assets/js/controllers",
 	services:    "assets/js/services",
+    imports:     "",
 	application: "",
     css:         "assets/css",
     js:          "assets/js",
@@ -142,7 +146,7 @@ gulp.task("clean", function(cb){
 var dist = function( src, filename, filepath ){
     return gulp.src( src )
             .pipe( browserify().on('error', gutil.log) )
-	    .pipe( sourcemaps.write().on('error', gutil.log) )
+	        .pipe( sourcemaps.write().on('error', gutil.log) )
             .pipe( babel({ presets: ['es2015'] }).on('error', gutil.log) )
             .pipe( concat( filename ).on('error', gutil.log) )
             .pipe( ngmin().on('error', gutil.log) )
@@ -169,8 +173,8 @@ var dev = function( src, filename, filepath  ){
 var route = function( src, filename, filepath ){
     
     return gulp.src(src )
-        .pipe( routerify().on('error', gutil.log) )
-        .pipe( gulp.dest( filepath ).on('error', gutil.log) );
+           .pipe( routerify().on('error', gutil.log) )
+           .pipe( gulp.dest( filepath ).on('error', gutil.log) );
     
 }
 
@@ -221,6 +225,23 @@ gulp.task('js', [], function(){
 
 });
 
+//PACKAGE IMPORTS
+gulp.task('imports',[],function(e){
+    // if(fs.existsSync("./packaged.min.js")){
+    //     fs.unlinkSync("./packaged.min.js");
+    // }
+     return gulp.src(paths.imports)
+                //.pipe( babel({ presets: ['es2015'] }).on('error', gutil.log) )
+                .pipe( browserify({ insertGlobals: true, debug: true }).on('error', gutil.log) )
+                //.pipe( ngmin().on('error',gutil.log))                
+                .pipe( uglify().on('error', gutil.log) )
+                .pipe( concat( "packed.min.js" ).on('error', gutil.log) )
+                .pipe( gulp.dest( "" ).on('error', gutil.log))
+
+        // return build( paths.imports, "packaged.min.js", dest.imports )
+        //         //.pipe( browserify({ insertGlobals: true, debug: true }).on('error', gutil.log) );
+                
+});
 
 //!TEST FILE PACKAGING
 gulp.task('test',[],function(){
@@ -234,7 +255,7 @@ gulp.task('test',[],function(){
 gulp.task('package', ['build'], function(){
     
         var resp = []
-    
+      
        for( fdir in files_dir ){
            resp.push( 
                 build( paths.application, "application.js", dest.application )

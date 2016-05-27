@@ -3,6 +3,16 @@
 /* global app_ip */
 /* global app_port */
 
+// var imports = [
+//     "jquery.js","ionic.bundle.min.js","angular-aria.min.js","angular-messages.min.js","bootstrap.min.js","ionic-material.min.js","api-check.min.js","formly.min.js","angular-formly-templates-ionic.min.js",   "angular-material.min.js",
+//     "highcharts.js","highcharts-3d.js","highcharts-ng.js",
+//     "json-formatter.min.js",
+//     "crypto.js",
+//     "framify-paginate.min.js"
+// ]
+
+// imports.forEach((e)=>require(e));
+
 global.app = require('./assets/js/app.js');
 
 //! CUSTOM EXTENTIONS HERE
@@ -74,7 +84,7 @@ global.app = require('./assets/js/app.js');
 //! EO - CUSTOM EXTENSIONS
 
 
-//! APP IMPORTS
+//! APP IMPORTS {PLEASE DO NOT TOUCH}
 require("./assets/js/app-router.js");
 require('./assets/js/services/services.js');
 require('./assets/js/directives/directives.js');

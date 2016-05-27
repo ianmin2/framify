@@ -1,10 +1,3 @@
-/*
- Highcharts JS v4.2.4 (2016-04-14)
-
- 3D features for Highcharts JS
-
- @license: www.highcharts.com/license
-*/
 (function(d){typeof module==="object"&&module.exports?module.exports=d:d(Highcharts)})(function(d){function o(c,b,a){var e,f,g=b.options.chart.options3d,d=!1,j=b.scale3d||1;a?(d=b.inverted,a=b.plotWidth/2,b=b.plotHeight/2,e=g.depth/2,f=s(g.depth,1)*s(g.viewDistance,0)):(a=b.plotLeft+b.plotWidth/2,b=b.plotTop+b.plotHeight/2,e=g.depth/2,f=s(g.depth,1)*s(g.viewDistance,0));var k=[],i=a,m=b,x=e,y=f,a=B*(d?g.beta:-g.beta),g=B*(d?-g.alpha:g.alpha),q=r(a),p=l(a),n=r(g),u=l(g),t,z,v,w,C,o;A(c,function(a){t=
 (d?a.y:a.x)-i;z=(d?a.x:a.y)-m;v=(a.z||0)-x;w=p*t-q*v;C=-q*n*t+u*z-p*n*v;o=q*u*t+n*z+p*u*v;y>0&&y<Number.POSITIVE_INFINITY&&(w*=y/(o+x+y),C*=y/(o+x+y));w=w*j+i;C=C*j+m;o=o*j+x;k.push({x:d?C:w,y:d?w:C,z:o})});return k}function D(c){return c!==void 0&&c!==null}function I(c){var b=0,a,e;for(a=0;a<c.length;a++)e=(a+1)%c.length,b+=c[a].x*c[e].y-c[e].x*c[a].y;return b/2}function E(c){var b=0,a;for(a=0;a<c.length;a++)b+=c[a].z;return c.length?b/c.length:0}function u(c,b,a,e,f,g,d,j){var k=[];g>f&&g-f>n/2+
 1.0E-4?(k=k.concat(u(c,b,a,e,f,f+n/2,d,j)),k=k.concat(u(c,b,a,e,f+n/2,g,d,j))):g<f&&f-g>n/2+1.0E-4?(k=k.concat(u(c,b,a,e,f,f-n/2,d,j)),k=k.concat(u(c,b,a,e,f-n/2,g,d,j))):(k=g-f,k=["C",c+a*l(f)-a*F*k*r(f)+d,b+e*r(f)+e*F*k*l(f)+j,c+a*l(g)+a*F*k*r(g)+d,b+e*r(g)-e*F*k*l(g)+j,c+a*l(g)+d,b+e*r(g)+j]);return k}function J(c){if(this.chart.is3d()){var b=this.chart.options.plotOptions.column.grouping;if(b!==void 0&&!b&&this.group.zIndex!==void 0&&!this.zIndexSet)this.group.attr({zIndex:this.group.zIndex*10}),
