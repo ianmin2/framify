@@ -284,7 +284,7 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
     };
     
     $scope.logout = () => {
-        $scope.islogedin = false;
+        $scope.logedin = false;
         delete $scope.storage.user;
         window.location = '/#/';
     };
