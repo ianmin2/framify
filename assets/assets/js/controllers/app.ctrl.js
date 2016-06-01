@@ -227,7 +227,7 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
                     
                 }else{
                     $scope.app.alert("ERROR",`<center>Application error.<br>Failed to log you in.<br></center>`,$scope.app.doNothing,"CONTINUE");
-                    delete $scope.storage.users;
+                    delete $scope.storage.user;
                 }
                 $scope.$apply();
                 
