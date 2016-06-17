@@ -2,35 +2,48 @@
 <ion-content scrollbar-x="false" scrollbar-y="false" style="padding-bottom:20px;">
 
  <div class="" ng-init="fetch('vw_food',{},'response')" ></div>
-        <table id="table-id" width='800' align='center'  class="table table-striped" border='2' name="content">
-            <tr bgcolor='gray' style="font-weight:bold; text-transform:uppercase;">                           
-                <th ng-click="sort('id')">#
-                    <span class="icon " ng-show="sortKey=='id'" ng-class="{'ion-arrow-up-b':reverse,'ion-arrow-down-b':!reverse}"></span>
-                </th>
-                <th ng-click="sort('student')">ID
-                    <span class="icon " ng-show="sortKey=='student'" ng-class="{'ion-arrow-up-b':reverse,'ion-arrow-down-b':!reverse}"></span>
-                </th>
-                <th ng-click="sort('studentName')">Name
-                    <span class="icon " ng-show="sortKey=='studentName'" ng-class="{'ion-arrow-up-b':reverse,'ion-arrow-down-b':!reverse}"></span>
-                </th>
-                <th ng-click="sort('department')">Department
-                    <span class="icon " ng-show="sortKey=='department'" ng-class="{'ion-arrow-up-b':reverse,'ion-arrow-down-b':!reverse}"></span>
-                </th>
-                <th ng-click="sort('time')">Time
-                    <span class="icon " ng-show="sortKey=='time'" ng-class="{'ion-arrow-up-b':reverse,'ion-arrow-down-b':!reverse}"></span>
-                </th>
-                <td class="noprint" style="margin:0 auto;text-align:center;"></td>
-            </tr>
-            <tr dir-paginate="voter in voters |orderBy:sortKey:reverse|filter:search|itemsPerPage:15">
-                <td>{{voter.id}}</td>
-                <td>{{voter.student | uppercase}}</td>
-                <td>{{voter.studentName | uppercase}}</td>
-                <td>{{voter.department| uppercase}}</td>
-                <td>{{voter.time | lowercase}}</td>
-                <td class="noprint" style="margin:0 auto;text-align:center;">
-                    <button class="button button-calm icon ion-information-circled style="font-weight:bold; font-size:3em !important; text-align:center;" ng-click="app.alert(' {{voter.student}}\'s voter Profile', '<center>Name: {{voter.studentName}}<br><br>Department: {{voter.department}}</center>')" ></button>
-                </td>
-            </tr>
+
+         <label class="item item-input pull-left col-lg-5">
+            <i class="icon ion-search placeholder-icon"></i>
+            <input type="text" class="" ng-model="search" value="" placeholder="Search"> 
+        </label>
+        <table id="table-id" width='800' align='center'  class="table table-striped responsive-table" border='2' name="content">
+           <thead>
+                <tr style="font-weight:bold; text-transform:uppercase;">                           
+                    <th ng-click="sort('id')">#
+                        <span class="icon " ng-show="sortKey=='id'" ng-class="{'ion-arrow-up-b':reverse,'ion-arrow-down-b':!reverse}"></span>
+                    </th>
+                    <th ng-click="sort('student')">ID
+                        <span class="icon " ng-show="sortKey=='student'" ng-class="{'ion-arrow-up-b':reverse,'ion-arrow-down-b':!reverse}"></span>
+                    </th>
+                    <th ng-click="sort('studentName')">Name
+                        <span class="icon " ng-show="sortKey=='studentName'" ng-class="{'ion-arrow-up-b':reverse,'ion-arrow-down-b':!reverse}"></span>
+                    </th>
+                    <th ng-click="sort('department')">Department
+                        <span class="icon " ng-show="sortKey=='department'" ng-class="{'ion-arrow-up-b':reverse,'ion-arrow-down-b':!reverse}"></span>
+                    </th>
+                    <th ng-click="sort('time')">Time
+                        <span class="icon " ng-show="sortKey=='time'" ng-class="{'ion-arrow-up-b':reverse,'ion-arrow-down-b':!reverse}"></span>
+                    </th>
+                    <td class="noprint" style="margin:0 auto;text-align:center;"></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr dir-paginate="voter in voters |orderBy:sortKey:reverse|filter:search|itemsPerPage:15">
+                    <td data-label="Position:">{{voter.id}}</td>
+                    <td data-label="ID:">{{voter.student | uppercase}}</td>
+                    <td data-label="Name:">{{voter.studentName | uppercase}}</td>
+                    <td data-label="Department:">{{voter.department| uppercase}}</td>
+                    <td data-label="Time:">{{voter.time | lowercase}}</td>
+                    <td class="noprint" style="margin:0 auto;text-align:center;">
+                        <button 
+                        class="button button-calm icon ion-information-circled style="font-weight:bold; 
+                        font-size:3em !important; text-align:center;" 
+                        ng-click="app.alert(' {{voter.student}}\'s voter Profile', '<center>Name: {{voter.studentName}}<br><br>Department: {{voter.department}}</center>')" 
+                        ></button>
+                    </td>
+                </tr>
+            </tbody>
         </table>
         <dir-pagination-controls
             max-size="5"

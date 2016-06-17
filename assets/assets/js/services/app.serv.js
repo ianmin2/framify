@@ -6,25 +6,49 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
     //! APP CONFIGURATIONS
     this.ip = url[0].split(':')[0];
     this.port = url[0].split(':')[1];
-    this.hlink = "http://"+this.ip+":"+this.port;
+    //this.hlink = "http://"+this.ip+":"+this.port;
+    this.hlink = "http://localhost:"+this.port;
     
-    //global hlink = this.hlink;
+    global.hlink = this.hlink;
+      
+    //@ THE OFFICIAL FILE UPLOAD SERVICE
+    this.upload = (data,destination) => {
+        
+        const fd = new FormData();
+        for(var key in data ){
+            fd.append(key,data[key]);
+        };
+        
+        return $http.post( `${hlink}/upload/${destination}`, fd, { 
+                    transformRequest: angular.identity,
+                    headers: { 'Content-Type' : undefined }   
+                });
+        
+    };
       
     //!APPLICATION URL
     //this.url = "http://41.89.162.4:3000";
     this.url = this.hlink;
     
+    //! PARSE AN INTEGER
+    this.parseInt = str=>parseInt(str);
     
     //! EMPTY CALLBACK
    this.doNothing = function(){
        
    };    
     
+    var uiTimeout; 
+    
     //!WRITE TO THE UI
     this.UID = function( objectID, pageContent, c ){
-        
+        clearTimeout(uiTimeout);
+        objectID = (objectID)?objectID:"response";
         document.getElementById(objectID).innerHTML = `<div class='alert alert-${c}'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>${pageContent}</div>`;
-      
+        uiTimeout = setTimeout(function(){
+            document.getElementById(objectID).innerHTML = "";
+        },15000)
+    //   console.log(`id:\t${objectID}\ncontent:\t${pageContent}\nclass:\t${c}`)
     }; 
     
     //!AVAIL THE APPLICATION LINKS    
@@ -58,9 +82,39 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
         
     };
     
+    //!FORMAT TO ISODATE
+    this.isoDate    = () => new Date().format('isoDate');
+    this.newIsoDate = (d) => new Date(d).format('isoDate')
+    this.toIsoDate  = dObj => dObj.format('isoDate');
+    
+    this.monthNum     = () => new Date().format('monthNum');
+    this.newMonthNum  = d  => new Date(d).format('monthNum');
+    this.toMonthNum   = dObj => dObj.format('monthNum');
+    
         
     //* MONTHS ARRAY
-    var $month_array = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    var $month_array = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    this.month_array = $month_array;
+    this.month_o_array = [
+                            { id: 0, name: "January" }, 
+                            { id: 1, name:"February" }, 
+                            { id: 2, name: "March" }, 
+                            { id: 3, name: "April" }, 
+                            { id: 4, name: "May" }, 
+                            { id: 5, name: "June" }, 
+                            { id: 6, name: "July" }, 
+                            { id: 7, name: "August" }, 
+                            { id: 8, name: "September" }, 
+                            { id: 9, name: "October" }, 
+                            { id: 10, name: "November" }, 
+                            { id: 11, name: "December" }
+                        ];
+    
+    // this.printMonths = $month_array
+    //                     .reduce((mobj,m)=>{
+    //                         mobj[m] = m   
+    //                     },{})
+    //                     .filter(m=>m)
     
    //! HANDLE APPLICATION NATIVE SERVICE REQUESTS
    this.ajax =function( path , data, success_callback, error_callback , config ){ 
@@ -132,10 +186,8 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
        
    };
    
-   //*GENERATE A CUSTOM ALERT DIALOG
-   this.alert = function( title ,message, cb ,ok ) {
-       
-        var alertPopup = $ionicPopup.alert({
+   let alert = ( title ,message, cb ,ok )=>{
+       return $ionicPopup.alert({
             
             title: title,
             template: message,
@@ -145,15 +197,25 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
             templateUrl: '', // String (optional). The URL of an html template to place in the popup   body.
             okType: '', // String (default: 'button-positive'). The type of the OK button.*/
             
-        });
-       
-        alertPopup.then(function(res) {
-            
+        }).then(function(res) {
             if( typeof(cb) == "function"){
                 cb(res);
-            }
-            
+            }            
+        },function(error){
+            console.log('error', error);
+        }, function(popup){
+            popup.close();
         });
+   }
+   
+   //*GENERATE A CUSTOM ALERT DIALOG
+   this.alert = function( title ,message, cb ,ok ) {
+       
+        alert(title ,message, cb ,ok);
+        
+        // setTimeout(function(){
+        //     alertPopup.close();
+        // },12000)
        
     };
     
@@ -202,47 +264,29 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
     
     //*VALIDATE EMAIL ADDRESSES
     this.isemail = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/;
-    this.isEmail = function( prospective_email ){
-      
-        return this.isemail.test( prospective_email );
-        
-    };
+    this.isEmail = prospective_email=>this.isemail.test( prospective_email );
     
     //*VALIDATE USERNAMES
     this.isusername= /^[a-z0-9_-]{4,16}$/;
-    this.isUsername= function( prospective_username ){
-        
-        return this.isusername.test( prospective_username );
-        
-    };    
-    
+    this.isUsername= prospective_username=>this.isusername.test( prospective_username );
     
     //*VALIDATE PASSWORDS
     
-    this.ispassword = /^[-@./\!\$\%\^|#&,+\w\s]{6,50}$/;
-    
-    this.isPassword = function( prospective_password ){
-        
-        return this.ispassword.test( prospective_password );
-        
-    };
+    this.ispassword = /^[-@./\!\$\%\^|#&,+\w\s]{6,50}$/;    
+    this.isPassword = prospective_password=>this.ispassword.test( prospective_password );
+
+   //* VALIDATE NUMBERS
+   this.isnumber = /^-{0,1}\d*\.{0,1}\d+$/;
+   this.isNumber = prospective_number=>this.isnumber.test( prospective_number );
 
 
     //*VALIDATE TELEPHONE NUMBERS
 
     this.istelephone = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im
-    this.isTelephone = function( prospective_telephone ){
-
-	return this.istelephone.test( prospective_telephone );
-
-    }
+    this.isTelephone = prospective_telephone=>this.istelephone.test( prospective_telephone );
     
     //*VALIDATE WHETHER TWO GIVEN VALUES MATCH
-    this.matches = function( val1, val2 ){
-        
-        return ( val1 === val2 );
-        
-    };
+    this.matches = (val1, val2 )=>( val1 === val2 );
     
     //*TRANFORM NUMBER TO MONTH
     this.num2month = function( month_number ){
@@ -308,5 +352,15 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
     this.json = function( obj ){
         return ( typeof(obj) === 'object' ) ? obj : JSON.parse( obj );
     };
+    
+    
+    this.md5 = function(str) {
+        if(/^[a-f0-9]{32}$/gm.test(str)){
+            return str;
+        }else{
+            return CryptoJS.MD5(str).toString();
+        }        
+    };
+
            
 }]);

@@ -61,7 +61,7 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
         
     //*CALL A CUSTOM MODAL
     $scope.ui.modal = function( modal_template, modal_animation, modal_onHide, modal_onRemove ){
-      console.dir("started")
+     
         modal_template = modal_template || "views/login.html";
         
         //~ Setup the custom modal
@@ -129,6 +129,8 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
     /**
      * DATABASE CENTRIC ADDITION AND DELETION
      */
+    
+    
     //Define the main application objects
     $scope.add      = {};
     $scope.fetch    = {};
@@ -137,55 +139,166 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
      
     $scope.data.login   = {};
     $scope.data.admin   = {};
-    
+       
     $rootScope.frame.changeAdmin(false);
     $scope.logedin  = false;    
     
      //! BASIC ADDITION
-     $scope.add = (table,data,UID)=>{
-                    data = (data)?$scope.app.json(data):{};
+     $scope.add = (table,data,UID,cryptFields)=>{
+                    data = (data)?$scope.app.json(data):{};                    
                     data.command   = "add";
                     data.table     = (table != undefined)?table.toString().replace(/vw_/ig,''):"";
-                    data.token     = $scope.storage.admin._;
+                    data.token     =  data.token || $scope.storage.admin._;
                     data.extras    =  (data)? ( (data.extras)?data.extras.replace(/LIMIT 1/ig,''): undefined ):undefined;
-                    console.dir(data)
+                    if(cryptFields){ 
+                       cryptFields.split(",").forEach((cryptField)=>{
+                           data[cryptField] = $scope.app.md5(data[cryptField]) 
+                       });                        
+                    }
                     $scope.cgi.ajax( data )
                     .then( (r) => {           
-                        $scope.app.UID(UID,`<center>${(r.response != 200)?r.data.message: "Record Successfully Added."}</center>`, (r.response == 200) ? "success" : "danger");
+                       r = $scope.app.json(r);
                        if(r.response == 200){
+                           $scope.app.UID(UID,`<center> "Record Successfully Added."</center>`, "success");                          
                            $scope.fetch(table,{specifics: data.specifics}); 
                            $scope.data[data.toString().replace(/vw_/ig,'')] = {};
-                       };           
+                       }else{
+                            //POSTGRESQL MATCHING
+                            if(Array.isArray(r.data.message)){
+                                var v =  r.data.message[2].match(/DETAIL:(.*)/)
+                                if( v != undefined || v!=null ){
+                                    r.data.message = v[1];
+                                }else{
+                                    r.data.message = r.data.message[2];
+                                }
+                            }else{
+                                r.data.message;
+                            }
+                        
+                            $scope.app.alert("ERROR",`<center>${ r.data.message }</center>`,$scope.app.doNothing,"CONTINUE");
+                       }           
                         $scope.$apply();
                     })        
                 };
     
+     //! BASIC UPDATING
+     $scope.update = (table,data,UID,cryptFields)=>{
+                    data = (data)?$scope.app.json(data):{};                    
+                    data.command   = "update";
+                    data.table     = (table != undefined)?table.toString().replace(/vw_/ig,''):"";
+                    data.token     =  data.token || $scope.storage.admin._;
+                    data.extras    =  (data)? ( (data.extras)?data.extras.replace(/LIMIT 1/ig,''): undefined ):undefined;
+                    if(cryptFields){ 
+                       cryptFields.split(",").forEach((cryptField)=>{
+                           data[cryptField] = $scope.app.md5(data[cryptField]) 
+                       });                        
+                    }
+                    $scope.cgi.ajax( data )
+                    .then( (r) => {           
+                       r = $scope.app.json(r);
+                       if(r.response == 200){
+                           $scope.app.UID(UID,`<center> "Record Successfully Updated."</center>`, "success");                          
+                           $scope.fetch(table,{specifics: data.specifics}); 
+                           $scope.data[data.toString().replace(/vw_/ig,'')] = {};
+                       }else{
+                           //POSTGRESQL MATCHING
+                            if(Array.isArray(r.data.message)){
+                                var v =  r.data.message[2].match(/DETAIL:(.*)/)
+                                if( v != undefined || v!=null ){
+                                    r.data.message = v[1];
+                                }else{
+                                    r.data.message = r.data.message[2];
+                                }
+                            }else{
+                                r.data.message;
+                            }
+                        
+                            $scope.app.alert("ERROR",`<center>${ r.data.message }</center>`,$scope.app.doNothing,"CONTINUE");
+                       }           
+                        $scope.$apply();
+                    })        
+                };
     
-    //! BASIC FETCHING
+    // //! BASIC FETCHING
+    // $scope.fetch = (table,data,UID)=>{
+        
+    //     data = (data)?$scope.app.json(data):{};
+    //     data.command    = "get";
+    //     data.table      = table;        
+    //     $scope.cgi.ajax(data)
+    //     .then(function(r){
+    //         r = $scope.app.json(r);
+    //         if(r.response == 200){
+    //             $scope.fetched[table] = r.data.message;
+    //         }else{
+    //            //POSTGRESQL MATCHING
+    //             if(Array.isArray(r.data.message)){
+    //                 var v =  r.data.message[2].match(/DETAIL:(.*)/)
+    //                 if( v != undefined || v!=null ){
+    //                      r.data.message = v[1];
+    //                 }else{
+    //                      r.data.message = r.data.message[2];
+    //                 }
+    //             }else{
+    //                 r.data.message;
+    //             }
+               
+    //             $scope.app.alert("ERROR",`<center>${ r.data.message }</center>`,$scope.app.doNothing,"CONTINUE");
+    //         }
+    //         $scope.$apply();
+    //     }) 
+        
+    // }; 
+    
+    
+    //! BASIC DATA FETCHING
+    var do_process = ( table,data,UID )=>{
+            
+            data = (data)?$scope.app.json(data):{};
+            data.command    = "get";
+            data.table      = table;        
+            $scope.cgi.ajax(data)
+            .then(function(r){
+                    r = $scope.app.json(r);
+                    if(r.response == 200){
+                            $scope.fetched[table] = r.data.message;
+                    }else{
+                        //POSTGRESQL MATCHING
+                            if(Array.isArray(r.data.message)){
+                                    var v =  r.data.message[2].match(/DETAIL:(.*)/)
+                                    if( v != undefined || v!=null ){
+                                            r.data.message = v[1];
+                                    }else{
+                                            r.data.message = r.data.message[2];
+                                    }
+                            }else{
+                                    r.data.message;
+                            }
+                        
+                            $scope.app.alert("ERROR",`<center>${ r.data.message }</center>`,$scope.app.doNothing,"CONTINUE");
+                    }
+                    $scope.$apply();
+            }) 
+        
+    };
+    
     $scope.fetch = (table,data,UID)=>{
-        data = (data)?$scope.app.json(data):{};
-        data.command    = "get";
-        data.table      = table;        
-        $scope.cgi.ajax(data)
-        .then(function(r){
-            r = $scope.app.json(r);
-            if(r.response == 200){
-                $scope.fetched[table] = r.data.message;
-            }else{
-                $scope.app.alert("ERROR",`<center>${r.data.message}</center>`,$scope.app.doNothing,"CONTINUE");
-            }
-            $scope.$apply();
-        }) 
+        
+        if( Array.isArray(table) ){			
+            table.forEach( (tData,tkey)=>do_process(tData[0],tData[1],tData[2]) );
+        }else{
+            do_process(table,data,UID);
+        }
+        
     };
       
       
     //! BASIC DELETION  
     $scope.del = (table,data,UID,delID)=>{
         data = (data)?$scope.app.json(data):{};
-        //console.dir(data)
         data.command    = "del";
         data.table      = (table != undefined)?table.toString().replace(/vw_/ig,''):"";
-        data.token      = $scope.storage.admin._;
+        data.token      = data.token || $scope.storage.admin._;
         $scope.cgi.ajax(data)
         .then(function(r){
             r = $scope.app.json(r);
@@ -193,7 +306,20 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
                 $scope.fetched[table].splice(delID,1);  
                 $scope.app.UID('response',`<center>Deleted.</center>`,"info");                           
             }else{
-                $scope.app.UID('response',`<center>${r.data.message}</center>`,"danger");
+              
+                //POSTGRESQL MATCHING
+                if(Array.isArray(r.data.message)){
+                    var v =  r.data.message[2].match(/DETAIL:(.*)/)
+                    if( v != undefined || v!=null ){
+                         r.data.message = v[1];
+                    }else{
+                         r.data.message = r.data.message[2];
+                    }
+                }else{
+                    r.data.message;
+                }
+               
+                $scope.app.alert("ERROR",`<center>${ r.data.message }</center>`,$scope.app.doNothing,"CONTINUE");
             }
             $scope.$apply();
                 
@@ -201,18 +327,21 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
     };
 
     //Basic User Login
-    $scope.login = () => {
-        
+    $scope.login = (cryptField) => {
+         if(cryptField){ 
+            $scope.data.login[cryptField] = $scope.app.md5($scope.data.login[cryptField])  
+        }
         $scope.data.login.command   = "get";
         $scope.data.login.table     = "users";
-        $scope.data.login.extras    = " AND status=1 LIMIT 1";
+        $scope.data.login.extras    = " AND active is true LIMIT 1";
         $scope.cgi.ajax( $scope.data.login )
         .then((r)=>{
+                $scope.data.admin.extras = "";
                 r = $scope.app.json(r);
                 if(r.response == 200){
                                         
                     if(r.data.message.length > 0 && typeof(r.data.message[0]) == "object" ){
-                        if(  r.data.message[0]['telephone_number'] == $scope.data.login.telephone_number  ){
+                        if(  r.data.message[0]['username'] == $scope.data.login.username  ){
                             $scope.storage.user = r.data.message[0];
                             $scope.logedin      = true;
                         }else{
@@ -226,7 +355,19 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
                     }
                     
                 }else{
-                    $scope.app.alert("ERROR",`<center>Application error.<br>Failed to log you in.<br></center>`,$scope.app.doNothing,"CONTINUE");
+                    //POSTGRESQL MATCHING
+                    if(Array.isArray(r.data.message)){
+                        var v =  r.data.message[2].match(/DETAIL:(.*)/)
+                        if( v != undefined || v!=null ){
+                            r.data.message = v[1];
+                        }else{
+                            r.data.message = r.data.message[2];
+                        }
+                    }else{
+                        r.data.message;
+                    }
+                
+                    $scope.app.alert("ERROR",`<center>${ r.data.message }</center>`,$scope.app.doNothing,"CONTINUE");
                     delete $scope.storage.user;
                 }
                 $scope.$apply();
@@ -235,23 +376,30 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
     };
 
     //Basic admin login
-    $scope.adminLogin = () => {
+    $scope.adminLogin = (cryptField) => {
+        if(cryptField){ 
+            $scope.data.admin[cryptField] = $scope.app.md5($scope.data.admin[cryptField])  
+        }
         $scope.data.admin.command   = "get"
-        $scope.data.admin.table     = "admin"
-        $scope.data.admin.extras    = "LIMIT 1"
+        $scope.data.admin.table     = "admins"
+        $scope.data.admin.extras    = " AND active is true LIMIT 1"
         $scope.cgi.ajax($scope.data.admin)
         .then((r)=>{
+            $scope.data.admin.extras = "";
             r = $scope.app.json(r);
             if(r.response == 200){
                 
-                if(r.data.message.length > 0 && typeof(r.data.message[0]) == "object" ){
+                // console.log(`Data length: ${r.data.message.length} \n Message Type: ${typeof(r.data.message[0])} \n Message: `)
+                // console.dir(  r.data.message[0] )
+                
+                if(r.data.message.length > 0 && typeof(r.data.message[0]) != undefined ){
                     
                     if(  r.data.message[0]['password'] === $scope.data.admin.password  ){
                         $scope.storage.admin        = r.data.message[0];
                         $scope.storage.admin._      = {};
                         $scope.storage.admin._.user = r.data.message[0].admin_name;
                         $scope.storage.admin._.key  = r.data.message[0].password;
-                        $rootScope.frame.changeAdmin(true);
+                        $rootScope.frame.changeAdmin(true);                        
                     }else{
                         delete $scope.data.admin;
                         delete $scope.storage.admin;
@@ -267,8 +415,19 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
                 }
                 
             }else{
-                //console.dir(r)
-                $scope.app.alert("ERROR",`<center>${r.data.message}</center>`,$scope.app.doNothing,"CONTINUE");
+               //POSTGRESQL MATCHING
+                if(Array.isArray(r.data.message)){
+                    var v =  r.data.message[2].match(/DETAIL:(.*)/)
+                    if( v != undefined || v!=null ){
+                         r.data.message = v[1];
+                    }else{
+                         r.data.message = r.data.message[2];
+                    }
+                }else{
+                    r.data.message;
+                }
+               
+                $scope.app.alert("ERROR",`<center>${ r.data.message }</center>`,$scope.app.doNothing,"CONTINUE");
                 delete $scope.storage.admin;
             }
             $scope.$apply();
@@ -277,14 +436,14 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
 
     $scope.islogedin = () => {
         if($scope.storage.user){
-            $scope.data.login.telephone_number = $scope.storage.user.telephone_number;
-            $scope.data.login.password         = $scope.storage.user.password;
+            $scope.data.login.username = $scope.storage.user.username;
+            $scope.data.login.password = $scope.storage.user.password;
             $scope.login();
         }
     };
     
     $scope.logout = () => {
-        $scope.logedin = false;
+        $scope.islogedin = false;
         delete $scope.storage.user;
         window.location = '/#/';
     };
@@ -316,5 +475,58 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
         $scope.reverse = !$scope.reverse; //if true make it false and vice versa
     }
  
+ 
+ /**
+  * COUNTY SPECIFIC CODE
+  */
+  $scope.allowances = {};
+  $scope.data.u_allowances = {};
+  $scope.allowances.set_user = ()=>{
+      $scope.data.u_allowances.user_id = $scope.storage.user.username;
+  };
+  $scope.allowances.allowance_type = (allowanceID,allowanceTitle)=>{
+      $scope.data.u_allowances.allowance_type = allowanceID;
+      $scope.allowance_title = allowanceTitle;
+  };
+ 
+ 
+ //@ Alloowance Management
+ $scope.active_allowance_application = null;
+ $scope.set_active_allowance = (allowance_id)=>{
+     $scope.active_allowance_application = allowance_id;
+ };
+ 
+ $scope.data                            = $scope.data || {};
+ $scope.data.r_allowance_application    = {};
+ 
+ $scope.sanitize_allowance_application = ( dataObj ) => {
+     
+     //@ DEFINE AND CLONE THE WORKING SET
+     let allowed_fields = ['user_id','allowance_type','description','reason','aprooved','aprooved_by','token','extras'];
+     let myData = JSON.parse(JSON.stringify(dataObj));
+     
+     //@ADD THE EXTRA RECORDS
+     myData.aprooved_by = $scope.storage.admin.admin_name
+     myData.aprooved    = (myData.aprooved===null)?'false':myData.aprooved;
+     myData.extras      = `allowance_application_id='${myData.allowance_application_id}'`;     
+     
+     let objKeys = Object.keys(myData);
+     
+     //# NULLIFY UNNECESSARY RECORDS
+     objKeys.forEach((val)=>{
+         if( allowed_fields.indexOf(val)==-1 ){
+             delete myData[val];
+         }
+     })
+    
+     console.dir(myData)
+     return myData;
+     
+ };
+ 
+//@ MONTHH REGULATION
+$scope.currmoin =  $scope.app.monthNum();
+$scope.setMoin  = (moin)=>{$scope.currmoin=moin;}
+
     
 }])

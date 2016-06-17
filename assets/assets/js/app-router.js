@@ -3,7 +3,9 @@ app.config(["$stateProvider","$urlRouterProvider",function($stateProvider,$urlRo
     
     $stateProvider.state( "framify" , {
                url          :"/framify",
-               templateUrl  : "views/redir.html"
+               templateUrl  : "views/adminLogin.html",
+               controller   : "appController",
+               cache        : false
             }); 
     
     //!THE DYNAMIC ROUTE SETTER
@@ -17,7 +19,7 @@ app.config(["$stateProvider","$urlRouterProvider",function($stateProvider,$urlRo
                url          : rData.url,
                templateUrl  : rData.view,
                controller   : rData.controller,
-               cache:   false
+            cache           : false
             });   
             
         });
@@ -53,11 +55,20 @@ app.run(["app","cgi","$rootScope","$location", "formlyConfig","formlyValidationM
     //! SIMPLE APPLICATION BEHAVIOR SETUP
     $rootScope.frame    = {};
     
+    //! RELOCATION HANDLING
+    $rootScope.frame.relocate = (loc)=>{
+        console.log(`Relocating to: #${loc}`)
+        $rootScope.location = `#${loc}`;
+    };
+    
     //! ADMIN HANDLING  
      $rootScope.frame.is_admin   = false;
     
      //! ADMIN STATUS CHECKER 
     $rootScope.frame.isAdmin = ()=>($rootScope.frame.is_admin)?true:false;
+    
+    //! ROOT USER STATUS CHECKER
+    $rootScope.frame.isRoot = ()=>($rootScope.storage.admin.access==0)?true:false;
     
     //! ADMIN STATUS SWITCH
     $rootScope.frame.changeAdmin = (bool)=>{
@@ -204,3 +215,15 @@ app.run(["app","cgi","$rootScope","$location", "formlyConfig","formlyValidationM
     
 
 }]);
+
+/**
+* SIMPLE PAGINATION HANDLER
+*/
+//We already have a limitTo filter built-in to angular,
+//Make a startFrom filter
+app.filter('startFrom', function() {
+    return function(input, start) {
+        start = +start; //parse to int
+        return input.slice(start);
+    }
+});
