@@ -30,7 +30,7 @@
   "email": "info@ianmin2.cf",
   "dependencies": {
     "bixbyte-frame": "*",
-    "shelljs": "^0.6.0",
+    "shelljs": "^0.7.0",
     "wrench": "^1.5.9"
   },
   "bin": {
