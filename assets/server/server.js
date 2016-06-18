@@ -11,12 +11,10 @@
 // })();
 
 require("bixbyte-frame");
-app.port  = 3000;
-
 //** SETUP THE PHP CGI
 app.use("/php", php.cgi(`${__dirname}/../php`) );
 
-app.port    = app.port || 5000;
+//app.port    = app.port || 5000;
 
 //!SET THE BASIC DIRECTORY MIDDLEWARE
 app.use(express.static( __dirname + '/../'));
@@ -39,7 +37,7 @@ app.route("/sample/:iara").all(function(req,res){
 
 //!ROUTE LEADING TO THE CONFIGURATION FILE DIRECTORY 
 app.route("/config/:fname").all(function(req,res){
-	console.log("getting the file" + req.params.fname)
+	c_log("getting the file" + req.params.fname)
 	res.sendFile(req.params.fname, { "root": __dirname + "/../config/"} )
 });
 
@@ -47,6 +45,6 @@ app.route("/config/:fname").all(function(req,res){
 //!THE SERVER STARTUP FILE
 server.listen(app.port ,function(err){
 	if(!err){
-		log(`Running server on http://${myAddr}:${app.port}`.yell);
+		log(`Running server on `.success + `http://${myAddr}:${app.port}`.err);
 	}
 });	
