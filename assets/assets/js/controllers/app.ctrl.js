@@ -476,57 +476,11 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
     }
  
  
- /**
-  * COUNTY SPECIFIC CODE
-  */
-  $scope.allowances = {};
-  $scope.data.u_allowances = {};
-  $scope.allowances.set_user = ()=>{
-      $scope.data.u_allowances.user_id = $scope.storage.user.username;
-  };
-  $scope.allowances.allowance_type = (allowanceID,allowanceTitle)=>{
-      $scope.data.u_allowances.allowance_type = allowanceID;
-      $scope.allowance_title = allowanceTitle;
-  };
- 
- 
- //@ Alloowance Management
- $scope.active_allowance_application = null;
- $scope.set_active_allowance = (allowance_id)=>{
-     $scope.active_allowance_application = allowance_id;
- };
- 
- $scope.data                            = $scope.data || {};
- $scope.data.r_allowance_application    = {};
- 
- $scope.sanitize_allowance_application = ( dataObj ) => {
-     
-     //@ DEFINE AND CLONE THE WORKING SET
-     let allowed_fields = ['user_id','allowance_type','description','reason','aprooved','aprooved_by','token','extras'];
-     let myData = JSON.parse(JSON.stringify(dataObj));
-     
-     //@ADD THE EXTRA RECORDS
-     myData.aprooved_by = $scope.storage.admin.admin_name
-     myData.aprooved    = (myData.aprooved===null)?'false':myData.aprooved;
-     myData.extras      = `allowance_application_id='${myData.allowance_application_id}'`;     
-     
-     let objKeys = Object.keys(myData);
-     
-     //# NULLIFY UNNECESSARY RECORDS
-     objKeys.forEach((val)=>{
-         if( allowed_fields.indexOf(val)==-1 ){
-             delete myData[val];
-         }
-     })
-    
-     console.dir(myData)
-     return myData;
-     
- };
- 
-//@ MONTHH REGULATION
-$scope.currmoin =  $scope.app.monthNum();
-$scope.setMoin  = (moin)=>{$scope.currmoin=moin;}
+   /**
+   * @ MONTH REGULATION
+   */
+   $scope.currmoin =  $scope.app.monthNum();
+   $scope.setMoin  = (moin)=>{$scope.currmoin=moin;} 
 
     
 }])

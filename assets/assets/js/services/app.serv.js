@@ -6,8 +6,8 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
     //! APP CONFIGURATIONS
     this.ip = url[0].split(':')[0];
     this.port = url[0].split(':')[1];
-    //this.hlink = "http://"+this.ip+":"+this.port;
-    this.hlink = "http://localhost:"+this.port;
+    this.hlink = "http://"+this.ip+":"+this.port;
+    //this.hlink = "http://localhost:"+this.port;
     
     global.hlink = this.hlink;
       
