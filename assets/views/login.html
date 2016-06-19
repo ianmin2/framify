@@ -45,9 +45,37 @@
     </div>
     
     <div class="" ng-if="logedin">
-        <button class="button button-assertive pull-right" ng-click="logout()">Logout</button>
-       
+        
+ 	<div class="container">
+            <center>
+                <div class="col-md-12">
+                    
+                    <a ng-click="logout()" href="#/" >
+                        <div class="col-md-3 well frame-control assertive"  style="text-align:center;" >
+                            <div class="row-fluid">
+                                <div class="span9">
+                                    <h2><b style="text-transform:capitalize;"><i class="material-icons">no_encryption</i></b></h2>
+                                    <span> LOGOUT</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>   
+                    
+                    <a ng-repeat="link in links"  ng-if="link.parent=='false' && link.menu=='false'"  href="#{{link.url}}" >
+                        <div class="col-md-3 well frame-control"  style="text-align:center;" >
+                            <div class="row-fluid">
+                                <div class="span9">
+                                    <h2><b style="text-transform:capitalize;"><i class="material-icons">{{link.icon}}</i></b></h2>
+                                    <span>{{link.title}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                
+                </div>
+            </center>
+        </div>
        
     </div>
-    
+    <br/><br/><br/><br/>
 </ion-content>
