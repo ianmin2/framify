@@ -1,0 +1,244 @@
+<framify menu="false" path="frame" url="/frame" title="Frame" parent="true" icon="security" controller="appController" ></framify>
+<ion-content scrollbar-x="false" scrollbar-y="false" style="padding-bottom:20px;">
+<div class="col-lg-12" id="response"></div>
+<div  class="" ng-init="authorize();" ></div>
+
+ <div class="" ng-if="frame.isAdmin()">
+     <div class="" ng-init="frame.currTab='add'">
+         
+         <div class="col-lg-12">
+           
+                <ul class="nav nav-pills col-lg-12">
+                    <li ng-class="{active: frame.currTab == 'add' }"><a ng-click="frame.currTab='add'">Add</a></li>
+                    <li ng-class="{active: frame.currTab == 'edit' }"><a ng-click="frame.currTab='edit'">Edit</a></li>
+                    <li ng-class="{active: frame.currTab == 'delete' }"><a ng-click="frame.currTab='delete'">Disable</a></li>
+                </ul>
+            
+                <div class="tab-content" style="padding-top:1em;">
+                    <div ng-switch="frame.currTab">
+                        
+                        <!--ADD-->
+                        <div ng-switch-when="add">
+                           
+                            
+                            <form name="add_admin_form" class="col-lg-10" style="" novalidate>
+                                 <div ng-if="!frame.isRoot()" class="alert alert-danger"><button class="close" data-dismiss="alert" aria-label="close"><span aria-hidden="true">&times;</span></button><center style="font-weight:bold;">Your access level does not permit you to add administrators.</center></div>
+                                <!-- Name -->
+                                <div class="form-group">
+                                    <label>Full Name</label>
+                                    <input type="text" name="name" class="form-control" 
+                                        ng-model="data.admins.name"
+                                        ng-minlength="3"
+                                        ng-maxlength="30"
+                                        required>
+                                    <div class="help-block" ng-messages="add_admin_form.name.$error" ng-if="add_admin_form.name.$touched">
+                                        <p ng-message="minlength">Please Enter a longer Name.</p>
+                                        <p ng-message="maxlength">The name you entered is too long.</p>
+                                        <p ng-message="required">A name is required.</p>
+                                    </div>
+                                </div>
+          
+                                <!-- username -->
+                                <div class="form-group">
+                                    <label>Username</label>
+                                    <input type="text" name="admin_name" class="form-control" 
+                                        ng-model="data.admins.admin_name"
+                                        ng-minlength="4"
+                                        ng-maxlength="15"
+                                        required>
+                                    <div class="help-block" ng-messages="add_admin_form.name.$error" ng-if="add_admin_form.name.$touched">
+                                        <p ng-message="minlength">Please Enter a valid username.</p>
+                                        <p ng-message="maxlength">The username you entered is too long.</p>
+                                        <p ng-message="required">A username is required.</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- password-->
+                                <div class="form-group">
+                                    <label>Password</label>
+                                    <input type="password" name="password" class="form-control" 
+                                        ng-model="data.admins.password"
+                                        ng-minlength="5"
+                                        ng-maxlength="50"
+                                        required>
+                                        
+                                    <div class="help-block" ng-messages="add_admin_form.password.$error" ng-if="add_admin_form.password.$touched">
+                                            <p ng-message="minlength">That password is too short.</p>
+                                            <p ng-message="maxlength">That password is too long.</p>
+                                            <p ng-message="required">A password is required.</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- email -->
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input type="email" name="email" class="form-control" 
+                                        ng-model="data.admins.email"
+                                        ng-pattern="app.isemail"
+                                        required>
+                                        
+                                    <div class="help-block" ng-messages="add_admin_form.email.$error" ng-if="add_admin_form.email.$touched">
+                                        <p ng-message="required">An email address is required for password recovery.</p>
+                                        <p ng-message="pattern">Please enter a valid email address</p>
+                                    </div>
+                                </div>
+                                
+                                 <!-- telephone -->
+                                <div class="form-group">
+                                    <label>telephone</label>
+                                    <input type="tel" name="telephone" class="form-control" 
+                                        ng-model="data.admins.telephone"
+                                        ng-pattern="app.istelephone"
+                                        required>
+                                        
+                                    <div class="help-block" ng-messages="add_admin_form.telephone.$error" ng-if="add_admin_form.telephone.$touched">
+                                        <p ng-message="pattern">Please enter a valid telephone number</p>
+                                        <p ng-message="required">Please enter a valid telephone number</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <button ng-disabled="!frame.isRoot()" ng-click="add('vw_admins',data.admins,'response','password')" class=" button button-positive" ng-hide="add_admin_form.$invalid">Submit</button>
+                                </div>
+                                
+                            </form>
+    
+                            <br><br><br>
+                        </div>
+                        
+                        <!-- EDIT -->
+                        <div ng-switch-when="edit" ng-if="frame.currTab=='edit'">
+                            <!--<json-formatter json="fetched.vw_admins" open="2"></json-formatter>-->
+                            
+                             <label class="item item-input pull-left col-lg-5">
+                                <i class="icon ion-search placeholder-icon"></i>
+                                <input type="text" class="" ng-model="search" value="" placeholder="Search"> 
+                            </label>
+                            <table id="table-id"  align='center'  class="table table-striped  responsive-table"  name="content">
+                                <thead>
+                                <tr  style="font-weight:bold; text-transform:uppercase;">                           
+                                    <th ng-click="sort('name')">Name
+                                        <span class="icon " ng-show="sortKey=='name'" ng-class="{'ion-arrow-up-b':reverse,'ion-arrow-down-b':!reverse}"></span>
+                                    </th>
+                                    <th ng-click="sort('telephone')">Telephone
+                                        <span class="icon " ng-show="sortKey=='telephone'" ng-class="{'ion-arrow-up-b':reverse,'ion-arrow-down-b':!reverse}"></span>
+                                    </th>
+                                    <th ng-click="sort('email')">Email
+                                        <span class="icon " ng-show="sortKey=='email'" ng-class="{'ion-arrow-up-b':reverse,'ion-arrow-down-b':!reverse}"></span>
+                                    </th>
+                                    <th ng-click="sort('username')">Username
+                                        <span class="icon " ng-show="sortKey=='username'" ng-class="{'ion-arrow-up-b':reverse,'ion-arrow-down-b':!reverse}"></span>
+                                    </th>
+                                    <th ng-click="sort('active')">Active
+                                        <span class="icon " ng-show="sortKey=='active'" ng-class="{'ion-arrow-up-b':reverse,'ion-arrow-down-b':!reverse}"></span>
+                                    </th>
+                                    <th class="noprint" style="margin:0 auto;text-align:center;"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <form  name="admin_edit" novalidate >
+                                <tr dir-paginate="admin in fetched.vw_admins |orderBy:sortKey:reverse|filter:search|itemsPerPage:5" >
+                                   
+                                        <th scope="row" data-label="Name">{{admin.name}}</th>
+                                        <td data-label="Telephone" class="form-group">
+                                            <input type="tel" name="telephone" class="form-control" value="{{admin.telephone}}"
+                                            ng-model="admin.telephone"
+                                            ng-minlength="10"
+                                            ng-maxlength="15"
+                                            ng-pattern="app.istelephone"
+                                            required>
+                                        </td>
+                                        <td data-label="Email" class="form-group">
+                                            <input type="email" name="email" class="form-control" value="{{admin.email}}"
+                                            ng-model="admin.email"
+                                            ng-minlength="4"
+                                            ng-maxlength="30"
+                                            ng-pattern="app.isemail"
+                                            required>
+                                        </td>                                        
+                                        <td data-label="Username">
+                                            {{admin.admin_name| lowercase}}
+                                        </td>
+                                        <td data-label="Active">
+                                            {{admin.active }}
+                                        </td>
+                                        <td data-label="" class="noprint" style="margin:0 auto;text-align:center;"> {{data.temp}}
+                                            <button ng-if="(storage.admin.admin_name==admin.admin_name || frame.isRoot() )&& admin.admin_name!='userAdmin'" style="border-radius:50%;" ng-disabled="!app.isTelephone(admin.telephone)||!app.isEmail(admin.email)" class="btn btn-raised btn-md icon btn-raised ion-checkmark-round btn-success" style="font-weight:bold; font-size:1em !important; color:white !important; text-align:center;" ng-click="update('vw_admins',{ email: admin.email, telephone: admin.telephone, extras: ' admin_name=\'{{admin.admin_name}}\'' },'response')" ></button>
+                                        </td>
+                                    
+                                </tr>
+                                </form>
+                                </tbody>
+                            </table>
+                            <dir-pagination-controls
+                                max-size="5"
+                                direction-links="true"
+                                boundary-links="true" >
+                            </dir-pagination-controls>
+                            
+                            
+                            
+                            <br><br><br>
+                        </div>
+                        
+                        <!--DELETE-->
+                        <div ng-switch-when="delete" ng-if="frame.currTab=='delete'" >
+                            <!--<json-formatter json="fetched.vw_admins" open="2"></json-formatter>-->
+                            <label class="item item-input pull-left col-lg-5">
+                                <i class="icon ion-search placeholder-icon"></i>
+                                <input type="text" class="" ng-model="search" placeholder="Search">               
+                            </label>
+                            <table id="table-id"  align='center'  class="table table-striped  responsive-table"  name="content">
+                                <thead>
+                                <tr  style="font-weight:bold; text-transform:uppercase;">                           
+                                    <th ng-click="sort('name')">Name
+                                        <span class="icon " ng-show="sortKey=='name'" ng-class="{'ion-arrow-up-b':reverse,'ion-arrow-down-b':!reverse}"></span>
+                                    </th>
+                                    <th ng-click="sort('telephone')">Telephone
+                                        <span class="icon " ng-show="sortKey=='telephone'" ng-class="{'ion-arrow-up-b':reverse,'ion-arrow-down-b':!reverse}"></span>
+                                    </th>
+                                    <th ng-click="sort('email')">Email
+                                        <span class="icon " ng-show="sortKey=='email'" ng-class="{'ion-arrow-up-b':reverse,'ion-arrow-down-b':!reverse}"></span>
+                                    </th>
+                                    <th ng-click="sort('username')">Username
+                                        <span class="icon " ng-show="sortKey=='username'" ng-class="{'ion-arrow-up-b':reverse,'ion-arrow-down-b':!reverse}"></span>
+                                    </th>
+                                    <th ng-click="sort('active')">Active
+                                        <span class="icon " ng-show="sortKey=='active'" ng-class="{'ion-arrow-up-b':reverse,'ion-arrow-down-b':!reverse}"></span>
+                                    </th>
+                                    <th class="noprint" style="margin:0 auto;text-align:center;"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr dir-paginate="admin in fetched.vw_admins |orderBy:sortKey:reverse|filter:search|itemsPerPage:5">
+                                    <th scope="row" data-label="Name">{{admin.name}}</th>
+                                    <td data-label="Telephone">{{admin.telephone }}</td>
+                                    <td data-label="Email">{{admin.email| lowercase}}</td>
+                                    <td data-label="Username">{{admin.admin_name| lowercase}}</td>
+                                    <td data-label="Active">{{admin.active }}</td>
+                                    <td data-label="" class="noprint" style="margin:0 auto;text-align:center;">
+                                        <button ng-class="{'ion-eye-disabled btn-danger':!admin.active,'ion-eye btn-success':admin.active}" ng-disabled="(admin.admin_name==storage.admin.admin_name || (admin.access==0 && storage.admin.access!=0)) || admin.admin_name=='userAdmin'" class="btn btn-raised btn-md icon " style="font-weight:bold; font-size:1em !important; color:white !important; text-align:center;" ng-click="update('vw_admins',{ active: !admin.active, extras: ' admin_name=\'{{admin.admin_name}}\'' },'response')" ></button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <dir-pagination-controls
+                                max-size="5"
+                                direction-links="true"
+                                boundary-links="true" >
+                            </dir-pagination-controls>
+                            
+                            <br><br><br>
+                        </div>
+                        
+                        
+                    </div>                    
+                </div>
+            </div>
+         
+         
+     </div>
+ </div>
+ 
+ <br><br><br>
+ </ion-content> 
