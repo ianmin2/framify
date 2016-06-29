@@ -86,6 +86,7 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
     };
     
     //!FORMAT TO ISODATE
+    this.newDate    = () => new Date().toDateString();
     this.isoDate    = () => new Date().format('isoDate');
     this.newIsoDate = (d) => new Date(d).format('isoDate')
     this.toIsoDate  = dObj => dObj.format('isoDate');
