@@ -1,0 +1,3 @@
+v. 1.14.0
+Added the frame.path() function 
+	returns the current route without subroutes

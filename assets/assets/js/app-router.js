@@ -55,6 +55,10 @@ app.run(["app","cgi","$rootScope","$location", "formlyConfig","formlyValidationM
     //! SIMPLE APPLICATION BEHAVIOR SETUP
     $rootScope.frame    = {};
     
+    //! IDENTIFY THE CURRENT PATH
+    $rootScope.frame.path = ()=>$location.absUrl().split("/#/")[0]+"/#/"+$location.absUrl().split("/#/")[1].split("#")[0];
+    //p.split("/#/")[0]+"/#/"+p.split("/#/")[1].split("#")[0]
+
     //! RELOCATION HANDLING
     $rootScope.frame.relocate = (loc)=>{
         console.log(`Relocating to: #${loc}`)

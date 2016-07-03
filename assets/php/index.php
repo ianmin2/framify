@@ -10,9 +10,11 @@ header("Access-Control-Allow-Headers: *");
 header("Access-Control-Allow-Methods: *");
 header("Content-Type:application/json");
 
+// echo json_encode($_REQUEST);
+// exit;
 
-
-
+// echo phpinfo();
+// exit;
 
 	//@ PERFORM BASIC AUTHENTICATION & DEPENDENCY IMPORTATION
 	include("__adminAuth.php");
@@ -73,7 +75,13 @@ header("Content-Type:application/json");
 			
 			//# TABLE DROP HANDLER
 			case 'drop':
-				echo $proc->truncateFunc( $_REQUEST );
+				echo $proc->dropFunc( $_REQUEST );
+				exit;
+			break;
+			
+			//# PERFORM FULLY CUSTOM MANIPULATIONS
+			case 'custom':
+				echo $proc->customFunc( $_REQUEST );
 				exit;
 			break;
 			

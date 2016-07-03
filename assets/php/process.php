@@ -225,6 +225,18 @@ header("Content-Type:application/json");
 			
 		}
 		
+
+		//@ CUSTOM QUERYSTRING;
+		public function customFunc( $customData  ){
+			$ret = $this->c->printQueryResults( $customData['query'] ,true,true);
+			$v   = (array) json_decode($ret);
+			$vd  = (array) $v["data"];
+			$vm  = (array) $vd["message"];
+			if( !$vm[0] && isset($customData['query2']) ){
+				$ret = $this->c->printQueryResults( $customData['query2'] ,true,true);
+			}			
+			return $ret;
+		}
 		
 	};
 
