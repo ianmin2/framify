@@ -1,3 +1,8 @@
 v. 1.14.0
 Added the frame.path() function 
 	returns the current route without subroutes
+
+v. 1.14.1 
+Added the $scope.custom() query handler in app.ctrl.js
+	Allows for custom SQL query processing 
+		!! Handle with care.
