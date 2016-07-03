@@ -470,8 +470,8 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
     };
     
     
-   // BASIC Custom Queries
-    $scope.custom = (table,data,UID)=>{
+    // BASIC Custom Queries
+    $scope.custom = (data,UID,mess)=>{
         data = (data)?$scope.app.json(data):{};                    
         data.command   = "custom";
         data.token     =  data.token || $scope.storage.admin._;
@@ -480,8 +480,7 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
         .then( (r) => {           
             r = $scope.app.json(r);
             if(r.response == 200){
-                $scope.app.UID(UID,`<center> "Successfully Executed."</center>`, "success");                          
-                $scope.fetch(table,{specifics: data.specifics}); 
+                $scope.app.UID(UID,(mess||`<center> "Successfully Executed."</center>`), "success"); 
                 $scope.data[data.toString().replace(/vw_/ig,'')] = {};
             }else{
                 //POSTGRESQL MATCHING

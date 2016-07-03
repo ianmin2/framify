@@ -6,3 +6,6 @@ v. 1.14.1
 Added the $scope.custom() query handler in app.ctrl.js
 	Allows for custom SQL query processing 
 		!! Handle with care.
+
+v. 1.14.2
+Simple quick edit to the query handler 
