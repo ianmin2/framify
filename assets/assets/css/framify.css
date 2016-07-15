@@ -1,3 +1,98 @@
+ /**** B!xbyte @framify ****
+          main css file.
+ */
+
+/* ROBOTO font setup */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Roboto Light'), local('Roboto-Light'), url("fonts/Roboto-Light.ttf") format('truetype');
+}
+/* EO ROBOTO font setup */
+
+/* FRAMIFY FONT SETUP */
+@font-face {
+  font-family: 'Framify';
+  font-style: normal;
+  font-weight: 500;
+  src: local('framify'),url('fonts/Sweetly_Broken.ttf') format('truetype');
+}
+/*EO FRAMIFY FONT SETUP*/
+
+button{
+  transition-duration: 0.3s;
+}
+
+button:hover{
+  transition-duration: 0.3s;
+  box-shadow: 2px 3px grey;
+}
+input{
+  border: 0;
+}
+.framify{
+  font-family: framify;
+  font-size: 10em;
+  color:#387EF5;
+  text-shadow: 3px 3px white;
+}
+.framify2{
+  font-family: framify;
+  font-size: 7em;
+  color: white;
+  text-shadow: 3px 3px midnightblue;
+}
+.bixbyte{
+  font-family: framify;
+  font-size: 7em;
+  color: black;
+  text-shadow: 3px 3px deepskyblue;
+}
+
+.item-profile{
+  height: 150px;
+}
+
+.item-profile > .item-avatar > img:first-child {
+  max-width: 100px;
+  max-height: 100px; 
+}
+
+#resp{
+  color: grey;
+  display: block;
+  margin: 0 auto;
+  text-align: center;
+}
+.bx-hov:hover {
+  text-decoration: snow !important;
+}
+.frame-control {
+  transition-duration: 1s;
+  border: 1px solid #E3E3E3;
+  border-radius: 4px 4px 4px 4px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) inset;
+  margin-bottom: 20px;
+  min-height: 20px;
+  padding: 19px;
+}
+.frame-control:hover {
+  cursor : pointer;
+  color: black;
+  background-color : #F5F5F5 !important;
+  transition-duration: 1s;
+  text-decoration:none !important;
+}
+.frame-control:hover > * {
+  cursor : pointer;
+  color: black;
+  background-color : #F5F5F5 !important;
+  transition-duration: 1s;
+  text-decoration:none !important;
+}
+
+/** TABLE STYLING*/
 * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
