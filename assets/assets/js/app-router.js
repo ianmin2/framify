@@ -1,5 +1,5 @@
 //!CONFIGURE THE BNASIC PRE-RUNTIME STATES OF THE APPLICATION
-app.config(["$stateProvider","$urlRouterProvider",function($stateProvider,$urlRouterProvider){
+app.config(["$stateProvider","$urlRouterProvider","ChartJsProvider",function($stateProvider,$urlRouterProvider,ChartJsProvider){
     
     $stateProvider.state( "framify" , {
                url          :"/framify",
@@ -35,6 +35,9 @@ app.config(["$stateProvider","$urlRouterProvider",function($stateProvider,$urlRo
     //!REDIRECT APP TO THE ROOT ROUTE
     $urlRouterProvider.otherwise('/framify');
     
+    //@SET THE DEFAULT CHART COLORS
+    ChartJsProvider.setOptions({ colours : [ "#4AB151",'#387EF5', '#FF0000', '#DCDCDC', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360'] });
+
 }]);
 
 //!DEFINE THE APPLICATION RUNTIME DEFAULTS

@@ -14,4 +14,8 @@ v. 1.14.3
 Made the p-frame $connection->db_name and $connection->db_host public
 
 v. 1.15.0
-Removed the reference JS and CSS files 
+Removed the reference JS and CSS files in favor of concatenated library files js.js and css.css respectively
+
+v. 1.16.0
+Added support for angular-charts 
+	Documentation at https://jtblin.github.io/angular-chart.js/
