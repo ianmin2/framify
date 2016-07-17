@@ -22,3 +22,6 @@ Added support for angular-charts
 
 v. 1.16.1
 Added a standard startup database schema in schema>sample.sql
+
+v. 1.16.2
+Changed the user and admin login pages to encrypt their respective password field before attempted login
