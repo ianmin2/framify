@@ -19,3 +19,6 @@ Removed the reference JS and CSS files in favor of concatenated library files js
 v. 1.16.0
 Added support for angular-charts 
 	Documentation at https://jtblin.github.io/angular-chart.js/
+
+v. 1.16.1
+Added a standard startup database schema in schema>sample.sql
