@@ -3,14 +3,14 @@
 <div  class="" ng-init="authorize();" ></div>
 
  <div class="" ng-if="frame.isAdmin()">
-     <div class="" ng-init="fetch([['vw_users']]);frame.currTab='add'">
+     <div class="" ng-init="fetch([['vw_users']]);frame.currTab='add';sort('name');">
          
          <div class="col-lg-12">
            <div class="col-lg-12" id="response"></div>
                 <ul class="nav nav-pills col-lg-12">
-                    <li ng-class="{active: frame.currTab == 'add' }"><a ng-click="frame.currTab='add'">Add Departments</a></li>
-                    <li ng-class="{active: frame.currTab == 'edit' }"><a ng-click="frame.currTab='edit'">Edit Departments</a></li>
-                    <li ng-class="{active: frame.currTab == 'delete' }"><a ng-click="frame.currTab='delete'">Disable Departments</a></li>
+                    <li ng-class="{active: frame.currTab == 'add' }"><a ng-click="frame.currTab='add'">Add Users</a></li>
+                    <li ng-class="{active: frame.currTab == 'edit' }"><a ng-click="frame.currTab='edit'">Edit Users</a></li>
+                    <li ng-class="{active: frame.currTab == 'delete' }"><a ng-click="frame.currTab='delete'">Disable Users</a></li>
                 </ul>
             
                 <div class="tab-content" style="padding-top:1em;">
@@ -25,7 +25,7 @@
                                     
                                 <!-- Name -->
                                 <div class="form-group">
-                                    <label>Full Name</label>
+                                    <label>Full Name<sup style="color:red">*</sup></label>
                                     <input type="text" name="name" class="form-control" 
                                         ng-model="data.users.name"
                                         ng-minlength="3"
@@ -40,7 +40,7 @@
                                           
                                 <!-- username -->
                                 <div class="form-group">
-                                    <label>Username</label>
+                                    <label>Username<sup style="color:red">*</sup></label>
                                     <input type="text" name="username" class="form-control" 
                                         ng-model="data.users.username"
                                         ng-minlength="4"
@@ -55,7 +55,7 @@
                                 
                                 <!-- password-->
                                 <div class="form-group">
-                                    <label>Password</label>
+                                    <label>Password<sup style="color:red">*</sup></label>
                                     <input type="password" name="password" class="form-control" 
                                         ng-model="data.users.password"
                                         ng-minlength="5"
@@ -71,7 +71,7 @@
                                
                                 <!-- email -->
                                 <div class="form-group">
-                                    <label>Email</label>
+                                    <label>Email<sup style="color:red">*</sup></label>
                                     <input type="email" name="email" class="form-control" 
                                         ng-model="data.users.email"
                                         ng-pattern="app.isemail"
@@ -85,7 +85,7 @@
                                 
                                  <!-- telephone -->
                                 <div class="form-group">
-                                    <label>telephone</label>
+                                    <label>telephone<sup style="color:red">*</sup></label>
                                     <input type="tel" name="telephone" class="form-control" 
                                         ng-model="data.users.telephone"
                                         ng-pattern="app.istelephone"
@@ -99,7 +99,7 @@
                                 
                                 <div class="form-group">
                                     <!--!frame.isRoot()-->
-                                    <button ng-click="add('vw_users',data.users,'response','password')" class=" button button-positive" ng-disabled="add_user_form.$invalid">Add Department</button>
+                                    <button ng-click="add('vw_users',data.users,'response','password')" class=" button button-positive" ng-disabled="add_user_form.$invalid">Add User</button>
                                 </div>
                                 
                             </form>

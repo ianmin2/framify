@@ -25,3 +25,6 @@ Added a standard startup database schema in schema>sample.sql
 
 v. 1.16.2
 Changed the user and admin login pages to encrypt their respective password field before attempted login
+
+v 1.16.3
+Added required asterix's and basic defaults to the user and administrator management pages
