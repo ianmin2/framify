@@ -531,7 +531,7 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
 
          $scope.cgi.ajax( data )
         .then( (r) => {   
-            alert("count run");
+            
             r = $scope.app.json(r);
 
             if(r.response == 200){
@@ -544,7 +544,6 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
                 $scope.data[table.toString().replace(/vw_/ig,'')] = {};
                 
             }else{
-alert("count failed");
 
                 //POSTGRESQL MATCHING
                 if(Array.isArray(r.data.message)){
