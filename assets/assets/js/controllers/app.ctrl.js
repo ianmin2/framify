@@ -502,6 +502,49 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
         })        
     };
 
+
+    //BASIC Instance Counter
+    $scope.count = (table,data,UID,mess) => {
+
+        data            = (data)?$scope.app.json(data):{};
+        data.command    = "count";
+        data.token      = data.token || $scope.storage.admin._;
+
+         $scope.cgi.ajax( data )
+        .then( (r) => {   
+
+            r = $scope.app.json(r);
+
+            if(r.response == 200){
+                
+                if( mess ) {
+                    $scope.app.UID(UID,(mess), "success");
+                }
+                 
+                $scope.counted[table] = r.data.message;
+                $scope.data[data.toString().replace(/vw_/ig,'')] = {};
+                
+            }else{
+                //POSTGRESQL MATCHING
+                if(Array.isArray(r.data.message)){
+                    var v =  r.data.message[2].match(/DETAIL:(.*)/)
+                    if( v != undefined || v!=null ){
+                        r.data.message = v[1];
+                    }else{
+                        r.data.message = r.data.message[2];
+                    }
+                }else{
+                    r.data.message;
+                }
+            
+                $scope.app.alert("ERROR",`<center>${ r.data.message }</center>`,$scope.app.doNothing,"CONTINUE");
+            }           
+            $scope.$apply();
+        })    
+
+    };
+
+
    /**
     * TABLE SORTER
     */
