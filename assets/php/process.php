@@ -54,7 +54,6 @@ header("Content-Type:application/json");
 			
 		}
 
-
 		//@ CUSTOM COUNTER
 		public function countFunc( $countData ){
 
@@ -89,10 +88,9 @@ header("Content-Type:application/json");
 			//return $this->c->wrapResponse(200,$query,"");
 			$result = $this->c->printQueryResults($query,true,false);
 
-			return $this->c->wrapResponse(200, $result[0], true );
+			return $this->c->wrapResponse(200, $result[0]["count"], true );
 
 		}
-
 		
 		//@ SPECIFIC GETTER
 		public function getFunc( $getData ){
@@ -265,7 +263,7 @@ header("Content-Type:application/json");
 			
 		}
 		
-
+		
 		//@ CUSTOM QUERYSTRING;
 		public function customFunc( $customData  ){
 			$ret = $this->c->printQueryResults( $customData['query'] ,true,true);
@@ -281,4 +279,5 @@ header("Content-Type:application/json");
 	};
 
 ?>
+
 
