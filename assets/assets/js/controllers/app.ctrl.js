@@ -135,6 +135,7 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
     $scope.add      = {};
     $scope.fetch    = {};
     $scope.fetched  = {};
+    $scope.counted  = {};
     $scope.data     = {};
      
     $scope.data.login   = {};
@@ -144,7 +145,7 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
     $scope.logedin  = false;    
     
      //! BASIC ADDITION
-     $scope.add = (table,data,UID,cryptFields)=>{
+     $scope.add = (table,data,UID,cryptFields,cb)=>{
                     data = (data)?$scope.app.json(data):{};                    
                     data.command   = "add";
                     data.table     = (table != undefined)?table.toString().replace(/vw_/ig,''):"";
@@ -159,9 +160,16 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
                     .then( (r) => {           
                        r = $scope.app.json(r);
                        if(r.response == 200){
-                           $scope.app.UID(UID,`<center> "Record Successfully Added."</center>`, "success");                          
+                           $scope.app.UID(UID,`<center> "Successfully Added."</center>`, "success");                          
                            $scope.fetch(table,{specifics: data.specifics}); 
-                           $scope.data[data.toString().replace(/vw_/ig,'')] = {};
+                           $scope.data[table.toString().replace(/vw_/ig,'')] = {};
+                           if(typeof(cb)==="function"){
+                               cb(data,r);
+                           }else{
+                               console.log('\n\n An invalid callback function was passed.')
+                               console.dir( typeof(cb) );
+                               console.log('\n\n')
+                           }
                        }else{
                             //POSTGRESQL MATCHING
                             if(Array.isArray(r.data.message)){
@@ -197,9 +205,9 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
                     .then( (r) => {           
                        r = $scope.app.json(r);
                        if(r.response == 200){
-                           $scope.app.UID(UID,`<center> "Record Successfully Updated."</center>`, "success");                          
+                           $scope.app.UID(UID,`<center> "Successfully Updated."</center>`, "success");                          
                            $scope.fetch(table,{specifics: data.specifics}); 
-                           $scope.data[data.toString().replace(/vw_/ig,'')] = {};
+                           $scope.data[table.toString().replace(/vw_/ig,'')] = {};
                        }else{
                            //POSTGRESQL MATCHING
                             if(Array.isArray(r.data.message)){
@@ -437,6 +445,7 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
         })
     };
 
+    //@ Handle basic user re-authentication
     $scope.islogedin = () => {
         if($scope.storage.user){
             $scope.data.login.username = $scope.storage.user.username;
@@ -445,10 +454,20 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
         }
     };
     
+    //@ Handle basic app-user logout
     $scope.logout = () => {
         $scope.islogedin = false;
         delete $scope.storage.user;
         window.location = '/#/';
+    };
+
+    //@ Handle basic application redirection
+    $scope.redirect = (loc) => {
+        if(loc){
+             window.location = loc
+        }else{
+            window.location = "/#/framify";
+        }ect       
     };
 
     // Basic Admin Auth
@@ -475,14 +494,14 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
         data = (data)?$scope.app.json(data):{};                    
         data.command   = "custom";
         data.token     =  data.token || $scope.storage.admin._;
-        console.dir( data );
+        // console.dir( data );
         $scope.cgi.ajax( data )
         .then( (r) => {           
             r = $scope.app.json(r);
             if(r.response == 200){
                 $scope.app.UID(UID,(mess||`<center> "Successfully Executed."</center>`), "success"); 
                 $scope.cFetched[table] = r.data.message;
-                $scope.data[data.toString().replace(/vw_/ig,'')] = {};
+                $scope.data[table.toString().replace(/vw_/ig,'')] = {};
             }else{
                 //POSTGRESQL MATCHING
                 if(Array.isArray(r.data.message)){
@@ -502,29 +521,31 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
         })        
     };
 
-
     //BASIC Instance Counter
     $scope.count = (table,data,UID,mess) => {
-
+        
         data            = (data)?$scope.app.json(data):{};
+        data.table      = table;
         data.command    = "count";
-        data.token      = data.token || $scope.storage.admin._;
+        data.token      = data.token || {};
 
          $scope.cgi.ajax( data )
         .then( (r) => {   
-
+            alert("count run");
             r = $scope.app.json(r);
 
             if(r.response == 200){
-                
+
                 if( mess ) {
                     $scope.app.UID(UID,(mess), "success");
                 }
                  
-                $scope.counted[table] = r.data.message;
-                $scope.data[data.toString().replace(/vw_/ig,'')] = {};
+                $scope.counted[table.toString().replace(/vw_/ig,'')] = r.data.message;
+                $scope.data[table.toString().replace(/vw_/ig,'')] = {};
                 
             }else{
+alert("count failed");
+
                 //POSTGRESQL MATCHING
                 if(Array.isArray(r.data.message)){
                     var v =  r.data.message[2].match(/DETAIL:(.*)/)
@@ -544,7 +565,6 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
 
     };
 
-
    /**
     * TABLE SORTER
     */
@@ -553,12 +573,19 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
         $scope.reverse = !$scope.reverse; //if true make it false and vice versa
     }
  
- 
+
+   /**
+    * PUSH DATA TO OBJECT
+   */
+    $scope.dPush = (obj,key,val) =>{
+       obj[key] = val;
+    };
+
    /**
    * @ MONTH REGULATION
    */
    $scope.currmoin =  $scope.app.monthNum();
    $scope.setMoin  = (moin)=>{$scope.currmoin=moin;} 
 
-    
 }])
+

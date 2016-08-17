@@ -28,3 +28,7 @@ Changed the user and admin login pages to encrypt their respective password fiel
 
 v 1.16.3
 Added required asterix's and basic defaults to the user and administrator management pages
+
+v 1.17.0
+Added the cgi db based smart instanceOf counter
+
