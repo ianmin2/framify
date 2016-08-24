@@ -1,8 +1,10 @@
-app.controller("appController", ['app','$scope','$location','$ionicModal','$rootScope','$ionicSideMenuDelegate','$ionicSlideBoxDelegate',function( app, $scope, $location, $ionicModal, $rootScope, $ionicSideMenuDelegate, $ionicSlideBoxDelegate ){
+app.controller("appController", ['app','$scope','$location','$ionicModal','$rootScope','$ionicSideMenuDelegate','$ionicSlideBoxDelegate',"$stateParams",function( app, $scope, $location, $ionicModal, $rootScope, $ionicSideMenuDelegate, $ionicSlideBoxDelegate, $stateParams ){
     
     //!APPLICATION GLOBAL SCOPE COMPONENTS
     $scope.current  = {};
     $scope.ui       = {};
+    
+    $scope.urlParams = $stateParams;
     
     $rootScope.nav = [];
     //$rootScope.nav.search; 
@@ -144,7 +146,7 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
     $rootScope.frame.changeAdmin(false);
     $scope.logedin  = false;    
     
-     //! BASIC ADDITION
+     //@ BASIC DB ADDITION
      $scope.add = (table,data,UID,cryptFields,cb)=>{
                     data = (data)?$scope.app.json(data):{};                    
                     data.command   = "add";
@@ -189,7 +191,8 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
                     })        
                 };
     
-     //! BASIC UPDATING
+
+     //@ BASIC DB UPDATING
      $scope.update = (table,data,UID,cryptFields)=>{
                     data = (data)?$scope.app.json(data):{};                    
                     data.command   = "update";
@@ -262,7 +265,7 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
     // }; 
     
     
-    //! BASIC DATA FETCHING
+    //@ BASIC DATA FETCHING
     var do_process = ( table,data,UID )=>{
             
             data = (data)?$scope.app.json(data):{};
@@ -292,7 +295,9 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
             }) 
         
     };
+
     
+    //@ REMOTE DATA FETCHING
     $scope.fetch = (table,data,UID)=>{
         
         if( Array.isArray(table) ){			
@@ -304,7 +309,7 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
     };
       
       
-    //! BASIC DELETION  
+    //@ BASIC DELETION  
     $scope.del = (table,data,UID,delID)=>{
         data = (data)?$scope.app.json(data):{};
         data.command    = "del";
@@ -337,7 +342,8 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
         })
     };
 
-    //Basic User Login
+
+    //@ Basic User Login
     $scope.login = (cryptField) => {
          if(cryptField){ 
             $scope.data.login[cryptField] = $scope.app.md5($scope.data.login[cryptField])  
@@ -386,7 +392,8 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
             })
     };
 
-    //Basic admin login
+
+    //@ Basic admin login
     $scope.adminLogin = (cryptField) => {
         if(cryptField){ 
             $scope.data.admin[cryptField] = $scope.app.md5($scope.data.admin[cryptField])  
@@ -445,6 +452,7 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
         })
     };
 
+
     //@ Handle basic user re-authentication
     $scope.islogedin = () => {
         if($scope.storage.user){
@@ -453,6 +461,7 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
             $scope.login();
         }
     };
+
     
     //@ Handle basic app-user logout
     $scope.logout = () => {
@@ -460,6 +469,7 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
         delete $scope.storage.user;
         window.location = '/#/';
     };
+
 
     //@ Handle basic application redirection
     $scope.redirect = (loc) => {
@@ -470,7 +480,8 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
         }ect       
     };
 
-    // Basic Admin Auth
+
+    //@ Basic Admin Auth
     $scope.authorize = () => {
         if($scope.storage.admin){
            $scope.data.admin        = {}; 
@@ -481,7 +492,8 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
             $scope.location = "/#/admin";
         }
     };
-    
+
+    //@ ADMINISTRATOR DE-AUTHORIZATION    
     $scope.deauthorize = () => {
         delete $scope.storage.admin; 
         $rootScope.frame.changeAdmin(false);               
@@ -520,6 +532,7 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
             $scope.$apply();
         })        
     };
+
 
     //BASIC Instance Counter
     $scope.count = (table,data,UID,mess) => {
@@ -564,6 +577,7 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
 
     };
 
+
    /**
     * TABLE SORTER
     */
@@ -580,11 +594,78 @@ app.controller("appController", ['app','$scope','$location','$ionicModal','$root
        obj[key] = val;
     };
 
+
    /**
    * @ MONTH REGULATION
    */
    $scope.currmoin =  $scope.app.monthNum();
    $scope.setMoin  = (moin)=>{$scope.currmoin=moin;} 
+
+
+   //@ INJECT A STANDARD WHERE "extras" OBJECT
+   $scope.addExtras = ( targetObj, extrasObj, subStrings, removeKeys) => {
+
+        targetObj  = targetObj || {};
+        extrasObj  = extrasObj || {};
+            subStrings = subStrings || '';
+        removeKeys = removeKeys || '';
+
+        var extras = '';
+
+        var k = [],v = [];
+
+        //@ CAPTURE THE REMOVE KEYS
+        removeKeys = removeKeys.split(',').filter(e=>e);
+
+
+        removeKeys.forEach( e => {
+            extrasObj[e] = null;
+            delete extrasObj[e];
+        });
+
+        //@ CAPTURE REPLACE STRINGS
+        subStrings
+            .split(',')
+        .forEach( (e,i) => {
+            let x = e.split(':');
+            k[i] = (x[0]);
+            v[i] = (x[1]);				
+        })
+
+        //@ GET THE DEFINED KEYS
+        var keys = Object.keys(extrasObj);
+
+        //@ REPLACE THE DEFINED WITH THE DESIRED REPLACE KEYS
+        k.forEach( (e,i) => {
+
+            if( keys.indexOf(e) != -1 ){
+                
+                extrasObj[ v[i] ]  = extrasObj[e];
+                extrasObj[e] = null;
+                delete extrasObj[e];
+
+            }
+            
+        });
+
+        
+        k = Object.keys(extrasObj);
+        v = null;
+
+        k.forEach( (e,i) => {
+            
+            extras += ' ' + e + "='"+extrasObj[e]+"' AND";
+
+        });
+
+        k = null;
+
+        
+        targetObj.extras =  extras.replace(/AND+$/,'');
+
+        return targetObj;
+
+};
 
 }])
 
