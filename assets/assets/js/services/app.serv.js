@@ -33,6 +33,9 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
     //! PARSE AN INTEGER
     this.parseInt = str=>parseInt(str);
     
+    //! GENERATE A RANDOM NUMBER IN AN OPTIONALLY SPECIFIED RANGE [0-10] (INCLUSIVE)
+    this.getRandom = (min,max) => (Math.floor(Math.random() * (max - min + 1)) + min);
+
     //! EMPTY CALLBACK
    this.doNothing = function(){
        
@@ -51,6 +54,8 @@ app.service("app",['$http','$ionicPopup',function( $http, $ionicPopup ){
     //   console.log(`id:\t${objectID}\ncontent:\t${pageContent}\nclass:\t${c}`)
     }; 
     
+
+
     //!AVAIL THE APPLICATION LINKS    
     this.getData = function( success_callback , error_callback ){
        

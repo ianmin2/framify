@@ -81,17 +81,17 @@ CREATE OR REPLACE FUNCTION audit_admins()
 $BODY$
 BEGIN 
     IF (TG_OP = 'DELETE') THEN
-        INSERT INTO aud_suppliers (admin_name,password,telephone,email,added,name,access,active,func) 
+        INSERT INTO aud_admins (admin_name,password,telephone,email,added,name,access,active,func) 
         SELECT OLD.admin_name,OLD.password,OLD.telephone,OLD.email,OLD.added,OLD.name,OLD.access,OLD.active,TG_OP;
         RETURN OLD;
     END IF;
     IF (TG_OP = 'INSERT') THEN
-        INSERT INTO aud_suppliers (admin_name,password,telephone,email,added,name,access,active,func) 
+        INSERT INTO aud_admins (admin_name,password,telephone,email,added,name,access,active,func) 
         SELECT NEW.admin_name,NEW.password,NEW.telephone,NEW.email,NEW.added,NEW.name,NEW.access,NEW.active,TG_OP;
         RETURN NEW;
     END IF;
     IF (TG_OP = 'UPDATE') THEN
-        INSERT INTO aud_suppliers (admin_name,password,telephone,email,added,name,access,active,func) 
+        INSERT INTO aud_admins (admin_name,password,telephone,email,added,name,access,active,func) 
         SELECT OLD.admin_name,OLD.password,OLD.telephone,OLD.email,OLD.added,OLD.name,OLD.access,OLD.active,TG_OP;
         RETURN NEW;
     END IF;
@@ -106,17 +106,17 @@ CREATE OR REPLACE FUNCTION audit_users()
 $BODY$
 BEGIN 
     IF (TG_OP = 'DELETE') THEN
-        INSERT INTO aud_suppliers (username,password,name,email,telephone,account_number,active,func) 
+        INSERT INTO aud_users (username,password,name,email,telephone,account_number,active,func) 
         SELECT OLD.username,OLD.password,OLD.name,OLD.email,OLD.telephone,OLD.account_number,OLD.active,TG_OP;
         RETURN OLD;
     END IF;
     IF (TG_OP = 'INSERT') THEN
-        -- INSERT INTO aud_suppliers (username,password,name,email,telephone,account_number,active,func) 
+        -- INSERT INTO aud_users (username,password,name,email,telephone,account_number,active,func) 
         -- SELECT NEW.username,NEW.password,NEW.name,NEW.email,NEW.telephone,NEW.account_number,NEW.active,TG_OP;
         RETURN NEW;
     END IF;
     IF (TG_OP = 'UPDATE') THEN
-        INSERT INTO aud_suppliers (username,password,name,email,telephone,account_number,active,func) 
+        INSERT INTO aud_users (username,password,name,email,telephone,account_number,active,func) 
         SELECT OLD.username,OLD.password,OLD.name,OLD.email,OLD.telephone,OLD.account_number,OLD.active,TG_OP;
         RETURN NEW;
     END IF;
@@ -164,3 +164,4 @@ CREATE OR REPLACE VIEW vw_invalid_users AS
 SELECT username,users.name,users.email,users.telephone,account_number
 FROM users
 WHERE users.active = false;
+
