@@ -1,10 +1,14 @@
 {
   "name": "framify",
-  "version": "1.17.0",
-  "description": "A simple application bootstrapping tool by b!xbyte",
+  "version": "1.18.0",
+  "description": "An application bootstrapping tool by b!xbyte",
   "main": "index.js",
   "scripts": {
     "test": "echo \"\nThank you for choosing framify\n\""
+  },
+  "preferGlobal": true,
+  "engines": {
+    "node": ">=4.0.0"
   },
   "repository": {
     "type": "git",

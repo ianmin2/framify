@@ -11,6 +11,14 @@
 // })();
 
 require("bixbyte-frame");
+
+//** SETUP THE MAIL SERVER 
+/**
+ * YOU NEED A mailgun API KEY TO SEND EMAIL USING FRAMIFY. 
+ * to get one, please signup on https://mailgun.com
+ */
+var mail = mailgun('YOUR_MAILGUN_API_KEY');
+
 //** SETUP THE PHP CGI
 app.use("/php", php.cgi(`${__dirname}/../php`) );
 

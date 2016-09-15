@@ -32,3 +32,11 @@ Added required asterix's and basic defaults to the user and administrator manage
 v 1.17.0
 Added the cgi db based smart instanceOf counter
 
+v 1.17.1
+=> 	Changed the php cgi process file to dish more custom messages
+=> 	Fixed an audit table no_reference to "aud_suppliers" error
+
+v 1.18.0
+	=> 	Added email sending support for the mailgun api
+	-> Defined minimum nodejs version required
+	-> Set preference for global installation

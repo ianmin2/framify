@@ -2,9 +2,13 @@
 <ion-content scrollbar-x="false" scrollbar-y="false" style="padding-bottom:40px;">
    <div ng-init="authorize();" id="response"></div>
     
+   <!--<json-formatter json="storage" open="1"></json-formatter>-->
+
     <div class="list" ng-if="!frame.isAdmin()">
-       
-        <h3 style="padding-left:1em;">Administrator Login</h3>
+       <br><br> 
+       <center>
+           <h3><font color="gray"><u>Administrator Login</u></font> </h3>
+       </center>
     <form name="adminForm" class="col-lg-10" style="" novalidate>
        
         <div class="form-group">
@@ -37,7 +41,10 @@
         </div>
         
         <div class="form-group">
-            <button ng-click="adminLogin('password')" class=" button button-positive" ng-hide="adminForm.$invalid">Submit</button>
+            <button 
+            ng-click="adminLogin('password')" 
+            class=" button button-positive" 
+            ng-disabled="adminForm.$invalid">Submit</button>
         </div>
         
     </form>
@@ -89,3 +96,4 @@
     </div>
     
 </ion-content>
+
