@@ -40,3 +40,6 @@ v 1.18.0
 	=> 	Added email sending support for the mailgun api
 	-> Defined minimum nodejs version required
 	-> Set preference for global installation
+
+v 1.18.1
+	=> Added pre crash handling
