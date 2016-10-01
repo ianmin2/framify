@@ -14,7 +14,7 @@
 **.buildpath
 **.log
 **.settings
-**.conf
+//**.conf
 
 #! Ignore all project generated files
 sysinfo.txt
