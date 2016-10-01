@@ -22,13 +22,8 @@ sysinfo.txt
 #! Ignore all backup files
 **.bak
 
-<<<<<<< HEAD
 #! Ignore all test files and folders
-tests/**
-=======
-#! Ignore all test folders
-**tests/
->>>>>>> dev
+**tests/**
 
 #! Ignore all webkit builder folders
 **webkit**
