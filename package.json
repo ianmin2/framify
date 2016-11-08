@@ -1,6 +1,6 @@
 {
   "name": "framify",
-  "version": "1.18.2",
+  "version": "1.19.0",
   "description": "An application bootstrapping tool by b!xbyte",
   "main": "index.js",
   "scripts": {
@@ -30,13 +30,13 @@
   "bugs": {
     "url": "https://github.com/ianmin2/framify/issues"
   },
-  "website": "https://ianmin2.cf/framify",
+  "website": "https://bixbyte.io",
   "homepage": "https://github.com/ianmin2/framify#readme",
-  "email": "info@ianmin2.cf",
+  "email": "framify@bixbyte.io",
   "dependencies": {
     "bixbyte-frame": "*",
-    "shelljs": "^0.7.0",
-    "wrench": "^1.5.9"
+    "shelljs": "*",
+    "wrench": "*"
   },
   "bin": {
     "framify": "index.js",

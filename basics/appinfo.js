@@ -9,28 +9,28 @@ function AppInfo( ){
 		this.name 			= "\n\nApplication: ".info +"\t\tBixbyte Framify".yell;
 		
 		//application version
-		this.version 		= "\n\nVersion: \t\t".info + data.version;
+		this.version 			= "\n\nVersion: \t\t".info + data.version;
 		
 		//application description
-		this.description 	= "\n\nDescription: \t\t".info + data.description;
+		this.description 		= "\n\nDescription: \t\t".info + data.description;
 		
 		//application author
-		this.author 		= "\n\nAuthor: \t\t".info + data.author;
+		this.author 			= "\n\nAuthor: \t\t".info + data.author;
 		
 		//application website 
-		this.website 		= "\n\nWebsite: \t\t".info + data.website;
+		this.website 			= "\n\nWebsite: \t\t".info + data.website;
 		
 		//application email
 		this.email 			= "\n\nSupport email: \t\t".info + data.email;
 		
 		//application info 
 		this.info 			= `${this.name}
-							  ${this.version}
-							  ${this.description}
-							  ${this.author}
-							  ${this.website}
-							  ${this.email}`;
-		
+						  ${this.version}
+						  ${this.description}
+						  ${this.author}
+						  ${this.website}
+						  ${this.email}`;
+	
 };
 
 module.exports = ( ) => {

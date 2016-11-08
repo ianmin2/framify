@@ -12,20 +12,20 @@ require("./cloud_config.js");
 
 //# FETCH THE CLI APP VARIABLES
 app.vars.repository =   ( process.argv[2] || "-h" ).replace(/ +/g, '_').toLowerCase();
-app.vars.git 		=	process.argv[3] || null;
+app.vars.git 		=	 process.argv[3] || null;
 
 //# FETCH THE SCRIPT INSTALLATION DIRECTORY
-app.vars.home 		= path.dirname( fs.realpathSync( __filename ) ) + '/';
+app.vars.home 		= 	path.dirname( fs.realpathSync( __filename ) ) + '/';
 
 //FETCH THE APPLICATION INFO OBJECT
-app.vars.appInfo = require("./basics/appinfo.js")();
-global.appInfo = app.vars.appInfo;
+app.vars.appInfo 	= require("./basics/appinfo.js")();
+global.appInfo 		= app.vars.appInfo;
 
 //# FETCH THE BASIC PROJECT DIRECTORY CREATOR
-global.Framify = require("./framify.js")();
+global.Framify 		= require("./framify.js")();
 
 //# SINCE THE DRIVIFY OBJECT REQUIRES AN ACTIVE CALLBACK( oAuth_client ), IT SHOULD BE STORED BEFORE USE 
-global.Drivify 	= require("./drive/drivify.js");
+global.Drivify 		= require("./drive/drivify.js");
 
 // //#EXPOSE THE APPLICATION LOG STREAM 
 // global.logStream = () => {

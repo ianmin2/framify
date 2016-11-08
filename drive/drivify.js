@@ -31,7 +31,7 @@ app.drive.loadFiles = () => {
               
                 request.abort();
                 
-                reject("@framify\n".yell + "Cannot initialize th Google drive Parameter".err + "\nPlease ensure that:".info + "\n\tYou are connected to the internet".yell + "\n\tYou are using the latest version of framify\n".yell );
+                reject("@framify\n".yell + "Cannot initialize the Google drive Parameter".err + "\nPlease ensure that:".info + "\n\tYou are connected to the internet".yell + "\n\tYou are using the latest version of framify\n".yell );
                   
             });
         

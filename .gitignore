@@ -1,7 +1,8 @@
 ##! The Bixbyte Framify .gitignore file
 
-#!  Ignore all node_module folders and their content
+#!  Ignore all node_module folders and their equivalents
 **node_modules/
+**bower_components
 
 #!  Ignore all shadow files
 **~

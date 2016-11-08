@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="bixFrame" ng-controller="appController">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="favicon.ico">   
+    <link rel="stylesheet" href="assets/css/css.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{nav.title}}</title>
+    
+</head>
+
+
+<body id="body">
+   
+   <ion-side-menus>
+		
+		<ion-side-menu-content>
+            
+			 <ion-nav-bar class="bar bar-positive">
+                
+                <ion-nav-buttons side="left">                    
+                    <div class="bar bar-header item-input-inset" ng-if="nav.hasFilters">
+                        <label for="" class="item-input-wrapper textbox-search">
+                            <i class="icon ion-ios7-search placeholder-icon" ></i>
+                            <input type="search" ng-model="nav.search" placeholder="Search">
+                        </label>                        
+                   </div>
+                   <!--<a data-tap-disabled="true" class="button button-icon icon positive outline" ng-click="openFilters(nav.hasFilters);" ng-class="{'ion-search':!nav.hasFilters, 'ion-close-circled': nav.hasFilters}"> </a>-->
+                   <a ng-click="$ionicGoBack()" style="font-size:2em;" class="button button-icon icon positive outline light pull-left ion-android-arrow-dropleft"></a>
+                </ion-nav-buttons>
+                
+                <ion-nav-title ng-show="!nav.hasFilters">
+                       {{ nav.title }}
+                </ion-nav-title>
+                
+                <ion-nav-buttons side="right">
+                   <button menu-toggle="right" class="button button-icon icon ion-navicon"ng-click="nav.right.toggle()" ></button>
+                </ion-nav-buttons>
+                
+            </ion-nav-bar>
+            
+            <br><br>
+            <ion-nav-view  animation="slide-left-right"></ion-nav-view>
+            
+		</ion-side-menu-content>
+        
+        <ion-side-menu side="right">
+            
+			<header class="bar bar-header bar-positive">
+                <h1 class="title">{{nav.alias}}</h1>
+            </header>
+            
+            <ion-content class="has-header">
+                
+                    <ul class="list">
+                        <a class="item dropdown-link dropdown-link--is-large" href="#{{link.url}}" ng-repeat="link in links" ng-show="link.menu == 'true' && ( link.parent == 'false' )">
+                           
+                            <i class="material-icons">{{link.icon}}</i>
+                            <span>{{link.title}}</span>
+                            
+                        </a>
+                        <a class="item dropdown-link dropdown-link--is-large" href="#/admin" >
+                           <i class="material-icons">settings_applications</i>
+                            <span>Admin Portal</span>
+                        </a>
+                        <a class="item dropdown-link dropdown-link--is-large" href="#/" ng-if="frame.isAdmin()" ng-click="frame.reset()" >
+                           <i class="material-icons">exit_to_app</i>
+                            <span>Logout</span>
+                        </a>
+                        
+                    </ul>
+                
+            </ion-content>
+            
+		</ion-side-menu>
+           
+   </ion-side-menus>
+
+</body>
+
+<script src="assets/js/js.js"></script>
+<script src="application.js"></script>
+</html>
