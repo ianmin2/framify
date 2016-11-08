@@ -1,47 +1,52 @@
-var app = angular.module("myApp", ["ngRoute", "controllers", 'bixApp', "datatables"])
+var app = angular.module("framifyApp", ['framify.js'])
 
-.config(function($routeProvider) {
+.config(
+["$stateProvider" ,"$urlRouterProvider"
+,function($stateProvider ,$urlRouterProvider) {
 
     /*
     		{ 
-    			path :"/",
-    			template: "/views/"
+    			path :"app"
+                ,url: "/app"
     			,menu: ""
     			,icon: ""
+                ,title: ""
+                ,parent: ""
     			,controller: ""
+                ,view: '/path/to/view'
     		}
     */
 
     //@ INITIALIZE THE ROOT ROUTE
-    $routeProvider
-        .when("/", {
-            templateUrl: "views/index.html"
-        });
+    $stateProvider
+    .state("app", {
+        url:   '/app'
+        ,templateUrl: "views/index.html"
+        ,controller: "framifyController"        
+    });
 
-
+    //@ FETCH THE ROUTERIFY GENERATED ROUTES
     $.getJSON('app-routes.json')
-        .then(function(data) {
-            // alert(JSON.stringify(data))
-            setRoutes(data);
-        })
+    .then(function(data) {
+        setRoutes(data);
+    });
 
-    //@ HANDLE THE SETTING OF PRE-DEFINED ROUTES
+    //@ HANDLE THE SETTING OF THE GULP GENERATED ROUTES
     var setRoutes = (routeArray) => {
 
         routeArray = routeArray || [];
 
         routeArray.forEach(function(routeData) {
-            $routeProvider
-                .when(routeData.url, {
-                    templateUrl: routeData.view,
-                    controller: routeData.controller
-                });
+            $stateProvider
+            .state( routeData.path, {
+                url: routeData.url
+                ,templateUrl: routeData.view
+                ,controller: ( routeData.controller != "framifyController" ) ? routeData.controller : undefined
+            });
         });
 
     };
 
-    //@ REDIRECT TO THE NOT FOUND PAGE
-    $routeProvider.otherwise({
-        templateUrl: "views/404.html"
-    });
-})
+    $urlRouterProvider.otherwise("/app");
+
+}])

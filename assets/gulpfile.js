@@ -88,7 +88,7 @@ var route = function(src, filename, filepath) {
 //THE BUILD ITERATOR
 var build = (development === true) ? dev : dist;
 
-var ps = fs.createWriteStream(`${__dirname}/public/app-routes.json`, { 'flags': 'w', 'encoding': null, 'mode': 0666 });
+var ps = fs.createWriteStream(`${__dirname}/config/app-routes.json`, { 'flags': 'w', 'encoding': null, 'mode': 0666 });
 
 //PACKAGE THE SPECIAL VIEWS AND ADD UNTO THE MENU
 gulp.task('router', [], function() {

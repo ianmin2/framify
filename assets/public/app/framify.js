@@ -1,12 +1,12 @@
-angular.module('bixApp', [
+angular.module('framify.js', [
     'ui.router'
     ,'framify-paginate'
     ,'ngStorage'
     ,'jsonFormatter'
 ])
 
-.service("app", 
-['$http'
+.service("app"
+,['$http'
 ,function($http) {
 
         //!SETUP THE APPLICATION BASICS
@@ -28,7 +28,7 @@ angular.module('bixApp', [
             if (response.status == 200) {
                 this.url = response.data;
             } else {
-                this.notify(500,"Cannot set routes")
+                this.notify("Failed to set routes" ,"danger")
             }
         });
 
@@ -361,8 +361,8 @@ angular.module('bixApp', [
 }])
 
 //The BASIC sms sending application service
-.service("sms", 
-['app'
+.service("sms" 
+,['app'
 ,function(app) {
 
         /**
@@ -453,8 +453,8 @@ angular.module('bixApp', [
 
 }])
 
-.service("cgi", 
-[
+.service("cgi" 
+,[
 function() {
 
     //Handle background calls to the web server for database integration
@@ -525,8 +525,8 @@ function() {
 
 
     }])
-.controller("appController", 
-['app' ,'$scope' ,'$state' ,'$rootScope' 
+.controller("framifyController"
+,['app' ,'$scope' ,'$state' ,'$rootScope' 
 ,function(app ,$scope ,$state ,$rootScope) {
 
         //!APPLICATION GLOBAL SCOPE COMPONENTS
@@ -591,196 +591,290 @@ function() {
         $rootScope.frame.changeAdmin(false);
         $scope.logedin = false;
 
-//@@@@@@@@@@@@@@@@@CONTINUE HERE
-
         //! BASIC ADDITION
-        $scope.add = (table, data, UID, cryptFields, cb) => {
+        $scope.add = (table ,data ,cryptFields ,cb) => {
 
-            data = (data) ? $scope.app.json(data) : {};
+            return new Promise( (resolve ,reject) => {
 
-            data.command = "add";
+                //* populate the data object 
+                data                = (data) ? $scope.app.json(data) : {};
+                data.command        = "add";
+                data.table          = (table != undefined) ? table.toString().replace(/vw_/ig, '') : "";
+                data.token          = data.token || $scope.storage.admin._;
+                data.extras         = (data) ? ((data.extras) ? data.extras.replace(/LIMIT 1/ig, '') : undefined) : undefined;
 
-            data.table = (table != undefined) ? table.toString().replace(/vw_/ig, '') : "";
+                //* Encrypt the specified cryptFields
+                 if (cryptFields) {
+                    cryptFields.split(",")
+                    .forEach((cryptField) => {
+                        data[cryptField] = $scope.app.md5(data[cryptField])
+                    });
+                }
 
-            data.token = data.token || $scope.storage.admin._;
-
-            data.extras = (data) ? ((data.extras) ? data.extras.replace(/LIMIT 1/ig, '') : undefined) : undefined;
-
-            if (cryptFields) {
-
-                cryptFields.split(",")
-                .forEach((cryptField) => {
-                    data[cryptField] = $scope.app.md5(data[cryptField])
-                });
-
-            }
-
-            $scope.cgi.ajax(data)
+                //* Perform the actual addition
+                $scope.cgi.ajax(data)
                 .then((r) => {
+
                     r = $scope.app.json(r);
+
                     if (r.response == 200) {
-                        $scope.app.UID(UID, `<center> ${r.data.message}</center>`, "success");
+
+                        $scope.app.notify(`<center> ${r.data.message}</center>` ,"success" );
+
                         $scope.fetch(table, { specifics: data.specifics });
+
                         $scope.data[table.toString().replace(/vw_/ig, '')] = {};
-                        if (typeof(cb) === "function") {
-                            cb(data, r);
+
+                        if ( cb && typeof(cb) == "function") {
+                            resolve( cb(r) );
                         } else {
-                            console.log('\n\n An invalid callback function was passed.')
-                            console.dir(typeof(cb));
-                            console.log('\n\n')
+                            resolve(true);
                         }
+
                     } else {
-                        //POSTGRESQL MATCHING
+
+                        // POSTGRESQL ERROR FORMAT MATCHING
                         if (Array.isArray(r.data.message)) {
-                            var v = r.data.message[2].match(/DETAIL:(.*)/)
+
+                            var v = r.data.message[2].match(/DETAIL:(.*)/);
+
                             if (v != undefined || v != null) {
                                 r.data.message = v[1];
                             } else {
                                 r.data.message = r.data.message[2];
                             }
-                        } else {
-                            r.data.message;
+
                         }
 
-                        alert(`<center>${ r.data.message }</center>`);
+
+                        app.notify(`<center>${ r.data.message }</center>` ,'danger');
+                        reject( app.makeResponse(500 ,v[1]) )
+                        
                     }
+
                     $scope.$apply();
-                })
+
+                });
+
+            });
+
+        
+            
         };
 
         //! BASIC UPDATING
-        $scope.update = (table, data, UID, cryptFields, cb, cbData) => {
-            data = (data) ? $scope.app.json(data) : {};
-            data.command = "update";
-            data.table = (table != undefined) ? table.toString().replace(/vw_/ig, '') : "";
-            data.token = data.token || $scope.storage.admin._;
-            data.extras = (data) ? ((data.extras) ? data.extras.replace(/LIMIT 1/ig, '') : undefined) : undefined;
-            if (cryptFields) {
-                cryptFields.split(",").forEach((cryptField) => {
-                    data[cryptField] = $scope.app.md5(data[cryptField])
-                });
-            }
-            $scope.cgi.ajax(data)
-                .then((r) => {
+        $scope.update = (table ,data ,cryptFields ,cb) => {
+
+            return new Promise( (resolve ,reject) => {
+
+                //* pack the relevant info into the data object
+                data                = (data) ? $scope.app.json(data) : {};
+                data.command        = "update";
+                data.table          = (table != undefined) ? table.toString().replace(/vw_/ig, '') : "";
+                data.token          = data.token || $scope.storage.admin._;
+                data.extras         = (data) ? ((data.extras) ? data.extras.replace(/LIMIT 1/ig, '') : undefined) : undefined;
+
+                //* Encrypt the specified cryptFields
+                if (cryptFields) {
+                    cryptFields.split(",")
+                    .forEach((cryptField) => {
+                        data[cryptField] = $scope.app.md5(data[cryptField])
+                    });
+                }
+
+                //* perform the actual update
+                $scope.cgi.ajax(data)
+                .then( (r) => {
+
                     r = $scope.app.json(r);
+
                     if (r.response == 200) {
-                        $scope.app.UID(UID, `<center> ${r.data.message}</center>`, "success");
+
+                        $scope.app.notify(`<center> ${r.data.message}</center>`, "success");
+
                         $scope.fetch(table, { specifics: data.specifics });
+
                         $scope.data[table.toString().replace(/vw_/ig, '')] = {};
+
                         if (typeof(cb) == 'function') {
-                            cb((cbData || data.data.message));
+                            resolve( cb( r ) );                            
+                        }else{
+                            resolve(true);
                         }
 
                     } else {
-                        //POSTGRESQL MATCHING
+
+                        // POSTGRESQL ERROR FORMAT MATCHING
                         if (Array.isArray(r.data.message)) {
+
                             var v = r.data.message[2].match(/DETAIL:(.*)/)
+
                             if (v != undefined || v != null) {
                                 r.data.message = v[1];
                             } else {
                                 r.data.message = r.data.message[2];
                             }
-                        } else {
-                            r.data.message;
+                           
                         }
 
-                        alert(`<center>${ r.data.message }</center>`);
+                        app.notify(`<center>${ r.data.message }</center>`,"danger");
+                        reject( app.makeResponse(500 ,r.data.message)  );
+
                     }
                     $scope.$apply();
                 })
+
+            });
+  
         };
 
 
         //! BASIC DATA FETCHING
-        var do_fetch = (table, data, UID) => {
+        var do_fetch = (table ,data ,cryptFields) => {
 
-            data = (data) ? $scope.app.json(data) : {};
-            data.command = "get";
-            data.table = table;
-            $scope.cgi.ajax(data)
-                .then(function(r) {
+            return new Promise( (resolve ,reject) => {
+
+                //* populate the "data" object
+                data               = (data) ? $scope.app.json(data) : {};
+                data.command       = "get";
+                data.table         = table;
+
+                //* Encrypt the specified cryptFields
+                if (cryptFields) {
+                    cryptFields.split(",")
+                    .forEach((cryptField) => {
+                        data[cryptField] = $scope.app.md5(data[cryptField])
+                    });
+                }
+
+                 //* perform the actual data fetching
+                 $scope.cgi.ajax(data)
+                 .then( (r) => {
+
                     r = $scope.app.json(r);
+
                     if (r.response == 200) {
                         $scope.fetched[table] = r.data.message;
+                        resolve(r);
                     } else {
-                        //POSTGRESQL MATCHING
+
+                        // POSTGRESQL ERROR FORMAT MATCHING
                         if (Array.isArray(r.data.message)) {
+
                             var v = r.data.message[2].match(/DETAIL:(.*)/)
+
                             if (v != undefined || v != null) {
                                 r.data.message = v[1];
                             } else {
                                 r.data.message = r.data.message[2];
                             }
-                        } else {
-                            r.data.message;
-                        }
 
-                        alert(`<center>${ r.data.message }</center>`);
+                        }
+                        app.notify(`<center>${ r.data.message }</center>`,"danger");
+                        reject( makeResponse(500 ,r.data.message) );
+
                     }
                     $scope.$apply();
                 })
 
+            });
+
         };
 
-        $scope.fetch = (table, data, UID) => {
+        $scope.fetch = (table ,data ,cryptFields ,cb) => {
 
             if (Array.isArray(table)) {
-                table.forEach((tData, tkey) => do_fetch(tData[0], tData[1], tData[2]));
+
+                let promiseArr = [];
+
+                table.forEach( (tData ,tkey) => promiseArr.push( do_fetch(tData[0] ,tData[1]) ,cryptFields) );
+                
+                return Promise.all( promiseArr );
+
             } else {
-                do_fetch(table, data, UID);
+               return Promise.resolve( do_fetch(table, data, UID) );
             }
 
         };
 
-
         //! BASIC DELETION  
-        $scope.del = (table, data, UID, delID) => {
-            data = (data) ? $scope.app.json(data) : {};
-            data.command = "del";
-            data.table = (table != undefined) ? table.toString().replace(/vw_/ig, '') : "";
-            data.token = data.token || $scope.storage.admin._;
-            $scope.cgi.ajax(data)
-                .then(function(r) {
+        $scope.del = (table ,data ,cryptFields ,cb) => {
+
+            return new Promise( (reject ,resolve) => {
+
+                //* populate the data object
+                data            = (data) ? $scope.app.json(data) : {};
+                data.command    = "del";
+                data.table      = (table != undefined) ? table.toString().replace(/vw_/ig, '') : "";
+                data.token      = data.token || $scope.storage.admin._;
+
+                //* Encrypt the specified cryptFields
+                if (cryptFields) {
+                    cryptFields.split(",")
+                    .forEach((cryptField) => {
+                        data[cryptField] = $scope.app.md5(data[cryptField])
+                    });
+                }
+
+                $scope.cgi.ajax(data)
+                .then( (r) => {
+
                     r = $scope.app.json(r);
+
                     if (r.response == 200) {
-                        $scope.fetched[table].splice(delID, 1);
-                        $scope.app.UID('response', `<center>${r.data.message}</center>`, "info");
+                        // $scope.fetched[table].splice(delID, 1);
+                        $scope.app.notify(`<center>${r.data.message}</center>`, "success");
+                        resolve(r);
                     } else {
 
-                        //POSTGRESQL MATCHING
+                        // POSTGRESQL ERROR FORMAT MATCHING
                         if (Array.isArray(r.data.message)) {
+
                             var v = r.data.message[2].match(/DETAIL:(.*)/)
+
                             if (v != undefined || v != null) {
                                 r.data.message = v[1];
                             } else {
                                 r.data.message = r.data.message[2];
                             }
-                        } else {
-                            r.data.message;
                         }
+                        app.notify(`<center>${ r.data.message }</center>`,"danger");
+                        reject( makeResponse(500 ,r.data.message) );
 
-                        alert(`<center>${ r.data.message }</center>`);
                     }
                     $scope.$apply();
 
                 })
+
+            })
+            
         };
 
         //Basic User Login
         $scope.login = (cryptField) => {
-            if (cryptField) {
-                $scope.data.login[cryptField] = $scope.app.md5($scope.data.login[cryptField])
-            }
-            $scope.data.login.command = "get";
-            $scope.data.login.table = "users";
-            $scope.data.login.extras = " AND active is true LIMIT 1";
-            $scope.cgi.ajax($scope.data.login)
+
+            return new Promise( (resolve ,reject) => {
+
+                if (cryptField) {
+                    $scope.data.login[cryptField] = $scope.app.md5($scope.data.login[cryptField])
+                }
+
+                $scope.data.login.command   = "get";
+                $scope.data.login.table     = "users";
+                $scope.data.login.extras    = " AND active is true LIMIT 1";
+
+                //* perform the actual login validation
+                $scope.cgi.ajax($scope.data.login)
                 .then((r) => {
+
                     $scope.data.admin.extras = "";
+
                     r = $scope.app.json(r);
+
                     if (r.response == 200) {
 
                         if (r.data.message.length > 0 && typeof(r.data.message[0]) == "object") {
+
                             if (r.data.message[0]['username'] == $scope.data.login.username) {
                                 $scope.storage.user = r.data.message[0];
                                 $scope.logedin = true;
@@ -789,48 +883,62 @@ function() {
                                 window.location = "/#/";
                             }
 
+                             resolve();
+
                         } else {
                             delete $scope.storage.user;
-                            $scope.app.UID('response', `<center>You have entered the wrong login credentials.</center>`, "danger");
+                            $scope.app.notify(`<center>You have entered the wrong login credentials.</center>` ,"danger");
                         }
 
                     } else {
-                        //POSTGRESQL MATCHING
+
+                        // POSTGRESQL ERROR FORMAT MATCHING
                         if (Array.isArray(r.data.message)) {
-                            var v = r.data.message[2].match(/DETAIL:(.*)/)
+
+                            var v = r.data.message[2].match(/DETAIL:(.*)/);
+
                             if (v != undefined || v != null) {
                                 r.data.message = v[1];
                             } else {
                                 r.data.message = r.data.message[2];
                             }
-                        } else {
-                            r.data.message;
                         }
 
-                        alert(`<center>${ r.data.message }</center>`);
                         delete $scope.storage.user;
+                        app.notify(`<center>${ r.data.message }</center>`,"danger");
+                        reject( makeResponse(500 ,r.data.message) );
+
                     }
                     $scope.$apply();
 
-                })
+                });
+
+            });
+
         };
 
         //Basic admin login
         $scope.adminLogin = (cryptField) => {
-            if (cryptField) {
-                $scope.data.admin[cryptField] = $scope.app.md5($scope.data.admin[cryptField])
-            }
-            $scope.data.admin.command = "get"
-            $scope.data.admin.table = "admins"
-            $scope.data.admin.extras = " AND active is true LIMIT 1"
-            $scope.cgi.ajax($scope.data.admin)
-                .then((r) => {
-                    $scope.data.admin.extras = "";
-                    r = $scope.app.json(r);
-                    if (r.response == 200) {
 
-                        // console.log(`Data length: ${r.data.message.length} \n Message Type: ${typeof(r.data.message[0])} \n Message: `)
-                        // console.dir(  r.data.message[0] )
+            return new Promise( () =>{
+
+                if (cryptField) {
+                    $scope.data.admin[cryptField] = $scope.app.md5($scope.data.admin[cryptField])
+                }
+
+                $scope.data.admin.command   = "get";
+                $scope.data.admin.table     = "admins";
+                $scope.data.admin.extras    = " AND active is true LIMIT 1";
+
+                //* perform the actual login
+                $scope.cgi.ajax($scope.data.admin)
+                .then((r) => {
+
+                    $scope.data.admin.extras = "";
+
+                    r = $scope.app.json(r);
+
+                    if (r.response == 200) {
 
                         if (r.data.message.length > 0 && typeof(r.data.message[0]) != undefined) {
 
@@ -840,54 +948,73 @@ function() {
                                 $scope.storage.admin._.user = r.data.message[0].admin_name;
                                 $scope.storage.admin._.key = r.data.message[0].password;
                                 $rootScope.frame.changeAdmin(true);
+                                resolve(r)
                             } else {
                                 delete $scope.data.admin;
                                 delete $scope.storage.admin;
                                 window.location = "/#/admin";
+                                resolve(r)
                             }
 
                         } else {
                             delete $scope.data.admin;
                             delete $scope.storage.admin;
-                            $scope.app.UID('response', `<center>You have entered the wrong login credentials.</center>`, "danger");
+                            $scope.app.notify(`<center>You have entered the wrong login credentials.</center>` ,"danger");
                             window.location = "/#/admin";
-
+                            reject(false);
                         }
 
                     } else {
-                        //POSTGRESQL MATCHING
+
+                        // POSTGRESQL ERROR FORMAT MATCHING
                         if (Array.isArray(r.data.message)) {
+
                             var v = r.data.message[2].match(/DETAIL:(.*)/)
                             if (v != undefined || v != null) {
                                 r.data.message = v[1];
                             } else {
                                 r.data.message = r.data.message[2];
                             }
-                        } else {
-                            r.data.message;
                         }
-
-                        alert(`<center>${ r.data.message }</center>`);
                         delete $scope.storage.admin;
+                        app.notify(`<center>${ r.data.message }</center>`,"danger");
+                        reject( makeResponse(500 ,r.data.message) );
+
                     }
                     $scope.$apply();
                 })
+
+            });
+
         };
 
         //@ Handle basic user re-authentication
         $scope.islogedin = () => {
-            if ($scope.storage.user) {
-                $scope.data.login.username = $scope.storage.user.username;
-                $scope.data.login.password = $scope.storage.user.password;
-                $scope.login();
-            }
+
+            return new Promise( (resolve ,reject) => {
+
+                if ($scope.storage.user) {
+                    $scope.data.login.username = $scope.storage.user.username;
+                    $scope.data.login.password = $scope.storage.user.password;
+                    $scope.login();
+                    resolve(true);
+                }else{
+                    $scope.app.notify(`<center>You have no permission to access this content</center>`,'danger')
+                    reject(false);
+                }
+
+            })
+
         };
 
         //@ Handle basic app-user logout
         $scope.logout = () => {
+
             $scope.islogedin = false;
             delete $scope.storage.user;
             window.location = '/#/';
+            return Promise.resolve(true);
+            
         };
 
         //@ Handle basic application redirection
@@ -897,85 +1024,124 @@ function() {
             } else {
                 window.location = "/#/framify";
             }
-            ect
+            return Promise.resolve(true)
         };
 
         // Basic Admin Auth
         $scope.authorize = () => {
+
             if ($scope.storage.admin) {
-                $scope.data.admin = {};
-                $scope.data.admin.admin_name = $scope.storage.admin.admin_name;
-                $scope.data.admin.password = $scope.storage.admin.password;
+                $scope.data.admin               = {};
+                $scope.data.admin.admin_name    = $scope.storage.admin.admin_name;
+                $scope.data.admin.password      = $scope.storage.admin.password;
                 $scope.adminLogin();
             } else {
                 $scope.location = "/#/admin";
             }
+
+            return Promise.resolve(true);
+
         };
 
+        //@ HANDLE ADMINISTRATOR DEAUTHORIZATION
         $scope.deauthorize = () => {
             delete $scope.storage.admin;
             $rootScope.frame.changeAdmin(false);
             window.location = '/#/';
+            return Promise.resolve(true);
         };
 
 
         // BASIC Custom Queries
-        $scope.custom = (table, data, UID, mess) => {
-            data = (data) ? $scope.app.json(data) : {};
-            data.command = "custom";
-            data.token = data.token || $scope.storage.admin._;
-            // console.dir( data );
-            $scope.cgi.ajax(data)
+        $scope.custom = (table ,data ,cryptFields ,cb) => {
+
+            return new Promise( (resolve,reject) => {
+
+                //* initialize the data object
+                data            = (data) ? $scope.app.json(data) : {};
+                data.command    = "custom";
+                data.token      = data.token || $scope.storage.admin._;
+
+                //* Encrypt the specified cryptFields
+                if (cryptFields) {
+                    cryptFields.split(",")
+                    .forEach((cryptField) => {
+                        data[cryptField] = $scope.app.md5(data[cryptField])
+                    });
+                }
+
+                //* Perform the actual custom query
+                $scope.cgi.ajax(data)
                 .then((r) => {
+
                     r = $scope.app.json(r);
+
                     if (r.response == 200) {
-                        $scope.app.UID(UID, (mess || `<center>${r.data.message}</center>`), "success");
+
+                        $scope.app.notify(`<center>${(r.data.message || 'Successful')}</center>`, "success");
+
                         $scope.cFetched[table] = r.data.message;
                         $scope.data[table.toString().replace(/vw_/ig, '')] = {};
+
+                        resolve(r);
+
                     } else {
-                        //POSTGRESQL MATCHING
+
+                        // POSTGRESQL ERROR FORMAT MATCHING
                         if (Array.isArray(r.data.message)) {
+
                             var v = r.data.message[2].match(/DETAIL:(.*)/)
                             if (v != undefined || v != null) {
                                 r.data.message = v[1];
                             } else {
                                 r.data.message = r.data.message[2];
                             }
-                        } else {
-                            r.data.message;
-                        }
 
-                        alert(`<center>${ r.data.message }</center>`);
+                        } 
+                        $scope.app.notify(`<center>${ r.data.message }</center>`);
+                        reject( makeResponse(500, r.data.message) )
                     }
                     $scope.$apply();
                 })
+
+            });   
+
         };
 
-        //BASIC Instance Counter
-        $scope.count = (table, data, UID, mess) => {
+        //BASIC DATABASE INSTANCEOF COUNTER
+        $scope.count = (table ,data ,cryptFields ,cb) => {
 
-            data = (data) ? $scope.app.json(data) : {};
-            data.table = table;
-            data.command = "count";
-            data.token = data.token || {};
+            return new Promise( (resolve ,reject) => {
 
-            $scope.cgi.ajax(data)
+                data            = (data) ? $scope.app.json(data) : {};
+                data.table      = table;
+                data.command    = "count";
+                data.token      = data.token || {};
+
+                //* Encrypt the specified cryptFields
+                if (cryptFields) {
+                    cryptFields.split(",")
+                    .forEach((cryptField) => {
+                        data[cryptField] = $scope.app.md5(data[cryptField])
+                    });
+                }
+
+                //* perform the actual count
+                $scope.cgi.ajax(data)
                 .then((r) => {
 
                     r = $scope.app.json(r);
 
                     if (r.response == 200) {
-
-                        if (mess) {
-                            $scope.app.UID(UID, (mess), "success");
-                        }
 
                         $scope.counted[table.toString().replace(/vw_/ig, '')] = r.data.message;
                         $scope.data[table.toString().replace(/vw_/ig, '')] = {};
 
+                        resolve(r);
+
                     } else {
 
-                        //POSTGRESQL MATCHING
+                        // POSTGRESQL ERROR FORMAT MATCHING
                         if (Array.isArray(r.data.message)) {
                             var v = r.data.message[2].match(/DETAIL:(.*)/)
                             if (v != undefined || v != null) {
@@ -983,14 +1149,14 @@ function() {
                             } else {
                                 r.data.message = r.data.message[2];
                             }
-                        } else {
-                            r.data.message;
                         }
-
-                        alert(`<center>${ r.data.message }</center>`);
+                        $scope.app.notify(`<center>${ r.data.message }</center>` ,'danger');
+                        reject( makeResponse(500 ,r.data.message ) );
                     }
                     $scope.$apply();
                 })
+
+            });
 
         };
 
@@ -1006,18 +1172,19 @@ function() {
         /**
          *  DELETE UNWANTED FIELDS
          */
-        $scope.sanitize = (data, keys) => {
+        $scope.sanitize = (data ,keys) => {
             if (keys) {
                 keys.split(",").forEach((key) => {
                     delete data[key];
                 });
+                return Promise.resolve(data);
             }
         };
 
         /**
          * PUSH DATA TO OBJECT
          */
-        $scope.dPush = (obj, key, val) => {
+        $scope.dPush = (obj ,key ,val) => {
             obj[key] = val;
         };
 
@@ -1028,246 +1195,99 @@ function() {
         $scope.setMoin = (moin) => { $scope.currmoin = moin; }
 
         //@ INJECT A STANDARD WHERE "Extras" OBJECT
-        $scope.addExtras = (targetObj, extrasObj, subStrings, removeKeys) => {
+        $scope.addExtras = (targetObj ,extrasObj ,subStrings ,removeKeys) => {
 
-            targetObj = targetObj || {};
-            extrasObj = extrasObj || {};
-            subStrings = subStrings || '';
-            removeKeys = removeKeys || '';
+            return new Promise( (resolve,reject) => {
 
-            var extras = '';
+                targetObj   = targetObj || {};
+                extrasObj   = extrasObj || {};
+                subStrings  = subStrings || '';
+                removeKeys  = removeKeys || '';
 
-            var k = [],
-                v = [];
+                var extras  = '';
 
-            //@ CAPTURE THE REMOVE KEYS
-            removeKeys = removeKeys.split(',').filter(e => e);
+                var k = [],
+                    v = [];
+
+                //@ CAPTURE THE REMOVE KEYS
+                removeKeys = removeKeys.split(',').filter(e => e);
 
 
-            removeKeys.forEach(e => {
-                extrasObj[e] = null;
-                delete extrasObj[e];
-            });
-
-            //@ CAPTURE REPLACE STRINGS
-            subStrings
-                .split(',')
-                .forEach((e, i) => {
-                    let x = e.split(':');
-                    k[i] = (x[0]);
-                    v[i] = (x[1]);
-                })
-
-            //@ GET THE DEFINED KEYS
-            var keys = Object.keys(extrasObj);
-
-            //@ REPLACE THE DEFINED WITH THE DESIRED REPLACE KEYS
-            k.forEach((e, i) => {
-
-                if (keys.indexOf(e) != -1) {
-
-                    extrasObj[v[i]] = extrasObj[e];
+                removeKeys.forEach(e => {
                     extrasObj[e] = null;
                     delete extrasObj[e];
+                });
 
-                }
+                //@ CAPTURE REPLACE STRINGS
+                subStrings
+                    .split(',')
+                    .forEach((e, i) => {
+                        let x = e.split(':');
+                        k[i] = (x[0]);
+                        v[i] = (x[1]);
+                    })
 
-            });
+                //@ GET THE DEFINED KEYS
+                var keys = Object.keys(extrasObj);
+
+                //@ REPLACE THE DEFINED WITH THE DESIRED REPLACE KEYS
+                k.forEach((e, i) => {
+
+                    if (keys.indexOf(e) != -1) {
+
+                        extrasObj[v[i]] = extrasObj[e];
+                        extrasObj[e] = null;
+                        delete extrasObj[e];
+
+                    }
+
+                });
 
 
-            k = Object.keys(extrasObj);
-            v = null;
+                k = Object.keys(extrasObj);
+                v = null;
 
-            k.forEach((e, i) => {
+                k.forEach((e, i) => {
 
-                extras += ' ' + e + "='" + extrasObj[e] + "' AND";
+                    extras += ' ' + e + "='" + extrasObj[e] + "' AND";
 
-            });
+                });
 
-            k = null;
+                k = null;
 
 
-            targetObj.extras = extras.replace(/AND+$/, '');
+                targetObj.extras = extras.replace(/AND+$/, '');
 
-            return targetObj;
+                resolve( targetObj );
+
+            })
 
         };
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////
         // APPLICATION SPECIFIC ADDITIONS
 
-        //@ LOAD A SERVICE ONTO THE STAGE
-        $scope.service = {};
-        $scope.entity = {};
 
-        $scope.showService = (serviceData) => {
-            $scope.service.available = true;
-            $scope.service.current = serviceData;
-            $scope.$apply();
-        };
+}])
 
-        $scope.showEntity = (serviceData) => {
-            $scope.entity.available = true;
-            $scope.entity.current = serviceData;
-            $scope.$apply();
-        };
+.directive("contenteditable"
+,function() {
+    return {
+        restrict: "A",
+        require: "ngModel",
+        link: function(scope, element, attrs, ngModel) {
 
-        //@ Count my entities
-        $scope.howMany = () => {
+            function read() {
+                ngModel.$setViewValue(element.html());
+            }
 
-            var data = { owner: storage.user.username };
-            data = (data) ? $scope.app.json(data) : {};
-            data.table = 'entities';
-            data.command = "count";
-            data.token = {};
-
-            $scope.cgi.ajax(data)
-                .then((r) => {
-
-                    r = $scope.app.json(r);
-
-                    if (r.response == 200) {
-
-                        if (mess) {
-                            $scope.app.UID(UID, (mess), "success");
-                        }
-
-                        $scope.counted[data.table.toString().replace(/vw_/ig, '')] = r.data.message;
-
-                    } else {
-
-                        //POSTGRESQL MATCHING
-                        if (Array.isArray(r.data.message)) {
-                            var v = r.data.message[2].match(/DETAIL:(.*)/)
-                            if (v != undefined || v != null) {
-                                r.data.message = v[1];
-                            } else {
-                                r.data.message = r.data.message[2];
-                            }
-                        } else {
-                            r.data.message;
-                        }
-
-                        alert(`<center>${ r.data.message }</center>`);
-                    }
-                    $scope.$apply();
-                })
-
-
-        };
-
-
-    }])
-    .controller('hospitalCtrl', ['$scope', function($scope) {
-
-        //@ REDIRECT USER TO LOGIN PAGE
-        $scope.loginRedirect = () => {
-            window.location = "/#/login";
-        };
-
-        //@ SETUP USER CREDENTIALS FOR USER SIGNUP
-        $scope.setCreds = (obj) => {
-            obj = obj || {};
-            obj.token = {
-                user: "userAdmin",
-                key: "153797e5fc6433812172aa8d47ec69e1",
-                specifics: 'Direct user request (signup,appointments)'
+            ngModel.$render = function() {
+                element.html(ngModel.$viewValue || "");
             };
-            return obj;
-        };
 
-        $scope.newAppontment = (data) => {
-
-        }
-
-
-
-        //@ LIST A REPORT FOR THE NEXT APPOINTMENT
-        $scope.nextAppointment = (entity) => {
-            const sms = [
-                //! THE PRACTITIONER's MESSAGE
-                {
-                    telephone: $scope.appointmentTelephone,
-                    message: `Hello ${$scope.appointmentTitle}, you have a new appointment request to review on the matibabu portal.`,
-                    password: "355912060268866"
-                },
-                //! THE CLIENT'S MESSAGE
-                {
-                    telephone: entity.telephone,
-                    message: `Thank you ${entity.name}, your request for an appointment has been received. ${$scope.appointmentTitle} will get back to you as soon as possible.`,
-                    password: "355912060268866"
-                }
-            ];
-
-
-            sms.forEach(mess => {
-                $scope.sms.oneSMS(mess.telephone, mess.message, mess.password);
+            element.bind("blur keyup change", function() {
+                scope.$apply(read);
             });
-
-            $scope.bookAppointment = false;
-        };
-
-        //@ ALLOW FOR APPOINTMENT SETTING
-        $scope.setAppointment = (entity) => {
-            $scope.bookAppointment = true;
-            $scope.appointmentId = entity.entity_id;
-            $scope.appointmentTitle = entity.title;
-            $scope.appointmentTelephone = entity.telephone;
-            //$scope.$apply();
-        };
-
-        //@ ALLOW FOR APPOINTMENT UNSETTING
-        $scope.clearAppointment = () => {
-            $scope.bookAppointment = false;
-            //$scope.$apply();
         }
-
-
-
-        //@ SET DEFAULT APPLICATION ACCESS CREDENTIALS 
-        $scope.sudo = (obj, usercreds) => {
-
-            if (usercreds && obj) {
-                obj.token = {};
-                obj.token = {
-                    user: "userAdmin",
-                    key: "153797e5fc6433812172aa8d47ec69e1",
-                    specifics: usercreds
-                };
-                return obj;
-
-            } else {
-                alert("<center>User credentials are required in order to invoke the sudo function</center>");
-                return {};
-            }
-
-        };
-
-
-        // //@ SIMPLE FILTER BY OWNER
-        // $scope.isMine = (genInfo) =>{
-        //     console.log(genInfo.owner==$scope.storage.user.username)
-        //     return (genInfo.owner==$scope.storage.user.username);
-        //  } 
-
-    }])
-    .directive("contenteditable", function() {
-        return {
-            restrict: "A",
-            require: "ngModel",
-            link: function(scope, element, attrs, ngModel) {
-
-                function read() {
-                    ngModel.$setViewValue(element.html());
-                }
-
-                ngModel.$render = function() {
-                    element.html(ngModel.$viewValue || "");
-                };
-
-                element.bind("blur keyup change", function() {
-                    scope.$apply(read);
-                });
-            }
-        };
-    })
+    };
+})
