@@ -72,7 +72,7 @@ app.use("/php", php.cgi(`${__dirname}/../php`));
 app.use("/views", express.static(__dirname + '/../views'));
 
 //@ SET THE BASIC DIRECTORY MIDDLEWARE
-app.use(express.static(__dirname + '/../public'));
+app.use(express.static(__dirname + '/../'));
 
 //@ ROOT ROUTE
 app.route("/").all(function(req, res) {
