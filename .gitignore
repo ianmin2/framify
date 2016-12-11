@@ -17,6 +17,9 @@
 **.settings
 **.conf
 
+#! Ignore all files in the development folder
+**dev
+
 #! Ignore all project generated files
 sysinfo.txt
 
