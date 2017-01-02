@@ -21,61 +21,61 @@ var paths = {
     views: "views/**.html",
 };
 
-var files_dir = [""];
-var files = [];
+// var files_dir = [""];
+// var files = [];
 
 
-for (fdir in files_dir) {
-    files.push(files_dir[fdir] + "application.js");
-}
+// for (fdir in files_dir) {
+//     files.push(files_dir[fdir] + "application.js");
+// }
 
-//THE WATCHER OBJECT
-var watcher = {
-    views: "views/**.html"
-};
+// //THE WATCHER OBJECT
+// var watcher = {
+//     views: "views/**.html"
+// };
 
 
-//THE DESTINATIONS OBJECT
+// //THE DESTINATIONS OBJECT
 var dest = {
     views: "views/**.html"
 }
 
 //THE CLEANER TASK
-gulp.task("clean", function(cb) {
+// gulp.task("clean", function(cb) {
 
-    del(['build'], cb);
+//     del(['build'], cb);
 
-});
+// });
 
 /*
  * THE PRODUCTION READY BUILD FUNCTION
  */
-var dist = function(src, filename, filepath) {
-    return gulp.src(src)
-        .pipe(browserify().on('error', gutil.log))
-        .pipe(sourcemaps.write().on('error', gutil.log))
-        .pipe(babel({ presets: ['es2015'] }).on('error', gutil.log))
-        .pipe(concat(filename).on('error', gutil.log))
-        .pipe(ngmin().on('error', gutil.log))
-        .pipe(uglify().on('error', gutil.log))
-        .pipe(gulp.dest(filepath).on('error', gutil.log));
-}
+// var dist = function(src, filename, filepath) {
+//     return gulp.src(src)
+//         .pipe(browserify().on('error', gutil.log))
+//         .pipe(sourcemaps.write().on('error', gutil.log))
+//         .pipe(babel({ presets: ['es2015'] }).on('error', gutil.log))
+//         .pipe(concat(filename).on('error', gutil.log))
+//         .pipe(ngmin().on('error', gutil.log))
+//         .pipe(uglify().on('error', gutil.log))
+//         .pipe(gulp.dest(filepath).on('error', gutil.log));
+// }
 
 /*
  * THE DEVELOPMENT BUILD FUNCTION
  */
-var dev = function(src, filename, filepath) {
-    return gulp.src(src)
-        .pipe(sourcemaps.init().on('error', gutil.log))
-        .pipe(browserify({ insertGlobals: true, debug: true }).on('error', gutil.log))
-        .pipe(babel({ presets: ['es2015'] }).on('error', gutil.log))
-        .pipe(concat(filename).on('error', gutil.log))
-        .pipe(ngmin().on('error', gutil.log))
-        .pipe(uglify().on('error', gutil.log))
-        .pipe(sourcemaps.write().on('error', gutil.log))
-        .pipe(gulp.dest(filepath).on('error', gutil.log));
+// var dev = function(src, filename, filepath) {
+//     return gulp.src(src)
+//         .pipe(sourcemaps.init().on('error', gutil.log))
+//         .pipe(browserify({ insertGlobals: true, debug: true }).on('error', gutil.log))
+//         .pipe(babel({ presets: ['es2015'] }).on('error', gutil.log))
+//         .pipe(concat(filename).on('error', gutil.log))
+//         .pipe(ngmin().on('error', gutil.log))
+//         .pipe(uglify().on('error', gutil.log))
+//         .pipe(sourcemaps.write().on('error', gutil.log))
+//         .pipe(gulp.dest(filepath).on('error', gutil.log));
 
-}
+// }
 
 var route = function(src, filename, filepath) {
 
@@ -86,7 +86,7 @@ var route = function(src, filename, filepath) {
 }
 
 //THE BUILD ITERATOR
-var build = (development === true) ? dev : dist;
+// var build = (development === true) ? dev : dist;
 
 var ps = fs.createWriteStream(`${__dirname}/config/app-routes.json`, { 'flags': 'w', 'encoding': null, 'mode': 0666 });
 
@@ -96,21 +96,21 @@ gulp.task('router', [], function() {
     process.framify = process.framify || {};
     process.framify.routes = [];
 
-    route(paths.views, "", dest.views).pipe(routerify()).pipe(ps);
+    route(paths.views, '', dest.views).pipe(routerify()).pipe(ps);
 
 })
 
-//WATCH FOR FILE CHANGES AND TAKE THE REQUIRED ACTION
-gulp.task('watch', function() {
+// //WATCH FOR FILE CHANGES AND TAKE THE REQUIRED ACTION
+// gulp.task('watch', function() {
 
-    gulp.watch([watcher.views], [
-        ['router']
-    ]);
+//     gulp.watch([watcher.views], [
+//         ['router']
+//     ]);
 
-});
+// });
 
 //THE DEFAULT GULP TASK
-gulp.task('default', ['watch']);
+gulp.task('default', ['router']);
 
 //THE GULP BUILD TASK
 gulp.task('build', ['router']);
@@ -131,4 +131,4 @@ gulp.task('serve', function() {
 });
 
 //@ LOAD THE ROUTE PACKAGER
-gulp.task('package', ['watch']);
+gulp.task('package', ['router']);

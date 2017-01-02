@@ -1,17 +1,20 @@
 <!doctype html>
 <!--[if lte IE 9]> <html class="lte-ie9" lang="en"> <![endif]-->
-<!--[if gt IE 9]><!--> <html lang="en"> <!--<![endif]-->
+<!--[if gt IE 9]><!-->
+<html lang="en" ng-app="framify">
+<!--<![endif]-->
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!-- Remove Tap Highlight on Windows Phone IE -->
-    <meta name="msapplication-tap-highlight" content="no"/>
+    <meta name="msapplication-tap-highlight" content="no" />
 
-    <link rel="icon" type="image/png" href="assets/img/favicon-16x16.png" sizes="16x16">
-    <link rel="icon" type="image/png" href="assets/img/favicon-32x32.png" sizes="32x32">
+    <!--<link rel="icon" type="image/png" href="assets/img/favicon-16x16.png" sizes="16x16">-->
+    <!--<link rel="icon" type="image/png" href="assets/img/favicon-32x32.png" sizes="32x32">-->
 
-    <title>Altair Admin v2.2.0</title>
+    <title>Framify</title>
 
 
     <link rel="stylesheet" href="assets/css/framify_dependencies.min.css">
@@ -31,70 +34,78 @@
     <![endif]-->
 
 </head>
-<body class=" sidebar_main_open sidebar_main_swipe">
+
+<body class=" sidebar_main_open sidebar_main_swipe header_full" ng-controller="framifyController" ng-init="fetch('specialties')">
     <!-- main header -->
+    <br>
+    <br>
+    <br>
     <header id="header_main">
         <div class="header_main_content">
             <nav class="uk-navbar">
-                                
+
+                <div class="main_logo_top">
+                    <a href="index.html"><img src="assets/img/logo_main_white.png" alt="" class="" width="71" height="15"></a>
+                </div>
+
                 <!-- main sidebar switch -->
                 <a href="#" id="sidebar_main_toggle" class="sSwitch sSwitch_left">
                     <span class="sSwitchIcon"></span>
                 </a>
-                
+
                 <!-- secondary sidebar switch -->
                 <a href="#" id="sidebar_secondary_toggle" class="sSwitch sSwitch_right sidebar_secondary_check">
                     <span class="sSwitchIcon"></span>
                 </a>
-                
-                    <div id="menu_top_dropdown" class="uk-float-left uk-hidden-small">
-                        <div class="uk-button-dropdown" data-uk-dropdown="{mode:'click'}">
-                            <a href="#" class="top_menu_toggle"><i class="material-icons md-24">&#xE8F0;</i></a>
-                            <div class="uk-dropdown uk-dropdown-width-3">
-                                <div class="uk-grid uk-dropdown-grid" data-uk-grid-margin>
-                                    <div class="uk-width-2-3">
-                                        <div class="uk-grid uk-grid-width-medium-1-3 uk-margin-top uk-margin-bottom uk-text-center" data-uk-grid-margin>
-                                            <a href="page_mailbox.html">
-                                                <i class="material-icons md-36">&#xE158;</i>
-                                                <span class="uk-text-muted uk-display-block">Mailbox</span>
-                                            </a>
-                                            <a href="page_invoices.html">
-                                                <i class="material-icons md-36">&#xE53E;</i>
-                                                <span class="uk-text-muted uk-display-block">Invoices</span>
-                                            </a>
-                                            <a href="page_chat.html">
-                                                <i class="material-icons md-36 md-color-red-600">&#xE0B9;</i>
-                                                <span class="uk-text-muted uk-display-block">Chat</span>
-                                            </a>
-                                            <a href="page_scrum_board.html">
-                                                <i class="material-icons md-36">&#xE85C;</i>
-                                                <span class="uk-text-muted uk-display-block">Scrum Board</span>
-                                            </a>
-                                            <a href="page_snippets.html">
-                                                <i class="material-icons md-36">&#xE86F;</i>
-                                                <span class="uk-text-muted uk-display-block">Snippets</span>
-                                            </a>
-                                            <a href="page_user_profile.html">
-                                                <i class="material-icons md-36">&#xE87C;</i>
-                                                <span class="uk-text-muted uk-display-block">User profile</span>
-                                            </a>
-                                        </div>
+
+                <div id="menu_top_dropdown" class="uk-float-left uk-hidden-small">
+                    <div class="uk-button-dropdown" data-uk-dropdown="{mode:'click'}">
+                        <a href="#" class="top_menu_toggle"><i class="material-icons md-24">&#xE8F0;</i></a>
+                        <div class="uk-dropdown uk-dropdown-width-3">
+                            <div class="uk-grid uk-dropdown-grid" data-uk-grid-margin>
+                                <div class="uk-width-2-3">
+                                    <div class="uk-grid uk-grid-width-medium-1-3 uk-margin-top uk-margin-bottom uk-text-center" data-uk-grid-margin>
+                                        <a href="page_mailbox.html">
+                                            <i class="material-icons md-36">&#xE158;</i>
+                                            <span class="uk-text-muted uk-display-block">Mailbox</span>
+                                        </a>
+                                        <a href="page_invoices.html">
+                                            <i class="material-icons md-36">&#xE53E;</i>
+                                            <span class="uk-text-muted uk-display-block">Invoices</span>
+                                        </a>
+                                        <a href="page_chat.html">
+                                            <i class="material-icons md-36 md-color-red-600">&#xE0B9;</i>
+                                            <span class="uk-text-muted uk-display-block">Chat</span>
+                                        </a>
+                                        <a href="page_scrum_board.html">
+                                            <i class="material-icons md-36">&#xE85C;</i>
+                                            <span class="uk-text-muted uk-display-block">Scrum Board</span>
+                                        </a>
+                                        <a href="page_snippets.html">
+                                            <i class="material-icons md-36">&#xE86F;</i>
+                                            <span class="uk-text-muted uk-display-block">Snippets</span>
+                                        </a>
+                                        <a href="page_user_profile.html">
+                                            <i class="material-icons md-36">&#xE87C;</i>
+                                            <span class="uk-text-muted uk-display-block">User profile</span>
+                                        </a>
                                     </div>
-                                    <div class="uk-width-1-3">
-                                        <ul class="uk-nav uk-nav-dropdown uk-panel">
-                                            <li class="uk-nav-header">Components</li>
-                                            <li><a href="components_accordion.html">Accordions</a></li>
-                                            <li><a href="components_buttons.html">Buttons</a></li>
-                                            <li><a href="components_notifications.html">Notifications</a></li>
-                                            <li><a href="components_sortable.html">Sortable</a></li>
-                                            <li><a href="components_tabs.html">Tabs</a></li>
-                                        </ul>
-                                    </div>
+                                </div>
+                                <div class="uk-width-1-3">
+                                    <ul class="uk-nav uk-nav-dropdown uk-panel">
+                                        <li class="uk-nav-header">Components</li>
+                                        <li><a href="components_accordion.html">Accordions</a></li>
+                                        <li><a href="components_buttons.html">Buttons</a></li>
+                                        <li><a href="components_notifications.html">Notifications</a></li>
+                                        <li><a href="components_sortable.html">Sortable</a></li>
+                                        <li><a href="components_tabs.html">Tabs</a></li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
                     </div>
-                
+                </div>
+
                 <div class="uk-navbar-flip">
                     <ul class="uk-navbar-nav user_actions">
                         <li><a href="#" id="full_screen_toggle" class="user_action_icon uk-visible-large"><i class="material-icons md-24 md-light">&#xE5D0;</i></a></li>
@@ -121,7 +132,7 @@
                                                 </li>
                                                 <li>
                                                     <div class="md-list-addon-element">
-                                                        <img class="md-user-image md-list-addon-avatar" src="assets/img/avatars/avatar_07_tn.png" alt=""/>
+                                                        <!--<img class="md-user-image md-list-addon-avatar" src="assets/img/avatars/avatar_07_tn.png" alt=""/>-->
                                                     </div>
                                                     <div class="md-list-content">
                                                         <span class="md-list-heading"><a href="pages_mailbox.html">Placeat voluptatibus architecto.</a></span>
@@ -139,7 +150,7 @@
                                                 </li>
                                                 <li>
                                                     <div class="md-list-addon-element">
-                                                        <img class="md-user-image md-list-addon-avatar" src="assets/img/avatars/avatar_02_tn.png" alt=""/>
+                                                        <!--<img class="md-user-image md-list-addon-avatar" src="assets/img/avatars/avatar_02_tn.png" alt=""/>-->
                                                     </div>
                                                     <div class="md-list-content">
                                                         <span class="md-list-heading"><a href="pages_mailbox.html">Consequatur dolorem velit.</a></span>
@@ -148,7 +159,7 @@
                                                 </li>
                                                 <li>
                                                     <div class="md-list-addon-element">
-                                                        <img class="md-user-image md-list-addon-avatar" src="assets/img/avatars/avatar_09_tn.png" alt=""/>
+                                                        <!--<img class="md-user-image md-list-addon-avatar" src="assets/img/avatars/avatar_09_tn.png" alt=""/>-->
                                                     </div>
                                                     <div class="md-list-content">
                                                         <span class="md-list-heading"><a href="pages_mailbox.html">Reiciendis ut aut.</a></span>
@@ -205,7 +216,7 @@
                             </div>
                         </li>
                         <li data-uk-dropdown="{mode:'click',pos:'bottom-right'}">
-                            <a href="#" class="user_action_image"><img class="md-user-image" src="assets/img/avatars/avatar_11_tn.png" alt=""/></a>
+                            <!--<a href="#" class="user_action_image"><img class="md-user-image" src="assets/img/avatars/avatar_11_tn.png" alt=""/></a>-->
                             <div class="uk-dropdown uk-dropdown-small">
                                 <ul class="uk-nav js-uk-prevent">
                                     <li><a href="page_user_profile.html">My profile</a></li>
@@ -225,11 +236,12 @@
                 <button class="header_main_search_btn uk-button-link"><i class="md-icon material-icons">&#xE8B6;</i></button>
             </form>
         </div>
-    </header><!-- main header end -->
+    </header>
+    <!-- main header end -->
     <!-- main sidebar -->
     <aside id="sidebar_main">
-        
-        <div class="sidebar_main_header">
+
+        <!--<div class="sidebar_main_header">
             <div class="sidebar_logo">
                 <a href="index.html" class="sSidebar_hide"><img src="assets/img/logo_main.png" alt="" height="15" width="71"/></a>
                 <a href="index.html" class="sSidebar_show"><img src="assets/img/logo_main_small.png" alt="" height="32" width="32"/></a>
@@ -239,8 +251,8 @@
                     <option value="gb" selected>English</option>
                 </select>
             </div>
-        </div>
-        
+        </div>-->
+
         <div class="menu_section">
             <ul>
                 <li title="Dashboard">
@@ -261,7 +273,7 @@
                         <span class="menu_title">Invoices</span>
                     </a>
                 </li>
-                <li  title="Chat">
+                <li title="Chat">
                     <a href="page_chat.html">
                         <span class="menu_icon"><i class="material-icons">&#xE0B9;</i></span>
                         <span class="menu_title">Chat</span>
@@ -311,7 +323,7 @@
                         <li><a href="layout_header_full.html">Full Header</a></li>
                     </ul>
                 </li>
-                
+
                 <li>
                     <a href="#">
                         <span class="menu_icon"><i class="material-icons">&#xE1BD;</i></span>
@@ -365,7 +377,7 @@
                         <li><a href="components_typography.html">Typography</a></li>
                     </ul>
                 </li>
-                <li >
+                <li>
                     <a href="#">
                         <span class="menu_icon"><i class="material-icons">&#xE8CB;</i></span>
                         <span class="menu_title">E-commerce</span>
@@ -377,7 +389,7 @@
                         <li><a href="ecommerce_products_list.html">Products List</a></li>
                     </ul>
                 </li>
-                <li >
+                <li>
                     <a href="#">
                         <span class="menu_icon"><i class="material-icons">&#xE8C0;</i></span>
                         <span class="menu_title">Plugins</span>
@@ -395,7 +407,7 @@
                         <li><a href="plugins_vector_maps.html">Vector Maps</a></li>
                     </ul>
                 </li>
-                <li >
+                <li>
                     <a href="#">
                         <span class="menu_icon"><i class="material-icons">&#xE24D;</i></span>
                         <span class="menu_title">Pages</span>
@@ -425,24 +437,17 @@
                 </li>
             </ul>
         </div>
-    </aside><!-- main sidebar end -->
+    </aside>
+    <!-- main sidebar end -->
 
-<div id="page_content">
-    <div id="page_content_inner">
+    <div id="page_content">
 
-        <h3 class="heading_b uk-margin-bottom">Blank Page</h3>
+        <div id="page_content_inner">
 
-        <div class="md-card">
-            <div class="md-card-content">
-                <div class="uk-grid" data-uk-grid-margin>
-                    <div class="uk-width-1-1">
-                        Ut sit voluptas et animi non quidem distinctio tenetur est sunt sequi molestias doloremque sit in sint ut autem officia excepturi modi magnam voluptatibus dolor velit molestias ipsum veniam et non quo impedit voluptas et aut et in delectus in aut qui a incidunt in ut ab saepe iusto iure nihil sunt quia minima illum et explicabo iure tempore rerum magnam reprehenderit minima voluptas iure enim illum et voluptas sit dolorem dolores accusantium rerum quaerat esse occaecati aliquam sed ea sed rerum reiciendis nihil repellendus sint fuga ea id sint esse quod voluptas officia ut cum soluta neque aperiam autem quia fuga voluptas reprehenderit et ad velit quam aut quibusdam corporis aspernatur doloremque ea optio iusto eius dolorum illo quasi rerum ab doloremque at ea deserunt sit libero quia consequuntur aut reprehenderit officia expedita quas similique dolore quia consectetur eos eius incidunt quos nobis sed possimus eaque quia omnis facilis et nemo voluptates iusto porro possimus blanditiis voluptatem distinctio impedit est culpa et sapiente quae dolorem alias itaque eum quo voluptatibus nihil provident quaerat qui et dolorum veniam quia laborum odit quisquam corporis dolores culpa perferendis quibusdam recusandae dolor sint autem voluptas consequatur eligendi corporis incidunt ut ducimus at aspernatur et et dolores et non inventore sequi autem aut ratione nostrum accusamus deleniti explicabo nihil sunt ex mollitia sequi voluptatem voluptatem distinctio est voluptatem possimus dolores nisi quae molestiae vitae voluptatum veritatis deleniti doloremque vero non nobis omnis aut sed rerum velit quia rem ea enim nihil voluptatibus quo aut et voluptatem consequatur enim necessitatibus cumque reiciendis aspernatur omnis necessitatibus totam illum necessitatibus quo aspernatur pariatur ratione autem quis iste omnis est sunt eligendi distinctio.                    </div>
-                </div>
-            </div>
+            <div ui-view></div>
+
         </div>
-
     </div>
-</div>
 
     <!-- google web fonts -->
     <script>
@@ -457,7 +462,7 @@
         (function() {
             var wf = document.createElement('script');
             wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
-            '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+                '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
             wf.type = 'text/javascript';
             wf.async = 'true';
             var s = document.getElementsByTagName('script')[0];
@@ -465,6 +470,23 @@
         })();
     </script>
 
+    <!--<script src="assets/js/js/angular.js"></script>
+    <script src="assets/js/js/angular-ui-router.js"></script>
+    <script src="assets/js/js/framify-paginate.js"></script>
+    <script src="assets/js/js/ngStorage.js"></script>
+    <script src="assets/js/js/json-formatter.min.js"></script>
+    <script src="assets/js/js/Chart.js"></script>
+    <script src="assets/js/js/angular-chart.js"></script>
+    <script src="assets/js/js/socket.io.js"></script>
+    <script src="assets/js/js/date-formatter.min.js"></script>
+    <script src="assets/js/js/jquery.js"></script>-->
+    <!--<script src="assets/js/js/uikit.min.js"></script>-->
+    <!--<script src="assets/js/js/notify.min.js"></script>
+    <script src="assets/js/js/crypto.js"></script>
+
+    <script src="assets/js/framify.js"></script>-->
+
+    <!--<script src="assets/js/ngStorage.min.js"></script>-->
     <script src="assets/js/framify_bundled.min.js"></script>
 
     <!-- common functions -->
@@ -475,12 +497,15 @@
     <script src="assets/js/altair_admin_common.min.js"></script>
 
 
+    <!-- MAIN APPLICATION SCRIPT IMPORT -->
+    <script src="assets/js/app.js"></script>
+
     <script>
         $(function() {
             // enable hires images
             altair_helpers.retina_images();
             // fastClick (touch devices)
-            if(Modernizr.touch) {
+            if (Modernizr.touch) {
                 FastClick.attach(document.body);
             }
         });
@@ -568,7 +593,7 @@
                     .removeClass('app_theme_a app_theme_b app_theme_c app_theme_d app_theme_e app_theme_f app_theme_g')
                     .addClass(this_theme);
 
-                if(this_theme == '') {
+                if (this_theme == '') {
                     localStorage.removeItem('altair_theme');
                 } else {
                     localStorage.setItem("altair_theme", this_theme);
@@ -578,10 +603,10 @@
 
             // hide style switcher
             $document.on('click keyup', function(e) {
-                if( $switcher.hasClass('switcher_active') ) {
+                if ($switcher.hasClass('switcher_active')) {
                     if (
-                        ( !$(e.target).closest($switcher).length )
-                        || ( e.keyCode == 27 )
+                        (!$(e.target).closest($switcher).length) ||
+                        (e.keyCode == 27)
                     ) {
                         $switcher.removeClass('switcher_active');
                     }
@@ -589,35 +614,35 @@
             });
 
             // get theme from local storage
-            if(localStorage.getItem("altair_theme") !== null) {
-                $theme_switcher.children('li[data-app-theme='+localStorage.getItem("altair_theme")+']').click();
+            if (localStorage.getItem("altair_theme") !== null) {
+                $theme_switcher.children('li[data-app-theme=' + localStorage.getItem("altair_theme") + ']').click();
             }
 
 
-        // toggle mini sidebar
+            // toggle mini sidebar
 
             // change input's state to checked if mini sidebar is active
-            if((localStorage.getItem("altair_sidebar_mini") !== null && localStorage.getItem("altair_sidebar_mini") == '1') || $body.hasClass('sidebar_mini')) {
+            if ((localStorage.getItem("altair_sidebar_mini") !== null && localStorage.getItem("altair_sidebar_mini") == '1') || $body.hasClass('sidebar_mini')) {
                 $mini_sidebar_toggle.iCheck('check');
             }
 
             $mini_sidebar_toggle
-                .on('ifChecked', function(event){
+                .on('ifChecked', function(event) {
                     $switcher.removeClass('switcher_active');
                     localStorage.setItem("altair_sidebar_mini", '1');
                     location.reload(true);
                 })
-                .on('ifUnchecked', function(event){
+                .on('ifUnchecked', function(event) {
                     $switcher.removeClass('switcher_active');
                     localStorage.removeItem('altair_sidebar_mini');
                     location.reload(true);
                 });
 
 
-        // toggle boxed layout
+            // toggle boxed layout
 
             // change input's state to checked if mini sidebar is active
-            if((localStorage.getItem("altair_layout") !== null && localStorage.getItem("altair_layout") == 'boxed') || $body.hasClass('boxed_layout')) {
+            if ((localStorage.getItem("altair_layout") !== null && localStorage.getItem("altair_layout") == 'boxed') || $body.hasClass('boxed_layout')) {
                 $boxed_layout_toggle.iCheck('check');
                 $body.addClass('boxed_layout');
                 $(window).resize();
@@ -625,12 +650,12 @@
 
             // toggle mini sidebar
             $boxed_layout_toggle
-                .on('ifChecked', function(event){
+                .on('ifChecked', function(event) {
                     $switcher.removeClass('switcher_active');
                     localStorage.setItem("altair_layout", 'boxed');
                     location.reload(true);
                 })
-                .on('ifUnchecked', function(event){
+                .on('ifUnchecked', function(event) {
                     $switcher.removeClass('switcher_active');
                     localStorage.removeItem('altair_layout');
                     location.reload(true);
@@ -640,4 +665,5 @@
         });
     </script>
 </body>
+
 </html>
