@@ -1,3 +1,11 @@
+var sort_by = function(field,reverse,primer){
+    var key     = primer ? function(x){ return primer(x[field]) } : function(x){ return x[field] } ;
+    reverse     = !reverse ? 1 : -1;
+    return function(a,b){
+        return a = key(a), b = key(b), reverse* ((a>b) - (b>a));
+    }
+}
+
 angular.module('framify', ['framify.js'])
     // !CONFIGURE THE BNASIC PRE-RUNTIME STATES OF THE APPLICATION
     .config(["$stateProvider","$urlRouterProvider","$provide", function($stateProvider,$urlRouterProvider,$provide) {
@@ -32,7 +40,7 @@ angular.module('framify', ['framify.js'])
 
                 // var processed = 0;
                     
-                routeArray = routeArray || [];
+                routeArray = routeArray.sort(sort_by('title',false,function(a){return a.toLowerCase()})) || [];
 
                 
                 $stateProvider
@@ -68,7 +76,7 @@ angular.module('framify', ['framify.js'])
                 })
 
             // })         
-            alert("setRoutes function successfully setup")
+            // alert("setRoutes function successfully setup")
            
         };
 
@@ -88,14 +96,17 @@ angular.module('framify', ['framify.js'])
 
 
           $provide.decorator('$state', function($delegate, $stateParams) {
-          $delegate.forceReload = function() {
+
+            $delegate.forceReload = function() {
                 return $delegate.go($delegate.current, $stateParams, {
                     reload: true,
                     inherit: false,
                     notify: true
                 });
             };
+
             return $delegate;
+
         });
          
 
@@ -109,6 +120,22 @@ angular.module('framify', ['framify.js'])
 .run(
 ["app","cgi","$rootScope","$state","$localStorage","sms"
 ,function(app,cgi,$rootScope,$state,$localStorage,sms) {
+
+        $rootScope.sort_by = function(field,reverse,primer){
+            var key     = primer ? function(x){ return primer(x[field]) } : function(x){ return x[field] } ;
+            reverse     = !reverse ? 1 : -1;
+            return function(a,b){
+                return a = key(a), b = key(b), reverse* ((a>b) - (b>a));
+            }
+        };
+
+
+        //# SETUP AND DEFINE THE APPLICATION ROUTES INTO AN ALL ACCESSIBLE 'links' VARIABLE
+        $rootScope.links = [];
+        $.getJSON("./config/app-routes.json")
+        .then(function(routes){
+            $rootScope.links = routes.sort($rootScope.sort_by('title',false,function(a){return a.toLowerCase()}));
+        });
 
         //! INJECT THE LOCATION SOURCE TO THE ROOT SCOPE
         $rootScope.location = $state;
