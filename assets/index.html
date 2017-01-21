@@ -35,7 +35,7 @@
 
 </head>
 
-<body class=" sidebar_main_open sidebar_main_swipe header_full" ng-controller="framifyController" ng-init="fetch('specialties')">
+<body class=" sidebar_main_open sidebar_main_swipe header_full" ng-controller="framifyController" ng-init="fetch('users')">
     <!-- main header -->
     <br>
     <br>
@@ -216,7 +216,7 @@
         <div class="header_main_search_form">
             <i class="md-icon header_main_search_close material-icons">&#xE5CD;</i>
             <form class="uk-form">
-                <input type="text" class="header_main_search_input" />
+                <input type="text" class="header_main_search_input" ng-model="nav.search"/>
                 <button class="header_main_search_btn uk-button-link"><i class="md-icon material-icons">&#xE8B6;</i></button>
             </form>
         </div>
@@ -262,10 +262,31 @@
 
         <div id="page_content_inner">
 
-            <div ui-view></div>
+           
+
+
+            <!--<div class="uk-grid" style="min-width:100% !important;">
+                <div class="uk-width-1-1" style="min-width:100% !important;">
+                    <div class="md-card">
+                        <div class="md-card-toolbar">
+                            <div class="md-card-toolbar-actions">
+                                <i class="md-icon material-icons md-card-fullscreen-activate"></i>
+                               
+                            </div>
+                            <h3 class="md-card-toolbar-heading-text">
+                                {{nav.title}}
+                            </h3>
+                            
+                        </div>
+                        <div class="md-card-content">-->
+                             <div ui-view></div>
+                        <!--</div>
+                    </div>
+                </div>
+            </div>
 
         </div>
-    </div>
+    </div>-->
 
     <!-- google web fonts -->
     <script>
