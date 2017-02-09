@@ -2,6 +2,8 @@
 
 //!LOAD THE APPLICATION CONFIGURATION FILES
 
+require('bixbyte-frame')
+
 app.drive.loadFiles = () => {
  
     return new Promise( (resolve, reject ) => {
