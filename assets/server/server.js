@@ -17,6 +17,46 @@
 //@ IMPORT THE PARENT FRAMEWORK
 require("bixbyte-frame");
 
+//@ Set the application's running port [the default port is 1357]
+app.port =  3000;
+
+//@ Inject the promise library into mongoose
+mongoose.promise = global.Promise;
+
+//@ Import the main configuration file
+global.config   = require(`${__dirname}/../config/config`);
+
+//@ Import the members database schema
+global.member   = require(`${__dirname}/../schema/members`);
+
+//@ Establish a database connection
+db("mongo", config.database);
+
+//@ Framify Security Middleware Defiinition
+var framifySecurity = function (req, res, next) {
+
+    let payload = req.headers.authorization
+    req.role    = ( payload ) ? crypt.base64_decode( payload.replace(/JWT /ig, '').split(".")[1]  ).role : "guest";
+
+    if( req.path == "/php" ){        
+
+        console.log( payload )
+        console.dir( req.path )
+        console.dir( req._parsedUrl.path )
+
+        next()
+
+    }else{
+
+        next()
+
+    }
+
+};
+
+//@ Inject the security middleware
+app.use( framifySecurity );
+
 /**
  * THIS FRAMEWORK SUPPPORTS MAILGUN EMAIL 
  * DEFINE YOUR API CREDENTIALS IN A FILE NAMED mailgun.conf in the config directory
@@ -37,12 +77,12 @@ var mailData = {
     from: `Bixbyte Server Monitor <server_monitor@bixbyte.io>`,
     to: [], // Define the main recipient of the message
     bcc: [], //You can BCC someone here
-    subject: `Service Started at ${myAddr}:${app.port} `,
+    subject: `Framify Service Started at http://${myAddr}:${app.port} `,
     text: `Hello,\n\nYour service running on ${myAddr} port ${app.port} has just been started.\n\nWe hope that you are enjoying the framify experience.\n\nSincerely:\n\tThe Framify team. `,
     html: `<font color="gray"><u><h2>YOUR SERVICE IS UP!</u></font></h2>
                                 <br>
                                 Hello,<br><br>
-                                Your service running on  <b>${myAddr}</b> port <b>${app.port}</b> has just been started.
+                                Your service running on  <a href="http://${myAddr}:${app.port}"> http://<b>${myAddr}</b>:<b>${app.port}</b> </a> has just been started.
                                 <br><br>
                                 We hope that you are enjoying the framify experience.
                                 <br>
@@ -61,12 +101,18 @@ var mailData = {
     .catch(e=>c_log(e));
 */
 
+//@ Initialize passport for use
+app.use( passport.initialize() );
+
+//@ Alter the passport strategy for JWT
+require("../config/passport")( passport );
+
 //@ SETUP BODY PARSER MIDDLEWARE 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 //@ SETUP THE PHP CGI INTERFACE
-app.use("/php", php.cgi(`${__dirname}/../php`));
+app.use("/php" ,passport.authenticate('jwt', { session: false })  ,php.cgi(`${__dirname}/../php`));
 
 //@ SETUP THE VIEWS STATIC DIRECTORY
 app.use("/views", express.static(__dirname + '/../views'));
@@ -74,30 +120,11 @@ app.use("/views", express.static(__dirname + '/../views'));
 //@ SET THE BASIC DIRECTORY MIDDLEWARE
 app.use(express.static(__dirname + '/../'));
 
-//@ ROOT ROUTE
-app.route("/").all(function(req, res) {
-    res.sendFile(`index.html`, { root: `${__dirname}/../` });
-});
+//@ LOAD THE ROUTING FILE
+app.use("/" , require( `${__dirname}/../routes/main` ))
 
-app.route("/login").all((req, res) => {
-    //console.log( JSON.stringify(fs.readFileSync(`${__dirname}/../login.html`,'utf8'),null,2) )
-    res.send(fs.readFileSync(`${__dirname}/../login.html`, 'utf8'));
-})
-
-//@ HANDLE FILE DOWNLOADS
-app.route("/sample/:iara").all(function(req, res) {
-    var i = req.params.iara;
-    res.sendFile(i, { "root": __dirname + "/../" });
-});
-
-//@ HANDLE CONFIGURATION FILE REQUESTS 
-app.route("/config/:fname").all(function(req, res) {
-    c_log("getting the file" + req.params.fname)
-    res.sendFile(req.params.fname, { "root": __dirname + "/../config/" })
-});
-
-//@ CHANGE THE APP'S  DEFAULT PORT
-//app.port =  3030;
+//@ LOAD THE AUTHENTICATION ROUTES
+app.use("/auth", require(`${__dirname}/../routes/auth`))
 
 
 //@ START THE SERVER
@@ -107,27 +134,5 @@ server.listen(app.port, function(err) {
     }
 });
 
-//@ DO A PROGRAM CLEANUP BEFORE THE ACTUAL EXIT 
-
-process.stdin.resume(); //so the program will not close instantly
-
-function exitHandler(options, err) {
-
-    if (options.cleanup) {
-        console.log(`\n\n@framify`.yell +
-            `\nThe application exited gracefully\n\n`.info
-        );
-    }
-    if (err) console.log(err.stack);
-    if (options.exit) process.exit();
-
-}
-
-//@ HANDLE A  NATURAL APPLICATION EXIT
-process.on('exit', exitHandler.bind(null, { cleanup: true }));
-
-//@ CATCH A DELIBERATE ctrl+c 
-process.on('SIGINT', exitHandler.bind(null, { exit: true }));
-
-//@ CATCH UNCAUGHT EXCEPTIONS
-process.on('uncaughtException', exitHandler.bind(null, { exit: true }));
+//@ Handle application exits gracefully
+require("./server_cleanup")();
