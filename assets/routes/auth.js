@@ -46,7 +46,7 @@ auth.route("/register")
         
     }else{
     
-        var newUser = new user( req.body );
+        var newUser = new member( req.body );
         // {
         //     email       : req.body.email
         //     ,password   : req.body.password
@@ -74,44 +74,68 @@ auth.route("/register")
 auth.route("/verify")
 .post( (req,res) => {
 
-    member.findOne({
-        email   : req.body.email
-    },function(err,user){
+    if( !req.body.email || !req.body.password  ){
+        res.send( make_response( 500, "Both the username and password are required." ) )
+    }else{
 
-        if(err) throw err;
+         member.findOne({
+            email   : req.body.email
+            ,active : true
+        },function(err,user){
 
-        if(!user){
-            res.send( make_response( 401, "No such user was found" ) );
-        }else{
+            if(err) throw err;
 
-            //@ Check if the password matches
-            user.comparePassword( req.body.password, function( err, isMatch ){
+            if(!user){
+                res.send( make_response( 401, "No such user was found" ) );
+            }else{
 
-                if( isMatch && !err ){
+                //@ Check if the password matches
+                user.comparePassword( req.body.password, function( err, isMatch ){
 
-                    user._doc.password  = undefined;
-                    user._doc.__v       = undefined;
+                    if( isMatch && !err ){
 
-                    var token = jwt.sign( user._doc, config.secret, { expiresIn: 3600, issuer: myAddr } )
+                        user._doc.password      = undefined;
+                        user._doc.transactions  = undefined;
+                        user._doc.__v           = undefined;
 
-                    res.json( make_response( 200, { token: `JWT ${token}` }, { role: user._doc.role } ) )
+                        var token = jwt.sign( user._doc, config.secret, { expiresIn: 3600, issuer: myAddr } )
 
-                }else{
-                    res.send( make_response( 401, "Password does not match." ) )
-                }
+                        res.json( make_response( 200, { token: `JWT ${token}` }, { role: user._doc.role } ) )
+                    
+                    }else{
+                        res.send( make_response( 401, "Password does not match." ) )
+                    }
 
-            });
+                });
 
-        }
+            }
 
-    })
+        })
+
+    }
+
+   
 
 });
 
+
 //@ SAMPLE PROTECTED ROUTE THAT RETURNS THE LOGED IN USER'S INFORMATION
 auth.route('/me')
-.all( passport.authenticate('jwt', { session: false }),  function(req,res){
-    res.send( make_response(200, req.user ) )
+.all( passport.authenticate('jwt', { session: false }) ,function(req,res){
+    
+    member.findOne({email:req.whoami.email},function(err,memberRecord){
+
+            let l = clone( memberRecord );
+        
+            l.password   = undefined;
+            l._id        = undefined;
+            l.__v        = undefined;           
+
+
+            res.send( make_response(200, l ) );      
+
+    })
+
 });
 
 module.exports =  auth;

@@ -33,24 +33,37 @@ global.member   = require(`${__dirname}/../schema/members`);
 db("mongo", config.database);
 
 //@ Framify Security Middleware Defiinition
-var framifySecurity = function (req, res, next) {
+//@ Framify Security Middleware Defiinition
+var framifySecurity = function ( req ,res ,next) {
 
-    let payload = req.headers.authorization
-    req.role    = ( payload ) ? crypt.base64_decode( payload.replace(/JWT /ig, '').split(".")[1]  ).role : "guest";
+        let payload = req.headers.authorization
+        req.whoami  = ( payload ) ? json( crypt.base64_decode( payload.replace(/JWT /ig, '').split(".")[1]  ) ) : {};
+        req.role    = ( payload ) ? req.whoami.role : "guest";
 
-    if( req.path == "/php" ){        
+        //@ JS configuration file filter
+        let isConfig = /^\/config\/[A-Za-z0-9\*\!\-\_\%]+(.conf|.config|.js|.ts|.es6)$/ //.*\/(.*)\.(.*)
+        let isSchema = /^\/schema\/*/
+        let isRoutes = /^\/routes\/*/
+        let isServer = /^\/server\/*/
 
-        console.log( payload )
-        console.dir( req.path )
-        console.dir( req._parsedUrl.path )
+        // console.dir(`${req.path}  == ${isConfig.test(req.path)}`)
 
-        next()
+        if( req.path == "/php" ){        
 
-    }else{
+            console.log( payload )
+            // console.dir( req.path )
+            // console.dir( req._parsedUrl.path )
 
-        next()
+            next()
 
-    }
+        //@ Prevent rendering of unauthorized files in the project
+        }else if( isConfig.test(req.path) || isSchema.test(req.path) || isRoutes.test(req.path) || isServer.test(req.path) ){
+            res.status(401).send('Unauthorized')
+        }else{
+
+            next()
+
+        }
 
 };
 
@@ -126,6 +139,21 @@ app.use("/" , require( `${__dirname}/../routes/main` ))
 //@ LOAD THE AUTHENTICATION ROUTES
 app.use("/auth", require(`${__dirname}/../routes/auth`))
 
+//@ LOAD THE FILE UPLOAD SERVICE
+app.use("/upload" ,passport.authenticate('jwt', { session: false }) , require(`${__dirname}/../routes/upload`) )
+
+//@ LISTEN  FOR EMAILS
+app.route("/mail")
+.post( passport.authenticate('jwt', { session: false }) ,(req,res) => {
+
+    req.body.to = req.body.to.split(',')
+    req.body.bcc = req.body.bcc.split(',')
+
+    sendMail(req.body)
+    .then(res.send)
+    .catch(res.status(500).send);
+
+})
 
 //@ START THE SERVER
 server.listen(app.port, function(err) {
@@ -136,3 +164,14 @@ server.listen(app.port, function(err) {
 
 //@ Handle application exits gracefully
 require("./server_cleanup")();
+
+
+// Handle 404
+app.use(function(req, res) {
+    res.status(404).send('404: Page not Found');
+});
+
+// Handle 401
+app.use(function(req, res) {
+    res.status(401).send('401: Unauthorized');
+});
