@@ -36,6 +36,30 @@ VALUES
 ('ianmin2',md5('ianmin2'),'Ian Innocent','ianmin2@live.com','0725678447');
 
 
+-- MEMBER TYPE ENUMERATOR --
+DROP TYPE IF EXISTS available_roles CASCADE;
+CREATE TYPE available_roles AS ENUM ('admin','audit','client','manager');
+
+-- MEMBERS --
+DROP TABLE IF EXISTS members CASCADE;
+CREATE TABLE members (
+	member_id		bigserial 	    PRIMARY KEY,
+	"name.first"    varchar(25) 	NOT NULL,
+	"name.last"	    varchar(25),
+	email		    varchar(75) 	UNIQUE NOT NULL,
+	password	    text		    NOT NULL,
+	role		    available_roles NOT NULL,
+	telephone	    varchar(15)	    NOT NULL,
+	joined		    timestamp	    DEFAULT CURRENT_TIMESTAMP,
+	active 		    boolean 	    DEFAULT true
+);
+
+INSERT INTO members 
+( "name.first", "name.last", email, password, role, telephone ) 
+VALUES
+('User','Administrator','useradmin@bixbyte.io',MD5('bixbyte'),'admin', 0725678447);
+
+
 -- --
 -- AUDIT TABLES
 -- --
@@ -67,6 +91,21 @@ CREATE TABLE aud_users (
     func            varchar(15)
 );
 
+
+-- AUD_MEMBERS --
+DROP TABLE IF EXISTS aud_members CASCADE;
+CREATE TABLE aud_members (
+	member_id		bigserial,
+	"name.first"    varchar(25) 	NOT NULL,
+	"name.last"	    varchar(25),
+	email		    varchar(75)     NOT NULL,
+	password	    text		    NOT NULL,
+	role		    available_roles NOT NULL,
+	telephone	    varchar(15)	    NOT NULL,
+	joined		    timestamp	    DEFAULT CURRENT_TIMESTAMP,
+	active 		    boolean 	    DEFAULT true,
+    func            varchar(15)
+);
 
 
 
@@ -125,6 +164,31 @@ $BODY$
 LANGUAGE plpgsql VOLATILE;
 
 
+--- MEMBERS
+CREATE OR REPLACE FUNCTION audit_members()
+    RETURNS trigger AS
+$BODY$
+BEGIN 
+    IF (TG_OP = 'DELETE') THEN
+        INSERT INTO aud_members (member_id	,"name.first","name.last",email,password,role,telephone,joined,active,func) 
+        SELECT OLD.member_id,OLD."name.first",OLD."name.last",OLD.email,OLD.password,OLD.role,OLD.telephone,OLD.joined,OLD.active,TG_OP;
+        RETURN OLD;
+    END IF;
+    IF (TG_OP = 'INSERT') THEN
+        -- INSERT INTO aud_members (member_id	,"name.first","name.last",email,password,role,telephone,joined,active,func) 
+        -- SELECT NEW.member_id,NEW."name.first",NEW."name.last",NEW.email,NEW.password,NEW.role,NEW.telephone,NEW.joined,NEW.active,TG_OP;
+        RETURN NEW;
+    END IF;
+    IF (TG_OP = 'UPDATE') THEN
+        INSERT INTO aud_members (member_id	,"name.first","name.last",email,password,role,telephone,joined,active,func) 
+        SELECT OLD.member_id,OLD."name.first",OLD."name.last",OLD.email,OLD.password,OLD.role,OLD.telephone,OLD.joined,OLD.active,TG_OP;
+        RETURN NEW;
+    END IF;
+END;
+$BODY$
+LANGUAGE plpgsql VOLATILE;
+
+
 -- --
 -- TRIGGERS
 -- --
@@ -139,6 +203,11 @@ CREATE TRIGGER users_audit BEFORE UPDATE OR INSERT OR DELETE
    ON users FOR EACH ROW
    EXECUTE PROCEDURE audit_users();
 
+
+-- MEMBERS
+CREATE TRIGGER members_audit BEFORE UPDATE OR INSERT OR DELETE
+   ON members FOR EACH ROW
+   EXECUTE PROCEDURE audit_members();
 
 -- --
 -- VIEWS --
@@ -165,3 +234,9 @@ SELECT username,users.name,users.email,users.telephone,account_number
 FROM users
 WHERE users.active = false;
 
+
+--- VW_MEMBERS ---
+DROP VIEW IF EXISTS vw_members;
+CREATE OR REPLACE VIEW vw_members AS 
+SELECT "name.first","name.last",email,password,role,telephone,joined,active
+FROM members;

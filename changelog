@@ -43,3 +43,13 @@ v 1.18.0
 
 v 1.18.1
 	=> Added pre crash handling
+	
+v 2.0.0 
+	=> Added support for mongodb based JWT authentication and deprecated the previous default authentication.
+	
+v2.0.1
+	=> made the sendmail function globally accessible
+
+v2.1.0
+	=> Added support for postgresql JWT authentication switchable via the global 'authMeth' variable in server/server.js
+	=> Modified the sample schema to include the new required 'members' tuple needed for JWT authentication.

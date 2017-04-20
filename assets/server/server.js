@@ -17,14 +17,22 @@
 //@ IMPORT THE PARENT FRAMEWORK
 require("bixbyte-frame");
 
-//@ Set the application's running port [the default port is 1357]
-app.port =  3000;
-
 //@ Inject the promise library into mongoose
 mongoose.promise = global.Promise;
 
 //@ Import the main configuration file
 global.config   = require(`${__dirname}/../config/config`);
+
+//@ Define the authentication database [mongo/postgres]
+global.authMeth = "mongo";
+
+//@ postgres initialization
+global.pg   = require("pg");
+global.pool = new pg.Pool(config.postgres);
+global.pgClient = () => new pg.Client(config.postgres);
+
+//@ Set the application's running port [the default port is 1357]
+app.port =  3000;
 
 //@ Import the members database schema
 global.member   = require(`${__dirname}/../schema/members`);
@@ -50,7 +58,7 @@ var framifySecurity = function ( req ,res ,next) {
 
         if( req.path == "/php" ){        
 
-            console.log( payload )
+            // console.log( payload )
             // console.dir( req.path )
             // console.dir( req._parsedUrl.path )
 
@@ -58,7 +66,8 @@ var framifySecurity = function ( req ,res ,next) {
 
         //@ Prevent rendering of unauthorized files in the project
         }else if( isConfig.test(req.path) || isSchema.test(req.path) || isRoutes.test(req.path) || isServer.test(req.path) ){
-            res.status(401).send('Unauthorized')
+            res.status(401).json(make_response('Unauthorized'))
+            console.log("Prevented access to unauthorized file".yell)
         }else{
 
             next()
@@ -125,7 +134,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 //@ SETUP THE PHP CGI INTERFACE
-app.use("/php" ,passport.authenticate('jwt', { session: false })  ,php.cgi(`${__dirname}/../php`));
+// ,passport.authenticate('jwt', { session: false }) 
+app.use("/php" ,passport.authenticate('jwt', { session: false }) ,php.cgi(`${__dirname}/../php`));
 
 //@ SETUP THE VIEWS STATIC DIRECTORY
 app.use("/views", express.static(__dirname + '/../views'));
@@ -140,7 +150,7 @@ app.use("/" , require( `${__dirname}/../routes/main` ))
 app.use("/auth", require(`${__dirname}/../routes/auth`))
 
 //@ LOAD THE FILE UPLOAD SERVICE
-app.use("/upload" ,passport.authenticate('jwt', { session: false }) , require(`${__dirname}/../routes/upload`) )
+app.use("/upload" ,passport.authenticate('jwt', { session: false }) , require(`${__dirname}/../routes/upload`) );
 
 //@ LISTEN  FOR EMAILS
 app.route("/mail")
@@ -151,9 +161,23 @@ app.route("/mail")
 
     sendMail(req.body)
     .then(res.send)
-    .catch(res.status(500).send);
+    .catch(res.status(500).json);
 
 })
+
+
+/**
+ * THIS FRAMEWORK SUPPPORTS GOOGLE CLOUD MESSAGING
+ * DEFINE YOUR API CREDENTIALS IN A FILE NAMED gcm.conf in the config directory
+ * 
+ * the gcm.conf file in the config directory should look like :
+ * 
+ * module.exports = `YOUR_GCM_API_KEY`;
+ * 
+ * FOR MORE INFO, PLEASE VISIT https://console.developers.google.com
+ **/
+//@ LOAD THE GCM SERVICE
+app.use("/gcm" ,passport.authenticate('jwt', { session: false }) , require(`${__dirname}/gcm`) );
 
 //@ START THE SERVER
 server.listen(app.port, function(err) {
@@ -168,10 +192,10 @@ require("./server_cleanup")();
 
 // Handle 404
 app.use(function(req, res) {
-    res.status(404).send('404: Page not Found');
+    res.status(404).json(make_response(404,'404: Page not Found'));
 });
 
 // Handle 401
 app.use(function(req, res) {
-    res.status(401).send('401: Unauthorized');
+    res.status(401).json(make_response(401,'401: Unauthorized'));
 });

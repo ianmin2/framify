@@ -21,7 +21,7 @@ if (fs.existsSync(`${__dirname}/../config/mailgun.conf`)) {
         for more, visit https://www.npmjs.com/package/mailgun-js
     */
     //@ THE MAIN EMAIL SENDING FUNCTION
-    var sendMail = (sendData) => {
+    global.sendMail = (sendData) => {
 
         return new Promise((resolve, reject) => {
 
