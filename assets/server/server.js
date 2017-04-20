@@ -27,7 +27,6 @@ global.config   = require(`${__dirname}/../config/config`);
 global.authMeth = "mongo";
 
 //@ postgres initialization
-global.pg   = require("pg");
 global.pool = new pg.Pool(config.postgres);
 global.pgClient = () => new pg.Client(config.postgres);
 
