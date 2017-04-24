@@ -1,5 +1,7 @@
 <center>
-    <h1>Dash Loaded!</h1>
-    {{nav.search}}
+    <div ng-if="nav.search"> 
+        <i class="fa fa-circle-o-notch  fa-spin"></i>
+        Looking For:  <code>{{nav.search}}</code>
+    </div>
 </center>
 <div ui-view></div>

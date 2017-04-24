@@ -1,281 +1,68 @@
-<framify menu="true" path="login" url="/login" title="Login" parent="false" icon="home"  controller="" ></framify> <!-- appController -->
-    <div ng-init="islogedin();" id="response"></div>
-    <div class="list" ng-if="!logedin">
-       <br><br> 
-       <center>
-           <h3><font color="gray"><u>User Login</u></font> </h3>
-       </center>
-       <form name="loginForm" class="col-lg-10" style="" novalidate>
-        
-        <!-- name field -->
-        <div class="form-group">
-            <label>Username</label>
-            <input type="text" name="name" class="form-control" 
-                ng-model="data.login.username"
-                ng-minlength="3"
-                ng-maxlength="15"
-                required>
-            <div class="help-block" ng-messages="loginForm.name.$error" ng-if="loginForm.name.$touched">
-                <p ng-message="minlength">Please Enter a valid telephone number.</p>
-                <p ng-message="maxlength">The telephone number you entered is too long.</p>
-                <p ng-message="required">The username is required.</p>
-            </div>
-        </div>
-        
-        <!-- email field -->
-        <div class="form-group">
-            <label>Password</label>
-            <input type="password" name="password" class="form-control" 
-                ng-model="data.login.password"
-                ng-minlength="4"
-                ng-maxlength="50"
-                required>
-                
-           <div class="help-block" ng-messages="loginForm.password.$error" ng-if="loginForm.password.$touched">
-                <p ng-message="minlength">That password is too short.</p>
-                <p ng-message="maxlength">That password is too long.</p>
-                <p ng-message="required">A password is required.</p>
-            </div>
-        </div>
-        
-        <div class="form-group">
-            <button 
-            ng-click="login('password')" 
-            class=" button button-positive" 
-            ng-disabled="loginForm.$invalid">Submit</button>
-        </div>
-        
-    </form>
-    
-    </div>
-    
-    <div class="" ng-if="logedin">
-        
-    <!-- CHECK IF THE USER HAS ANY REGISTERED ENTITIES -->
-    <div class="" ng-if="true" >        
-        <div ng-init="count('vw_entities',{owner: storage.user.username})"></div>
-    </div>
+<div class="" ng-init="handlers.isLogedIn().then(app.doNothing).catch(app.doNothing)"></div>
+<div class="md-card" style="font-family: Andale Mono,Andalemono">
+    <form name="login_form" class="" style="" novalidate>
+        <div class="md-card-content">
+            <h3 class="heading_a">LOGIN</h3>
+            <div class="uk-grid" data-uk-grid-margin>
 
-   
-    <!-- SHOW IF THE USER REGISTERS/HAS REGISTERED AN ENTITY-->
- 	<div class="container" ng-if="counted.entities">
-            <center>
-                <div class="col-md-12">
-                    
-                    <a ng-click="logout()" href="#/" >
-                        <div class="col-md-3 well frame-control assertive"  style="text-align:center;" >
-                            <div class="row-fluid">
-                                <div class="span9">
-                                    <h2><b style="text-transform:capitalize;"><i class="material-icons">no_encryption</i></b></h2>
-                                    <span> LOGOUT</span>
-                                </div>
-                            </div>
-                        </div>
-                    </a>   
-                    
-                    <a ng-repeat="link in links"  ng-if="link.parent=='false' && link.menu=='false'"  href="#{{link.url}}" >
-                        <div class="col-md-3 well frame-control"  style="text-align:center;" >
-                            <div class="row-fluid">
-                                <div class="span9">
-                                    <h2><b style="text-transform:capitalize;"><i class="material-icons">{{link.icon}}</i></b></h2>
-                                    <span>{{link.title}}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
                 
+
+                <div style="margin-top:1em !important;"  class="uk-width-large-4-4 uk-width-medium-2-2">
+                    <label>Email <sup style="color:red">*</sup></label>
+                    <input 
+                        type="text" 
+                        class="md-input"
+                        name="email" 
+                        ng-model="data.login.email" 
+                        ng-pattern="app.isemail"
+                    required>
+                    <div 
+                        class="help-block" 
+                        style="font-family: Andale Mono;color:lightgray;" 
+                        ng-messages="login_form.email.$error" ng-if="login_form.email.$touched">
+                            <p ng-message="required">An email address is required.</p>
+                            <p ng-message="pattern">Please enter a valid email address.</p>
+                    </div>
                 </div>
-            </center>
+
+                <br>
+
+                 <div style="margin-top:1em !important;"  class="uk-width-large-4-4 uk-width-medium-2-2">
+                    <label>Password <sup style="color:red">*</sup></label>
+                    <input 
+                    name="password"
+                    type="password" 
+                    class="md-input"
+                    ng-model="data.login.password" 
+                    ng-pattern="app.ispassword" 
+                    required>
+                    <div 
+                        class="help-block" 
+                        style="font-family: Andale Mono;color:lightgray;" 
+                        ng-messages="login_form.password.$error" ng-if="login_form.password.$touched">
+                            <p ng-message="required">A password is required.</p>
+                            <p ng-message="pattern">Please enter a more secure password.</p>
+                    </div>
+                </div>
+
+                <br>
+                <div style="margin-top:1em !important;" class="uk-width-large-4-4 uk-width-medium-2-2">
+                    <button  
+                    ng-disabled="login_form.$invalid" 
+                    ng-click="auth.Login(data.login).then(handlers.loginSuccess).catch(handlers.loginError)"
+                    ng-class="{'md-btn-primary' : !login_form.$invalid }"
+                    class="md-btn "> LOGIN</button>
+                    <br>
+                    New here? <a class="" ng-click="goTo('app.signup')">Create an Account</a>
+                </div>
+
+            </div>
+
         </div>
 
-    <!-- HANDLE NEW USER ENTITY REGISTRATION -->
-    <div class="" ng-if="!counted.entities">
-        <div ng-init="fetch([['vw_sub_types']])"></div>
-        <center><h4>Welcome to the <b>{{nav.alias}}</b> platform. <br><u>Please register an entity that you manage to continue.</u></h4></center>
-        <form name="add_entity_form" class="col-lg-10" style="" novalidate ng-controller="hospitalCtrl">
-                                 <!--<div ng-if="!frame.isRoot()" class="alert alert-danger"><button class="close" data-dismiss="alert" aria-label="close"><span aria-hidden="true">&times;</span></button><center style="font-weight:bold;">Your access level does not permit you to add entities.</center></div>-->
-                <!--<json-formatter json="data.entities" open="1"></json-formatter>-->
-                                <!-- Title -->
-                                <div class="form-group">
-                                    <label>Entity Title<sup style="color:red">*</sup></label>
-                                    <input type="text" name="title" class="form-control" 
-                                        ng-model="data.entities.title"
-                                        ng-minlength="3"
-                                        ng-maxlength="100"
-                                        required>
-                                    <div class="help-block" ng-messages="add_entity_form.title.$error" ng-if="add_entity_form.title.$touched">
-                                        <p ng-message="minlength">Please Enter a longer Title.</p>
-                                        <p ng-message="maxlength">The title you entered is too long.</p>
-                                        <p ng-message="required">A title is required.</p>
-                                    </div>
-                                </div>
+    </form>
 
-                                <!-- Type -->
-                                <div class="form-group">
-                                    <label >Entity Type<sup style="color:red">*</sup></label>
-                                     <select 
-                                     class="form-control" 
-                                     name="type" 
-                                     ng-model="data.entities.type" 
-                                     ng-options="sub_type.sub_type_id as sub_type.title for sub_type in fetched.vw_sub_types">   
-                                     <option value="" selected>Pick a Category </option>                                   
-                                    </select>
-                                    <div class="help-block" ng-messages="add_entity_form.type.$error" ng-if="add_entity_form.type.$touched">
-                                        <p ng-message="required">Please pick a category.</p>
-                                    </div>
-                                </div>
-
-                                <!-- Location -->
-                                <div class="form-group">
-                                    <label>Location<sup style="color:red">*</sup></label>
-                                    <textarea type="text" 
-                                        name="location" 
-                                        class="form-control" 
-                                        ng-model="data.entities.location"
-                                        ng-minlength="5"
-                                        ng-maxlength="255"
-                                        required>
-                                    </textarea>
-                                    <div class="help-block" ng-messages="add_entity_form.location.$error" ng-if="add_entity_form.location.$touched">
-                                        <p ng-message="minlength">Please Enter a longer location.</p>
-                                        <p ng-message="maxlength">The location you entered is too long.</p>
-                                        <p ng-message="required">A location is required.</p>
-                                    </div>
-                                </div>
-
-                                <!-- Telephone -->
-                                <div class="form-group">
-                                    <label>Main Telephone<sup style="color:red">*</sup></label>
-                                    <input type="text" name="telephone" class="form-control" 
-                                        placeholder="+*** *** *** ***"
-                                        ng-model="data.entities.telephone"
-                                        ng-pattern="app.istelephone"
-                                        ng-minlength="10"
-                                        ng-maxlength="20"
-                                        required>
-                                    <div class="help-block" ng-messages="add_entity_form.telephone.$error" ng-if="add_entity_form.telephone.$touched">
-                                        <p ng-message="minlength">Please Enter a longer telephone number.</p>
-                                        <p ng-message="pattern">Please enter a valid telephone number</p>
-                                        <p ng-message="maxlength">The telephone number you entered is too long.</p>
-                                        <p ng-message="required">A telephone number is required.</p>
-                                    </div>
-                                </div>
-
-                                <!-- Email -->
-                                <div class="form-group">
-                                    <label>Email<sup style="color:red">*</sup></label>
-                                    <input type="text" name="email" class="form-control" 
-                                        placeholder="user@domain.ext"
-                                        ng-model="data.entities.email"
-                                        ng-pattern="app.isemail"
-                                        ng-minlength="4"
-                                        ng-maxlength="50"
-                                        required>
-                                    <div class="help-block" ng-messages="add_entity_form.email.$error" ng-if="add_entity_form.email.$touched">
-                                        <p ng-message="minlength">Please Enter a longer email.</p>
-                                        <p ng-message="pattern">Please enter a valid email</p>
-                                        <p ng-message="maxlength">The email you entered is too long.</p>
-                                        <p ng-message="required">An email is required.</p>
-                                    </div>
-                                </div>
-
-                                <!-- Address -->
-                                <div class="form-group">
-                                    <label>Address <sup style="color:red">*</sup></label>
-                                    <textarea type="text" 
-                                        name="address" 
-                                        class="form-control" 
-                                        ng-model="data.entities.address"
-                                        required>
-                                    </textarea>
-                                    <div class="help-block" ng-messages="add_entity_form.address.$error" ng-if="add_entity_form.address.$touched">
-                                       <p ng-message="required">An address is required.</p>
-                                    </div>
-                                </div>
-
-                                <!-- Office -->
-                                <div class="form-group">
-                                    <label>Office Telephone</label>
-                                    <input type="text" name="office" class="form-control" 
-                                        placeholder="+*** *** *** ***"
-                                        ng-model="data.entities.office"
-                                        ng-pattern="app.istelephone"
-                                        >
-                                    <div class="help-block" ng-messages="add_entity_form.office.$error" ng-if="add_entity_form.office.$touched">
-                                        <p ng-message="pattern">Please enter a valid telephone number</p>
-                                    </div>
-                                </div>
-
-                                <!-- Landline -->
-                                <div class="form-group">
-                                    <label>Other Telephone</label>
-                                    <input type="text" name="landline" class="form-control" 
-                                        placeholder="+*** *** *** ***"
-                                        ng-model="data.entities.landline"
-                                        ng-pattern="app.istelephone"
-                                        >
-                                    <div class="help-block" ng-messages="add_entity_form.landline.$error" ng-if="add_entity_form.landline.$touched">
-                                        <p ng-message="pattern">Please enter a valid telephone number</p>
-                                    </div>
-                                </div>
-
-                                <!-- Fax -->
-                                <div class="form-group">
-                                    <label>Fax</label>
-                                    <input type="text" name="fax" class="form-control" 
-                                        placeholder="+*** *** *** ***"
-                                        ng-model="data.entities.fax"
-                                        ng-pattern="app.istelephone"
-                                        >
-                                    <div class="help-block" ng-messages="add_entity_form.fax.$error" ng-if="add_entity_form.fax.$touched">
-                                        <p ng-message="pattern">Please enter a valid fax number</p>
-                                    </div>
-                                </div>
-
-                                <!-- Website -->
-                                <div class="form-group">
-                                    <label>Website</label>
-                                    <input type="text" name="website" class="form-control" 
-                                    placeholder="www.hospitalcare.co.ke"
-                                    ng-model="data.entities.web"
-                                    >
-                                </div>
-
-                                <!-- Others -->
-                                <div class="form-group">
-                                    <label>Others </label>
-                                    <textarea type="text" 
-                                    name="address" 
-                                    class="form-control" 
-                                    ng-model="data.entities.others"
-                                    >
-                                    </textarea>
-                                </div>
-                                
-                                <span hidden>{{data.entities.owner=storage.user.username}}</span>
-                                 <span  hidden ng-if="!add_entity_form.$invalid">{{data.entities=sudo(data.entities,storage.user)}}</span>
-
-                                <!-- Submit Button -->
-                                <div class="form-group">
-                                    <!--!frame.isRoot() || -->
-                                    <button 
-                                    ng-disabled="add_entity_form.$invalid" 
-                                    ng-click="add('vw_entities',data.entities,'response','',howMany);" 
-                                    class=" button button-positive"
-                                    >Add Entity</button>
-                                </div>
-                                <br><br><br>
-                            </form>
-    
-                            <br><br><br>
-
-    </div>
-
-
-
-       
-    </div>
-    <br/><br/><br/><br/>
+</div>
 
 
 

@@ -1,22 +1,27 @@
 memberSchema      = new mongoose.Schema({
 
     name        : {
-        type            : String
+        first           : { type: String }
+        ,last           : { type: String }
     }
     ,email       : {
         type            : String
         ,lowercase      : true
-        ,unique         : true
-        ,required       : true
     }
     ,password   : {
         type            : String
-        ,required       : true
     }
     ,role       : {
         type            : String
         ,enum           : ["client","manager","admin","audit"]
         ,default        : "audit"
+    }
+    ,account        : {
+        name     : { type: String }
+        ,balance : { type: Currency, default: 0 }
+    }
+    ,transactions   : {
+        type: Array
     }
     ,telephone  : { type: String }
     ,joined     : { type: Date,   default: Date.now }
@@ -25,17 +30,23 @@ memberSchema      = new mongoose.Schema({
 });
 
 memberSchema.path('password').required(true, 'Please provide a password.');
+
 memberSchema.path('email').required(true, 'Please provide an email address.');
+
+memberSchema.path('account.name').required(true, 'Please provide an account name.')
 
 memberSchema.path("email").unique(true, "That email address is already taken.");
 
-memberSchema.index({email: 1}, { unique: true });
+memberSchema.path("telephone").unique(true,"That telephone number is already registered.")
 
-memberSchema.index({name: 1},{unique: false});
+memberSchema.index({email: 1});
 
-memberSchema.index({telephone: 1},{unique: false});
+memberSchema.index({"name.first": 1},{unique: false});
+memberSchema.index({"name.last": 1},{unique: false});
 
-// memberSchema.index({ "api.key" : 1 }, { unique: true });
+memberSchema.index({telephone: 1});
+
+memberSchema.index({"account.name": 1});
 
 //** Ensure that the username is in the proper format
 memberSchema.path("password").validate( (v) => {
@@ -83,4 +94,51 @@ memberSchema.methods.comparePassword = function (pw,cb){
    cb(null,isMatch);
 };
 
+//@ Available Balance Checker
+memberSchema.methods.enoughBalance = function(amount){
+    
+    return new Promise( (resolve,reject) => {
+
+         let isBalance = ( amount <= this.account.balance )
+
+         if( isBalance ){
+             resolve(this.account.balance)
+         }else{
+             reject( make_response( 402, `You are only entitled to transact KES. ${this.account.balance}.<br>Please topup to continue.`) )
+         }
+
+    })
+  
+};
+
+memberSchema.aggr = ( searchQuery ) => {
+
+       return new Promise(resolve=>{
+            memberSchema.aggregate(searchQuery)
+            .then(d=>{
+                let retObj = { total: 0 };
+                d.forEach(a=>{
+                    retObj[a["_id"]]      = a["total"];
+                    retObj["total"]       += a["total"];
+                })
+                resolve(retObj);
+            });  
+       })  
+   
+       //@ SAMPLE USE
+    //    usernameschema.records.aggr([
+    //         { 
+    //         $match : {time: { $gte: new Date(interval[1]),   $lt: new Date(interval[0]) }} 
+    //         }
+    //         ,{
+    //         $group: {
+    //             _id: "$event"
+    //             ,total: { $sum: 1 }
+    //         }
+    //         }
+    //     ])
+
+};
+
 module.exports  = mongoose.model("Member", memberSchema );
+log("Loaded the bixbyte-equity - member database schema ".succ)

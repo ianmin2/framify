@@ -46,6 +46,8 @@ CREATE TABLE members (
 	member_id		bigserial 	    PRIMARY KEY,
 	"name.first"    varchar(25) 	NOT NULL,
 	"name.last"	    varchar(25),
+    "account.name"  varchar(50)     UNIQUE NOT NULL,
+    "account.balance" bigint        DEFAULT 0,
 	email		    varchar(75) 	UNIQUE NOT NULL,
 	password	    text		    NOT NULL,
 	role		    available_roles NOT NULL,
@@ -55,9 +57,9 @@ CREATE TABLE members (
 );
 
 INSERT INTO members 
-( "name.first", "name.last", email, password, role, telephone ) 
+( "name.first", "name.last","account.name",email, password, role, telephone ) 
 VALUES
-('User','Administrator','useradmin@bixbyte.io',MD5('bixbyte'),'admin', 0725678447);
+('User','Administrator','userAdmin','useradmin@bixbyte.io',MD5('bixbyte'),'admin', 0725678447);
 
 
 -- --
@@ -98,6 +100,8 @@ CREATE TABLE aud_members (
 	member_id		bigserial,
 	"name.first"    varchar(25) 	NOT NULL,
 	"name.last"	    varchar(25),
+    "account.name"  varchar(50),
+    "account.balance"  bigint,
 	email		    varchar(75)     NOT NULL,
 	password	    text		    NOT NULL,
 	role		    available_roles NOT NULL,
@@ -170,18 +174,18 @@ CREATE OR REPLACE FUNCTION audit_members()
 $BODY$
 BEGIN 
     IF (TG_OP = 'DELETE') THEN
-        INSERT INTO aud_members (member_id	,"name.first","name.last",email,password,role,telephone,joined,active,func) 
-        SELECT OLD.member_id,OLD."name.first",OLD."name.last",OLD.email,OLD.password,OLD.role,OLD.telephone,OLD.joined,OLD.active,TG_OP;
+        INSERT INTO aud_members (member_id	,"name.first","name.last","account.name","account.balance",email,password,role,telephone,joined,active,func) 
+        SELECT OLD.member_id,OLD."name.first",OLD."name.last",OLD."account.name",OLD."account.balance",OLD.email,OLD.password,OLD.role,OLD.telephone,OLD.joined,OLD.active,TG_OP;
         RETURN OLD;
     END IF;
     IF (TG_OP = 'INSERT') THEN
-        -- INSERT INTO aud_members (member_id	,"name.first","name.last",email,password,role,telephone,joined,active,func) 
-        -- SELECT NEW.member_id,NEW."name.first",NEW."name.last",NEW.email,NEW.password,NEW.role,NEW.telephone,NEW.joined,NEW.active,TG_OP;
+        INSERT INTO aud_members (member_id,"name.first","name.last","account.name","account.balance",email,password,role,telephone,joined,active,func) 
+        SELECT NEW.member_id,NEW."name.first",NEW."name.last",NEW."account.name",NEW."account.balance",NEW.email,NEW.password,NEW.role,NEW.telephone,NEW.joined,NEW.active,TG_OP;
         RETURN NEW;
     END IF;
     IF (TG_OP = 'UPDATE') THEN
-        INSERT INTO aud_members (member_id	,"name.first","name.last",email,password,role,telephone,joined,active,func) 
-        SELECT OLD.member_id,OLD."name.first",OLD."name.last",OLD.email,OLD.password,OLD.role,OLD.telephone,OLD.joined,OLD.active,TG_OP;
+        INSERT INTO aud_members (member_id	,"name.first","name.last","account.name","account.balance",email,password,role,telephone,joined,active,func) 
+        SELECT OLD.member_id,OLD."name.first",OLD."name.last",OLD."account.name",OLD."account.balance",OLD.email,OLD.password,OLD.role,OLD.telephone,OLD.joined,OLD.active,TG_OP;
         RETURN NEW;
     END IF;
 END;
@@ -238,5 +242,5 @@ WHERE users.active = false;
 --- VW_MEMBERS ---
 DROP VIEW IF EXISTS vw_members;
 CREATE OR REPLACE VIEW vw_members AS 
-SELECT "name.first","name.last",email,password,role,telephone,joined,active
+SELECT "name.first","name.last","account.name",email,password,role,telephone,joined,active
 FROM members;

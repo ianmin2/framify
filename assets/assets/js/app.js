@@ -6,115 +6,131 @@ var sort_by = function(field,reverse,primer){
     }
 }
 
+
 angular.module('framify', ['framify.js'])
-    // !CONFIGURE THE BNASIC PRE-RUNTIME STATES OF THE APPLICATION
-    .config(["$stateProvider","$urlRouterProvider","$provide", function($stateProvider,$urlRouterProvider,$provide) {
+// !CONFIGURE THE BNASIC PRE-RUNTIME STATES OF THE APPLICATION
+.config(["$stateProvider","$urlRouterProvider","$provide", function($stateProvider,$urlRouterProvider,$provide) {
 
-        $stateProvider
-        .state('app', {
-            url: "/app"
-            ,templateUrl: 'views/dash.html'
-            // ,abstract: 'app.index'
-            // controller: 'framifyController',
-            // resolve: {
-            //     currentStats: function($http) {
-            //         // return $http.get('/currentStats')
-            //         //         .then(function(response){
-            //         //             return response.data;
-            //         //         })
-            //         return {};
-            //     }
-            // }
-        })
-        .state("app.index", {
-            url: "/index"
-            ,templateUrl: "views/index.html"
-        })
+    $stateProvider
 
-        //!THE DYNAMIC ROUTE SETTER
-        var setRoutes = (routeArray) => {
+    //@ Improper redirection pages
+    .state("app.404", {
+        url: "/404"
+        ,templateUrl: 'views/404.html'
+    })
+    .state("app.500", {
+        url: "/500"
+        ,templateUrl: 'views/500.html'
+    })
+    
+    //@  Main application routes
+    .state('app', {
+        url: "/app"
+        ,templateUrl: 'views/dash.html'
+        // ,abstract: 'app.index'
+        ,controller: 'framifyController'
+        // resolve: {
+        //     currentStats: function($http) {
+        //         // return $http.get('/currentStats')
+        //         //         .then(function(response){
+        //         //             return response.data;
+        //         //         })
+        //         return {};
+        //     }
+        // }
+    })
+    .state("app.index", {
+        url: "/index"
+        ,templateUrl: "views/index.html"
+    })
+    .state("app.signup", {
+        url: "/signup"
+        ,templateUrl: "views/signup.html"
+    })
+    .state("app.login",{
+        url: "/login"
+        ,templateUrl: "views/login.html"
+    })
+    .state("app.panel",{
+        url: "/panel"
+        ,cache:false
+        ,templateUrl: "views/panel.html"
+    })
 
-            console.dir(routeArray)
+    //!EXTENDED ROUTE SETTING
+    var setRoutes = (routeArray) => {
 
-            // return new Promise( function(resolve,reject){
+        // return new Promise( function(resolve,reject){
 
-                // var processed = 0;
-                    
-                routeArray = routeArray.sort(sort_by('title',false,function(a){return a.toLowerCase()})) || [];
-
+            // var processed = 0;
                 
-                $stateProvider
-                .state("app.404", {
-                    url: "/404"
-                    ,templateUrl: 'views/404.html'
-                })
-                .state("app.500", {
-                    url: "/500"
-                    ,templateUrl: 'views/500.html'
-                })
+            routeArray = routeArray.sort(sort_by('title',false,function(a){return a.toLowerCase()})) || [];
 
-                routeArray
-                .forEach( (rData, r) => {
+            
+            $stateProvider
+            
+            routeArray
+            .forEach( (rData, r) => {
 
-                    // processed++;
+                // processed++;
 
-                    var currState = "app." + rData.path;
-                    $stateProvider.state(currState, {
-                        url: rData.url
-                        ,templateUrl: rData.view
-                        ,controller: ((rData.controller) ? rData.controller : "")
-                        ,cache: false
-                    });
+                var currState = "app." + rData.path;
+                $stateProvider.state(currState, {
+                    url: rData.url
+                    ,templateUrl: rData.view
+                    ,controller: ((rData.controller) ? rData.controller : "")
+                    ,cache: false
+                });
 
-                    // if(processed == routeArray.length){
-                        
-                        //!REDIRECT APP TO THE ROOT IN THE CASE THAT THE REQUESTED ROUTE IS NOT FOUND
-                        $urlRouterProvider.otherwise('/app/index');
+                // if(processed == routeArray.length){
+                    
+                    //!REDIRECT APP TO THE ROOT IN THE CASE THAT THE REQUESTED ROUTE IS NOT FOUND
+                    $urlRouterProvider.otherwise('/app/index');
 
-                    // }
+                // }
 
-                })
+            })
 
-            // })         
-            // alert("setRoutes function successfully setup")
-           
+        // })         
+        // alert("setRoutes function successfully setup")
+        
+    };
+
+
+    //!CAPTURE THE DEFINED JSON ROUTES
+    // $.getJSON("./config/app-routes.json", function(response) {
+    //     setRoutes(response);
+    // });
+
+
+    //!CAPTURE THE DEFINED JSON ROUTES
+    $.getJSON("./config/app-routes.json")
+    .then(setRoutes)
+    .then(function(){
+        $urlRouterProvider.otherwise('/app/login');
+    });
+
+
+    $provide.decorator('$state', function($delegate, $stateParams) {
+
+        $delegate.forceReload = function() {
+            return $delegate.go($delegate.current, $stateParams, {
+                reload: true,
+                inherit: false,
+                notify: true
+            });
         };
 
+        return $delegate;
 
-        //!CAPTURE THE DEFINED JSON ROUTES
-        // $.getJSON("./config/app-routes.json", function(response) {
-        //     setRoutes(response);
-        // });
-
-
-        //!CAPTURE THE DEFINED JSON ROUTES
-        $.getJSON("./config/app-routes.json")
-        .then(setRoutes)
-        .then(function(){
-            $urlRouterProvider.otherwise('/app/index');
-        })
+    });
+        
 
 
-          $provide.decorator('$state', function($delegate, $stateParams) {
+    //!REDIRECT APP TO THE ROOT IN THE CASE THAT THE REQUESTED ROUTE IS NOT FOUND
+    $urlRouterProvider.otherwise('/app/index');
 
-            $delegate.forceReload = function() {
-                return $delegate.go($delegate.current, $stateParams, {
-                    reload: true,
-                    inherit: false,
-                    notify: true
-                });
-            };
-
-            return $delegate;
-
-        });
-         
-
- 
-        //!REDIRECT APP TO THE ROOT IN THE CASE THAT THE REQUESTED ROUTE IS NOT FOUND
-        $urlRouterProvider.otherwise('/app/index');
-
-    }])
+}])
 
 //!DEFINE THE APPLICATION RUNTIME DEFAULTS
 .run(
@@ -194,6 +210,7 @@ angular.module('framify', ['framify.js'])
             window.location = "/#/";
         };
     }])
+    
     .controller("frameController", ["$scope", function($scope) {
 
     }])
