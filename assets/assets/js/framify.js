@@ -5,7 +5,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jsonFormatter', 'chart.js', 'ngAria', 'ngMaterial', 'ngMessages'])
 
 //@ Application running essentials
-.service("app", ['$http', function ($http) {
+.service("app", ['$http', 'remoteAuth', function ($http, remoteAuth) {
     var _this = this;
 
     var app = this;
@@ -24,20 +24,13 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     this.port = url[0].split(':')[1];
     this.hlink = this.scheme + '//' + this.ip + (this.port != undefined ? ":" + this.port : "");
 
+    //!APPLICATION URL
+    //this.url = "http://41.89.162.4:3000";
+    this.url = this.hlink;
+
     var hlink = this.hlink;
 
     this.nav = [];
-
-    // //@ FETCH THE PRE-DEFINED APPLICATION URL
-    // $http.get('config/app-routes.json')
-    // .then(function(response) {
-    //     // console.dir(response)
-    //     if (response.status == 200) {
-    //         this.url = response.data;
-    //     } else {
-    //         this.notify("Failed to set routes" ,"danger")
-    //     }
-    // });
 
     //@Perform simple redirects
     this.redirect = function (loc) {
@@ -58,10 +51,6 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
         obj[key] = val;
         return obj;
     };
-
-    //!APPLICATION URL
-    //this.url = "http://41.89.162.4:3000";
-    this.url = this.hlink;
 
     //* CONDITIONALLY TRANSFORM TO STRING
     this.str = function (obj) {
@@ -196,8 +185,13 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
             }
         };
     };
+    this.make_response = this.makeResponse;
 
     //!DATE FORMATERS
+    //* date object     
+    this.date = function () {
+        return new Date();
+    };
     //* simple date
     this.newDate = function () {
         return new Date().toDateString();
@@ -256,15 +250,18 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
         return $.ajax({
             method: method || "POST",
             url: target,
-            data: data
+            data: data,
+            dataType: 'jsonp',
+            headers: { 'Access-Control-Allow-Origin': "*" }
         });
     };
 
     //!HANDLE JSON REQUESTS 
     this.getJSON = function (target) {
 
-        return $.getJSON(target);
+        return $.getJSON(target.replace(/callback=?/ig, "") + '?callback=?');
     };
+    this.get_json = this.getJSON;
 
     //! HANDLE CORS CALLS WITH jsonp ENABLED
     this.cgi = function (method, url, data) {
@@ -273,7 +270,8 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
             method: method || "GET",
             url: url,
             data: data,
-            dataType: 'jsonp'
+            dataType: 'jsonp',
+            headers: { 'Access-Control-Allow-Origin': "*" }
         });
     };
 
@@ -301,7 +299,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
         UIkit.modal.alert('<font color="#1976D2" style="font-weight:bold;text-transform:uppercase;">' + (title || 'Notice') + '</font>\n            <hr>\n            <center>' + (message || '</center><font color=red font-weight=bold; font-size=2em>Oops!</font><br>False alarm!<center>') + '</center>');
 
         if (cb && typeof cb == "function") {
-            return Promise.resolve(cb()).catch(function (e) {
+            return Promise.resolve(cb(message)).catch(function (e) {
                 console.log("Encountered an error when processing the alert function.");
                 console.dir(e);
             });
@@ -320,7 +318,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
 
             UIkit.modal.confirm('<font color="#1976D2" style="font-weight:bold;text-transform:uppercase;">' + (title || 'Confirmation required.') + '</font>\n                <hr>\n                <center>' + message + '</center>', function () {
                 if (cb && typeof cb == "function") {
-                    resolve(cb());
+                    resolve(cb(message));
                 } else {
                     resolve(true);
                 }
@@ -395,7 +393,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     this.unique = function (array_) {
 
         if (!Array.isArray(array_)) {
-            notify('Could not remove duplicates from a non array object', 'danger');
+            app.notify('Could not remove duplicates from a non array object', 'danger');
             return array_;
         } else {
 
@@ -424,18 +422,71 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     };
 
     this.removeDuplicates = this.unique;
+    this.remove_duplicates = this.removeDuplicates;
 
     //* COUNT OCCURANCES IN AN ARRAY
     this.count = function (searchParam, arrayObject) {
 
-        var cnt = 0;
+        //@ Ensure that the Object to be searched is an array
+        if (Array.isArray(arrayObject)) {
 
-        for (var v in arrayObject) {
-            if (searchParam === arrayObject[v]) {
-                cnt += 1;
+            //@ Handle Multiple Item Searches
+            if (Array.isArray(searchParam)) {
+
+                //@ The Required placeholder objects
+                var i = 0;
+                var cnt = [];
+
+                //@ Loop through each item in the search array
+                for (var searchVal in searchParam) {
+
+                    //@ Instantiate the counter object for this particular Item
+                    cnt[i] = 0;
+
+                    //@ Loop through the array searching for the item
+                    for (var v in arrayObject) {
+
+                        //@ If the item is found, 
+                        if (searchParam[searchVal] === arrayObject[v]) {
+
+                            //@ Increment the number of instances in the 'found' Array
+                            cnt[i] = isNaN(cnt[i]) ? 1 : cnt[i] += 1;
+                        }
+                    }
+
+                    //@ Move to the next Item 
+                    i++;
+                }
+
+                //@ Return the result to the client
+                return cnt;
+
+                //@ Handle Single Item searches
+            } else {
+
+                //@ Instantiate the neede placeholders
+                var cnt = 0;
+
+                //@ Loop through the Array searching for the value
+                for (var v in arrayObject) {
+
+                    //@ When a match is found
+                    if (searchParam === arrayObject[v]) {
+
+                        //@ Increment the number of occurences
+                        cnt += 1;
+                    }
+                }
+
+                //@ Return the 'number of occurences'
+                return cnt;
             }
+
+            //@ Object is not an array
+        } else {
+
+            app.notify("The object to perform an array count on is not an Array.", "danger");
         }
-        return cnt;
     };
 
     //@ POST HTTP DATA HANDLER  
@@ -452,7 +503,9 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
 
         return new Promise(function (resolve, reject) {
 
-            $http.get(destination, data).success(resolve).error(reject);
+            $http.get(destination, {
+                params: data
+            }).success(resolve).error(reject);
         });
     };
 
@@ -465,21 +518,26 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
         });
     };
 
-    //@ JSONP HTTP DATA HANDLER 
-    this.jsonp = function (destination, data) {
-
-        return new Promise(function (resolve, reject) {
-
-            $http.jsonp(destination, data).success(resolve).error(reject);
-        });
-    };
-
     //@ DELETE HTTP DATA HANDLER 
     this.delete = function (destination, data) {
 
         return new Promise(function (resolve, reject) {
 
-            $http.delete(destination, data).success(resolve).error(reject);
+            $http.delete(destination, {
+                params: data
+            }).success(resolve).error(reject);
+        });
+    };
+
+    //Handle background calls to the web server for database integration
+    this.db = function (data, destination) {
+
+        return new Promise(function (resolve, reject) {
+
+            destination = destination ? destination : remoteAuth.url + '/php';
+            $http.get(destination, {
+                params: data
+            }).success(resolve).error(reject);
         });
     };
 
@@ -489,59 +547,137 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
         response = response.response ? response : response.data;
 
         if (response.response == 200) {
-            app.alert("<font color=green>Done</font>", response.data.message);
+            app.alert("<font color=green>Done</font>", app.str(response.data.message));
         } else {
-            app.alert("<font color=red>Failed</font>", response.data.message);
+            app.alert('<font color=red>Failed</font> ( ' + response.response + ' Error )', app.str(response.data.message));
         }
     };
+
+    //@ Generic Process Remote Event Handler
+    this.remote_handler = function (response) {
+
+        app.alert("<font color=blue>Data Response</font>", app.str(app.str(response)));
+    };
+    this.remoteHandler = this.remote_handler;
 }])
 
 //@ The BASIC sms sending application service
-.service("sms", ['app', function (app) {
+.service("sms", ['app', 'remoteAuth', function (app, remoteAuth) {
     var _this2 = this;
 
     /**
-     * This angular service allows for you to easily send SMS messages conveniently using bixbyte's default SMS server
+     * This angular service allows for you to easily send SMS messages conveniently using bixbyte's default SMS gateway platform
      * 
      * It allows the use of your *Framify SMS* android phone application to send simple SMS messages. 
      * 
      * You can easily extend it as you will since the socket connection to the server can be hooked to as "sms.socket"
      */
 
-    //@ BASIC APPLICATION INITIALIZATION
-    this.server = {};
-    this.server.host = '41.89.162.252:3000';
-    this.socket = io.connect('' + this.server.host);
+    //@ SMS BASIC APPLICATION INITIALIZATION
+
+    //@ Create a locally accessible copy of the 'sms' service
+    var sms = this;
+
+    //@ Definition of the socket object
+    this.socket;
     var socket = this.socket;
+
+    //@ The socket connection initiator object
+    this.start = function (framify_sms_server_url) {
+
+        socket = io.connect(framify_sms_server_url || remoteAuth.url);
+
+        socket.on("connect", function () {
+            console.log("Successfully established a connection to the framify SMS gateway");
+        });
+
+        socket.on("disconnect", function () {
+            console.log("Dropped the framify SMS gateway connection.");
+        });
+
+        socket.on("reconnect", function () {
+            console.log("Re-established a connection to the SMS gateway.");
+        });
+
+        return Promise.resolve(app.make_response(200, "Starting the SMS gateway")).catch(function (e) {
+            console.log("There was a problem when starting the SMS relay service.");
+            console.dir(e);
+        });
+    };
+
+    this.stop = function () {
+
+        //@ Disconnect any existing conections
+        if (socket) {
+
+            socket.disconnect();
+            console.log("Terminated all existing SMS gateway connections.");
+        }
+
+        //@ Nullify the existing object
+        socket = undefined;
+
+        return Promise.resolve(app.make_response(200, "Stoping the SMS gateway")).catch(function (e) {
+            console.log("There was a problem when starting the SMS relay service");
+            console.dir(e);
+        });
+    };
 
     //@ SEND EXPRESS SMS'
     this.SMS = function (smsData) {
-        socket.emit("sendSMS", smsData);
-        return Promise.resolve(true).catch(function (e) {
-            console.log("Encountered an error when processing the sms function.");
-            console.dir(e);
-        });
+
+        //@ Ensure that the SMS service provision gateway is set
+        if (socket) {
+
+            socket.emit("sendSMS", smsData);
+            return Promise.resolve(true).catch(function (e) {
+                console.log("Encountered an error when processing the sms function.");
+                console.dir(e);
+            });
+
+            //@ Ask the user to initialize the sms service
+        } else {
+
+            app.alert("<font  color=red>SMS SERVICE NOT STARTED</font>", "Framify failed to execute an SMS related command.<br>Reason: <code>The SMS service provider has not been defined.</code>");
+            return Promise.reject(false).catch(function (e) {
+                console.log("Encountered an error when processing the sms function.");
+                console.dir(e);
+            });
+        }
     };
 
     //@ SEND A SINGLE SMS
     this.oneSMS = function (tel, mess, apiKey) {
 
-        var obj;
-        if (Array.isArray(tel)) {
-            obj = tel;
-        } else {
-            obj = {
-                telephone: tel,
-                message: mess,
-                password: apiKey
-            };
-        }
+        //@ Ensure that the SMS service provision gateway is set
+        if (socket) {
 
-        socket.emit("sendSMS", obj);
-        return Promise.resolve(true).catch(function (e) {
-            console.log("Encountered an error when processing the sendsms function.");
-            console.dir(e);
-        });
+            var obj;
+            if (Array.isArray(tel)) {
+                obj = tel;
+            } else {
+                obj = {
+                    telephone: tel,
+                    message: mess,
+                    password: apiKey
+                };
+            }
+
+            socket.emit("sendSMS", obj);
+            return Promise.resolve(app.make_response(200, "Queued the SMS for sending")).catch(function (e) {
+                console.log("Encountered an error when processing the sendsms function.");
+                console.dir(e);
+            });
+
+            //@ Ask the user to initialize the sms service
+        } else {
+
+            app.alert("<font  color=red>SMS SERVICE NOT STARTED</font>", "Framify failed to execute an SMS related command.<br>Reason: <code>The SMS service provider has not been defined.</code>");
+            return Promise.reject(false).catch(function (e) {
+                console.log("Encountered an error when processing the sms function.");
+                console.dir(e);
+            });
+        }
     };
 
     //@ SEND BULK SMS MESSAGES
@@ -549,33 +685,45 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
 
         return new Promise(function (resolve, reject) {
 
-            var obj = [];
+            //@ Ensure that the SMS service provision gateway is set
+            if (socket) {
+                (function () {
 
-            //* Ensure that the API key has been set
-            if (!apiKey) {
-                app.alert("<font style='weight:bold;color:red;'>ERROR</font>", '<center>Failed to instantiate the SMS sending service before api Key definition.</center>');
-            } else if (Array.isArray(contacts)) {
+                    var obj = [];
 
-                //* handle an array of contacts
-                contacts.forEach(function (element) {
+                    //* Ensure that the API key has been set
+                    if (!apiKey) {
+                        app.alert("<font style='weight:bold;color:red;'>ERROR</font>", '<center>Failed to instantiate the SMS sending service before api Key definition.</center>');
+                    } else if (Array.isArray(contacts)) {
 
-                    if (app.isTelephone(element)) {
+                        //* handle an array of contacts
+                        contacts.forEach(function (element) {
 
-                        obj.push({
-                            telephone: element,
-                            message: data,
-                            apiKey: apiKey
-                        });
+                            if (app.isTelephone(element)) {
+
+                                obj.push({
+                                    telephone: element,
+                                    message: data,
+                                    apiKey: apiKey
+                                });
+                            } else {
+
+                                app.notify('<center>Could not send an SMS message to the invalid number ' + element + '.</center>', 'danger');
+                            }
+                        }, _this2);
+
+                        socket.emit("sendSMS", obj);
+                        resolve(app.make_response(200, "Queued the messages for sending."));
                     } else {
-
-                        app.alert("<font style='weight:bold;color:red;'>Invalid telephone number encountered</font>", '<center>Could not send an SMS message to the invalid number ' + element + '.</center>');
+                        app.notify('<font style="weight:bold;color:white;">Bulk SMS error.</font><br><center>You can only use the bulk SMS service with an array of telephone contacts</center>', 'danger');
                     }
-                }, _this2);
 
-                socket.emit("sendSMS", obj);
-                resolve(true);
+                    //@ Ask the user to initialize the sms service
+                })();
             } else {
-                app.alert("<font style='weight:bold;color:red;'>Bulk SMS error.</font>", '<center>You can only use the bulk SMS service with an array of telephone contacts</center>');
+
+                app.alert("<font  color=red>SMS SERVICE NOT STARTED</font>", "Framify failed to execute an SMS related command.<br>Reason: <code>The SMS service provider has not been defined.</code>");
+                reject(app.make_response(500, "The SMS service is not started."));
             }
         });
     };
@@ -755,7 +903,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
             r_auth.SetAuth(undefined).then(resolve);
         });
     };
-}]).run(["app", "cgi", "$rootScope", "$state", "$localStorage", "sms", "auth", "remoteAuth", function (app, cgi, $rootScope, $state, $localStorage, sms, auth, remoteAuth) {
+}]).run(["app", "cgi", "$rootScope", "$state", "$localStorage", "sms", "auth", "remoteAuth", "$http", function (app, cgi, $rootScope, $state, $localStorage, sms, auth, remoteAuth, $http) {
 
     //! INJECT THE LOCATION SOURCE TO THE ROOT SCOPE
     $rootScope.location = $state;
@@ -822,6 +970,11 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
         $rootScope.frame.changeAdmin(false);
         window.location = "/#/";
     };
+
+    //@ SET THE DEFAULT HTTP AUTHORIZATION HEADERS WHERE NEED BE
+    if ($localStorage.framify_user) {
+        $http.defaults.headers.common.Authorization = $localStorage.framify_user.token;
+    }
 }])
 
 //@ The main controller
@@ -1103,7 +1256,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     $scope.fetch = function (table, data, cryptFields, cb) {
 
         if (Array.isArray(table)) {
-            var _ret = function () {
+            var _ret2 = function () {
 
                 var promiseArr = new Array();
 
@@ -1122,7 +1275,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
                 };
             }();
 
-            if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
+            if ((typeof _ret2 === 'undefined' ? 'undefined' : _typeof(_ret2)) === "object") return _ret2.v;
         } else {
             return Promise.resolve(do_fetch(table, data, cryptFields)).catch(function (e) {
                 console.log("Encountered an error when processing the fetch function.");

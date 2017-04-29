@@ -191,7 +191,7 @@ app.route("/mail")
     .then(res.send)
     .catch(res.status(500).json);
 
-})
+});
 
 
 /**

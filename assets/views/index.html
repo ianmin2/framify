@@ -17,11 +17,15 @@
         It depends on <code>ui.router ,framify-paginate ,ngStorage ,jsonForatter ,chart.js ,ngAria ,ngMaterial and ngMessages</code> all of which can be found in the <code>framify_dependencies.js</code> or <code>framify_bundled.js</code> files of the <code>framify.js</code> package.
     </div>
 
-    <!--App Service-->
+<!-- SO - APP SERVICE -->
+<div ng-if="false">
+
+     <!--App Service-->
     <hr>
     <div class="section">
         <u><h3>The <i style="color:red;">app</i> service</h3></u>
     </div>
+
 
     <!--scheme-->
     <hr> 
@@ -76,7 +80,7 @@
         </u>
         This is a reference to the application's main navigation object.
         <pre style="max-width:300px;">&#123; &#123; app.nav &#125; &#125;</pre>
-        <br>Currently <code>{{app.nav}}</code>
+        <br>Currently <json-formatter open=0 json="app.nav"></json-formatter>
     </div>
 
     <!--redirect-->
@@ -90,6 +94,7 @@
         This performs a plain http redirect by updating the global <code>window.location</code> reference.
         <pre style="max-width:300px;">&#123; &#123; app.redirect( http_path ) &#125; &#125;</pre>
         <br>Example: <code>app.redirect('https://google.com')</code> will redirect you to google's homepage at <i>https://google.com</i>.
+        <br><button class="md-btn md-btn-primary" ng-click="app.redirect('https://google.com')">Redirect to Google</button>
     </div>
 
    <!--setVar-->
@@ -105,7 +110,7 @@
         With an object <code> var people = {} </code>
         <br> To set add a new value 'John' with the value <code>{ "name": "John Doe", "age":20 }</code>
         ,Run <pre style="max-width:600px;">&#123; &#123; people = app.setVar(people, 'John', { "name": "John Doe", "age":20 } ) &#125; &#125;</pre>
-        Giving the resultant object <pre style="max-width:600px;"> <json-formatter ng-if="data.sample_setVar" json="data.sample_setVar" open=1></json-formatter> </pre>
+        Giving the resultant object <pre style="max-width:600px;"> <json-formatter open=0 ng-if="data.sample_setVar" json="data.sample_setVar" ></json-formatter> </pre>
         <span hidden> {{ data.sample_setVar =  app.setVar(people, 'John', { "name": "John Doe", "age":20 } ) }} </span>
         
     </div>
@@ -135,7 +140,7 @@
         Transforms a viable string into an accessible JSON object.
         <br>To transform the string <code>'{"name":{"first":"John","last":"Doe"},"age":1000}'</code>, run
         <pre style="max-width:600px;">&#123; &#123; app.json('{"name":{"first":"John","last":"Doe"},"age":1000}') &#125; &#125;</pre>
-        <br>which outputs <pre style="max-width:600px;"> <json-formatter ng-if="data.sample_json" json="data.sample_json" open=1></json-formatter> </pre>
+        <br>which outputs <pre style="max-width:600px;"> <json-formatter  open=0 ng-if="data.sample_json" json="data.sample_json"></json-formatter> </pre>
         <span hidden> {{ data.sample_json =  app.json('{"name":{"first":"John","last":"Doe"},"age":1000}') }} </span>
     </div>
 
@@ -206,7 +211,7 @@
         Outputs an Array containing all of the provided objects' <b>first level</b> keys.
         <br>To <b>obtain the keys </b> of the object <code>{ name: { first: 'John', last: 'Doe' }, age: 1000 })</code>, run
         <pre style="max-width:600px;">&#123; &#123; app.keys( { name: { first: 'John', last: 'Doe' }, age: 1000 }) ) &#125; &#125;</pre>
-         <br>which outputs <pre style="max-width:600px;"> <json-formatter ng-if="data.sample_keys" json="data.sample_keys" open=1></json-formatter> </pre>
+         <br>which outputs <pre style="max-width:600px;"> <json-formatter open=0 ng-if="data.sample_keys" json="data.sample_keys" ></json-formatter> </pre>
         <span hidden> {{ data.sample_keys =  app.keys({ name: { first: 'John', last: 'Doe' }, age: 1000 }) }} </span>
     </div>
 
@@ -221,7 +226,7 @@
         Outputs an Array containing all of the provided objects' <b>first level</b> values.
         <br>To <b>obtain the values </b> of the object <code>{ name: { first: 'John', last: 'Doe' }, age: 1000 }</code>, run
         <pre style="max-width:600px;">&#123; &#123; app.vals( { name: { first: 'John', last: 'Doe' }, age: 1000 }) ) &#125; &#125;</pre>
-         <br>which outputs <pre style="max-width:600px;"> <json-formatter ng-if="data.sample_vals" json="data.sample_vals" open=1></json-formatter> </pre>
+         <br>which outputs <pre style="max-width:600px;"> <json-formatter open=0 ng-if="data.sample_vals" json="data.sample_vals"></json-formatter> </pre>
         <span hidden> {{ data.sample_vals =  app.vals({ name: { first: 'John', last: 'Doe' }, age: 1000 }) }} </span>
     </div>
 
@@ -300,364 +305,690 @@
         <br>Currently <json-formatter json="app.countries" open="0"></json-formatter>
     </div>
 
-    <pre style="background-color:black;color:white;">
-
-//@ Application running essentials
-.service("app"
-,['$http'
-,function($http) {
-
-        var app = this;
-
-      
-
-        
-
-        this.countries = [{ name: "Afghanistan", value: "1" }, { name: "Albania", value: "2" }, { name: "Algeria", value: "3" }, { name: "American Samoa", value: "4" }, { name: "Andorra", value: "5" }, { name: "Angola", value: "6" }, { name: "Anguilla", value: "7" }, { name: "Antarctica", value: "8" }, { name: "Antigua and Barbuda", value: "9" }, { name: "Argentina", value: "10" }, { name: "Armenia", value: "11" }, { name: "Aruba", value: "12" }, { name: "Australia", value: "13" }, { name: "Austria", value: "14" }, { name: "Azerbaijan", value: "15" }, { name: "Bahamas", value: "16" }, { name: "Bahrain", value: "17" }, { name: "Bangladesh", value: "18" }, { name: "Barbados", value: "19" }, { name: "Belarus", value: "20" }, { name: "Belgium", value: "21" }, { name: "Belize", value: "22" }, { name: "Benin", value: "23" }, { name: "Bermuda", value: "24" }, { name: "Bhutan", value: "25" }, { name: "Bolivia", value: "26" }, { name: "Bosnia and Herzegowina", value: "27" }, { name: "Botswana", value: "28" }, { name: "Bouvet Island", value: "29" }, { name: "Brazil", value: "30" }, { name: "British Indian Ocean Territory", value: "31" }, { name: "Brunei Darussalam", value: "32" }, { name: "Bulgaria", value: "33" }, { name: "Burkina Faso", value: "34" }, { name: "Burundi", value: "35" }, { name: "Cambodia", value: "36" }, { name: "Cameroon", value: "37" }, { name: "Canada", value: "38" }, { name: "Cape Verde", value: "39" }, { name: "Cayman Islands", value: "40" }, { name: "Central African Republic", value: "41" }, { name: "Chad", value: "42" }, { name: "Chile", value: "43" }, { name: "China", value: "44" }, { name: "Christmas Island", value: "45" }, { name: "Cocos (Keeling) Islands", value: "46" }, { name: "Colombia", value: "47" }, { name: "Comoros", value: "48" }, { name: "Congo", value: "49" }, { name: "Congo, the Democratic Republic of the", value: "50" }, { name: "Cook Islands", value: "51" }, { name: "Costa Rica", value: "52" }, { name: "Cote d\'Ivoire", value: "53" }, { name: "Croatia (Hrvatska)", value: "54" }, { name: "Cuba", value: "55" }, { name: "Cyprus", value: "56" }, { name: "Czech Republic", value: "57" }, { name: "Denmark", value: "58" }, { name: "Djibouti", value: "59" }, { name: "Dominica", value: "60" }, { name: "Dominican Republic", value: "61" }, { name: "East Timor", value: "62" }, { name: "Ecuador", value: "63" }, { name: "Egypt", value: "64" }, { name: "El Salvador", value: "65" }, { name: "Equatorial Guinea", value: "66" }, { name: "Eritrea", value: "67" }, { name: "Estonia", value: "68" }, { name: "Ethiopia", value: "69" }, { name: "Falkland Islands (Malvinas)", value: "70" }, { name: "Faroe Islands", value: "71" }, { name: "Fiji", value: "72" }, { name: "Finland", value: "73" }, { name: "France", value: "74" }, { name: "France Metropolitan", value: "75" }, { name: "French Guiana", value: "76" }, { name: "French Polynesia", value: "77" }, { name: "French Southern Territories", value: "78" }, { name: "Gabon", value: "79" }, { name: "Gambia", value: "80" }, { name: "Georgia", value: "81" }, { name: "Germany", value: "82" }, { name: "Ghana", value: "83" }, { name: "Gibraltar", value: "84" }, { name: "Greece", value: "85" }, { name: "Greenland", value: "86" }, { name: "Grenada", value: "87" }, { name: "Guadeloupe", value: "88" }, { name: "Guam", value: "89" }, { name: "Guatemala", value: "90" }, { name: "Guinea", value: "91" }, { name: "Guinea-Bissau", value: "92" }, { name: "Guyana", value: "93" }, { name: "Haiti", value: "94" }, { name: "Heard and Mc Donald Islands", value: "95" }, { name: "Holy See (Vatican City State)", value: "96" }, { name: "Honduras", value: "97" }, { name: "Hong Kong", value: "98" }, { name: "Hungary", value: "99" }, { name: "Iceland", value: "100" }, { name: "India", value: "101" }, { name: "Indonesia", value: "102" }, { name: "Iran (Islamic Republic of)", value: "103" }, { name: "Iraq", value: "104" }, { name: "Ireland", value: "105" }, { name: "Israel", value: "106" }, { name: "Italy", value: "107" }, { name: "Jamaica", value: "108" }, { name: "Japan", value: "109" }, { name: "Jordan", value: "110" }, { name: "Kazakhstan", value: "111" }, { name: "Kenya", value: "112" }, { name: "Kiribati", value: "113" }, { name: "Korea, Democratic People\'s Republic of", value: "114" }, { name: "Korea, Republic of", value: "115" }, { name: "Kuwait", value: "116" }, { name: "Kyrgyzstan", value: "117" }, { name: "Lao, People\'s Democratic Republic", value: "118" }, { name: "Latvia", value: "119" }, { name: "Lebanon", value: "120" }, { name: "Lesotho", value: "121" }, { name: "Liberia", value: "122" }, { name: "Libyan Arab Jamahiriya", value: "123" }, { name: "Liechtenstein", value: "124" }, { name: "Lithuania", value: "125" }, { name: "Luxembourg", value: "126" }, { name: "Macau", value: "127" }, { name: "Macedonia, The Former Yugoslav Republic of", value: "128" }, { name: "Madagascar", value: "129" }, { name: "Malawi", value: "130" }, { name: "Malaysia", value: "131" }, { name: "Maldives", value: "132" }, { name: "Mali", value: "133" }, { name: "Malta", value: "134" }, { name: "Marshall Islands", value: "135" }, { name: "Martinique", value: "136" }, { name: "Mauritania", value: "137" }, { name: "Mauritius", value: "138" }, { name: "Mayotte", value: "139" }, { name: "Mexico", value: "140" }, { name: "Micronesia, Federated States of", value: "141" }, { name: "Moldova, Republic of", value: "142" }, { name: "Monaco", value: "143" }, { name: "Mongolia", value: "144" }, { name: "Montserrat", value: "145" }, { name: "Morocco", value: "146" }, { name: "Mozambique", value: "147" }, { name: "Myanmar", value: "148" }, { name: "Namibia", value: "149" }, { name: "Nauru", value: "150" }, { name: "Nepal", value: "151" }, { name: "Netherlands", value: "152" }, { name: "Netherlands Antilles", value: "153" }, { name: "New Caledonia", value: "154" }, { name: "New Zealand", value: "155" }, { name: "Nicaragua", value: "156" }, { name: "Niger", value: "157" }, { name: "Nigeria", value: "158" }, { name: "Niue", value: "159" }, { name: "Norfolk Island", value: "160" }, { name: "Northern Mariana Islands", value: "161" }, { name: "Norway", value: "162" }, { name: "Oman", value: "163" }, { name: "Pakistan", value: "164" }, { name: "Palau", value: "165" }, { name: "Panama", value: "166" }, { name: "Papua New Guinea", value: "167" }, { name: "Paraguay", value: "168" }, { name: "Peru", value: "169" }, { name: "Philippines", value: "170" }, { name: "Pitcairn", value: "171" }, { name: "Poland", value: "172" }, { name: "Portugal", value: "173" }, { name: "Puerto Rico", value: "174" }, { name: "Qatar", value: "175" }, { name: "Reunion", value: "176" }, { name: "Romania", value: "177" }, { name: "Russian Federation", value: "178" }, { name: "Rwanda", value: "179" }, { name: "Saint Kitts and Nevis", value: "180" }, { name: "Saint Lucia", value: "181" }, { name: "Saint Vincent and the Grenadines", value: "182" }, { name: "Samoa", value: "183" }, { name: "San Marino", value: "184" }, { name: "Sao Tome and Principe", value: "185" }, { name: "Saudi Arabia", value: "186" }, { name: "Senegal", value: "187" }, { name: "Seychelles", value: "188" }, { name: "Sierra Leone", value: "189" }, { name: "Singapore", value: "190" }, { name: "Slovakia (Slovak Republic)", value: "191" }, { name: "Slovenia", value: "192" }, { name: "Solomon Islands", value: "193" }, { name: "Somalia", value: "194" }, { name: "South Africa", value: "195" }, { name: "South Georgia and the South Sandwich Islands", value: "196" }, { name: "South Sudan", value: "197" }, { name: "Spain", value: "198" }, { name: "Sri Lanka", value: "199" }, { name: "St. Helena", value: "200" }, { name: "St. Pierre and Miquelon", value: "201" }, { name: "Sudan", value: "202" }, { name: "Suriname", value: "203" }, { name: "Svalbard and Jan Mayen Islands", value: "204" }, { name: "Swaziland", value: "205" }, { name: "Sweden", value: "206" }, { name: "Switzerland", value: "207" }, { name: "Syrian Arab Republic", value: "208" }, { name: "Taiwan, Province of China", value: "209" }, { name: "Tajikistan", value: "210" }, { name: "Tanzania, United Republic of", value: "211" }, { name: "Thailand", value: "212" }, { name: "Togo", value: "213" }, { name: "Tokelau", value: "214" }, { name: "Tonga", value: "215" }, { name: "Trinidad and Tobago", value: "216" }, { name: "Tunisia", value: "217" }, { name: "Turkey", value: "218" }, { name: "Turkmenistan", value: "219" }, { name: "Turks and Caicos Islands", value: "220" }, { name: "Tuvalu", value: "221" }, { name: "Uganda", value: "222" }, { name: "Ukraine", value: "223" }, { name: "United Arab Emirates", value: "224" }, { name: "United Kingdom", value: "225" }, { name: "United States", value: "226" }, { name: "United States Minor Outlying Islands", value: "227" }, { name: "Uruguay", value: "228" }, { name: "Uzbekistan", value: "229" }, { name: "Vanuatu", value: "230" }, { name: "Venezuela", value: "231" }, { name: "Vietnam", value: "232" }, { name: "Virgin Islands (British)", value: "233" }, { name: "Virgin Islands (U.S.)", value: "234" }, { name: "Wallis and Futuna Islands", value: "235" }, { name: "Western Sahara", value: "236" }, { name: "Yemen", value: "237" }, { name: "Yugoslavia", value: "238" }, { name: "Zambia", value: "239" }, { name: "Zimbabwe", value: "240" }];
-
-
-        //! BASIC FRAMIFY FORMAT RESPONSE FORMATTER
-        this.makeResponse = (response ,message ,command) => {
-
-            return {
-                response: response,
-                data: {
-                    message: message,
-                    command: command
-                }
-            };
-
-        };
-
-        //!DATE FORMATERS
-        //* simple date
-        this.newDate        = () => new Date().toDateString();
-        //* isodate
-        this.isoDate        = () => new Date().format('isoDate');
-        //* get the isoDate of the specified date
-        this.getIsoDate     = (d) => new Date(d).format('isoDate');
-        //* get the isoDate of a date object
-        this.toIsoDate      = dObj => dObj.format('isoDate');
-        //* custom datetime
-        this.dateTime       = () => new Date().format('dateTime');
-        //* set the date in the custom datetime format
-        this.getDateTime    = d => new Date(d).format('dateTime');
-        //* Convert a date to the dd-mm-yyyy hh:mm format
-        this.toDateTime     = dObj => dObj.format('dateTime');
-        //* month number
-        this.monthNum       = () => new Date().format('monthNum');
-        //* get month number of the specified date
-        this.getMonthNum    = d => new Date(d).format('monthNum');
-        //* get date objects' month number
-        this.toMonthNum     = dObj => dObj.format('monthNum');
-
-        //* MONTHS ARRAY
-        var $month_array = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        this.month_array = $month_array;
-        this.month_o_array = [
-            { id: 0, name: "January" }
-            ,{ id: 1, name: "February" }
-            ,{ id: 2, name: "March" }
-            ,{ id: 3, name: "April" }
-            ,{ id: 4, name: "May" }
-            ,{ id: 5, name: "June" }
-            ,{ id: 6, name: "July" }
-            ,{ id: 7, name: "August" }
-            ,{ id: 8, name: "September" }
-            ,{ id: 9, name: "October" }
-            ,{ id: 10, name: "November" }
-            ,{ id: 11, name: "December" }
-        ];
-
-        // this.printMonths = () =>  $month_o_array
-        //                     .reduce((mobj,m)=>{
-        //                         mobj[m] = m   
-        //                     },{})
-        //                     .filter(m=>m)
-
-        //! HANDLE APPLICATION SERVICE REQUESTS
-        this.ajax = (method ,target ,data) => {
-
-            return $.ajax({
-                method: method || "POST",
-                url: target,
-                data: data
-            });
-           
-        };
-
-        //!HANDLE JSON REQUESTS 
-        this.getJSON = (target) => {
-
-            return $.getJSON(target);
-
-        };
-
-        //! HANDLE CORS CALLS WITH jsonp ENABLED
-        this.cgi = (method ,url ,data) => {
-
-            return $.ajax({
-                method: method || "GET",
-                url: url,
-                data: data,
-                dataType: 'jsonp',
-            });
-
-        };
-
-        //!HANDLE THE DISPLAY OF DIALOG BOXES
-
-        //* SHOW A "LOADING" ELEMENT
-        this.loadify = (duration, message) => {
-
-            return new Promise( (resolve,reject) => {
-                let modal = UIkit.modal.blockUI('<center><i style="color:blue;" class="fa fa fa-spinner fa-pulse fa-5x fa-fw"></i></center>'+( (message)?`<center><br>${message}</center>`:"" ) );
-                if( duration && !isNaN(duration)){
-                    setTimeout(()=>{
-                         modal.hide();
-                         resolve(true); 
-                    }, duration ) ;
-                }else{
-                    resolve(modal);
-                }
-                
-            });
-
-        };
-        
-        //*GENERATE A CUSTOM ALERT DIALOG
-        this.alert = (title ,message ,cb) => {
-
-            UIkit.modal.alert(`<font color="#1976D2" style="font-weight:bold;text-transform:uppercase;">${title||'Notice'}</font>
-            <hr>
-            <center>${message||'</center><font color=red font-weight=bold; font-size=2em>Oops!</font><br>False alarm!<center>'}</center>`);
-
-            if( cb && typeof(cb) == "function" ){
-                return Promise.resolve(cb())
-                .catch(function(e){
-                   console.log("Encountered an error when processing the alert function.")
-                   console.dir(e)
-               });
-            }else{
-                return Promise.resolve(true)
-                .catch(function(e){
-                   console.log("Encountered an error when processing the alert2 function.")
-                   console.dir(e)
-               });
-            }
-
-        };
-            
-        //*GENERATE A CUSTOM CONFIRM DIALOG
-        this.confirm = ( title ,message ,cb ) => {
-            
-            return new Promise( (resolve) => {
-
-                UIkit.modal.confirm(`<font color="#1976D2" style="font-weight:bold;text-transform:uppercase;">${title||'Confirmation required.'}</font>
-                <hr>
-                <center>${message}</center>`,()=>{
-                    if(cb && typeof(cb) == "function"){
-                        resolve(cb());
-                    }else{
-                        resolve(true);
-                    }
-                });
-
-            });           
-            
-        };    
-            
-        //*GENERATE A CUSTOM PROMPT DIALOG
-        this.prompt = function( title ,label ,placeholder ,cb){
-          
-          return new Promise( (resolve) => {
-
-            UIkit.modal.prompt(`<font color="#1976D2" style="font-weight:bold;text-transform:uppercase;">${title||'Info required'}</font>
-            <hr>
-            ${label||'email'} :`, (placeholder||''), (userValue) => { 
-                if(cb && typeof(cb) == "function"){
-                    resolve(cb(userValue)) 
-                }else{
-                    resolve(userValue);
-                }
-            });
-
-          }); 
-                      
-        };
-
-
-        //!BASIC VALIDATION METHODS
-
-        //*VALIDATE EMAIL ADDRESSES
-        this.isemail = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/;
-        this.isEmail = prospective_email => this.isemail.test(prospective_email);
-
-        //*VALIDATE USERNAMES
-        this.isusername = /^[a-z0-9_-]{4,16}$/;
-        this.isUsername = prospective_username => this.isusername.test(prospective_username);
-
-        //*VALIDATE PASSWORDS
-        this.ispassword = /^[-@./\!\$\%\^|#&,+\w\s]{6,50}$/;
-        this.isPassword = prospective_password => this.ispassword.test(prospective_password);
-
-        //* VALIDATE NUMBERS
-        this.isnumber = /^-{0,1}\d*\.{0,1}\d+$/;
-        this.isNumber = prospective_number => this.isnumber.test(prospective_number);
-
-        //*VALIDATE TELEPHONE NUMBERS
-        this.istelephone = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
-        this.isTelephone = prospective_telephone => this.istelephone.test(prospective_telephone);
-
-        //*VALIDATE DATETIME VALUES IN THE FORMAT  DD-MM-YYYY HH:MM e.g 29-02-2013 22:16
-        this.isdateTime = /^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[012])-(19|20)[0-9]{2} (2[0-3]|[0-1][0-9]):[0-5][0-9]$/;
-        this.isDateTime = prospective_date=>this.isdateTime.test( prospective_date );
-
-        //*VALIDATE WHETHER TWO GIVEN VALUES MATCH
-        this.matches = (val1, val2) => (val1 === val2);
-
-        //*TRANFORM NUMBER TO MONTH
-        this.num2month = (month_number) => (!isNaN(month_number) && (month_number <= 11) )?$month_array[month_number]:"Invalid Month";
-
-        //*REMOVE DUPLICATES FROM ARRAY
-        this.unique = (array_) => {
-
-           if( !Array.isArray(array_) ){
-               notify('Could not remove duplicates from a non array object','danger');
-               return array_;
-           }else{
-
-               //* create a new array
-                var ret_array = new Array();
-
-                //* loop through the entire length of the provided array
-                for (var a = array_.length - 1; a >= 0; a--) {
-                    
-                    //* loop through the array once more (for re-verification)
-                    for (var b = array_.length - 1; b >= 0; b--) {
-                        //* de-populate duplicates in the array
-                        if (array_[a] == array_[b] && a != b) {
-                            delete array_[b];
-                        }
-                    };
-                    
-                    //* store the relevant values
-                    if (array_[a] != undefined){
-                        ret_array.push(array_[a]);
-                    }                    
-
-                };
-                //* return the reversed array (to avoid distortion from the initial)
-                return ret_array.reverse();
-
-           }
-        };
-
-        this.removeDuplicates = this.unique;
-
-        //* COUNT OCCURANCES IN AN ARRAY
-        this.count = (searchParam ,arrayObject) => {
-
-            var cnt = 0;
-
-            for(var v in arrayObject) {
-                if (searchParam === arrayObject[v]) {
-                    cnt += 1;
-                }
-            }
-            return cnt;
-
-        };
-
-
-        //@ POST HTTP DATA HANDLER  
-        this.post   = ( destination, data ) => {
-
-            return new Promise( (resolve,reject) => {
-
-                $http.post(destination,data)
-                .success( resolve )
-                .error( reject )
-
-            });
-
-        };
-
-        //@ GET HTTP DATA HANDLER  
-        this.get   = ( destination, data ) => {
-
-            return new Promise( (resolve,reject) => {
-
-                $http.get(destination,data)
-                .success( resolve )
-                .error( reject )
-
-            });
-
-        };
-
-        //@ PUT HTTP DATA HANDLER 
-        this.put   = ( destination, data ) => {
-
-            return new Promise( (resolve,reject) => {
-
-                $http.put(destination,data)
-                .success( resolve )
-                .error( reject )
-
-            });
-
-        }; 
-
-        //@ JSONP HTTP DATA HANDLER 
-        this.jsonp   = ( destination, data ) => {
-
-            return new Promise( (resolve,reject) => {
-
-                $http.jsonp(destination,data)
-                .success( resolve )
-                .error( reject )
-
-            });
-
-        };
-
-        //@ DELETE HTTP DATA HANDLER 
-        this.delete   = ( destination, data ) => {
-
-            return new Promise( (resolve,reject) => {
-
-                $http.delete(destination,data)
-                .success( resolve )
-                .error( reject )
-
-            });
-
-        };
-
-        //@ Generic Process Event Handler
-        this.handler = function( response ){
-
-            response = ( response.response ) ? response : response.data;
-
-            if(response.response == 200 ){
-                app.alert("<font color=green>Done</font>",response.data.message);
-            }else{
-                app.alert("<font color=red>Failed</font>",response.data.message);
-            }
-
-        };
-
-
-
+    <!--makeResponse-->
+    <hr>
+    <div class="section">   
        
+        <h5 style="color:gray">
+                <u>app.makeResponse</u> / <u> app.make_response</u> <i>(Function (response_code,message,command) )</i>
+        </h5>
+        
+        Outputs a standard framify JSON response object.
+        <br>To give a standard framify <i>Unauthorized</i> response, <code>{ response: 401, data: { message: "Unauthorized", command: "retry" } }</code>, run
+        <pre style="max-width:600px;">&#123; &#123; app.makeResponse(401,'Unauthorized','retry') &#125; &#125;</pre>
+        <br>which outputs <pre style="max-width:600px;"> <json-formatter open=0 ng-if="data.sample_makeresponse" json="data.sample_makeresponse"></json-formatter> </pre>
+        <span hidden> {{ data.sample_makeresponse =  app.makeResponse(401,'Unauthorized','retry') }} </span>
+    </div>
 
-}])
+    <!--date-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u> app.date</u> <i>(Function () )</i>
+        </h5>
+        
+        Outputs the complete current Date Object.
+        <br>To output the <b>current date object</b>, run
+        <pre style="max-width:600px;">&#123; &#123; app.date( ) &#125; &#125;</pre>
+        <br>which outputs <i><code>{{app.date()}}</code></i>.
+    </div>
+
+    <!--newDate-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u> app.newDate</u> <i>(Function () )</i>
+        </h5>
+        
+        Outputs the complete current Date String.
+        <br>To output the <b>current date string</b>, run
+        <pre style="max-width:600px;">&#123; &#123; app.newDate( ) &#125; &#125;</pre>
+        <br>which outputs <i><code>{{app.newDate()}}</code></i>.
+    </div>
+
+    <!--isoDate-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u> app.isoDate</u> <i>(Function () )</i>
+        </h5>
+        
+        Outputs the complete current Date in <i><b>ISO</b></i> format.
+        <br>To output the <b>current date</b>, run
+        <pre style="max-width:600px;">&#123; &#123; app.isoDate( ) &#125; &#125;</pre>
+        <br>which outputs <i><code>{{app.isoDate()}}</code></i>.
+    </div>
+
+    <!--getIsoDate-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u> app.getIsoDate</u>  <i>(Function (date_string) )</i>
+        </h5>
+        
+        Converts a date string to <b><i>ISO</i></b> format.
+        <br>To output the <b>current date</b> <code>{{app.newDate()}}</code> into <i>ISO</i> format, run
+        <pre style="max-width:600px;">&#123; &#123; app.getIsoDate( {{ app.newDate() }}  ) &#125; &#125;</pre>
+        <br>which outputs <i><code>{{app.getIsoDate( app.newDate() )}}</code></i>.
+    </div>
+
+    <!--toIsoDate-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u> app.toIsoDate</u>  <i>(Function (date_object) )</i>
+        </h5>
+        
+        Converts a date object to <b><i>ISO</i></b> format.
+        <br>To output a <b>date object</b> <code>{{app.date()}}</code> into <i>ISO</i> format, run
+        <pre style="max-width:600px;">&#123; &#123; app.toIsoDate( {{app.date()}} ) &#125; &#125;</pre>
+        which outputs <i><code> {{ app.toIsoDate( app.date() ) }} </code></i>
+    </div>
+
+    <!--dateTime-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u> app.dateTime</u> <i>(Function () )</i>
+        </h5>
+        
+        Outputs the complete current Date in <i><b>dd-mm-yyyy hh:mm</b></i> format.
+        <br>To output the <b>current date</b>, run
+        <pre style="max-width:600px;">&#123; &#123; app.dateTime( ) &#125; &#125;</pre>
+        <br>which outputs <i><code>{{app.dateTime()}}</code></i>.
+    </div>
+
+    <!--getDateTime-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u> app.getDateTime</u> <i>(Function (date_string) )</i>
+        </h5>
+        
+        Outputs the provided date String in <i><b>dd-mm-yyyy hh:mm</b></i> format.
+        <br>To output the <b>current date</b> <code>{{app.newDate()}}</code> in <i>date-time</i> format, run
+        <pre style="max-width:600px;">&#123; &#123; app.getDateTime( {{app.newDate()}}  ) &#125; &#125;</pre>
+        <br>which outputs <i><code>{{app.getDateTime( app.newDate() )}}</code></i>.
+    </div>
+
+
+    <!--toDateTime-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u> app.toDateTime</u>  <i>(Function (date_object) )</i>
+        </h5>
+        
+        Converts a date object to <b><i>dd-mm-yyyy hh:mm</i></b> format.
+        <br>To output a <b>date object</b> <code>{{app.date()}}</code> into <i>ISO</i> format, run
+        <pre style="max-width:600px;">&#123; &#123; app.toDateTime( {{app.date()}} ) &#125; &#125;</pre>
+        which outputs <i><code> {{ app.toDateTime( app.date() ) }} </code></i>
+    </div>
+
+    <!--monthNum-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u> app.monthNum</u> <i>(Function () )</i>
+        </h5>
+        
+        Outputs the current month number in.
+        <br>To output the <b>current month number</b>, run
+        <pre style="max-width:600px;">&#123; &#123; app.monthNum( ) &#125; &#125;</pre>
+        <br>which outputs <i><code>{{app.monthNum()}}</code></i>.
+    </div>
+
+    <!--getMonthNum-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u> app.getMonthNum</u> <i>(Function (date_string) )</i>
+        </h5>
+        
+        Outputs the provided date String in <i><b>mm</b></i> format.
+        <br>To output the <b>current date</b> <code>{{app.newDate()}}</code> in <i>month-number</i> format, run
+        <pre style="max-width:600px;">&#123; &#123; app.getMonthNum( {{app.newDate()}}  ) &#125; &#125;</pre>
+        <br>which outputs <i><code>{{app.getMonthNum( app.newDate() )}}</code></i>.
+    </div>
+
+    <!--toMonthNum-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u> app.toMonthNum</u>  <i>(Function (date_object) )</i>
+        </h5>
+        
+        Converts a date object to <b><i>mm</i></b> format.
+        <br>To convert a <b>date object</b> <code>{{app.date()}}</code> into <i>month-number</i> format, run
+        <pre style="max-width:600px;">&#123; &#123; app.toMonthNum( {{app.date()}} ) &#125; &#125;</pre>
+        which outputs <i><code> {{ app.toMonthNum( app.date() ) }} </code></i>
+    </div>
+
+
+     <!--month_array-->
+    <hr>
+    <div class="section">   
+        <u>
+            <h5 style="color:gray">app.month_array</h5>
+        </u>
+        This is a reference to a zero indexed month array.
+        <pre style="max-width:300px;">&#123; &#123; app.month_array &#125; &#125;</pre>
+        <br>Returns <json-formatter open=0 json="app.month_array"></json-formatter>
+    </div>
+
+    <!--month_o_array-->
+    <hr>
+    <div class="section">   
+        <u>
+            <h5 style="color:gray">app.month_o_array</h5>
+        </u>
+        This is a reference to a month object array in the format <code>[{id: "", name: ""}]</code>.
+        <br> <i>It is ideal for use in select lists.</i>
+        <pre style="max-width:300px;">&#123; &#123; app.month_o_array &#125; &#125;</pre>
+        <br>Returns <json-formatter open=0 json="app.month_o_array"></json-formatter>
+    </div>
+
+    <!--ajax-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u>app.ajax</u> / <u>app.cgi</u> <i>(Promise (http_method, target_url, data) )</i>
+        </h5>
+        Returns a jQuery then-able after performing a http request guided by the provided parameters.
+        <br>To make an http <i>POST</i> request to <i><b>{{remoteAuth.url}}/echo</b></i> where the parameters are <i><b>user=framify@bixbyte.io</b></i> and <i><b>status=200</b></i>, run
+        <pre style="max-width:1000px;">&#123; &#123; app.ajax('GET','{{remoteAuth.url}}/echo',{ user: 'framify@bixbyte.io'  , status : 200 }).then(app.handler).catch(app.handler) &#125; &#125;</pre>
+        <button 
+            class="md-btn md-btn-primary" 
+            ng-click="app.ajax('POST',remoteAuth.url+'/echo',{ user: 'framify@bixbyte.io'  , status : 200 }).then(app.handler).catch(app.handler)"
+        >MAKE AN APP.AJAX REQUEST</button>
+    </div>
+
+    <!--getJson-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u>app.getJSON</u> / <u>app.get_json</u> <i>(Promise (http_method, target_url, data) )</i>
+        </h5>
+        Returns a jQuery then-able after performing a http getJSON request guided by the provided parameters.
+        <br>To make a request to github's API at <i><b>https://api.github.com/users/ianmin2</b></i>, run
+        <pre style="max-width:800px;">&#123; &#123; app.getJSON('https://api.github.com/users/ianmin2').then(app.remote_handler).catch(app.remote_handler) &#125; &#125;</pre>
+        <button 
+            class="md-btn md-btn-primary" 
+            ng-click="app.getJSON('https://api.github.com/users/ianmin2').then(app.remote_handler).catch(app.remote_handler)"
+        >MAKE AN APP.GETJSON REQUEST</button>
+    </div>
+
+    <!--loadify-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u>app.loadify</u> <i>(Promise (timeout_duration_in_ms, message) )</i>
+        </h5>
+        Blocks the UI for the specified amount of time while displaying the specified message.
+        <br><code><i>If no timeout duration is specified, </i> the promise returns an instance the resultant<i>modal element</i> ready for a custom <i><b>.hide()</b></i></code>
+        <br>To show the loadify modal saying <i><b>Performing Task</b></i> for  <i><b>4000ms</b></i>, run
+        <pre style="max-width:600px;">&#123; &#123; app.loadify(4000,'Performing task') &#125; &#125;</pre>
+        <button 
+            class="md-btn md-btn-primary" 
+            ng-click="app.loadify(4000,'Performing task')"
+        >LOADIFY</button>
+    </div>
+
+    <!--alert-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u>app.alert</u> <i>(Promise (title, message, callback) )</i>
+        </h5>
+        Displays a custom modal bearing the specified title and message.
+        <br><code><i>If a callback function is passed, the </i>message<i> parameter is </i> passed to it.</code>
+        <br>To show the alert modal titled  <i><b>Sample Alert</b></i> bearing the message  <i><b>You are connected to framify on {{app.hlink}}.</b></i>, run
+        <pre style="max-width:800px;">&#123; &#123; app.alert('Sample Alert','You are connected to framify on {{app.hlink}}') &#125; &#125;</pre>
+        <button 
+            class="md-btn md-btn-primary" 
+            ng-click=" app.alert('Sample Alert','You are connected to framify on ' + app.hlink )"
+        >alert</button>
+    </div>
+
+    <!--confirm-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u>app.confirm</u> <i>(Promise (title, message, callback) )</i>
+        </h5>
+        Displays a custom confirmation modal bearing the specified title and message.
+        <br><code><i>If a callback function is passed, the </i>message<i> parameter is </i> passed to it.</code>
+        <br>To show the confirm modal titled  <i><b>Sample confirm</b></i> bearing the message  <i><b>Make a donation for the Framify Application at {{app.hlink}}.</b></i>, run
+        <pre style="max-width:800px;">&#123; &#123; app.confirm('Sample confirm','Make a donation for the Framify Application at {{app.hlink}}') &#125; &#125;</pre>
+        <button 
+            class="md-btn md-btn-primary" 
+            ng-click=" app.confirm('Sample confirm','Make a donation for the Framify Application at ' + app.hlink )"
+        >confirm</button>
+    </div>
+
+    <!--prompt-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u>app.prompt</u> <i>(Promise (title ,label ,placeholder ,callback) )</i>
+        </h5>
+        Displays a custom promptation modal bearing the specified title and message.
+        <br><code><i>If a callback function is passed, the </i>message<i> parameter is </i> passed to it.</code>
+        <br>To show the prompt modal titled  <i><b>What site are you currently on?</b></i> with the label <i><b>Website:</b></i> and the placeholder <i><b>{{app.hlink}}</b></i>, run
+        <pre style="max-width:800px;">&#123; &#123; app.prompt('What site are you currently on?','Website','{{app.hlink}}') &#125; &#125;</pre>
+        <button 
+            class="md-btn md-btn-primary" 
+            ng-click=" app.prompt('What site are you currently on?','Website:', app.hlink )"
+        >prompt</button>
+    </div>
+
+    <!--isemail-->
+    <hr> 
+    <div class="section">   
+        <u>
+            <h5 style="color:gray">app.isemail</h5>
+        </u>
+        Returns an Ecmascript RegEx pattern to validate email addresses.
+        <pre style="max-width:300px;">&#123; &#123; app.isemail &#125; &#125;</pre>
+        <!--Currently <code>{{ app.isemail }}</code>-->
+    </div>
+
+    <!--isEmail-->
+    <hr> 
+    <div class="section">   
+         <h5 style="color:gray">
+                <u>app.isEmail</u> <i>(Function (text_toValidate) )</i>
+        </h5>
+        Returns a boolean value after evaluating whether or not a given text is a valid email address; Usage:
+        <pre style="max-width:400px;">&#123; &#123; app.isEmail( 'framify@bixbyte.io' ) &#125; &#125;</pre>
+        Returns <code>{{ app.isEmail( 'framify@bixbyte.io' ) }}</code>
+    </div>
+
+    <!--isusername-->
+    <hr> 
+    <div class="section">   
+        <u>
+            <h5 style="color:gray">app.isusername</h5>
+        </u>
+        Returns an Ecmascript RegEx pattern to validate a username.
+        <pre style="max-width:300px;">&#123; &#123; app.isusername &#125; &#125;</pre>
+        <!--Currently <code>{{app.isusername}}</code>-->
+    </div>
+
+    <!--isUsername-->
+    <hr> 
+    <div class="section">   
+         <h5 style="color:gray">
+                <u>app.isUsername</u> <i>(Function (text_toValidate) )</i>
+        </h5>
+        Returns a boolean value after evaluating whether or not a given text is a valid username; Usage:
+        <pre style="max-width:400px;">&#123; &#123; app.isUsername( 'framify' ) &#125; &#125;</pre>
+        Returns <code>{{ app.isUsername( 'framify' ) }}</code>
+    </div>
+
+    <!--ispassword-->
+    <hr> 
+    <div class="section">   
+        <u>
+            <h5 style="color:gray">app.ispassword</h5>
+        </u>
+        Returns an Ecmascript RegEx pattern to validate a password.
+        <pre style="max-width:300px;">&#123; &#123; app.ispassword &#125; &#125;</pre>
+        <!--Currently <code>{{app.ispassword}}</code>-->
+    </div>
+
+    <!--isPassword-->
+    <hr> 
+    <div class="section">   
+         <h5 style="color:gray">
+                <u>app.isPassword</u> <i>(Function (text_toValidate) )</i>
+        </h5>
+        Returns a boolean value after evaluating whether or not a given text is a valid Password; Usage:
+        <pre style="max-width:400px;">&#123; &#123; app.isPassword( 'framify' ) &#125; &#125;</pre>
+        Returns <code>{{ app.isPassword( 'framify' ) }}</code>
+    </div>
+
+    <!--isnumber-->
+    <hr> 
+    <div class="section">   
+        <u>
+            <h5 style="color:gray">app.isnumber</h5>
+        </u>
+        Returns an Ecmascript RegEx pattern to validate a number.
+        <pre style="max-width:300px;">&#123; &#123; app.isnumber &#125; &#125;</pre>
+        <!--Currently <code>{{app.isnumber}}</code>-->
+    </div>
+
+    <!--isNumber-->
+    <hr> 
+    <div class="section">   
+         <h5 style="color:gray">
+                <u>app.isNumber</u> <i>(Function (text_toValidate) )</i>
+        </h5>
+        Returns a boolean value after evaluating whether or not a given text is a valid Number; Usage:
+        <pre style="max-width:400px;">&#123; &#123; app.isNumber( 126157412 ) &#125; &#125;</pre>
+        Returns <code>{{ app.isNumber( 126157412 ) }}</code>
+    </div>
+
+    <!--istelephone-->
+    <hr> 
+    <div class="section">   
+        <u>
+            <h5 style="color:gray">app.istelephone</h5>
+        </u>
+        Returns an Ecmascript RegEx pattern to validate a telephone.
+        <pre style="max-width:300px;">&#123; &#123; app.istelephone &#125; &#125;</pre>
+        <!--Currently <code>{{app.istelephone}}</code>-->
+    </div>
+
+    <!--isTelephone-->
+    <hr> 
+    <div class="section">   
+         <h5 style="color:gray">
+                <u>app.isTelephone</u> <i>(Function (text_toValidate) )</i>
+        </h5>
+        Returns a boolean value after evaluating whether or not a given text is a valid Telephone; Usage:
+        <pre style="max-width:400px;">&#123; &#123; app.isTelephone( '+254701234567' ) &#125; &#125;</pre>
+        Returns <code>{{ app.isTelephone( '+254701234567' ) }}</code>
+    </div>
+
+    <!--isdateTime-->
+    <hr> 
+    <div class="section">   
+        <u>
+            <h5 style="color:gray">app.isdateTime</h5>
+        </u>
+        Returns an Ecmascript RegEx pattern to validate a date-time value in the format <i><b>DD-MM-YYYY HH:MM e.g 29-02-2013 22:16</b></i>.
+        <pre style="max-width:300px;">&#123; &#123; app.isdateTime &#125; &#125;</pre>
+        <!--Currently <code>{{app.isdateTime}}</code>-->
+    </div>
+
+    <!--isDateTime-->
+    <hr> 
+    <div class="section">   
+         <h5 style="color:gray">
+                <u>app.isDateTime</u> <i>(Function (text_toValidate) )</i>
+        </h5>
+        Returns a boolean value after evaluating whether or not a given text is a valid  date-time value in the format <i><b>DD-MM-YYYY HH:MM</b></i>; Usage:
+        <pre style="max-width:400px;">&#123; &#123; app.isDateTime(  {{app.dateTime()}} ) &#125; &#125;</pre>
+        Returns <code>{{ app.isDateTime( app.dateTime() ) }}</code>
+    </div>
+
+    <!--matches-->
+    <hr> 
+    <div class="section">   
+         <h5 style="color:gray">
+                <u>app.matches</u> <i>(Function (value_1,value_2) )</i>
+        </h5>
+        Returns a boolean value after evaluating whether or not the given parameters are identical to each other. Example:
+        <pre style="max-width:600px;">&#123; &#123; app.matches(  {{app.dateTime()}} , {{app.dateTime()}}  ) &#125; &#125;</pre>
+        Returns <code>{{ app.matches( app.dateTime() , app.dateTime() ) }}</code>
+    </div>
+
+    <!--num2month-->
+    <hr> 
+    <div class="section">   
+         <h5 style="color:gray">
+                <u>app.num2month</u> <i>(Function (zero_initiated_month_number) )</i>
+        </h5>
+        Returns the month name when fed the month number. <i><b>Jan = 0 & Dec = 11</b></i> . Example:
+        <pre style="max-width:600px;">&#123; &#123; app.num2month( 1 ) &#125; &#125;</pre>
+        Returns <code>{{ app.num2month( '1' ) }}</code>
+        <br> <i>It is ideal for use with the <b>app.month_array</b> and <b>app.month_o_array</b> objects</i>
+    </div>
+
+        <!--unique-->
+    <hr> 
+    <div class="section">   
+         <h5 style="color:gray">
+                <u>app.unique</u> /<u>app.removeDuplicates</u> / <u>app.remove_duplicates</u> <i>(Function (Array) )</i>
+        </h5>
+        Returns an array with no duplicate values. To remove duplicates in the Array <code> [ "Apple","Apple","Banana","Rice","Beans","Apple","Mango","Beans","Banana" ] </code>,  run:
+        <pre style="max-width:800px;">&#123; &#123; app.unique(  [ "Apple","Apple","Banana","Rice","Beans","Apple","Mango","Beans","Banana" ]  ) &#125; &#125;</pre>
+        Returns <code>{{ app.unique( [ "Apple","Apple","Banana","Rice","Beans","Apple","Mango","Beans","Banana" ] ) }}</code>
+    </div>
+
+    <!--count-->
+    <hr> 
+    <div class="section">   
+         <h5 style="color:gray">
+                <u>app.count</u>  <i>(Function (value_to_search_for, Array_to_search) )</i>
+        </h5>
+        Returns the number of instances of an object/element in an array. E.g 
+        <br>To find the total number of occurences of <b><i>"Apple"</i></b> in <code>[ "Apple","Apple","Banana","Rice","Beans","Apple","Mango","Beans","Banana" ]</code>, run:
+        <pre style="max-width:800px;">&#123; &#123; app.count( "Apple", [ "Apple","Apple","Banana","Rice","Beans","Apple","Mango","Beans","Banana" ]  ) &#125; &#125;</pre>
+        which returns <code>{{app.count( "Apple", [ "Apple","Apple","Banana","Rice","Beans","Apple","Mango","Beans","Banana" ]  )}}</code>
+        <br><h5>Multiple Item search</h5>
+        <br>You can also search for multiple terms provided they are specified as an Array. e.g To find the number of references to <i><b>Apple, Banana, Nanasi</b></i> and <i><b>Beans</b></i> that occurs in the Array <code> [ "Apple","Apple","Banana","Rice","Beans","Apple","Mango","Beans","Banana" ] </code>,  run:
+        <pre style="max-width:1000px;">&#123; &#123; app.count( ["Apple","Banana","Nanasi","Beans"], [ "Apple","Apple","Banana","Rice","Beans","Apple","Mango","Beans","Banana" ]  ) &#125; &#125;</pre>
+        Which returns <code>{{ app.count( ["Apple","Banana","Nanasi","Beans"], [ "Apple","Apple","Banana","Rice","Beans","Apple","Mango","Beans","Banana" ] ) }}</code>
+    </div>
+
+    <!--post-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u>app.post</u> <i>(Promise ( target_url, data) )</i>
+        </h5>
+        Returns a then-able after performing a http request guided by the provided parameters.
+        <br>To make an http <i>POST</i> request to <i><b>{{remoteAuth.url}}/echo</b></i> where the parameters are <i><b>service=demo, time={{app.date()}}</b></i> and <i><b>status=200</b></i>, run
+        <pre style="max-width:1200px;">&#123; &#123; app.post('{{remoteAuth.url}}/echo',{ service: "demo", time : {{app.date()}} , status : 200 }).then(app.handler).catch(app.handler) &#125; &#125;</pre>
+        <button 
+            class="md-btn md-btn-primary" 
+            ng-click=" app.post(remoteAuth.url+'/echo',{ service: 'demo', time : app.date() , status : 200 }).then(app.handler).catch(app.handler)"
+        >APP.post REQUEST</button>
+    </div>
+
+    <!--get-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u>app.get</u> <i>(Promise ( target_url, data) )</i>
+        </h5>
+        Returns a then-able after performing a http request guided by the provided parameters.
+        <br>To make an http <i>get</i> request to <i><b>{{remoteAuth.url}}/echo</b></i> where the parameters are <i><b>q=framify and status=401</b></i>, run
+        <pre style="max-width:1000px;">&#123; &#123; app.get('{{remoteAuth.url}}/echo',{ q: 'framify', status: 401}).then(app.handler).catch(app.handler) &#125; &#125;</pre>
+        <button 
+            class="md-btn md-btn-primary" 
+            ng-click=" app.get(remoteAuth.url+'/echo',{ q: 'framify', status: 401}).then(app.handler).catch(app.handler)"
+        >APP.get REQUEST</button>
+    </div>
+
+    <!--put-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u>app.put</u> <i>(Promise ( target_url, data) )</i>
+        </h5>
+        Returns a then-able after performing a http request guided by the provided parameters.
+        <br>To make an http <i>put</i> request to <i><b>{{remoteAuth.url}}/echo</b></i> where the parameters are <i><b>q=framify and status=401</b></i>, run
+        <pre style="max-width:1000px;">&#123; &#123; app.put('{{remoteAuth.url}}/echo',{ q: 'framify', status: 500}).then(app.handler).catch(app.handler) &#125; &#125;</pre>
+        <button 
+            class="md-btn md-btn-primary" 
+            ng-click=" app.put(remoteAuth.url+'/echo',{ q: 'framify', status: 500}).then(app.handler).catch(app.handler)"
+        >APP.put REQUEST</button>
+    </div>
+
+    <!--delete-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u>app.delete</u> <i>(Promise ( target_url, data) )</i>
+        </h5>
+        Returns a then-able after performing a http request guided by the provided parameters.
+        <br>To make an http <i>delete</i> request to <i><b>{{remoteAuth.url}}/echo</b></i> where the parameters are <i><b>q=framify and status=401</b></i>, run
+        <pre style="max-width:1000px;">&#123; &#123; app.delete('{{remoteAuth.url}}/echo',{ q: 'framify', status: 301}).then(app.handler).catch(app.handler) &#125; &#125;</pre>
+        <button 
+            class="md-btn md-btn-primary" 
+            ng-click=" app.delete(remoteAuth.url+'/echo',{ q: 'framify', status: 301}).then(app.handler).catch(app.handler)"
+        >APP.delete REQUEST</button>
+    </div>
+
+    <!--db-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u>app.db</u> <i>(Promise ( data, target_url) )</i>
+        </h5>
+        Performs a request to interact with the framify-db component.
+        <br>To query the database, ensure that the database is well configured and that you are loged in as a user ; then run
+        <pre style="max-width:1000px;">&#123; &#123; app.db({ command: 'get', table: 'users', specifics: 'id,username' }).then(app.handler).catch(app.handler) &#125; &#125;</pre>
+        <button 
+            class="md-btn md-btn-primary" 
+            ng-click=" app.db({ command: 'get', table: 'users', specifics: 'id,username'' })s.then(app.handler).catch(app.handler)"
+        >APP.db REQUEST</button>
+    </div>
+
+     <!--handler-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u>app.handler</u> <i>(Function( framify_make_response_object) )</i>
+        </h5>
+        Creates an alert based on the http status code in the <i><b>response_object.status</b></i> object value
+        <br>A sample framify formatted response of  <code>{"response":200, "data": { "message": "Successfully set the parameter", "command": "done" } }</code> can be <i>handled</i> by running:
+        <pre style="max-width:1000px;">&#123; &#123; app.handler({"response":200, "data": { "message": "Successfully set the parameter", "command": "done" } }) &#125; &#125;</pre>
+        <button 
+            class="md-btn md-btn-primary" 
+            ng-click="app.handler({'response':200, 'data': { 'message': 'Successfully set the parameter', 'command': 'done' } })"
+        >APP.HANDLER EXAMPLE</button>
+    </div>
+
+<!-- EO - APP SERVICE -->
+</div>
+
+
+    <!--SMS Service-->
+    <hr>
+    <div class="section">
+        <u><h3>The <i style="color:red;">sms</i> service</h3></u>
+    </div>
+
+
+<!-- SO - SMS SERVICE-->
+<div ng-if="false"> 
+
+    <!--start-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u> sms.start</u> <i>(Promise (framify_sms_gateway_server_url) )</i>
+        </h5>
+        
+        Starts the SMS gateway connection
+        <br>To start the SMS gateway connection via the official SMS gateway, run
+        <pre style="max-width:600px;">&#123; &#123; sms.start( 'http://41.89.162.252:3000' ) &#125; &#125;</pre>
+        <br><button class="btn md-btn md-btn-success" ng-click="sms.start( 'http://41.89.162.252:3000' )">START SMS SERVICE</button>
+    </div>
+
+
+    <!--stop-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u> sms.stop</u> <i>(Promise () )</i>
+        </h5>
+        
+        stops the SMS gateway connection
+        <br>To stop the SMS gateway connection to an SMS gateway, run
+        <pre style="max-width:600px;">&#123; &#123; sms.stop( ) &#125; &#125;</pre>
+        <br><button class="btn md-btn md-btn-danger" ng-click="sms.stop( )">STOP SMS SERVICE</button>
+    </div>
+
+    <!--SMS-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u> sms.SMS</u> <i>(Promise ( formatted_sms_object ) )</i>
+        </h5>
+        
+        Sends an already formatted SMS object.
+        <br>The  format required is <code>{ "telephone": "087987986", "message": "Hello Stranger", "password": "Your device's FRAMIFY SMS Authentication Key" }</code>, e.g:
+        <pre style="max-width:600px;">&#123; &#123; sms.SMS( { "telephone": "087987986", "message": "Hello Stranger", "password": "3*5************" } ) &#125; &#125;</pre>
+    </div>
+
+    <!--oneSMS-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u> sms.oneSMS</u> <i>(Promise ( recipient_telephone ,message ,client_authentication_key ) )</i>
+        </h5>
+        
+        Sends a single SMS message.
+        <br>To send an SMS message <i>(after establishing a connection to the gateway)</i>, run:
+        <pre style="max-width:600px;">&#123; &#123; sms.oneSMS(  "087987986", "Hello Stranger", "3*5************"  ) &#125; &#125;</pre>
+    </div>
+
+    <!--bulkSMS-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u> sms.bulkSMS</u> <i>(Promise ( recipients_telephone_array ,message ,client_authentication_key ) )</i>
+        </h5>
+        
+        Sends an SMS String to multiple users.
+        <br>To send an SMS message <i>(after establishing a connection to the gateway)</i>, run:
+        <pre style="max-width:600px;">&#123; &#123; sms.bulkSMS(  ["087987986","0324243686"], "Hello Stranger", "3*5************"  ) &#125; &#125;</pre>
+    </div>
+
+<!-- EO - SMS SERVICE -->
+</div>
+    
+
+
+    <!--db-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u>app.db</u> <i>(Promise ( data, target_url) )</i>
+        </h5>
+        Performs a request to interact with the framify-db component.
+        <br>To query the database, ensure that the database is well configured and that you are loged in as a user ; then run
+        <pre style="max-width:1000px;">&#123; &#123; app.db({ command: 'get', table: 'users', specifics: 'id,username' }).then(app.handler).catch(app.handler) &#125; &#125;</pre>
+        <button 
+            class="md-btn md-btn-primary" 
+            ng-click=" app.db({ 'command': 'get', 'table': 'users', 'specifics': 'id,username' }).then(app.handler).catch(app.handler)"
+        >APP.db REQUEST</button>
+    </div>
+
+
+    <pre style="background-color:black;color:white;">
 
 //@ The BASIC sms sending application service
 .service("sms" 
 ,['app'
 ,function(app) {
+
+        
 
         /**
          * This angular service allows for you to easily send SMS messages conveniently using bixbyte's default SMS server
@@ -670,7 +1001,17 @@
         //@ BASIC APPLICATION INITIALIZATION
         this.server = {};
         this.server.host = '41.89.162.252:3000';
+
+        this.socket;
+
+        this.start_sms = ( framify_sms_server_url ) => {
+
+
+
+        }
+        
         this.socket = io.connect(`${this.server.host}`);
+
         const socket = this.socket;
 
         //@ SEND EXPRESS SMS'
