@@ -56,10 +56,16 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     this.str = function (obj) {
         return (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === "object" ? JSON.stringify(obj) : obj;
     };
+    this.stringify = function (obj) {
+        return Promise.resolve(app.str(obj));
+    };
 
     //* CONDITIONALLY TRANSFORM TO JSON
     this.json = function (obj) {
         return (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === "object" ? obj : JSON.parse(obj);
+    };
+    this.jsonify = function (obj) {
+        return Promise.resolve(app.json(obj));
     };
 
     //* CONDITIONALLY RETURN AN MD5 HASH
@@ -67,14 +73,24 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
         return (/^[a-f0-9]{32}$/gm.test(str) ? str : CryptoJS.MD5(str).toString()
         );
     };
+    this.md5ify = function (str) {
+        return Promise.resolve(app.md5(str));
+    };
 
     //BASE64 ENCODE A STRING
     this.base64_encode = function (string) {
         return CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(string));
     };
+    this.base64_encodify = function (string) {
+        return Promise.resolve(app.base64_encode(string));
+    };
+
     //BASE64 DECODE A STRING
     this.base64_decode = function (encoded) {
         return CryptoJS.enc.Base64.parse(encoded).toString(CryptoJS.enc.Utf8);
+    };
+    this.base64_decodify = function (encoded) {
+        return Promise.resolve(app.base64_decode(encoded));
     };
 
     //@ THE OFFICIAL FILE UPLOAD SERVICE
@@ -192,46 +208,66 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     this.date = function () {
         return new Date();
     };
+
     //* simple date
     this.newDate = function () {
         return new Date().toDateString();
     };
+    this.new_date = this.newDate;
+
     //* isodate
     this.isoDate = function () {
         return new Date().format('isoDate');
     };
+    this.iso_date = this.isoDate;
+
     //* get the isoDate of the specified date
     this.getIsoDate = function (d) {
         return new Date(d).format('isoDate');
     };
+    this.get_iso_date = this.getIsoDate;
+
     //* get the isoDate of a date object
     this.toIsoDate = function (dObj) {
         return dObj.format('isoDate');
     };
+    this.to_iso_date = this.toIsoDate;
+
     //* custom datetime
     this.dateTime = function () {
         return new Date().format('dateTime');
     };
+    this.date_time = this.dateTime;
+
     //* set the date in the custom datetime format
     this.getDateTime = function (d) {
         return new Date(d).format('dateTime');
     };
+    this.get_date_time = this.getDateTime;
+
     //* Convert a date to the dd-mm-yyyy hh:mm format
     this.toDateTime = function (dObj) {
         return dObj.format('dateTime');
     };
+    this.to_date_time = this.toDateTime;
+
     //* month number
     this.monthNum = function () {
         return new Date().format('monthNum');
     };
+    this.month_num = this.monthNum;
+
     //* get month number of the specified date
     this.getMonthNum = function (d) {
         return new Date(d).format('monthNum');
     };
+    this.get_month_num = this.getMonthNum;
+
     //* get date objects' month number
     this.toMonthNum = function (dObj) {
         return dObj.format('monthNum');
     };
+    this.to_month_num = this.toMonthNum;
 
     //* MONTHS ARRAY
     var $month_array = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -529,7 +565,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
         });
     };
 
-    //Handle background calls to the web server for database integration
+    //@ Handle background calls to the web server for database integration
     this.db = function (data, destination) {
 
         return new Promise(function (resolve, reject) {
@@ -538,6 +574,16 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
             $http.get(destination, {
                 params: data
             }).success(resolve).error(reject);
+        });
+    };
+
+    //@ Handle email sending requests
+    this.mail = function (data, destination) {
+
+        return new Promise(function (resolve, reject) {
+
+            destination = destination ? destination : remoteAuth.url + '/sendMail';
+            $http.post(destination, data).success(resolve).error(reject);
         });
     };
 
@@ -768,6 +814,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
             resolve($http.defaults.headers.common.Authorization = AuthToken || $localStorage.framify_user ? $localStorage.framify_user.token : undefined);
         });
     };
+    auth.set_auth = auth.SetAuth;
 
     //@ Perform User Registration
     auth.Register = function (credentials) {
@@ -788,6 +835,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
             });
         });
     };
+    auth.register = auth.Register;
 
     //@ Perform a User Login
     auth.Login = function (credentials) {
@@ -812,6 +860,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
             });
         });
     };
+    auth.login = auth.Login;
 
     //@ Perform A User Logout
     auth.Logout = function () {
@@ -822,6 +871,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
             auth.SetAuth(undefined).then(resolve);
         });
     };
+    auth.logout = auth.Logout;
 }])
 
 //@@ The Remote authentication service
@@ -841,6 +891,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
             resolve(accessUrl);
         });
     };
+    r_auth.set_url = r_auth.setUrl;
 
     r_auth.SetAuth = function (AuthToken) {
 
@@ -849,6 +900,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
             resolve($http.defaults.headers.common.Authorization = AuthToken || $localStorage.framify_user ? $localStorage.framify_user.token : undefined);
         });
     };
+    r_auth.set_auth = r_auth.SetAuth;
 
     //@ Perform User Registration
     r_auth.Register = function (credentials) {
@@ -869,6 +921,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
             });
         });
     };
+    r_auth.register = r_auth.Register;
 
     //@ Perform a User Login
     r_auth.Login = function (credentials) {
@@ -893,6 +946,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
             });
         });
     };
+    r_auth.login = r_auth.Login;
 
     //@ Perform A User Logout
     r_auth.Logout = function () {
@@ -903,6 +957,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
             r_auth.SetAuth(undefined).then(resolve);
         });
     };
+    r_auth.logout = r_auth.Logout;
 }]).run(["app", "cgi", "$rootScope", "$state", "$localStorage", "sms", "auth", "remoteAuth", "$http", function (app, cgi, $rootScope, $state, $localStorage, sms, auth, remoteAuth, $http) {
 
     //! INJECT THE LOCATION SOURCE TO THE ROOT SCOPE
@@ -1023,6 +1078,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
 
         return obj;
     };
+    $rootScope.set_var = $rootScope.setVar;
 
     /**
      * SECURE THE PARENTAL CONTROLLED URLS
@@ -1060,11 +1116,13 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     $scope.appRedirect = function (partialState) {
         $state.go("app." + partialState);
     };
+    $scope.app_redirect = $scope.appRedirect;
 
     //@ Redirect to the specified state
     $scope.goTo = function (completeState) {
         $state.go(completeState);
     };
+    $scope.go_to = $scope.goTo;
 
     //@ UNWANTED ANGULAR JS OBJECTS
     $scope.unwanted = ["$$hashKey", "$index"];
@@ -1078,6 +1136,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
         });
         return insertObj;
     };
+    $scope.remove_unwanted = $scope.removeUnwanted;
 
     //! BASIC ADDITION
     $scope.add = function (table, data, cryptFields, cb) {
@@ -1101,7 +1160,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
             }
 
             //* Perform the actual addition
-            $scope.cgi.ajax($scope.removeUnwanted(data)).then(function (r) {
+            $scope.app.db($scope.removeUnwanted(data)).then(function (r) {
 
                 r = $scope.app.json(r);
 
@@ -1163,7 +1222,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
             }
 
             //* perform the actual update
-            $scope.cgi.ajax($scope.removeUnwanted(data)).then(function (r) {
+            $scope.app.db($scope.removeUnwanted(data)).then(function (r) {
 
                 r = $scope.app.json(r);
 
@@ -1225,7 +1284,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
             }
 
             //* perform the actual data fetching
-            $scope.cgi.ajax($scope.removeUnwanted(data)).then(function (r) {
+            $scope.app.db($scope.removeUnwanted(data)).then(function (r) {
 
                 r = $scope.app.json(r);
 
@@ -1304,7 +1363,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
                 });
             }
 
-            $scope.cgi.ajax($scope.removeUnwanted(data)).then(function (r) {
+            $scope.app.db($scope.removeUnwanted(data)).then(function (r) {
 
                 r = $scope.app.json(r);
 
@@ -1348,7 +1407,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
             $scope.data.login.extras = " AND active is true LIMIT 1";
 
             //* perform the actual login validation
-            $scope.cgi.ajax($scope.removeUnwanted($scope.data.login)).then(function (r) {
+            $scope.app.db($scope.removeUnwanted($scope.data.login)).then(function (r) {
 
                 $scope.data.admin.extras = "";
 
@@ -1408,7 +1467,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
             $scope.data.admin.extras = " AND active is true LIMIT 1";
 
             //* perform the actual login
-            $scope.cgi.ajax($scope.removeUnwanted($scope.data.admin)).then(function (r) {
+            $scope.app.db($scope.removeUnwanted($scope.data.admin)).then(function (r) {
 
                 $scope.data.admin.extras = "";
 
@@ -1554,7 +1613,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
             }
 
             //* Perform the actual custom query
-            $scope.cgi.ajax($scope.removeUnwanted(data)).then(function (r) {
+            $scope.app.db($scope.removeUnwanted(data)).then(function (r) {
 
                 r = $scope.app.json(r);
 
@@ -1607,7 +1666,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
             }
 
             //* perform the actual count
-            $scope.cgi.ajax($scope.removeUnwanted(data)).then(function (r) {
+            $scope.app.db($scope.removeUnwanted(data)).then(function (r) {
 
                 r = $scope.app.json(r);
 
@@ -1666,7 +1725,14 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
      */
     $scope.dPush = function (obj, key, val) {
         obj[key] = val;
+        return obj;
     };
+    $scope.d_push = $scope.dPush;
+
+    $scope.dPushify = function (obj, key, val) {
+        return Promise.resolve($scope.dPush(obj, key, val));
+    };
+    $scope.d_pushify = $scope.dPushify;
 
     /**
      * @ MONTH REGULATION
@@ -1675,6 +1741,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     $scope.setMoin = function (moin) {
         $scope.currmoin = moin;
     };
+    $scope.set_moin = $scope.setMoin;
 
     //@ DELETE UNWANTED PARAMETERS
     $scope.delParams = function (mainObj, removeKeys) {
@@ -1689,6 +1756,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
 
         return mainObj;
     };
+    $scope.del_params = $scope.delParams;
 
     //@ INJECT A STANDARD WHERE "Extras" OBJECT
     // addExtras(data.my_services,{username: storage.user.username},'username:WHERE owner','password,name,email,telephone,account_number,entity,active'),' ' )
@@ -1753,6 +1821,116 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
             resolve(targetObj);
         });
     };
+    $scope.add_extras = function (targetObj, extrasObj, subStrings, removeKeys) {
+
+        return new Promise(function (resolve, reject) {
+
+            targetObj = targetObj || {};
+            extrasObj = extrasObj || {};
+            subStrings = subStrings || ['', ''];
+            removeKeys = removeKeys || ['', ''];
+
+            var target = '';
+            var extras = '';
+
+            var target_k = [],
+                extras_k = [],
+                target_v = [],
+                extras_v = [];
+
+            //@ Ensure that the substitution and removal parameters are arrays 
+            if (!Array.isArray(subStrings) || !Array.isArray(removeKeys)) {
+                reject('This Method only allows substitution and removal Arrays, <br> please consider using the <b><i>addExtras</i></b> object instead.');
+            } else {
+
+                //@ CAPTURE THE REMOVE KEYS
+                var target_removeKeys = removeKeys[0].split(',').filter(function (e) {
+                    return e;
+                });
+                var extras_removeKeys = removeKeys[1].split(',').filter(function (e) {
+                    return e;
+                });
+
+                //@ Remove specified keys from the target object
+                target_removeKeys.forEach(function (e) {
+                    targetObj[e] = null;
+                    delete targetObj[e];
+                });
+
+                //@ Remove specified keys from the extras object
+                extras_removeKeys.forEach(function (e) {
+                    extrasObj[e] = null;
+                    delete extrasObj[e];
+                });
+
+                //@ CAPTURE REPLACE STRINGS
+                var target_subStrings = subStrings[0].split(',');
+                var extras_subStrings = subStrings[1].split(',');
+
+                //@ Specify target key-value pairs
+                target_subStrings.forEach(function (e, i) {
+                    var x = e.split(':');
+                    target_k[i] = x[0];
+                    target_v[i] = x[1];
+                });
+
+                //@ Specify extras key-value pairs
+                extras_subStrings.forEach(function (e, i) {
+                    var x = e.split(':');
+                    extras_k[i] = x[0];
+                    extras_v[i] = x[1];
+                });
+
+                //@ GET THE DEFINED KEYS
+                var extras_keys = Object.keys(extrasObj);
+                var target_keys = Object.keys(targetObj);
+
+                //@ TARGET - REPLACE THE DEFINED WITH THE DESIRED REPLACE KEYS
+                target_k.forEach(function (e, i) {
+
+                    if (target_keys.indexOf(e) != -1) {
+
+                        // console.log( `Renaming the target ${e} to ${target_v[i]}` )
+
+                        targetObj[target_v[i]] = targetObj[e];
+                        targetObj[e] = null;
+                        delete targetObj[e];
+                    }
+                });
+
+                //@ EXTRAS - REPLACE THE DEFINED WITH THE DESIRED REPLACE KEYS
+                extras_k.forEach(function (e, i) {
+
+                    if (extras_keys.indexOf(e) != -1) {
+
+                        // console.log( `Renaming the extras ${e} to ${extras_v[i]}` )
+
+                        extrasObj[extras_v[i]] = extrasObj[e];
+                        extrasObj[e] = null;
+                        delete extrasObj[e];
+                    }
+                });
+
+                //@ SQLify the extras object
+                extras_k = null;
+
+                extras_k = Object.keys(extrasObj);
+                extras_v = null;
+
+                extras_k.forEach(function (e, i) {
+
+                    var fg = !isNaN(extrasObj[e]) ? parseInt(extrasObj[e]) : "'" + extrasObj[e] + "'";
+                    extras += ' ' + e + "=" + fg + " AND";
+                });
+
+                extras_k = null;
+
+                targetObj.extras = extras.replace(/AND+$/, '');
+
+                resolve(targetObj);
+            }
+        });
+    };
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////
     // ADDITIONS ON PROBATION
@@ -1783,7 +1961,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
         data.command = "count";
         data.token = {};
 
-        $scope.cgi.ajax($scope.removeUnwanted(data)).then(function (r) {
+        $scope.app.db($scope.removeUnwanted(data)).then(function (r) {
 
             r = $scope.app.json(r);
 
@@ -1834,6 +2012,8 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
         $state.go("app.login");
     };
     $scope.r_handlers.regSuccess = $scope.handlers.regSuccess;
+    $scope.handlers.reg_success = $scope.handlers.regSuccess;
+    $scope.r_handlers.reg_success = $scope.handlers.regSuccess;
 
     //@ The successful login handler
     $scope.handlers.loginSuccess = function (message) {
@@ -1841,18 +2021,24 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
         $state.go("app.panel");
     };
     $scope.r_handlers.loginSuccess = $scope.handlers.loginSuccess;
+    $scope.handlers.login_success = $scope.handlers.loginSuccess;
+    $scope.r_handlers.login_success = $scope.handlers.loginSuccess;
 
     //@ The registration error handler
     $scope.handlers.regError = function (message) {
         $scope.app.alert("<font color='red'>Signup Error</font>", message);
     };
     $scope.r_handlers.regError = $scope.handlers.regError;
+    $scope.handlers.reg_error = $scope.handlers.regError;
+    $scope.r_handlers.reg_rror = $scope.handlers.regError;
 
     //@ The login error handler
     $scope.handlers.loginError = function (message) {
         $scope.app.alert("<font color='red'>Login Error</font>", message);
     };
     $scope.r_handlers.loginError = $scope.handlers.loginError;
+    $scope.handlers.login_error = $scope.handlers.loginError;
+    $scope.r_handlers.login_error = $scope.handlers.loginError;
 
     //@ The identity check verification handler
     $scope.handlers.identity = function () {
@@ -1937,6 +2123,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
             }
         });
     };
+    $scope.handlers.is_loged_in = $scope.handlers.isLogedIn;
 
     $scope.r_handlers.isLogedIn = function () {
 
@@ -1971,6 +2158,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
             }
         });
     };
+    $scope.r_handlers.is_loged_in = $scope.r_handlers.isLogedIn;
 }]).directive("contenteditable", function () {
     return {
         restrict: "A",

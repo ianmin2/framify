@@ -14,7 +14,7 @@
     <div class="section">       
         The Angular Module to be included in your application is <code>framify.js</code>
         <br>    
-        It depends on <code>ui.router ,framify-paginate ,ngStorage ,jsonForatter ,chart.js ,ngAria ,ngMaterial and ngMessages</code> all of which can be found in the <code>framify_dependencies.js</code> or <code>framify_bundled.js</code> files of the <code>framify.js</code> package.
+        It depends on <code>ui.router ,framify-paginate ,ngStorage ,jsonForatter ,chart.js ,ngAria ,ngMaterial, UIKit, socket.io, jQuery and ngMessages</code> all of which can be found in the <code>framify_dependencies.js</code> or <code>framify_bundled.js</code> files of the <code>framify.js</code> package.
     </div>
 
 <!-- SO - APP SERVICE -->
@@ -23,14 +23,14 @@
      <!--App Service-->
     <hr>
     <div class="section">
-        <u><h3>The <i style="color:red;">app</i> service</h3></u>
+        <u style="color:cornflowerblue !important"><h3>The <i style="color:red;">app</i> service</h3></u>
     </div>
 
 
     <!--scheme-->
     <hr> 
     <div class="section">   
-        <u>
+        <u style="color:cornflowerblue !important">
             <h5 style="color:gray">app.scheme</h5>
         </u>
         This is a reference to access scheme that the application is utilizing.
@@ -41,7 +41,7 @@
     <!--ip-->
     <hr> 
     <div class="section">   
-        <u>
+        <u style="color:cornflowerblue !important">
             <h5 style="color:gray">app.ip</h5>
         </u>
         This is a reference to the ip or server_name that the application is being accesssed on.
@@ -52,7 +52,7 @@
     <!--port-->
     <hr>
     <div class="section">   
-        <u>
+        <u style="color:cornflowerblue !important">
             <h5 style="color:gray">app.port</h5>
         </u>
         This is a reference to the port that the application is being accessed through.
@@ -63,7 +63,7 @@
     <!--hlink/url-->
     <hr>
     <div class="section">   
-        <u>
+        <u style="color:cornflowerblue !important">
             <h5 style="color:gray">app.hlink / app.url </h5>
         </u>
         This is a reference to the root url of the application.
@@ -75,7 +75,7 @@
     <!--nav-->
     <hr>
     <div class="section">   
-        <u>
+        <u style="color:cornflowerblue !important">
             <h5 style="color:gray">app.nav</h5>
         </u>
         This is a reference to the application's main navigation object.
@@ -88,7 +88,7 @@
     <div class="section">   
        
         <h5 style="color:gray">
-                <u> app.redirect</u> <i>(Function (http_location) )</i>
+                <u style="color:cornflowerblue !important"> app.redirect</u> <i style="color:green !important;">(Function (http_location) )</i>
         </h5>
         
         This performs a plain http redirect by updating the global <code>window.location</code> reference.
@@ -102,7 +102,7 @@
     <div class="section">   
        
         <h5 style="color:gray">
-                <u> app.setVar</u> <i>(Function (object_name ,key_to_add ,value_to_add) )</i>
+                <u style="color:cornflowerblue !important"> app.setVar</u> <i style="color:green !important;">(Function (object_name ,key_to_add ,value_to_add) )</i>
         </h5>
         
         Adds a key value pair to a JSON object or returns a new one where none exists.
@@ -120,7 +120,7 @@
     <div class="section">   
        
         <h5 style="color:gray">
-                <u> app.str</u> <i>(Function (json_encoded_object) )</i>
+                <u style="color:cornflowerblue !important"> app.str</u> <i style="color:green !important;">(Function (json_encoded_object) )</i>
         </h5>
         
         Transforms a viable JSON object into a string.
@@ -134,7 +134,7 @@
     <div class="section">   
        
         <h5 style="color:gray">
-                <u> app.json</u> <i>(Function (stringified_json_object) )</i>
+                <u style="color:cornflowerblue !important"> app.json</u> <i style="color:green !important;">(Function (stringified_json_object) )</i>
         </h5>
         
         Transforms a viable string into an accessible JSON object.
@@ -144,12 +144,26 @@
         <span hidden> {{ data.sample_json =  app.json('{"name":{"first":"John","last":"Doe"},"age":1000}') }} </span>
     </div>
 
+    <!--jsonify-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important"> app.jsonify</u> <i style="color:green !important;">(Promise (stringified_json_object) )</i>
+        </h5>
+        
+        Transforms a viable string into an accessible JSON object.
+        <br>To transform the string <code>'{"name":{"first":"John","last":"Doe"},"age":1000}'</code>, run
+        <pre style="max-width:600px;">&#123; &#123; app.jsonify('{"name":{"first":"John","last":"Doe"},"age":1000}') &#125; &#125;</pre>
+        <br>Which returns a then-able object
+    </div>
+
     <!--md5-->
     <hr>
     <div class="section">   
        
         <h5 style="color:gray">
-                <u> app.md5</u> <i>(Function (object_to_encode) )</i>
+                <u style="color:cornflowerblue !important"> app.md5</u> <i style="color:green !important;">(Function (object_to_encode) )</i>
         </h5>
         
         Outputs an MD5 hash of the provided argument.
@@ -158,12 +172,26 @@
         <br>which outputs <i><code>{{app.md5('framify')}}</code></i>.
     </div>
 
+    <!--md5ify-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important"> app.md5ify</u> <i style="color:green !important;">(Promise (object_to_encode) )</i>
+        </h5>
+        
+        Outputs an MD5 hash of the provided argument.
+        <br>To <b>MD5</b> the value <code>'framify'</code>, run
+        <pre style="max-width:600px;">&#123; &#123; app.md5ify( 'framify' ) &#125; &#125;</pre>
+        <br>Which returns a then-able object.
+    </div>
+
     <!--base64_encode-->
     <hr>
     <div class="section">   
        
         <h5 style="color:gray">
-                <u> app.base64_encode</u> <i>(Function (object_to_encode) )</i>
+                <u style="color:cornflowerblue !important"> app.base64_encode</u> <i style="color:green !important;">(Function (object_to_encode) )</i>
         </h5>
         
         Outputs a base64 encoded string of the provided argument.
@@ -172,12 +200,26 @@
         <br>which outputs <i><code>{{app.base64_encode('framify')}}</code></i>.
     </div>
 
+    <!--base64_encodify-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important"> app.base64_encodify</u> <i style="color:green !important;">(Promise (object_to_encode) )</i>
+        </h5>
+        
+        Outputs a base64 encoded string of the provided argument.
+        <br>To <b>base64 encode </b> the value <code>'framify'</code>, run
+        <pre style="max-width:600px;">&#123; &#123; app.base64_encodify( 'framify' ) &#125; &#125;</pre>
+        <br>Which returns a then-able object.
+    </div>
+
     <!--base64_decode-->
     <hr>
     <div class="section">   
        
         <h5 style="color:gray">
-                <u> app.base64_decode</u> <i>(Function (base64_encoded_object_to_decode) )</i>
+                <u style="color:cornflowerblue !important"> app.base64_decode</u> <i style="color:green !important;">(Function (base64_encoded_object_to_decode) )</i>
         </h5>
         
         Outputs a base64 decode string of the provided base64 encoded string.
@@ -186,12 +228,26 @@
         <br>which outputs <i><code>{{app.base64_decode('ZnJhbWlmeQ==')}}</code></i>.
     </div>
 
+    <!--base64_decodify-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important"> app.base64_decodify</u> <i style="color:green !important;">(Promise (base64_encoded_object_to_decode) )</i>
+        </h5>
+        
+        Outputs a base64 decode string of the provided base64 encoded string.
+        <br>To <b>base64 encode </b> the value <code>'ZnJhbWlmeQ=='</code>, run
+        <pre style="max-width:600px;">&#123; &#123; app.base64_decodify( 'ZnJhbWlmeQ==' ) &#125; &#125;</pre>
+        <br>Which returns a then-able object.
+    </div>
+
     <!--upload-->
     <hr>
     <div class="section">   
        
         <h5 style="color:gray">
-                <u> app.upload</u> <i>(Function (file_data,upload_handler_location) )</i>
+                <u style="color:cornflowerblue !important"> app.upload</u> <i style="color:green !important;">(Function (file_data,upload_handler_location) )</i>
         </h5>
         
         This performs a basic file upload using <code>Angular JS' $http.post</code> method.
@@ -205,7 +261,7 @@
     <div class="section">   
        
         <h5 style="color:gray">
-                <u> app.keys</u> <i>(Function (json_object) )</i>
+                <u style="color:cornflowerblue !important"> app.keys</u> <i style="color:green !important;">(Function (json_object) )</i>
         </h5>
         
         Outputs an Array containing all of the provided objects' <b>first level</b> keys.
@@ -220,7 +276,7 @@
     <div class="section">   
        
         <h5 style="color:gray">
-                <u> app.vals</u> <i>(Function (json_object) )</i>
+                <u style="color:cornflowerblue !important"> app.vals</u> <i style="color:green !important;">(Function (json_object) )</i>
         </h5>
         
         Outputs an Array containing all of the provided objects' <b>first level</b> values.
@@ -235,7 +291,7 @@
     <div class="section">   
        
         <h5 style="color:gray">
-                <u> app.parseInt</u> <i>(Function (str_to_parse) )</i>
+                <u style="color:cornflowerblue !important"> app.parseInt</u> <i style="color:green !important;">(Function (str_to_parse) )</i>
         </h5>
         
         <br>Parses a String value into an integer.
@@ -249,7 +305,7 @@
     <div class="section">   
        
         <h5 style="color:gray">
-                <u> app.doNothing</u> <i>(Promise () )</i>
+                <u style="color:cornflowerblue !important"> app.doNothing</u> <i style="color:green !important;">(Promise () )</i>
         </h5>
         
         <br>A placeholder promise to do absolutely nothing. 
@@ -264,7 +320,7 @@
     <div class="section">   
        
         <h5 style="color:gray">
-                <u> app.getNumbers</u> <i>(Function (str_to_analyse) )</i>
+                <u style="color:cornflowerblue !important"> app.getNumbers</u> <i style="color:green !important;">(Function (str_to_analyse) )</i>
         </h5>
         
         <br>Extracts the first consecutive array of number(s) from a String.
@@ -278,7 +334,7 @@
     <div class="section">   
        
         <h5 style="color:gray">
-                <u> app.notify</u> <i>(Promise (message ,bootstrap_class ,timeout, position) )</i>
+                <u style="color:cornflowerblue !important"> app.notify</u> <i style="color:green !important;">(Promise (message ,bootstrap_class ,timeout, position) )</i>
         </h5>
         
         <br>Simple UIKit based notification. 
@@ -297,7 +353,7 @@
     <!--countries-->
     <hr>
     <div class="section">   
-        <u>
+        <u style="color:cornflowerblue !important">
             <h5 style="color:gray">app.countries</h5>
         </u>
         Outputs an Array of alphabetically ordered 240 country objects in the format <code>{ name: "x", value: 'y' }</code> <i>(Ideal for use in select elements)</i>.
@@ -310,7 +366,7 @@
     <div class="section">   
        
         <h5 style="color:gray">
-                <u>app.makeResponse</u> / <u> app.make_response</u> <i>(Function (response_code,message,command) )</i>
+                <u style="color:cornflowerblue !important">app.makeResponse</u> / <u style="color:cornflowerblue !important"> app.make_response</u> <i style="color:green !important;">(Function (response_code,message,command) )</i>
         </h5>
         
         Outputs a standard framify JSON response object.
@@ -325,7 +381,7 @@
     <div class="section">   
        
         <h5 style="color:gray">
-                <u> app.date</u> <i>(Function () )</i>
+                <u style="color:cornflowerblue !important"> app.date</u> <i style="color:green !important;">(Function () )</i>
         </h5>
         
         Outputs the complete current Date Object.
@@ -339,7 +395,7 @@
     <div class="section">   
        
         <h5 style="color:gray">
-                <u> app.newDate</u> <i>(Function () )</i>
+                <u style="color:cornflowerblue !important"> app.newDate</u> / <u style="color:cornflowerblue !important"> app.new_date</u> <i style="color:green !important;">(Function () )</i>
         </h5>
         
         Outputs the complete current Date String.
@@ -353,7 +409,7 @@
     <div class="section">   
        
         <h5 style="color:gray">
-                <u> app.isoDate</u> <i>(Function () )</i>
+                <u style="color:cornflowerblue !important"> app.isoDate</u>  / <u style="color:cornflowerblue !important"> app.iso_date</u> <i style="color:green !important;">(Function () )</i>
         </h5>
         
         Outputs the complete current Date in <i><b>ISO</b></i> format.
@@ -367,7 +423,7 @@
     <div class="section">   
        
         <h5 style="color:gray">
-                <u> app.getIsoDate</u>  <i>(Function (date_string) )</i>
+                <u style="color:cornflowerblue !important"> app.getIsoDate</u> / <u style="color:cornflowerblue !important"> app.get_iso_date</u>   <i>(Function (date_string) )</i>
         </h5>
         
         Converts a date string to <b><i>ISO</i></b> format.
@@ -381,7 +437,7 @@
     <div class="section">   
        
         <h5 style="color:gray">
-                <u> app.toIsoDate</u>  <i>(Function (date_object) )</i>
+                <u style="color:cornflowerblue !important"> app.toIsoDate</u>  / <u style="color:cornflowerblue !important"> app.to_iso_date</u>  <i>(Function (date_object) )</i>
         </h5>
         
         Converts a date object to <b><i>ISO</i></b> format.
@@ -395,7 +451,7 @@
     <div class="section">   
        
         <h5 style="color:gray">
-                <u> app.dateTime</u> <i>(Function () )</i>
+                <u style="color:cornflowerblue !important"> app.dateTime</u> / <u style="color:cornflowerblue !important"> app.date_time</u>  <i>(Function () )</i>
         </h5>
         
         Outputs the complete current Date in <i><b>dd-mm-yyyy hh:mm</b></i> format.
@@ -409,7 +465,7 @@
     <div class="section">   
        
         <h5 style="color:gray">
-                <u> app.getDateTime</u> <i>(Function (date_string) )</i>
+                <u style="color:cornflowerblue !important"> app.getDateTime</u> / <u style="color:cornflowerblue !important"> app.get_date_time</u>  <i>(Function (date_string) )</i>
         </h5>
         
         Outputs the provided date String in <i><b>dd-mm-yyyy hh:mm</b></i> format.
@@ -424,7 +480,7 @@
     <div class="section">   
        
         <h5 style="color:gray">
-                <u> app.toDateTime</u>  <i>(Function (date_object) )</i>
+                <u style="color:cornflowerblue !important"> app.toDateTime</u>  / <u style="color:cornflowerblue !important"> app.to_date_time</u>  <i>(Function (date_object) )</i>
         </h5>
         
         Converts a date object to <b><i>dd-mm-yyyy hh:mm</i></b> format.
@@ -438,7 +494,7 @@
     <div class="section">   
        
         <h5 style="color:gray">
-                <u> app.monthNum</u> <i>(Function () )</i>
+                <u style="color:cornflowerblue !important"> app.monthNum</u>  / <u style="color:cornflowerblue !important"> app.month_num</u>  <i>(Function () )</i>
         </h5>
         
         Outputs the current month number in.
@@ -452,7 +508,7 @@
     <div class="section">   
        
         <h5 style="color:gray">
-                <u> app.getMonthNum</u> <i>(Function (date_string) )</i>
+                <u style="color:cornflowerblue !important"> app.getMonthNum</u>  / <u style="color:cornflowerblue !important"> app.get_month_num</u>  <i>(Function (date_string) )</i>
         </h5>
         
         Outputs the provided date String in <i><b>mm</b></i> format.
@@ -466,7 +522,7 @@
     <div class="section">   
        
         <h5 style="color:gray">
-                <u> app.toMonthNum</u>  <i>(Function (date_object) )</i>
+                <u style="color:cornflowerblue !important"> app.toMonthNum</u>  / <u style="color:cornflowerblue !important"> app.to_month_num</u>  <i>(Function (date_object) )</i>
         </h5>
         
         Converts a date object to <b><i>mm</i></b> format.
@@ -479,7 +535,7 @@
      <!--month_array-->
     <hr>
     <div class="section">   
-        <u>
+        <u style="color:cornflowerblue !important">
             <h5 style="color:gray">app.month_array</h5>
         </u>
         This is a reference to a zero indexed month array.
@@ -490,7 +546,7 @@
     <!--month_o_array-->
     <hr>
     <div class="section">   
-        <u>
+        <u style="color:cornflowerblue !important">
             <h5 style="color:gray">app.month_o_array</h5>
         </u>
         This is a reference to a month object array in the format <code>[{id: "", name: ""}]</code>.
@@ -504,7 +560,7 @@
     <div class="section">   
        
         <h5 style="color:gray">
-                <u>app.ajax</u> / <u>app.cgi</u> <i>(Promise (http_method, target_url, data) )</i>
+                <u style="color:cornflowerblue !important">app.ajax</u> / <u style="color:cornflowerblue !important">app.cgi</u> <i style="color:green !important;">(Promise (http_method, target_url, data) )</i>
         </h5>
         Returns a jQuery then-able after performing a http request guided by the provided parameters.
         <br>To make an http <i>POST</i> request to <i><b>{{remoteAuth.url}}/echo</b></i> where the parameters are <i><b>user=framify@bixbyte.io</b></i> and <i><b>status=200</b></i>, run
@@ -520,7 +576,7 @@
     <div class="section">   
        
         <h5 style="color:gray">
-                <u>app.getJSON</u> / <u>app.get_json</u> <i>(Promise (http_method, target_url, data) )</i>
+                <u style="color:cornflowerblue !important">app.getJSON</u> / <u style="color:cornflowerblue !important">app.get_json</u> <i style="color:green !important;">(Promise (http_method, target_url, data) )</i>
         </h5>
         Returns a jQuery then-able after performing a http getJSON request guided by the provided parameters.
         <br>To make a request to github's API at <i><b>https://api.github.com/users/ianmin2</b></i>, run
@@ -536,7 +592,7 @@
     <div class="section">   
        
         <h5 style="color:gray">
-                <u>app.loadify</u> <i>(Promise (timeout_duration_in_ms, message) )</i>
+                <u style="color:cornflowerblue !important">app.loadify</u> <i style="color:green !important;">(Promise (timeout_duration_in_ms, message) )</i>
         </h5>
         Blocks the UI for the specified amount of time while displaying the specified message.
         <br><code><i>If no timeout duration is specified, </i> the promise returns an instance the resultant<i>modal element</i> ready for a custom <i><b>.hide()</b></i></code>
@@ -553,7 +609,7 @@
     <div class="section">   
        
         <h5 style="color:gray">
-                <u>app.alert</u> <i>(Promise (title, message, callback) )</i>
+                <u style="color:cornflowerblue !important">app.alert</u> <i style="color:green !important;">(Promise (title, message, callback) )</i>
         </h5>
         Displays a custom modal bearing the specified title and message.
         <br><code><i>If a callback function is passed, the </i>message<i> parameter is </i> passed to it.</code>
@@ -570,7 +626,7 @@
     <div class="section">   
        
         <h5 style="color:gray">
-                <u>app.confirm</u> <i>(Promise (title, message, callback) )</i>
+                <u style="color:cornflowerblue !important">app.confirm</u> <i style="color:green !important;">(Promise (title, message, callback) )</i>
         </h5>
         Displays a custom confirmation modal bearing the specified title and message.
         <br><code><i>If a callback function is passed, the </i>message<i> parameter is </i> passed to it.</code>
@@ -587,7 +643,7 @@
     <div class="section">   
        
         <h5 style="color:gray">
-                <u>app.prompt</u> <i>(Promise (title ,label ,placeholder ,callback) )</i>
+                <u style="color:cornflowerblue !important">app.prompt</u> <i style="color:green !important;">(Promise (title ,label ,placeholder ,callback) )</i>
         </h5>
         Displays a custom promptation modal bearing the specified title and message.
         <br><code><i>If a callback function is passed, the </i>message<i> parameter is </i> passed to it.</code>
@@ -602,7 +658,7 @@
     <!--isemail-->
     <hr> 
     <div class="section">   
-        <u>
+        <u style="color:cornflowerblue !important">
             <h5 style="color:gray">app.isemail</h5>
         </u>
         Returns an Ecmascript RegEx pattern to validate email addresses.
@@ -614,7 +670,7 @@
     <hr> 
     <div class="section">   
          <h5 style="color:gray">
-                <u>app.isEmail</u> <i>(Function (text_toValidate) )</i>
+                <u style="color:cornflowerblue !important">app.isEmail</u> <i style="color:green !important;">(Function (text_toValidate) )</i>
         </h5>
         Returns a boolean value after evaluating whether or not a given text is a valid email address; Usage:
         <pre style="max-width:400px;">&#123; &#123; app.isEmail( 'framify@bixbyte.io' ) &#125; &#125;</pre>
@@ -624,7 +680,7 @@
     <!--isusername-->
     <hr> 
     <div class="section">   
-        <u>
+        <u style="color:cornflowerblue !important">
             <h5 style="color:gray">app.isusername</h5>
         </u>
         Returns an Ecmascript RegEx pattern to validate a username.
@@ -636,7 +692,7 @@
     <hr> 
     <div class="section">   
          <h5 style="color:gray">
-                <u>app.isUsername</u> <i>(Function (text_toValidate) )</i>
+                <u style="color:cornflowerblue !important">app.isUsername</u> <i style="color:green !important;">(Function (text_toValidate) )</i>
         </h5>
         Returns a boolean value after evaluating whether or not a given text is a valid username; Usage:
         <pre style="max-width:400px;">&#123; &#123; app.isUsername( 'framify' ) &#125; &#125;</pre>
@@ -646,7 +702,7 @@
     <!--ispassword-->
     <hr> 
     <div class="section">   
-        <u>
+        <u style="color:cornflowerblue !important">
             <h5 style="color:gray">app.ispassword</h5>
         </u>
         Returns an Ecmascript RegEx pattern to validate a password.
@@ -658,7 +714,7 @@
     <hr> 
     <div class="section">   
          <h5 style="color:gray">
-                <u>app.isPassword</u> <i>(Function (text_toValidate) )</i>
+                <u style="color:cornflowerblue !important">app.isPassword</u> <i style="color:green !important;">(Function (text_toValidate) )</i>
         </h5>
         Returns a boolean value after evaluating whether or not a given text is a valid Password; Usage:
         <pre style="max-width:400px;">&#123; &#123; app.isPassword( 'framify' ) &#125; &#125;</pre>
@@ -668,7 +724,7 @@
     <!--isnumber-->
     <hr> 
     <div class="section">   
-        <u>
+        <u style="color:cornflowerblue !important">
             <h5 style="color:gray">app.isnumber</h5>
         </u>
         Returns an Ecmascript RegEx pattern to validate a number.
@@ -680,7 +736,7 @@
     <hr> 
     <div class="section">   
          <h5 style="color:gray">
-                <u>app.isNumber</u> <i>(Function (text_toValidate) )</i>
+                <u style="color:cornflowerblue !important">app.isNumber</u> <i style="color:green !important;">(Function (text_toValidate) )</i>
         </h5>
         Returns a boolean value after evaluating whether or not a given text is a valid Number; Usage:
         <pre style="max-width:400px;">&#123; &#123; app.isNumber( 126157412 ) &#125; &#125;</pre>
@@ -690,7 +746,7 @@
     <!--istelephone-->
     <hr> 
     <div class="section">   
-        <u>
+        <u style="color:cornflowerblue !important">
             <h5 style="color:gray">app.istelephone</h5>
         </u>
         Returns an Ecmascript RegEx pattern to validate a telephone.
@@ -702,7 +758,7 @@
     <hr> 
     <div class="section">   
          <h5 style="color:gray">
-                <u>app.isTelephone</u> <i>(Function (text_toValidate) )</i>
+                <u style="color:cornflowerblue !important">app.isTelephone</u> <i style="color:green !important;">(Function (text_toValidate) )</i>
         </h5>
         Returns a boolean value after evaluating whether or not a given text is a valid Telephone; Usage:
         <pre style="max-width:400px;">&#123; &#123; app.isTelephone( '+254701234567' ) &#125; &#125;</pre>
@@ -712,7 +768,7 @@
     <!--isdateTime-->
     <hr> 
     <div class="section">   
-        <u>
+        <u style="color:cornflowerblue !important">
             <h5 style="color:gray">app.isdateTime</h5>
         </u>
         Returns an Ecmascript RegEx pattern to validate a date-time value in the format <i><b>DD-MM-YYYY HH:MM e.g 29-02-2013 22:16</b></i>.
@@ -724,7 +780,7 @@
     <hr> 
     <div class="section">   
          <h5 style="color:gray">
-                <u>app.isDateTime</u> <i>(Function (text_toValidate) )</i>
+                <u style="color:cornflowerblue !important">app.isDateTime</u> <i style="color:green !important;">(Function (text_toValidate) )</i>
         </h5>
         Returns a boolean value after evaluating whether or not a given text is a valid  date-time value in the format <i><b>DD-MM-YYYY HH:MM</b></i>; Usage:
         <pre style="max-width:400px;">&#123; &#123; app.isDateTime(  {{app.dateTime()}} ) &#125; &#125;</pre>
@@ -735,7 +791,7 @@
     <hr> 
     <div class="section">   
          <h5 style="color:gray">
-                <u>app.matches</u> <i>(Function (value_1,value_2) )</i>
+                <u style="color:cornflowerblue !important">app.matches</u> <i style="color:green !important;">(Function (value_1,value_2) )</i>
         </h5>
         Returns a boolean value after evaluating whether or not the given parameters are identical to each other. Example:
         <pre style="max-width:600px;">&#123; &#123; app.matches(  {{app.dateTime()}} , {{app.dateTime()}}  ) &#125; &#125;</pre>
@@ -746,7 +802,7 @@
     <hr> 
     <div class="section">   
          <h5 style="color:gray">
-                <u>app.num2month</u> <i>(Function (zero_initiated_month_number) )</i>
+                <u style="color:cornflowerblue !important">app.num2month</u> <i style="color:green !important;">(Function (zero_initiated_month_number) )</i>
         </h5>
         Returns the month name when fed the month number. <i><b>Jan = 0 & Dec = 11</b></i> . Example:
         <pre style="max-width:600px;">&#123; &#123; app.num2month( 1 ) &#125; &#125;</pre>
@@ -758,7 +814,7 @@
     <hr> 
     <div class="section">   
          <h5 style="color:gray">
-                <u>app.unique</u> /<u>app.removeDuplicates</u> / <u>app.remove_duplicates</u> <i>(Function (Array) )</i>
+                <u style="color:cornflowerblue !important">app.unique</u> /<u style="color:cornflowerblue !important">app.removeDuplicates</u> / <u style="color:cornflowerblue !important">app.remove_duplicates</u> <i style="color:green !important;">(Function (Array) )</i>
         </h5>
         Returns an array with no duplicate values. To remove duplicates in the Array <code> [ "Apple","Apple","Banana","Rice","Beans","Apple","Mango","Beans","Banana" ] </code>,  run:
         <pre style="max-width:800px;">&#123; &#123; app.unique(  [ "Apple","Apple","Banana","Rice","Beans","Apple","Mango","Beans","Banana" ]  ) &#125; &#125;</pre>
@@ -769,7 +825,7 @@
     <hr> 
     <div class="section">   
          <h5 style="color:gray">
-                <u>app.count</u>  <i>(Function (value_to_search_for, Array_to_search) )</i>
+                <u style="color:cornflowerblue !important">app.count</u>  <i>(Function (value_to_search_for, Array_to_search) )</i>
         </h5>
         Returns the number of instances of an object/element in an array. E.g 
         <br>To find the total number of occurences of <b><i>"Apple"</i></b> in <code>[ "Apple","Apple","Banana","Rice","Beans","Apple","Mango","Beans","Banana" ]</code>, run:
@@ -786,7 +842,7 @@
     <div class="section">   
        
         <h5 style="color:gray">
-                <u>app.post</u> <i>(Promise ( target_url, data) )</i>
+                <u style="color:cornflowerblue !important">app.post</u> <i style="color:green !important;">(Promise ( target_url, data) )</i>
         </h5>
         Returns a then-able after performing a http request guided by the provided parameters.
         <br>To make an http <i>POST</i> request to <i><b>{{remoteAuth.url}}/echo</b></i> where the parameters are <i><b>service=demo, time={{app.date()}}</b></i> and <i><b>status=200</b></i>, run
@@ -802,7 +858,7 @@
     <div class="section">   
        
         <h5 style="color:gray">
-                <u>app.get</u> <i>(Promise ( target_url, data) )</i>
+                <u style="color:cornflowerblue !important">app.get</u> <i style="color:green !important;">(Promise ( target_url, data) )</i>
         </h5>
         Returns a then-able after performing a http request guided by the provided parameters.
         <br>To make an http <i>get</i> request to <i><b>{{remoteAuth.url}}/echo</b></i> where the parameters are <i><b>q=framify and status=401</b></i>, run
@@ -818,7 +874,7 @@
     <div class="section">   
        
         <h5 style="color:gray">
-                <u>app.put</u> <i>(Promise ( target_url, data) )</i>
+                <u style="color:cornflowerblue !important">app.put</u> <i style="color:green !important;">(Promise ( target_url, data) )</i>
         </h5>
         Returns a then-able after performing a http request guided by the provided parameters.
         <br>To make an http <i>put</i> request to <i><b>{{remoteAuth.url}}/echo</b></i> where the parameters are <i><b>q=framify and status=401</b></i>, run
@@ -834,7 +890,7 @@
     <div class="section">   
        
         <h5 style="color:gray">
-                <u>app.delete</u> <i>(Promise ( target_url, data) )</i>
+                <u style="color:cornflowerblue !important">app.delete</u> <i style="color:green !important;">(Promise ( target_url, data) )</i>
         </h5>
         Returns a then-able after performing a http request guided by the provided parameters.
         <br>To make an http <i>delete</i> request to <i><b>{{remoteAuth.url}}/echo</b></i> where the parameters are <i><b>q=framify and status=401</b></i>, run
@@ -850,7 +906,7 @@
     <div class="section">   
        
         <h5 style="color:gray">
-                <u>app.db</u> <i>(Promise ( data, target_url) )</i>
+                <u style="color:cornflowerblue !important">app.db</u> <i style="color:green !important;">(Promise ( data, target_url) )</i>
         </h5>
         Performs a request to interact with the framify-db component.
         <br>To query the database, ensure that the database is well configured and that you are loged in as a user ; then run
@@ -866,7 +922,7 @@
     <div class="section">   
        
         <h5 style="color:gray">
-                <u>app.handler</u> <i>(Function( framify_make_response_object) )</i>
+                <u style="color:cornflowerblue !important">app.handler</u> <i style="color:green !important;">(Function( framify_make_response_object) )</i>
         </h5>
         Creates an alert based on the http status code in the <i><b>response_object.status</b></i> object value
         <br>A sample framify formatted response of  <code>{"response":200, "data": { "message": "Successfully set the parameter", "command": "done" } }</code> can be <i>handled</i> by running:
@@ -881,22 +937,21 @@
 </div>
 
 
-    <!--SMS Service-->
-    <hr>
-    <div class="section">
-        <u><h3>The <i style="color:red;">sms</i> service</h3></u>
-    </div>
-
-
 <!-- SO - SMS SERVICE-->
 <div ng-if="false"> 
+
+     <!--SMS Service-->
+    <hr>
+    <div class="section">
+        <u style="color:cornflowerblue !important"><h3>The <i style="color:red;">sms</i> service</h3></u>
+    </div>
 
     <!--start-->
     <hr>
     <div class="section">   
        
         <h5 style="color:gray">
-                <u> sms.start</u> <i>(Promise (framify_sms_gateway_server_url) )</i>
+                <u style="color:cornflowerblue !important"> sms.start</u> <i style="color:green !important;">(Promise (framify_sms_gateway_server_url) )</i>
         </h5>
         
         Starts the SMS gateway connection
@@ -911,7 +966,7 @@
     <div class="section">   
        
         <h5 style="color:gray">
-                <u> sms.stop</u> <i>(Promise () )</i>
+                <u style="color:cornflowerblue !important"> sms.stop</u> <i style="color:green !important;">(Promise () )</i>
         </h5>
         
         stops the SMS gateway connection
@@ -925,7 +980,7 @@
     <div class="section">   
        
         <h5 style="color:gray">
-                <u> sms.SMS</u> <i>(Promise ( formatted_sms_object ) )</i>
+                <u style="color:cornflowerblue !important"> sms.SMS</u> <i style="color:green !important;">(Promise ( formatted_sms_object ) )</i>
         </h5>
         
         Sends an already formatted SMS object.
@@ -938,7 +993,7 @@
     <div class="section">   
        
         <h5 style="color:gray">
-                <u> sms.oneSMS</u> <i>(Promise ( recipient_telephone ,message ,client_authentication_key ) )</i>
+                <u style="color:cornflowerblue !important"> sms.oneSMS</u> <i style="color:green !important;">(Promise ( recipient_telephone ,message ,client_authentication_key ) )</i>
         </h5>
         
         Sends a single SMS message.
@@ -951,7 +1006,7 @@
     <div class="section">   
        
         <h5 style="color:gray">
-                <u> sms.bulkSMS</u> <i>(Promise ( recipients_telephone_array ,message ,client_authentication_key ) )</i>
+                <u style="color:cornflowerblue !important"> sms.bulkSMS</u> <i style="color:green !important;">(Promise ( recipients_telephone_array ,message ,client_authentication_key ) )</i>
         </h5>
         
         Sends an SMS String to multiple users.
@@ -959,448 +1014,759 @@
         <pre style="max-width:600px;">&#123; &#123; sms.bulkSMS(  ["087987986","0324243686"], "Hello Stranger", "3*5************"  ) &#125; &#125;</pre>
     </div>
 
-<!-- EO - SMS SERVICE -->
-</div>
-    
-
-
     <!--db-->
     <hr>
     <div class="section">   
        
         <h5 style="color:gray">
-                <u>app.db</u> <i>(Promise ( data, target_url) )</i>
+                <u style="color:cornflowerblue !important">app.db</u> <i style="color:green !important;">(Promise ( data, target_url) )</i>
         </h5>
         Performs a request to interact with the framify-db component.
         <br>To query the database, ensure that the database is well configured and that you are loged in as a user ; then run
         <pre style="max-width:1000px;">&#123; &#123; app.db({ command: 'get', table: 'users', specifics: 'id,username' }).then(app.handler).catch(app.handler) &#125; &#125;</pre>
-        <button 
+        <!--<button 
             class="md-btn md-btn-primary" 
-            ng-click=" app.db({ 'command': 'get', 'table': 'users', 'specifics': 'id,username' }).then(app.handler).catch(app.handler)"
-        >APP.db REQUEST</button>
+            ng-click=" app.db({ 'command': 'get', 'table': 'users', 'specifics': 'username,email,id', extras: ' LIMIT 1' }).then(app.handler).catch(app.handler)"
+        >APP.db REQUEST</button>-->
+    </div>
+
+    <!--mail-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">app.mail</u> <i style="color:green !important;">(Promise ( data, target_url) )</i>
+        </h5>
+        Performs a request to interact with the framify-mail component.
+        <br>To send an email, run
+        <pre style="max-width:1000px;">
+        &#123; &#123; 
+            app.mail(
+                {
+                    from: `TEST EMAIL <sender@domain.ext>`,
+                    to: [recipient@domain.ext], // Define the main recipient of the message
+                    bcc: [recipient2@domain.ext], //You can BCC someone here
+                    subject: `Your Subject Here`,
+                    text: `Hello subscriber,\nWe at {{app.hlink}} have missed you so much!!\n\nSincerely\n\tSender's Name. `,
+                    html: `&lt;font color="gray"&gt;&lt;u&gt;&lt;h2&gt;We Miss you!&lt;/u&gt;&lt;/font&gt;&lt;/h2&gt;
+                                                &lt;br&gt;
+                                                Hello subscriber,&lt;br&gt;&lt;br&gt;
+                                                We at {{app.hlink}} have missed you so much!!
+                                                &lt;br&gt;&lt;br&gt;
+                                                We hope that you consider coming back to us
+                                                &lt;br&gt;
+                                                &lt;h4&gt;Sincerely:&lt;/h4&gt;
+                                                &lt;br&gt;
+                                                &lt;i&gt;&lt;u&gt;The sender.&lt;/u&gt;&lt;/i&gt;
+                                                &lt;br&gt;&lt;br&gt;&lt;br&gt;
+                                                `,
+                    attachment: `file upload reference`
+                };    
+            ).then(app.handler).catch(app.handler) 
+       &#125; &#125;</pre>
+       
+    </div>
+
+<!-- EO - SMS SERVICE -->
+</div>
+  
+
+<!-- SO - CGI SERVICE -->
+<div ng-if="false"> 
+    
+    <!--CGI Service-->
+    <hr>
+    <div class="section">
+        <u style="color:cornflowerblue !important"><h3>The <i style="color:red;">cgi</i> service</h3></u>
     </div>
 
 
-    <pre style="background-color:black;color:white;">
-
-//@ The BASIC sms sending application service
-.service("sms" 
-,['app'
-,function(app) {
-
-        
-
-        /**
-         * This angular service allows for you to easily send SMS messages conveniently using bixbyte's default SMS server
-         * 
-         * It allows the use of your *Framify SMS* android phone application to send simple SMS messages. 
-         * 
-         * You can easily extend it as you will since the socket connection to the server can be hooked to as "sms.socket"
-         */
-
-        //@ BASIC APPLICATION INITIALIZATION
-        this.server = {};
-        this.server.host = '41.89.162.252:3000';
-
-        this.socket;
-
-        this.start_sms = ( framify_sms_server_url ) => {
-
-
-
-        }
-        
-        this.socket = io.connect(`${this.server.host}`);
-
-        const socket = this.socket;
-
-        //@ SEND EXPRESS SMS'
-        this.SMS = (smsData) => {
-            socket.emit("sendSMS" ,smsData);
-            return Promise.resolve(true)
-            .catch(function(e){
-                console.log("Encountered an error when processing the sms function.")
-                console.dir(e)
-            })            
-        };
-
-        //@ SEND A SINGLE SMS
-        this.oneSMS = (tel ,mess ,apiKey) => {
-
-            var obj;
-            if (Array.isArray(tel)) {
-                obj = tel;
-            } else {
-                obj = {
-                    telephone: tel,
-                    message: mess,
-                    password: apiKey
-                };
-            }
-
-            socket.emit("sendSMS" ,obj);
-            return Promise.resolve(true)
-            .catch(function(e){
-                console.log("Encountered an error when processing the sendsms function.")
-                console.dir(e)
-            });
-
-        };
-
-        //@ SEND BULK SMS MESSAGES
-        this.bulkSMS = (contacts ,data ,apiKey) => {
-
-            return new Promise( (resolve ,reject) => {
-
-                let obj = [];
-
-                //* Ensure that the API key has been set
-                if (!apiKey) {
-                    app.alert("<font style='weight:bold;color:red;'>ERROR</font>",'<center>Failed to instantiate the SMS sending service before api Key definition.</center>');
-                } else if (Array.isArray(contacts)) {
-
-                    //* handle an array of contacts
-                    contacts.forEach( (element) => {
-
-                        if (app.isTelephone(element)) {
-
-                            obj.push({
-                                telephone: element,
-                                message: data,
-                                apiKey: apiKey
-                            });
-
-                        } else {
-
-                            app.alert("<font style='weight:bold;color:red;'>Invalid telephone number encountered</font>",'<center>Could not send an SMS message to the invalid number ' + element + '.</center>');
-
-                        }
-
-                    }, this);
-
-                    socket.emit("sendSMS", obj);
-                    resolve(true);
-
-                } else {
-                    app.alert("<font style='weight:bold;color:red;'>Bulk SMS error.</font>" ,'<center>You can only use the bulk SMS service with an array of telephone contacts</center>');
-                }
-
-            });       
-           
-        };
-
-        // //@ SAMPLE SUCCESSFUL SMS SENDING INFORMATION HANDLER
-        // this.socket.on("trueSMS", (data) => {
-        //     $scope.app.notify("The message has been conveyed.");
-        // });
-
-}])
-
-//@ The basic incomplete networking service
-.service("cgi" 
-,[
-function() {
-
-    //Handle background calls to the web server for database integration
-    this.ajax = function(data){
-        return $.ajax({
-            method: "GET",
-            url: "/php",
-            data: data
-        });
-    };
-
-   //Handle the posting of emails via the mailgun api
-   this.mail = function(data){
-        return $.ajax({
-            method: "POST"
-            ,url: "/sendMail"
-            ,data: data
-        })
-    };
-
-}])
-
-//@@ The Authentication service
-.service('auth'
-,[ '$http','$localStorage'
-,function($http,$localStorage){
-
-   var auth = this;
-
-   auth.SetAuth     = function( AuthToken ){
-
-        return new Promise( function(resolve,reject){
-            
-            resolve( $http.defaults.headers.common.Authorization = AuthToken ||  ( $localStorage.framify_user ) ? $localStorage.framify_user.token : undefined );
-
-        });
-
-    };
-
-     //@ Perform User Registration
-    auth.Register  = function( credentials ){
-
-        return new Promise( function( resolve,reject ){
-
-            $http.post('/auth/register', credentials )
-            .success(function(response){
-
-                if( response.response == 200 ){
-
-                    resolve( response.data.message )
-
-                }else{
-
-                    reject( response.data.message )
-
-                }
-
-            })
-            .error(function(response){
-                reject( JSON.stringify( ( ( response ) ? ( ( response.data )  ? response.data.message : response ) : response ) || "Could not obtain a response from the server.")  )
-            })
-
-        });
-
-    };
-        
-    //@ Perform a User Login
-    auth.Login          = function( credentials ){
-
-        return new Promise( function( resolve,reject ){
-
-            $http.post('/auth/verify', credentials )
-            .success(function(response){
-
-                if( response.response == 200 ){
-
-                    $localStorage.framify_user   =  response.data.message ;
-
-                    auth.SetAuth( response.data.message.token );
-
-                    resolve( response.data.message )
-
-                }else{
-
-                    reject( response.data.message )
-
-                }
-
-            })
-            .error(function(response){
-                reject( JSON.stringify( ( ( response ) ? ( ( response.data )  ? response.data.message : response ) : response ) || "Could not obtain a response from the server.")  )
-            })
-
-        });
-
-    };
-        
-    //@ Perform A User Logout
-    auth.Logout         = function( ){
-
-        return new Promise( function(resolve,reject){
-
-            delete $localStorage.framify_user;
-            auth.SetAuth(undefined)
-            .then(resolve)
-
-        });                         
-
-    };
-
-}])
-
-
-//@@ The Remote authentication service
-//@@ The Authentication service ChartJsProvider.service('auth'
-.service('remoteAuth'
-,[ '$http','$localStorage'
-,function($http,$localStorage){
-
-   var r_auth = this;
-
-   r_auth.url         = 'http://bixbyte.io'
-
-   r_auth.setUrl      = function( accessUrl ){
-
-       return new Promise( (resolve,reject) => {
-            
-            r_auth.url    = accessUrl;
-            console.log(`The remote access url has been set to ${accessUrl}` );
-            resolve(accessUrl);
-
-       })
+     <!--ajax-->
+    <hr>
+    <div class="section">   
        
-   }
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">cgi.ajax</u> <i style="color:green !important;">(Promise ( data, target_url) )</i>
+        </h5>
+        Performs a jQuery POST request to interact with the framify-db component.
+        <br>To query the database, ensure that the database is well configured and that you are loged in as a user ; then run
+        <pre style="max-width:1000px;">&#123; &#123; cgi.ajax({ command: 'get', table: 'users', specifics: 'id,username' }).then(app.handler).catch(app.handler) &#125; &#125;</pre>
+    </div>
 
-   r_auth.SetAuth     = function( AuthToken ){
 
-        return new Promise( function(resolve,reject){
-            
-            resolve( $http.defaults.headers.common.Authorization = AuthToken ||  ( $localStorage.framify_user ) ? $localStorage.framify_user.token : undefined );
+    <!--mail-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">cgi.mail</u> <i style="color:green !important;">(Promise ( data, target_url) )</i>
+        </h5>
+        Performs a jQuery http POST request to interact with the framify-mail component.
+        <br>To send an email, run
+        <pre style="max-width:1000px;">
+        &#123; &#123; 
+            cgi.mail(
+                {
+                    from: `TEST EMAIL <sender@domain.ext>`,
+                    to: [recipient@domain.ext], // Define the main recipient of the message
+                    bcc: [recipient2@domain.ext], //You can BCC someone here
+                    subject: `Your Subject Here`,
+                    text: `Hello subscriber,\nWe at {{app.hlink}} have missed you so much!!\n\nSincerely\n\tSender's Name. `,
+                    html: `&lt;font color="gray"&gt;&lt;u&gt;&lt;h2&gt;We Miss you!&lt;/u&gt;&lt;/font&gt;&lt;/h2&gt;
+                                                &lt;br&gt;
+                                                Hello subscriber,&lt;br&gt;&lt;br&gt;
+                                                We at {{app.hlink}} have missed you so much!!
+                                                &lt;br&gt;&lt;br&gt;
+                                                We hope that you consider coming back to us
+                                                &lt;br&gt;
+                                                &lt;h4&gt;Sincerely:&lt;/h4&gt;
+                                                &lt;br&gt;
+                                                &lt;i&gt;&lt;u&gt;The sender.&lt;/u&gt;&lt;/i&gt;
+                                                &lt;br&gt;&lt;br&gt;&lt;br&gt;
+                                                `,
+                    attachment: `file upload reference`
+                };    
+            ).then(app.handler).catch(app.handler) 
+       &#125; &#125;</pre>
+       
+    </div>
+</div>   
+<!-- EO - CGI SERVICE-->
 
-        });
 
-    };
+<!--SO - AUTH SERVICE-->
+<div ng-if="false">  
 
-     //@ Perform User Registration
-    r_auth.Register  = function( credentials ){
+    <!--Auth Service-->
+    <hr>
+    <div class="section">
+        <u style="color:cornflowerblue !important"><h3>The <i style="color:red;">auth</i> service</h3></u>
+        <code>DO NOT USE ON A REMOTELY HOSTED CLIENT</code>
+    </div>
 
-        return new Promise( function( resolve,reject ){
+    <!--SetAuth-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">auth.SetAuth</u> / <u style="color:cornflowerblue !important">auth.set_auth</u> <i style="color:green !important;">(Promise ( auth_token ) )</i>
+        </h5>
+        Sets the authentication header in the http headers. Where no token is passed as a parameter, it seeks to see if any signs of a token exist.
+        <br>To inject an authentication token, <i>( Which should be done sparingly since it is otherwise automatically handled )</i>; run
+        <pre style="max-width:1000px;">&#123; &#123; auth.set_auth( "YOUR_AUTH_TOKEN" ).then(app.handler).catch(app.handler) &#125; &#125;</pre>
+    </div>
 
-            $http.post(`${r_auth.url}/auth/register`, credentials )
-            .success(function(response){
+    <!--register-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+               <u style="color:cornflowerblue !important">auth.Register</u> / <u style="color:cornflowerblue !important">auth.register</u> <i style="color:green !important;">(Promise ( registration_object_parameters ) )</i>
+        </h5>
+        Handles the registration of users on the local platform.
+        <br>To perform a user registration, <i>ensure that all required registration parameters are provided</i>; then run
+        <pre style="max-width:1000px;">&#123; &#123; auth.register( { YOUR REGISTRATION OBJECT } ).then(app.handler).catch(app.handler) &#125; &#125;</pre>
+    </div>
 
-                if( response.response == 200 ){
+    <!--login-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">auth.Login</u> / <u style="color:cornflowerblue !important">auth.login</u> <i style="color:green !important;">(Promise ( login_authentication_object ) )</i>
+        </h5>
+        Handles the login of users on the local platform.
+        <br>To perform a user login, <i>ensure that all required login parameters are provided</i>; then run
+        <pre style="max-width:1000px;">&#123; &#123; auth.login( { YOUR LOGIN AUTHENTICATION OBJECT } ).then(app.handler).catch(app.handler) &#125; &#125;</pre>
+    </div>
 
-                    resolve( response.data.message )
+    <!--logout-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">auth.Logout</u> / <u style="color:cornflowerblue !important">auth.logout</u> <i style="color:green !important;">(Promise (  ) )</i>
+        </h5>
+        Handles the logout of users on the local platform.
+        <br>To perform a user logout, run
+        <pre style="max-width:1000px;">&#123; &#123; auth.logout( ).then(app.handler).catch(app.handler) &#125; &#125;</pre>
+    </div>
 
-                }else{
+</div>
+<!--EO - AUTH SERVICE-->
 
-                    reject( response.data.message )
 
+
+<!--SO - REMOTEAUTH SERVICE-->
+<div ng-if="false">  
+
+    <!--remoteAuth Service-->
+    <hr>
+    <div class="section">
+        <u style="color:cornflowerblue !important"><h3>The <i style="color:red;">remoteAuth</i> service</h3></u>
+        <code>USE ON A REMOTELY HOSTED CLIENT.</code>
+    </div>
+
+
+    <!--url-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">remoteAuth.url</u>
+        </h5>
+        Returns a string of the currently defined remote server . <i> The default is http://bixbyte.io</i>.
+        <pre style="max-width:1000px;">&#123; &#123; remoteAuth.url &#125; &#125;</pre>
+        returns <code>{{remoteAuth.url}}</code>
+    </div>
+
+    <!--setUrl-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">remoteAuth.setUrl</u> / <u style="color:cornflowerblue !important">remoteAuth.set_url</u> <i style="color:green !important;">(Promise ( remote_server_root_url ) )</i>
+        </h5>
+        Sets the remote server that the client application communicates with. ( <i> Defaults to http://bixbyte.io</i> ) where no parameter is defined.
+        <br>To setup a remote server URL definition; run
+        <pre style="max-width:1000px;">&#123; &#123; remoteAuth.set_url( "scheme://domain.ext/" ).then(app.handler).catch(app.handler) &#125; &#125;</pre>
+    </div>
+
+    <!--SetAuth-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">remoteAuth.SetAuth</u> / <u style="color:cornflowerblue !important">remoteAuth.set_auth</u> <i style="color:green !important;">(Promise ( auth_token ) )</i>
+        </h5>
+        Sets the authentication header in the http headers. Where no token is passed as a parameter, it seeks to see if any signs of a token exist.
+        <br>To inject an authentication token, <i>( Which should be done sparingly since it is otherwise automatically handled )</i>; run
+        <pre style="max-width:1000px;">&#123; &#123; remoteAuth.set_auth( "YOUR_AUTH_TOKEN" ).then(app.handler).catch(app.handler) &#125; &#125;</pre>
+    </div>
+
+    <!--register-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">remoteAuth.Register</u> / <u style="color:cornflowerblue !important">remoteAuth.register</u> <i style="color:green !important;">(Promise ( registration_object_parameters ) )</i>
+        </h5>
+        Handles the registration of users against a remote platform.
+        <br>To perform a user registration, <i>ensure that all required registration parameters are provided</i>; then run
+        <pre style="max-width:1000px;">&#123; &#123; remoteAuth.register( { YOUR REGISTRATION OBJECT } ).then(app.handler).catch(app.handler) &#125; &#125;</pre>
+    </div>
+
+    <!--login-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">remoteAuth.Login</u> / <u style="color:cornflowerblue !important">remoteAuth.login</u> <i style="color:green !important;">(Promise ( login_authentication_object ) )</i>
+        </h5>
+        Handles the login of users against a remote platform.
+        <br>To perform a user login, <i>ensure that all required login parameters are provided</i>; then run
+        <pre style="max-width:1000px;">&#123; &#123; remoteAuth.login( { YOUR LOGIN AUTHENTICATION OBJECT } ).then(app.handler).catch(app.handler) &#125; &#125;</pre>
+    </div>
+
+    <!--logout-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">remoteAuth.Logout</u> / <u style="color:cornflowerblue !important">remoteAuth.logout</u> <i style="color:green !important;">(Promise (  ) )</i>
+        </h5>
+        Handles the logout of users against a remote platform.
+        <br>To perform a user logout, run
+        <pre style="max-width:1000px;">&#123; &#123; remoteAuth.logout( ).then(app.handler).catch(app.handler) &#125; &#125;</pre>
+    </div>
+
+</div>
+<!--EO - REMOTEAUTH SERVICE-->
+
+
+<!--SO - CONTENTEDITABLE DIRECTIVE-->
+<div ng-if="false">
+
+   <!--contenteditable-->
+    <hr>
+    <div class="section">
+        <u style="color:cornflowerblue !important"><h3>The <i style="color:red;">contenteditable</i> directive</h3></u>
+        <code>Angular Attribute Only directive.</code>
+        <br><br>
+        Makes the content on a given UI element editable <code>The directive takes no value. </code>.
+        <pre>&lt;div contenteditable&gt; I AM AN EDITABLE DIV &lt;/div&gt;</pre>
+        Producing:
+        <div contenteditable="true"> I AM AN EDITABLE DIV </div>
+
+    </div> 
+
+
+</div>
+<!--EO - CONTENTEDITABLE DIRECTIVE-->
+  
+
+<!--SO - FILEMODEL DIRECTIVE-->
+<div ng-if="false">
+    
+    <!--fileModel-->
+    <hr>
+    <div class="section">
+        <u style="color:cornflowerblue !important"><h3>The <i style="color:red;">fileModel</i> directive</h3></u>
+        <code>Angular Attribute Only directive.</code>
+        <br><br>
+        Binds the value of an HTML file input to the parent angular $scope <code>It takes the value equivalent to the value of the desired $scope binding.</code>.
+        <br>To bind the value of a selected file to the model <b><i>fileVal</i></b>, we run
+        <pre style="max-width:1000px;"> &lt;input type="file" class="btn btn-success" file-model="fileVal"&gt; </pre>
+        Which produces <input type="file" class="btn btn-success" file-model="fileVal">
+        <pre ng-if="fileVal">
+Fileval   <json-formatter json="fileVal" open="0"></json-formatter>
+        </pre>
+    </div> 
+
+</div>
+<!--EO - FILEMODEL DIRECTIVE-->
+
+
+<!--SO - framifyController-->
+<div ng-if="true">  
+
+     <!--framifyController Controller-->
+    <hr>
+    <div class="section">
+        <u style="color:cornflowerblue !important"><h3>The <i style="color:red;">framifyContoller</i> controller</h3></u>
+        <code>An <b><i>Absolute</i></b> Necessity.</code>
+    </div>
+
+
+    <!--current-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">current</u>
+        </h5>
+        Returns a string of the currently defined remote server . <i> The default is http://bixbyte.io</i>.
+        <pre style="max-width:1000px;">&#123; &#123; current &#125; &#125;</pre>
+        Currently: <code>{{current}}</code>
+    </div>
+
+
+    <!--ui-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">ui</u>
+        </h5>
+        Returns a JSON object of the currently active UI parameters/elements.
+        <pre style="max-width:1000px;">&#123; &#123; ui &#125; &#125;</pre>
+        Currently: <code>{{ui}}</code>
+    </div>
+    
+
+    
+    <!--nav-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">nav</u>
+        </h5>
+        Returns a JSON Aray of the applcation navigation elements.
+        <pre style="max-width:1000px;">&#123; &#123; nav &#125; &#125;</pre>
+        Currently: <code>{{nav}}</code>
+    </div>
+
+    <!--links-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">links</u>
+        </h5>
+        Returns a JSON Aray of the applcation generated navigation links.
+        <pre style="max-width:1000px;">&#123; &#123; links &#125; &#125;</pre>
+        Currently: <code>{{links}}</code>
+    </div>
+
+    <!--exec-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">exec</u>  <i>(Function ( function_or_promise_to_run ) )</i>
+        </h5>
+        performs the execution of a dormant function/promise.
+        <pre style="max-width:1000px;">&#123; &#123; exec( function_reference ) &#125; &#125;</pre>
+    </div>
+
+    <!--setVar-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">setVar</u> / <u style="color:cornflowerblue !important">set_var</u> <i style="color:green !important;">(Function ( initial_object, [key], value ) )</i>
+        </h5>
+        Returns a JSON Object containing the new values as well as the old. ( Appends a key:value pair to a JSON Object. )
+        <pre style="max-width:1000px;">&#123; &#123; set_var( {}, ["application"], "framify.js" ) &#125; &#125;</pre>
+        Which returns <code>{{  setVar( {}, ["application"], "framify.js" ) }}</code>
+    </div>
+
+    <!--appRedirect-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">appRedirect</u> / <u style="color:cornflowerblue !important">app_redirect</u> <i style="color:green !important;">(Function ( partial_app_substate ) )</i>
+        </h5>
+        Redirects the application to app.<code>partial_app_substate</code>
+        <pre style="max-width:1000px;">&#123; &#123; app_redirect( "login" ) &#125; &#125;</pre>
+        redirects to <code><i><b>app.login</b></i></code>
+    </div>
+
+    <!--goTo-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">goTo</u> / <u style="color:cornflowerblue !important">go_to</u> <i style="color:green !important;">(Function ( complete_app_substate ) )</i>
+        </h5>
+        Redirects the application to app.<code>complete_app_substate</code>
+        <pre style="max-width:1000px;">&#123; &#123; go_to( "login" ) &#125; &#125;</pre>
+        redirects to <code><i><b>login</b></i></code>
+    </div>
+
+    <!--unwanted-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">unwanted</u>
+        </h5>
+        Returns an Array of the unwanted Object Keys.
+        <pre style="max-width:1000px;">&#123; &#123; unwanted &#125; &#125;</pre>
+        Currently:  <code>{{unwanted}}</code>
+    </div>
+
+    <!--removeUnwanted-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">removeUnwanted</u> / <u style="color:cornflowerblue !important">remove_unwanted</u> <i style="color:green !important;">(Function ( object_to_work_on ) )</i>
+        </h5>
+        Removes the currently defined <i><b>unwanted</b></i> Keys from the specified object e.g
+        <pre style="max-width:1000px;">&#123; &#123; remove_unwanted(  { $index: 1, $$hashKey: "23467324h" , name: "Author" } ) &#125; &#125;</pre>
+        returns <code><i><b>{{ removeUnwanted( { $index: 1, $$hashKey: "23467324h" , name: "Author" } ) }}</b></i></code>
+    </div>
+
+    
+    <!--add-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">add</u>  <i>(Promise ( table ,data ,field_names_to_md5 ,callback ) )</i>
+        </h5>
+        Adds a data record to the database table defined while performaing any required md5-ing on the client side
+        <pre style="max-width:1000px;">&#123; &#123; add( 'people', { name: 'John Doe', age: '100123', email: 'john@vampires.com', secret_key: 'john_doe' }, 'secret_key' ) &#125; &#125;</pre>
+    </div>
+
+    <!--update-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">update</u> <i style="color:green !important;">(Promise ( table ,data ,field_names_to_md5 ,callback ) )</i>
+        </h5>
+        Updates a data record in the database table defined while performaing any required md5-ing on the client side
+        <pre style="max-width:1000px;">&#123; &#123; update( 'people', { name: 'John Doe', age: '100123', email: 'john@vampires.com', secret_key: 'john_doe_new_pass' }, 'secret_key', extras: ' email=john@vampires.com ' ) &#125; &#125;</pre>
+    </div>
+
+    <!--fetch-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">fetch</u> <i style="color:green !important;">(Promise ( table ,data ,field_names_to_md5 ,callback ) )</i>
+        </h5>
+        Fetches  data record(s) in the database table defined while performaing any required md5-ing on the client side
+        <pre style="max-width:1000px;">&#123; &#123; fetch( 'people', { 'extras': 'LIMIT 10' ) &#125; &#125;</pre>
+    </div>
+
+    <!--del-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">del</u> <i style="color:green !important;">(Promise ( table ,data ,field_names_to_md5 ,callback ) )</i>
+        </h5>
+        Deletes  data record(s) in the database table defined while performaing any required md5-ing on the client side
+        <pre style="max-width:1000px;">&#123; &#123; del( 'people', { email: 'john@vampires.com' ) &#125; &#125;</pre>
+    </div>
+
+    <!--custom-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">custom</u> <i style="color:green !important;">(Promise ( table ,data ,field_names_to_md5 ,callback ) )</i>
+        </h5>
+        Performs a custom SQL query in the database table defined
+        <pre style="max-width:1000px;">&#123; &#123; custom( 'people', { query: 'SELECT * FROM people' ) &#125; &#125;</pre>
+    </div>
+
+     <!--count-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">count</u> <i style="color:green !important;">(Promise ( table ,data ,field_names_to_md5 ,callback ) )</i>
+        </h5>
+        Performs a count of the specified parameter value(s) in the database table defined
+        <pre style="max-width:1000px;">&#123; &#123; count( 'people', { specifics: 'name', email: 'john@vampires.com' ) &#125; &#125;</pre>
+    </div>
+
+    <!--sanitize-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">sanitize</u> / <u style="color:cornflowerblue !important">delParams</u> / <u style="color:cornflowerblue !important">del_params</u> <i style="color:green !important;">(Promise ( object, comma_delimited_keys_to_remove ) )</i>
+        </h5>
+        Removes the currently defined <i><b> coma delimited purge keys</b></i> from the specified object e.g
+        <pre style="max-width:1000px;">&#123; &#123; sanitize( { name: 'Author', 'age': 12234, telephone: '0756159785', 'position': 'General Manager' }, 'age,telephone' ) &#125; &#125;</pre>
+        <button class="btn md-btn" ng-click="sanitize( { name: 'Author', 'age': 12234, telephone: '0756159785', 'position': 'General Manager' }, 'age,telephone' ).then(app.stringify).then(app.notify).catch(app.notify)">Run Example</button>
+    </div>
+
+    <!--dPush-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">dPush</u> / <u style="color:cornflowerblue !important">d_push</u> <i style="color:green !important;">(Function ( object, key_name, key_value ) )</i>
+        </h5>
+        Adds a key - value pair to the supplied object e.g
+        <pre style="max-width:1000px;">&#123; &#123; dPush( {}, 'framework', { name: 'framify', last_viewed: '{{app.date_time()}}' } ) &#125; &#125;</pre>
+        Resulting in <code> {{ dPush( {}, 'framework', { name: 'framify', last_viewed: app.date_time() } ) }}</code>
+    </div>
+
+    <!--dPushify-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">dPushify</u> / <u style="color:cornflowerblue !important">d_pushify</u> <i style="color:green !important;">(Promise ( object, key_name, key_value ) )</i>
+        </h5>
+        Adds a key - value pair to the supplied object e.g
+        <pre style="max-width:1000px;">&#123; &#123; dPushify( {}, 'framework', { name: 'framify', last_viewed: '{{app.date_time()}}' } ) &#125; &#125;</pre>
+         <button class="btn md-btn" ng-click="dPushify(  {}, 'framework', { name: 'framify', last_viewed: app.date_time() } ).then(app.stringify).then(app.notify).catch(app.notify)">Run Example</button>
+    </div>
+
+    <!--currmoin-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">currmoin</u>
+        </h5>
+        Returns the current <i><b>non framify-formatted</b></i> month number.
+        <pre style="max-width:1000px;">&#123; &#123; currmoin &#125; &#125; or &#123; &#123; app.month_array[ currmoin - 1 ]  &#125; &#125;</pre>
+        i.e : <code> {{currmoin}} or {{app.month_array[ currmoin - 1 ] }}</code> 
+    </div>
+
+    <!--setMoin-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">setMoin</u> / <u style="color:cornflowerblue !important">set_moin</u> <i style="color:green !important;">(Function ( month_number ) )</i>
+        </h5>
+        Changes the numeric value of the current Month <i><b>currmoin</b></i> object. Usage: 
+        <pre style="max-width:1000px;">&#123; &#123; setMoin( 01 ) &#125; &#125;</pre>
+    </div>
+
+
+    <!--addExtras-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">addExtras</u> <i style="color:green !important;">(Promise ((targetObj ,extrasObj ,comma_delimeted_key_rename_in_extras ,keys_to_remove_from_extras) )</i>
+        </h5>
+        Adds an extras object to an Object while performing some modifications. e.g. running: 
+        <pre style="max-width:1000px;">
+        &#123; &#123; 
+            addExtras(  
+                { 
+                    to_do: ['Breakfast with Brad','Meeting with Vlad','Lunch in Chad','Tea with Bad','Supper in bed']
                 }
+                ,{ moin:'{{currmoin}}' ,heure:'{{app.date_time()}}' ,autres:'Pas d\'autres'  }
+               ,'moin:month,heure:date'
+               ,'autres'
+            ) 
+        &#125; &#125;
+        </pre>
+        <button class="btn md-btn" ng-click="addExtras({ to_do: ['Breakfast with Brad','Meeting with Vlad','Lunch in Chad','Tea with Bad','Supper in bed'] },{ 'moin':currmoin ,'heure':app.date_time() ,autres: 'Pas d\'autres' },'moin:month,heure:date','autres').then(app.stringify).then(app.notify).catch(app.notify)" >RUN EXAMPLE </button>
+    </div>
 
-            })
-            .error(function(response){
-                reject( JSON.stringify( ( ( response ) ? ( ( response.data )  ? response.data.message : response ) : response ) || "Could not obtain a response from the server.")  )
-            })
+     <!--add_extras-->
+    <hr>
+    <div class="section">  
 
-        });
-
-    };
-        
-    //@ Perform a User Login
-    r_auth.Login          = function( credentials ){
-
-        return new Promise( function( resolve,reject ){
-
-            $http.post(`${r_auth.url}/auth/verify`, credentials )
-            .success(function(response){
-
-                if( response.response == 200 ){
-
-                    $localStorage.framify_user   =  response.data.message ;
-
-                    r_auth.SetAuth( response.data.message.token );
-
-                    resolve( response.data.message )
-
-                }else{
-
-                    reject( response.data.message )
-
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">add_extras</u> <i style="color:green !important;">(Promise ((targetObj ,extrasObj ,[target_rename_keys,extras_rename_keys] ,[target_remove_keys,extras_remove_keys]) )</i>
+        </h5>
+        Adds an extras object to an Object while performing some modifications. e.g. running: 
+        <pre style="max-width:1000px;">
+        &#123; &#123; 
+            add_extras(  
+                { 
+                    to_do: ['Lunch in Chad','Tea with Bad','Supper in bed']
+                    ,done: ['Breakfast with Brad','Meeting with Vlad']
+                    ,another_time: ['Buy Milk']
+                    ,forget: ['Say Happy birthday to nemesis']
                 }
+                ,{ 
+                    moin:'{{currmoin}}' 
+                    ,heure:'{{app.date_time()}}' 
+                    ,autres:'Pas d\'autres'  
+                }
+               ,['another_time:postponed','moin:month,heure:date']
+               ,['forget','autres']
+            ) 
+        &#125; &#125;
+        </pre> 
+        <button class="btn md-btn" ng-click=" add_extras({'to_do': ['Lunch in Chad','Tea with Bad','Supper in bed'],'done': ['Breakfast with Brad','Meeting with Vlad'],'another_time': ['Buy Milk'],'forget': ['Say Happy birthday to nemesis']},{moin:currmoin,heure:app.date_time(),autres:'Pas d\'autres'},['another_time:postponed','moin:month,heure:date'],['forget','autres']).then(app.stringify).then(app.notify).catch(app.notify)" >RUN EXAMPLE </button>
+    </div>
+    
 
-            })
-            .error(function(response){
-                reject( JSON.stringify( ( ( response ) ? ( ( response.data )  ? response.data.message : response ) : response ) || "Could not obtain a response from the server.")  )
-            })
+    <!--handlers.regSuccess-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">handlers.regSuccess</u> / <u style="color:cornflowerblue !important">handlers.reg_success</u> <i style="color:green !important;">(Function ( message ) )</i>
+        </h5>
+        Displays a registration succeeded message and redirects the application to the <b><i>app.login</i></b>  state. Usage: 
+        <pre style="max-width:1000px;">&#123; &#123; handlers.regSuccess(  ) &#125; &#125;</pre>
+    </div>
 
-        });
-
-    };
-        
-    //@ Perform A User Logout
-    r_auth.Logout         = function( ){
-
-        return new Promise( function(resolve,reject){
-
-            delete $localStorage.framify_user;
-            r_auth.SetAuth(undefined)
-            .then(resolve)
-
-        });                         
-
-    };
-
-}]) 
-
-
-.run(
-["app" ,"cgi" ,"$rootScope" ,"$state" ,"$localStorage" ,"sms" ,"auth","remoteAuth"
-,function(app ,cgi ,$rootScope ,$state ,$localStorage ,sms ,auth, remoteAuth) {
-
-        //! INJECT THE LOCATION SOURCE TO THE ROOT SCOPE
-        $rootScope.location     = $state;
-
-        //! INJECT THE $localStorage instance into the root scope
-        $rootScope.storage      = $localStorage;
-
-        //! INJECT THE APPLICATION'S MAIN SERVICE TO THE ROOT SCOPE SUCH THAT ALL SCOPES MAY INHERIT IT
-        $rootScope.app          = app;
-
-        //! INJECT THE APP BASICS SERVICE
-        $rootScope.cgi          = cgi;
-
-        //! SIMPLE APPLICATION BEHAVIOR SETUP
-        $rootScope.frame        = {};
-
-        //#! INJECT THE SMS INSTANCE INTO THE MAIN SCOPE
-        $rootScope.sms          = sms;
-
-        //@ INJECT THE AUTHENTICATION SERVICE
-        $rootScope.auth         = auth;
-        $rootScope.remoteAuth   = remoteAuth;
-
-        //! IDENTIFY THE CURRENT PATH
-        $rootScope.frame.path   = () => $state.absUrl().split("/#/")[0] + "/#/" + $state.absUrl().split("/#/")[1].split("#")[0];
-        //p.split("/#/")[0]+"/#/"+p.split("/#/")[1].split("#")[0]
-
-        //@ INITIALIZE THE STORAGE ADMIN VARIABLE
-        $rootScope.storage.admin = {};
-
-        //! RELOCATION HANDLING
-        $rootScope.frame.relocate = (loc) => {
-            console.log(`Relocating to: #${loc}`)
-            $rootScope.location.go(loc);
-        };
-
-        //! ADMIN HANDLING  
-        $rootScope.frame.is_admin = false;
-
-        //! ADMIN STATUS CHECKER 
-        $rootScope.frame.isAdmin = () => ($rootScope.frame.is_admin) ? true : false;
-
-        //! ROOT USER STATUS CHECKER
-        $rootScope.frame.isRoot = () => ($rootScope.storage.admin.access == 0) ? true : false;
-
-        //! ADMIN STATUS SWITCH
-        $rootScope.frame.changeAdmin = (bool) => {
-            $rootScope.frame.is_admin = bool;
-            //  $rootScope.$apply();
-        };
-
-        //! RESET THE ADMIN STATUS
-        $rootScope.frame.reset = () => {
-            delete $rootScope.storage.admin;
-            delete $rootScope.storage.user;
-            $rootScope.storage.admin    = {};
-            $rootScope.storage.user     = {};
-            $rootScope.frame.changeAdmin(false);
-            window.location = "/#/";
-        };
+    <!--r_handlers.regSuccess-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">r_handlers.regSuccess</u> / <u style="color:cornflowerblue !important">r_handlers.reg_success</u> <i style="color:green !important;">(Function ( message ) )</i>
+        </h5>
+        Displays a registration succeeded message and redirects the application to the <b><i>app.login</i></b>  state. Usage: 
+        <pre style="max-width:1000px;">&#123; &#123; r_handlers.regSuccess(  ) &#125; &#125;</pre>
+    </div>
 
 
-    }])
+    <!--handlers.loginSuccess-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">handlers.loginSuccess</u> / <u style="color:cornflowerblue !important">handlers.login_success</u> <i style="color:green !important;">(Function ( message ) )</i>
+        </h5>
+        Displays a login succeeded message and redirects the application to the <b><i>app.panel</i></b>  state. Usage: 
+        <pre style="max-width:1000px;">&#123; &#123; handlers.loginSuccess(  ) &#125; &#125;</pre>
+    </div>
+
+    <!--r_handlers.loginSuccess-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">r_handlers.loginSuccess</u> / <u style="color:cornflowerblue !important">r_handlers.login_success</u> <i style="color:green !important;">(Function ( message ) )</i>
+        </h5>
+        Displays a login succeeded message and redirects the application to the <b><i>app.panel</i></b>  state. Usage: 
+        <pre style="max-width:1000px;">&#123; &#123; r_handlers.loginSuccess(  ) &#125; &#125;</pre>
+    </div>
 
 
+    <!--handlers.regError-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">handlers.regError</u> / <u style="color:cornflowerblue !important">handlers.reg_error</u> <i style="color:green !important;">(Function ( message ) )</i>
+        </h5>
+        Displays a login failed message. Usage: 
+        <pre style="max-width:1000px;">&#123; &#123; handlers.regError(  ) &#125; &#125;</pre>
+    </div>
+
+    <!--r_handlers.regError-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">r_handlers.regError</u> / <u style="color:cornflowerblue !important">r_handlers.reg_error</u> <i style="color:green !important;">(Function ( message ) )</i>
+        </h5>
+        Displays a login failed message. Usage: 
+        <pre style="max-width:1000px;">&#123; &#123; r_handlers.regError(  ) &#125; &#125;</pre>
+    </div>
+
+    <!--handlers.identity-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">handlers.identity</u> <i style="color:green !important;">(Function (  ) )</i>
+        </h5>
+        Checks with the application server for the user's access credentials and redirects to <b><i>app.login</i></b> state If the user is loged out, inexistent or the lease has expired. Usage: 
+        <pre style="max-width:1000px;">&#123; &#123; handlers.identity(  ) &#125; &#125;</pre>
+    </div>
+
+    <!--r_handlers.identity-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">r_handlers.identity</u> <i style="color:green !important;">(Function (  ) )</i>
+        </h5>
+        Checks with the application server for the user's access credentials and redirects to <b><i>app.login</i></b> state If the user is loged out, inexistent or the lease has expired. Usage: 
+        <pre style="max-width:1000px;">&#123; &#123; r_handlers.identity(  ) &#125; &#125;</pre>
+    </div>
+
+
+    <!--handlers.isLogedIn-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">handlers.isLogedIn</u> / <u style="color:cornflowerblue !important">handlers.is_loged_in</u> <i style="color:green !important;">(Function ( message ) )</i>
+        </h5>
+        Performs a login status check to ensure that a User is rightly aloted their privileges on the system: 
+        <pre style="max-width:1000px;">&#123; &#123; handlers.isLogedIn(  ) &#125; &#125;</pre>
+    </div>
+
+    <!--r_handlers.isLogedIn-->
+    <hr>
+    <div class="section">   
+       
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">r_handlers.isLogedIn</u> / <u style="color:cornflowerblue !important">r_handlers.is_loged_in</u> <i style="color:green !important;">(Function ( message ) )</i>
+        </h5>
+        Performs a login status check to ensure that a User is rightly aloted their privileges on the system: 
+        <pre style="max-width:1000px;">&#123; &#123; r_handlers.isLogedIn(  ) &#125; &#125;</pre>
+    </div>
+
+
+</div>
+<!--EO - framifyController-->
+
+
+
+
+    <pre style="background-color:black;color:white;">
 
 //@ The main controller
 .controller("framifyController"
 ,['$scope' ,'$state' ,'$rootScope','$http' 
 ,function($scope ,$state ,$rootScope ,$http) {
-
-        //!APPLICATION GLOBAL SCOPE COMPONENTS
-        $scope.current = {};
-        $scope.ui = {};
-
-        // $scope.urlParams = $stateParams;
-
-        $rootScope.nav = [];
-        $rootScope.nav.search; 
-        $rootScope.links = [];
 
         $scope.nav.hasFilters = false;
 
@@ -1415,23 +1781,6 @@ function() {
             $scope.location.path("/framify");
         };
 
-
-        //@ FUNCTION EXECUTOR
-        $rootScope.exec = f => f();
-
-        //@ VARIABLE SETTER
-        $rootScope.setVar = ( obj, keys, v ) => {
-
-            if( keys.length === 1){
-                obj[keys[0]] = v;
-            }else{
-                var key     = keys.shift();
-                obj[key]    = $rootScope.setVar(typeof(obj[key]) === 'undefined' ? {} : obj[key], keys, v);
-            }
-
-            return obj;
-
-        };
 
         /**
          * SECURE THE PARENTAL CONTROLLED URLS
@@ -1467,315 +1816,7 @@ function() {
 
         $rootScope.frame.changeAdmin(false);
         $scope.logedin = false;
-         
-        //@ Redirect to a given sub-state in the pre-defined 'app' main state
-        $scope.appRedirect = function(partialState){
-	    $state.go("app."+partialState);
-	}
-                
-        //@ Redirect to the specified state
-        $scope.goTo = function(completeState){
-            $state.go(completeState);
-        }
-
-        //@ UNWANTED ANGULAR JS OBJECTS
-        $scope.unwanted    = ["$$hashKey","$index"];
-
-        $scope.removeUnwanted = function( insertObj ){
-             Object.keys( insertObj )
-             .forEach( insertKey => {
-                if( $scope.unwanted .indexOf( insertKey ) != -1 ){
-                    insertObj[insertKey] = undefined;
-                    delete insertObj[insertKey];
-                }
-            });
-            return insertObj;
-        };
-
-       
-        
-        //! BASIC ADDITION
-        $scope.add = (table ,data ,cryptFields ,cb) => {
-
-            return new Promise( (resolve ,reject) => {
-
-                //* populate the data object 
-                data                = (data) ? $scope.app.json(data) : {};
-                data.command        = "add";
-                data.table          = (table != undefined) ? table.toString().replace(/vw_/ig, '') : "";
-                data.token          = data.token || $scope.storage.admin._;
-                data.extras         = (data) ? ((data.extras) ? data.extras.replace(/LIMIT 1/ig, '') : undefined) : undefined;
-
-                //* Encrypt the specified cryptFields
-                 if (cryptFields) {
-                    cryptFields.split(",")
-                    .forEach((cryptField) => {
-                        if(data[cryptField]){
-                            data[cryptField] = $scope.app.md5(data[cryptField])
-                        }                        
-                    });
-                }
-
-                //* Perform the actual addition
-                $scope.cgi.ajax($scope.removeUnwanted(data))
-                .then((r) => {
-
-                    r = $scope.app.json(r);
-
-                    if (r.response == 200) {
-
-                        $scope.app.notify(`<center> ${r.data.message}</center>` ,"success" );
-
-                        $scope.fetch(table, { specifics: data.specifics });
-
-                        $scope.data[table.toString().replace(/vw_/ig, '')] = {};
-
-                        if ( cb && typeof(cb) == "function") {
-                            resolve( cb(r,data) );
-                        } else {
-                            resolve(true);
-                        }
-
-                    } else {
-
-                        // POSTGRESQL ERROR FORMAT MATCHING
-                        if (Array.isArray(r.data.message)) {
-
-                            var v = r.data.message[2].match(/DETAIL:(.*)/);
-
-                            if (v != undefined || v != null) {
-                                r.data.message = v[1];
-                            } else {
-                                r.data.message = r.data.message[2];
-                            }
-
-                        }
-
-
-                        $scope.app.notify(`<center>${ r.data.message }</center>` ,'danger');
-                        reject( $scope.app.makeResponse(500 ,v[1]) )
-                        
-                    }
-
-                    //$scope.$apply();
-
-                });
-
-            });
-
-        
-            
-        };
-
-        //! BASIC UPDATING
-        $scope.update = (table ,data ,cryptFields ,cb) => {
-
-            return new Promise( (resolve ,reject) => {
-
-                //* pack the relevant info into the data object
-                data                = (data) ? $scope.app.json(data) : {};
-                data.command        = "update";
-                data.table          = (table != undefined) ? table.toString().replace(/vw_/ig, '') : "";
-                data.token          = data.token || $scope.storage.admin._;
-                data.extras         = (data) ? ((data.extras) ? data.extras.replace(/LIMIT 1/ig, '') : undefined) : undefined;
-
-                //* Encrypt the specified cryptFields
-                if (cryptFields) {
-                    cryptFields.split(",")
-                    .forEach((cryptField) => {
-                        if(data[cryptField]){
-                            data[cryptField] = $scope.app.md5(data[cryptField])
-                        } 
-                    });
-                }
-
-                //* perform the actual update
-                $scope.cgi.ajax($scope.removeUnwanted(data))
-                .then( (r) => {
-
-                    r = $scope.app.json(r);
-
-                    if (r.response == 200) {
-
-                        $scope.app.notify(`<center> ${r.data.message}</center>`, "success");
-
-                        $scope.fetch(table, { specifics: data.specifics });
-
-                        $scope.data[table.toString().replace(/vw_/ig, '')] = {};
-
-                        //$scope.$apply();
-
-                        if (typeof(cb) == 'function') {
-                            resolve( cb( r ) );                            
-                        }else{
-                            resolve(true);
-                        }
-
-                    } else {
-
-                        // POSTGRESQL ERROR FORMAT MATCHING
-                        if (Array.isArray(r.data.message)) {
-
-                            var v = r.data.message[2].match(/DETAIL:(.*)/)
-
-                            if (v != undefined || v != null) {
-                                r.data.message = v[1];
-                            } else {
-                                r.data.message = r.data.message[2];
-                            }
-                           
-                        }
-
-                        $scope.app.notify(`<center>${ r.data.message }</center>`,"danger");
-                        reject( $scope.app.makeResponse(500 ,r.data.message)  );
-
-                    }
-                    
-                })
-
-            });
-  
-        };
-
-
-        //! BASIC DATA FETCHING
-        var do_fetch = (table ,data ,cryptFields) => {
-
-            return new Promise( (resolve ,reject) => {
-
-                //* populate the "data" object
-                data               = (data) ? $scope.app.json(data) : {};
-                data.command       = "get";
-                data.table         = table;
-
-                console.log("\nprocessing the fetching of table " + table + "\n")
-
-                //* Encrypt the specified cryptFields
-                if (cryptFields) {
-                    cryptFields.split(",")
-                    .forEach((cryptField) => {
-                       if(data[cryptField]){
-                            data[cryptField] = $scope.app.md5(data[cryptField])
-                        } 
-                    });
-                }
-
-                 //* perform the actual data fetching
-                 $scope.cgi.ajax($scope.removeUnwanted(data))
-                 .then( (r) => {
-
-                    r = $scope.app.json(r);
-
-                    if (r.response == 200) {
-                        $scope.fetched[table] = r.data.message;
-                        $scope.$apply();
-                        resolve(r);
-                    } else {
-
-                        // POSTGRESQL ERROR FORMAT MATCHING
-                        if (Array.isArray(r.data.message)) {
-
-                            var v = r.data.message[2].match(/DETAIL:(.*)/)
-
-                            if (v != undefined || v != null) {
-                                r.data.message = v[1];
-                            } else {
-                                r.data.message = r.data.message[2];
-                            }
-
-                        }
-                        $scope.app.notify(`<center>${ r.data.message }</center>`,"danger");
-                        reject( $scope.app.makeResponse(500 ,r.data.message) );
-
-                    }
-                    
-                })
-
-            });
-
-        };
-
-        $scope.fetch = (table ,data ,cryptFields ,cb) => {
-
-            if (Array.isArray(table)) {
-
-                let promiseArr = new Array();
-
-                table
-                .filter(e=>typeof(e[0])!='undefined' )
-                .forEach( (tData ,tkey) => {
-                    promiseArr.push( do_fetch(tData[0] ,(tData[1] || {}) ) ,cryptFields)
-                });
-                
-                promiseArr = promiseArr.filter(e=>typeof(e)!='undefined');
-
-                return Promise.all( promiseArr );
-
-            } else {
-               return Promise.resolve( do_fetch(table, data, cryptFields) )
-               .catch(function(e){
-                   console.log("Encountered an error when processing the fetch function.")
-                   console.dir(e)
-               });
-            }
-
-        };
-
-        //! BASIC DELETION  
-        $scope.del = (table ,data ,cryptFields ,cb) => {
-
-            return new Promise( (reject ,resolve) => {
-
-                //* populate the data object
-                data            = (data) ? $scope.app.json(data) : {};
-                data.command    = "del";
-                data.table      = (table != undefined) ? table.toString().replace(/vw_/ig, '') : "";
-                data.token      = data.token || $scope.storage.admin._;
-
-                //* Encrypt the specified cryptFields
-                if (cryptFields) {
-                    cryptFields.split(",")
-                    .forEach((cryptField) => {
-                        if(data[cryptField]){
-                            data[cryptField] = $scope.app.md5(data[cryptField])
-                        } 
-                    });
-                }
-
-                $scope.cgi.ajax($scope.removeUnwanted(data))
-                .then( (r) => {
-
-                    r = $scope.app.json(r);
-
-                    if (r.response == 200) {
-                        // // $scope.fetched[table].splice(delID, 1);
-                        $scope.app.notify(`<center>${r.data.message}</center>`, "success");
-                        $scope.fetch(table);
-                        resolve(r);
-                    } else {
-
-                        // POSTGRESQL ERROR FORMAT MATCHING
-                        if (Array.isArray(r.data.message)) {
-
-                            var v = r.data.message[2].match(/DETAIL:(.*)/)
-
-                            if (v != undefined || v != null) {
-                                r.data.message = v[1];
-                            } else {
-                                r.data.message = r.data.message[2];
-                            }
-                        }
-                        $scope.app.notify(`<center>${ r.data.message }</center>`,"danger");
-                        reject( $scope.app.makeResponse(500 ,r.data.message) );
-
-                    }
-                    //$scope.$apply();
-
-                })
-
-            })
-            
-        };
+   
 
         //Basic User Login
         $scope.login = (cryptField) => {
@@ -1998,122 +2039,6 @@ function() {
             });
         };
 
-
-        // BASIC Custom Queries
-        $scope.custom = (table ,data ,cryptFields ,cb) => {
-
-            return new Promise( (resolve,reject) => {
-
-                //* initialize the data object
-                data            = (data) ? $scope.app.json(data) : {};
-                data.command    = "custom";
-                data.token      = data.token || $scope.storage.admin._;
-
-                //* Encrypt the specified cryptFields
-                if (cryptFields) {
-                    cryptFields.split(",")
-                    .forEach((cryptField) => {
-                        if(data[cryptField]){
-                            data[cryptField] = $scope.app.md5(data[cryptField])
-                        } 
-                    });
-                }
-
-                //* Perform the actual custom query
-                $scope.cgi.ajax($scope.removeUnwanted(data))
-                .then((r) => {
-
-                    r = $scope.app.json(r);
-
-                    if (r.response == 200) {
-
-                        $scope.app.notify(`<center>${(r.data.message || 'Successful')}</center>`, "success");
-
-                        $scope.cFetched[table] = r.data.message;
-                        $scope.data[table.toString().replace(/vw_/ig, '')] = {};
-                        //$scope.$apply();
-
-                        resolve(r);
-
-                    } else {
-
-                        // POSTGRESQL ERROR FORMAT MATCHING
-                        if (Array.isArray(r.data.message)) {
-
-                            var v = r.data.message[2].match(/DETAIL:(.*)/)
-                            if (v != undefined || v != null) {
-                                r.data.message = v[1];
-                            } else {
-                                r.data.message = r.data.message[2];
-                            }
-
-                        } 
-                        $scope.app.notify(`<center>${ r.data.message }</center>`);
-                        reject( $scope.app.makeResponse(500, r.data.message) )
-                    }
-                    //$scope.$apply();
-                })
-
-            });   
-
-        };
-
-        //BASIC DATABASE INSTANCEOF COUNTER
-        $scope.count = (table ,data ,cryptFields ,cb) => {
-
-            return new Promise( (resolve ,reject) => {
-
-                data            = (data) ? $scope.app.json(data) : {};
-                data.table      = table;
-                data.command    = "count";
-                data.token      = data.token || {};
-
-                //* Encrypt the specified cryptFields
-                if (cryptFields) {
-                    cryptFields.split(",")
-                    .forEach((cryptField) => {
-                        if(data[cryptField]){
-                            data[cryptField] = $scope.app.md5(data[cryptField])
-                        } 
-                    });
-                }
-
-                //* perform the actual count
-                $scope.cgi.ajax($scope.removeUnwanted(data))
-                .then((r) => {
-
-                    r = $scope.app.json(r);
-
-                    if (r.response == 200) {
-
-                        $scope.counted[table.toString().replace(/vw_/ig, '')] = r.data.message;
-                        $scope.data[table.toString().replace(/vw_/ig, '')] = {};
-
-                        //$scope.$apply();
-
-                        resolve(r);
-
-                    } else {
-
-                        // POSTGRESQL ERROR FORMAT MATCHING
-                        if (Array.isArray(r.data.message)) {
-                            var v = r.data.message[2].match(/DETAIL:(.*)/)
-                            if (v != undefined || v != null) {
-                                r.data.message = v[1];
-                            } else {
-                                r.data.message = r.data.message[2];
-                            }
-                        }
-                        $scope.app.notify(`<center>${ r.data.message }</center>` ,'danger');
-                        reject( $scope.app.makeResponse(500 ,r.data.message ) );
-                    }
-                    //$scope.$apply();
-                })
-
-            });
-
-        };
-
         /**
          * TABLE SORTER
          */
@@ -2123,121 +2048,6 @@ function() {
         }
 
 
-        /**
-         *  DELETE UNWANTED FIELDS
-         */
-        $scope.sanitize = (data ,keys) => {
-            if (keys) {
-                keys.split(",").forEach((key) => {
-                    delete data[key];
-                });
-                return Promise.resolve(data)
-                .catch(function(e){
-                   console.log("Encountered an error when processing the sanitize function.")
-                   console.dir(e)
-               });
-            }
-        };
-
-        /**
-         * PUSH DATA TO OBJECT
-         */
-        $scope.dPush = (obj ,key ,val) => {
-            obj[key] = val;
-        };
-
-        /**
-         * @ MONTH REGULATION
-         */
-        $scope.currmoin = $scope.app.monthNum();
-        $scope.setMoin = (moin) => { $scope.currmoin = moin; }
-
-        //@ DELETE UNWANTED PARAMETERS
-        $scope.delParams = function( mainObj,removeKeys ){
-            // $scope.app.clone
-            mainObj     = (mainObj) || {};
-            removeKeys  = ( removeKeys ) ? removeKeys.split(',') : [];
-
-            removeKeys.forEach(e => {
-                mainObj[e] = null;
-                delete mainObj[e];
-            });
-
-            return mainObj;
-
-        };
-
-        //@ INJECT A STANDARD WHERE "Extras" OBJECT
-        // addExtras(data.my_services,{username: storage.user.username},'username:WHERE owner','password,name,email,telephone,account_number,entity,active'),' ' )
-        $scope.addExtras = (targetObj ,extrasObj ,subStrings ,removeKeys) => {
-
-            return new Promise( (resolve,reject) => {
-
-                targetObj   = targetObj || {};
-                extrasObj   = extrasObj || {};
-                subStrings  = subStrings || '';
-                removeKeys  = removeKeys || '';
-
-                var extras  = '';
-
-                var k = [],
-                    v = [];
-
-                //@ CAPTURE THE REMOVE KEYS
-                removeKeys = removeKeys.split(',').filter(e => e);
-
-
-                removeKeys.forEach(e => {
-                    extrasObj[e] = null;
-                    delete extrasObj[e];
-                });
-
-                //@ CAPTURE REPLACE STRINGS
-                subStrings
-                    .split(',')
-                    .forEach((e, i) => {
-                        let x = e.split(':');
-                        k[i] = (x[0]);
-                        v[i] = (x[1]);
-                    })
-
-                //@ GET THE DEFINED KEYS
-                var keys = Object.keys(extrasObj);
-
-                //@ REPLACE THE DEFINED WITH THE DESIRED REPLACE KEYS
-                k.forEach((e, i) => {
-
-                    if (keys.indexOf(e) != -1) {
-
-                        extrasObj[v[i]] = extrasObj[e];
-                        extrasObj[e] = null;
-                        delete extrasObj[e];
-
-                    }
-
-                });
-
-
-                k = Object.keys(extrasObj);
-                v = null;
-
-                k.forEach((e, i) => {
-
-                    var fg = ( !isNaN(extrasObj[e]) ) ? parseInt(extrasObj[e]) : "'" + extrasObj[e] +"'";
-                    extras += ' ' + e + "=" + fg + " AND";
-
-                });
-
-                k = null;
-
-
-                targetObj.extras = extras.replace(/AND+$/, '');
-
-                resolve( targetObj );
-
-            })
-
-        };
 
         
 
@@ -2506,53 +2316,8 @@ function() {
 
 }])
 
-.directive("contenteditable"
-,function() {
-    return {
-        restrict: "A",
-        require: "ngModel",
-        link: function(scope, element, attrs, ngModel) {
 
-            function read() {
-                ngModel.$setViewValue(element.html());
-            }
 
-            ngModel.$render = function() {
-                element.html(ngModel.$viewValue || "");
-            };
-
-            element.bind("blur keyup change", function() {
-                scope.$apply(read);
-            });
-        }
-    };
-})
-
-.directive('fileModel',['$parse',function($parse){
-    
-    return {
-        restrict :"A",
-        link : function(scope,element,attr){
-            var model       = $parse(attr.fileModel);
-            var modelSetter = model.assign;
-            element.bind('change', ()=>{
-                scope.$apply( ()=>{
-                    modelSetter(scope,element[0].files[0])
-                })
-            })
-        }
-    }
-    
-}])
-
-//!CONFIGURE THE BNASIC PRE-RUNTIME STATES OF THE APPLICATION
-.config(["ChartJsProvider",function(ChartJsProvider){
-    
-    //@SET THE DEFAULT CHART COLORS
-    ChartJsProvider.setOptions({ colors : [ "#4AB151",'#387EF5', '#FF0000', '#DCDCDC', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360'] });
-    // ChartJsProvider.setOptions({ colors : [ '#803690', '#00ADF9', '#DCDCDC', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360'] });
-
-}]);
 
     </pre>
 

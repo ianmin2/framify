@@ -150,7 +150,7 @@ header("Content-Type:application/json");
 			}
 			$conditions = ( sizeof($conditions) > 0 )? ( " WHERE ".implode(" AND ", $conditions)  ) : "";			
 						
-			$query = "SELECT ".$specifics." FROM ".$table." ".$conditions."".@$extras;
+			$query = "SELECT ".$specifics." FROM ".$table." ".$conditions." ".@$extras;
 			
 			//return $this->c->wrapResponse(200,$query,"");
 			return $this->c->printQueryResults( $query, true, true );
