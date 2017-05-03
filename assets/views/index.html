@@ -1,5 +1,43 @@
+<div ng-init="current='intro'"></div>
+<div id="top_bar">
+        <div class="md-top-bar">
+            <div class="uk-width-large-8-10 uk-container-center">
+                <ul class="top_bar_nav" id="snippets_grid_filter">
+                    <li ng-class="{'uk-active' : current=='intro'}">
+                        <a ng-click="current='intro'" style="color:red;">intro</a> 
+                    </li>
+                    <li ng-class="{'uk-active' : current=='app'}">
+                        <a ng-click="current='app'" style="color:red;">app</a> 
+                    </li>
+                    <li ng-class="{'uk-active' : current=='sms'}">
+                        <a ng-click="current='sms'" style="color:red;">sms</a> 
+                    </li>
+                    <li ng-class="{'uk-active' : current=='cgi'}">
+                         <a ng-click="current='cgi'" style="color:red;">cgi</a>
+                    </li>
+                    <li ng-class="{'uk-active' : current=='auth'}">
+                         <a ng-click="current='auth'" style="color:red;">auth</a>
+                    </li>
+                    <li ng-class="{'uk-active' : current=='remoteAuth'}">
+                         <a ng-click="current='remoteAuth'" style="color:red;">remoteAuth</a>
+                    </li>
+                    <li ng-class="{'uk-active' : current=='fileModel'}">
+                         <a ng-click="current='fileModel'" style="color:red;">fileModel</a>
+                    </li>
+                    <li ng-class="{'uk-active' : current=='contenteditable'}">
+                         <a ng-click="current='contenteditable'" style="color:red;">contenteditable</a>
+                    </li>
+                    <li ng-class="{'uk-active' : current=='framifyController'}">
+                         <a ng-click="current='framifyController'" style="color:red;">framifyController</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
-<div>
+
+<div ng-if="current=='intro'">
+    <br>
     <center>
         <h1>@Framify</h1>
     </center>
@@ -17,22 +55,23 @@
         It depends on <code>ui.router ,framify-paginate ,ngStorage ,jsonForatter ,chart.js ,ngAria ,ngMaterial, UIKit, socket.io, jQuery and ngMessages</code> all of which can be found in the <code>framify_dependencies.js</code> or <code>framify_bundled.js</code> files of the <code>framify.js</code> package.
     </div>
 
-<!-- SO - APP SERVICE -->
-<div ng-if="false">
+</div>   
 
-     <!--App Service-->
+<!-- SO - APP SERVICE -->
+<div ng-if="current=='app'">
+
+    <!--App Service-->
     <hr>
-    <div class="section">
+    <div class="section" ng-click="current='app'">
         <u style="color:cornflowerblue !important"><h3>The <i style="color:red;">app</i> service</h3></u>
     </div>
-
 
     <!--scheme-->
     <hr> 
     <div class="section">   
-        <u style="color:cornflowerblue !important">
-            <h5 style="color:gray">app.scheme</h5>
-        </u>
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">app.scheme</u> 
+        </h5>
         This is a reference to access scheme that the application is utilizing.
         <pre style="max-width:300px;">&#123; &#123; app.scheme &#125; &#125;</pre>
         Currently <code>{{app.scheme}}</code>
@@ -41,9 +80,9 @@
     <!--ip-->
     <hr> 
     <div class="section">   
-        <u style="color:cornflowerblue !important">
-            <h5 style="color:gray">app.ip</h5>
-        </u>
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">app.ip</u> 
+        </h5>
         This is a reference to the ip or server_name that the application is being accesssed on.
         <pre style="max-width:300px;">&#123; &#123; app.ip &#125; &#125;</pre>
         <br>Currently <code>{{app.ip}}</code>
@@ -52,9 +91,9 @@
     <!--port-->
     <hr>
     <div class="section">   
-        <u style="color:cornflowerblue !important">
-            <h5 style="color:gray">app.port</h5>
-        </u>
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">app.port</u> 
+        </h5>
         This is a reference to the port that the application is being accessed through.
         <pre style="max-width:300px;">&#123; &#123; app.port &#125; &#125;</pre>
         <br>Currently <code>{{app.port || 'default (80)'}}</code>
@@ -63,9 +102,9 @@
     <!--hlink/url-->
     <hr>
     <div class="section">   
-        <u style="color:cornflowerblue !important">
-            <h5 style="color:gray">app.hlink / app.url </h5>
-        </u>
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">app.hlink</u> / <u style="color:cornflowerblue !important">app.url</u> 
+        </h5>
         This is a reference to the root url of the application.
         <pre style="max-width:300px;">&#123; &#123; app.hlink &#125; &#125; or &#123; &#123; app.url &#125; &#125;</pre>
         <br>Currently <code>{{app.hlink}}</code>
@@ -75,12 +114,12 @@
     <!--nav-->
     <hr>
     <div class="section">   
-        <u style="color:cornflowerblue !important">
-            <h5 style="color:gray">app.nav</h5>
-        </u>
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">app.nav</u> 
+        </h5>
         This is a reference to the application's main navigation object.
         <pre style="max-width:300px;">&#123; &#123; app.nav &#125; &#125;</pre>
-        <br>Currently <json-formatter open=0 json="app.nav"></json-formatter>
+        <br>Currently : <code>{{app.nav}}</code>
     </div>
 
     <!--redirect-->
@@ -110,7 +149,7 @@
         With an object <code> var people = {} </code>
         <br> To set add a new value 'John' with the value <code>{ "name": "John Doe", "age":20 }</code>
         ,Run <pre style="max-width:600px;">&#123; &#123; people = app.setVar(people, 'John', { "name": "John Doe", "age":20 } ) &#125; &#125;</pre>
-        Giving the resultant object <pre style="max-width:600px;"> <json-formatter open=0 ng-if="data.sample_setVar" json="data.sample_setVar" ></json-formatter> </pre>
+        Giving the resultant object <pre style="max-width:600px;"> <code >{{data.sample_setVar}}</code> </pre>
         <span hidden> {{ data.sample_setVar =  app.setVar(people, 'John', { "name": "John Doe", "age":20 } ) }} </span>
         
     </div>
@@ -140,7 +179,7 @@
         Transforms a viable string into an accessible JSON object.
         <br>To transform the string <code>'{"name":{"first":"John","last":"Doe"},"age":1000}'</code>, run
         <pre style="max-width:600px;">&#123; &#123; app.json('{"name":{"first":"John","last":"Doe"},"age":1000}') &#125; &#125;</pre>
-        <br>which outputs <pre style="max-width:600px;"> <json-formatter  open=0 ng-if="data.sample_json" json="data.sample_json"></json-formatter> </pre>
+        <br>which outputs <pre style="max-width:600px;"> {{data.sample_json}}</pre>
         <span hidden> {{ data.sample_json =  app.json('{"name":{"first":"John","last":"Doe"},"age":1000}') }} </span>
     </div>
 
@@ -267,7 +306,7 @@
         Outputs an Array containing all of the provided objects' <b>first level</b> keys.
         <br>To <b>obtain the keys </b> of the object <code>{ name: { first: 'John', last: 'Doe' }, age: 1000 })</code>, run
         <pre style="max-width:600px;">&#123; &#123; app.keys( { name: { first: 'John', last: 'Doe' }, age: 1000 }) ) &#125; &#125;</pre>
-         <br>which outputs <pre style="max-width:600px;"> <json-formatter open=0 ng-if="data.sample_keys" json="data.sample_keys" ></json-formatter> </pre>
+         <br>which outputs <pre style="max-width:600px;"> <code >{{data.sample_keys}}</code> </pre>
         <span hidden> {{ data.sample_keys =  app.keys({ name: { first: 'John', last: 'Doe' }, age: 1000 }) }} </span>
     </div>
 
@@ -282,7 +321,7 @@
         Outputs an Array containing all of the provided objects' <b>first level</b> values.
         <br>To <b>obtain the values </b> of the object <code>{ name: { first: 'John', last: 'Doe' }, age: 1000 }</code>, run
         <pre style="max-width:600px;">&#123; &#123; app.vals( { name: { first: 'John', last: 'Doe' }, age: 1000 }) ) &#125; &#125;</pre>
-         <br>which outputs <pre style="max-width:600px;"> <json-formatter open=0 ng-if="data.sample_vals" json="data.sample_vals"></json-formatter> </pre>
+         <br>which outputs <pre style="max-width:600px;"> <code >{{data.sample_vals}}</code> </pre>
         <span hidden> {{ data.sample_vals =  app.vals({ name: { first: 'John', last: 'Doe' }, age: 1000 }) }} </span>
     </div>
 
@@ -340,7 +379,7 @@
         <br>Simple UIKit based notification. 
         <br><i>Defaults
         <br><b>message</b></i>: <code>'A blank notification was triggered.'</code>
-        <br><b>bootstrap_class</b></i>: <code>info</code> <b>[<font color="blue">info</font> ,<font color="green">success</font> ,<font color="gray">primary</font> ,<font color="orange">warning</font> ,<font color="red">danger</font> ]</b>
+        <br><b>bootstrap_class</b></i>: <code>info</code> <b>[<font color="green">success</font> ,<font  color="blue">primary</font> ,<font color="orange">warning</font> ,<font color="red">danger</font> ]</b>
         <br><b>timeout</b></i>: <code>6000</code> 
         <br><b>position</b></i>: <code>'top-center'</code> <b>[top-left ,top-center ,top-right ,bottom-left ,bottom-center ,bottom-right]</b>
         <pre style="max-width:600px;">&#123; &#123; app.notify( ) &#125; &#125;</pre>
@@ -353,12 +392,12 @@
     <!--countries-->
     <hr>
     <div class="section">   
-        <u style="color:cornflowerblue !important">
-            <h5 style="color:gray">app.countries</h5>
-        </u>
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important"> app.countries</u>
+        </h5>
         Outputs an Array of alphabetically ordered 240 country objects in the format <code>{ name: "x", value: 'y' }</code> <i>(Ideal for use in select elements)</i>.
         <pre style="max-width:300px;">&#123; &#123; app.countries &#125; &#125;</pre>
-        <br>Currently <json-formatter json="app.countries" open="0"></json-formatter>
+        <br>Currently <code>{{app.countries}}</code>
     </div>
 
     <!--makeResponse-->
@@ -372,7 +411,7 @@
         Outputs a standard framify JSON response object.
         <br>To give a standard framify <i>Unauthorized</i> response, <code>{ response: 401, data: { message: "Unauthorized", command: "retry" } }</code>, run
         <pre style="max-width:600px;">&#123; &#123; app.makeResponse(401,'Unauthorized','retry') &#125; &#125;</pre>
-        <br>which outputs <pre style="max-width:600px;"> <json-formatter open=0 ng-if="data.sample_makeresponse" json="data.sample_makeresponse"></json-formatter> </pre>
+        <br>which outputs <pre style="max-width:600px;"> <code>{{data.sample_makeresponse}}</code> </pre>
         <span hidden> {{ data.sample_makeresponse =  app.makeResponse(401,'Unauthorized','retry') }} </span>
     </div>
 
@@ -535,24 +574,25 @@
      <!--month_array-->
     <hr>
     <div class="section">   
-        <u style="color:cornflowerblue !important">
-            <h5 style="color:gray">app.month_array</h5>
-        </u>
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important"> app.month_array</u> 
+        </h5>
         This is a reference to a zero indexed month array.
         <pre style="max-width:300px;">&#123; &#123; app.month_array &#125; &#125;</pre>
-        <br>Returns <json-formatter open=0 json="app.month_array"></json-formatter>
+        <br>Returns <code>{{app.month_array}}</code>
     </div>
 
     <!--month_o_array-->
     <hr>
-    <div class="section">   
-        <u style="color:cornflowerblue !important">
-            <h5 style="color:gray">app.month_o_array</h5>
-        </u>
+    <div class="section">  
+
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">app.month_o_array</u> 
+        </h5> 
         This is a reference to a month object array in the format <code>[{id: "", name: ""}]</code>.
         <br> <i>It is ideal for use in select lists.</i>
         <pre style="max-width:300px;">&#123; &#123; app.month_o_array &#125; &#125;</pre>
-        <br>Returns <json-formatter open=0 json="app.month_o_array"></json-formatter>
+        <br>Returns <code>{{app.month_o_array}}</code>
     </div>
 
     <!--ajax-->
@@ -658,9 +698,9 @@
     <!--isemail-->
     <hr> 
     <div class="section">   
-        <u style="color:cornflowerblue !important">
-            <h5 style="color:gray">app.isemail</h5>
-        </u>
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">app.isemail</u>
+        </h5>
         Returns an Ecmascript RegEx pattern to validate email addresses.
         <pre style="max-width:300px;">&#123; &#123; app.isemail &#125; &#125;</pre>
         <!--Currently <code>{{ app.isemail }}</code>-->
@@ -670,7 +710,7 @@
     <hr> 
     <div class="section">   
          <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">app.isEmail</u> <i style="color:green !important;">(Function (text_toValidate) )</i>
+                <u style="color:cornflowerblue !important">app.isEmail</u> / <u style="color:cornflowerblue !important">app.is_email</u> <i style="color:green !important;">(Function (text_toValidate) )</i>
         </h5>
         Returns a boolean value after evaluating whether or not a given text is a valid email address; Usage:
         <pre style="max-width:400px;">&#123; &#123; app.isEmail( 'framify@bixbyte.io' ) &#125; &#125;</pre>
@@ -680,9 +720,9 @@
     <!--isusername-->
     <hr> 
     <div class="section">   
-        <u style="color:cornflowerblue !important">
-            <h5 style="color:gray">app.isusername</h5>
-        </u>
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">app.isusername</u>
+        </h5>
         Returns an Ecmascript RegEx pattern to validate a username.
         <pre style="max-width:300px;">&#123; &#123; app.isusername &#125; &#125;</pre>
         <!--Currently <code>{{app.isusername}}</code>-->
@@ -692,7 +732,7 @@
     <hr> 
     <div class="section">   
          <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">app.isUsername</u> <i style="color:green !important;">(Function (text_toValidate) )</i>
+                <u style="color:cornflowerblue !important">app.isUsername</u> / <u style="color:cornflowerblue !important">app.is_username</u> <i style="color:green !important;">(Function (text_toValidate) )</i>
         </h5>
         Returns a boolean value after evaluating whether or not a given text is a valid username; Usage:
         <pre style="max-width:400px;">&#123; &#123; app.isUsername( 'framify' ) &#125; &#125;</pre>
@@ -702,9 +742,9 @@
     <!--ispassword-->
     <hr> 
     <div class="section">   
-        <u style="color:cornflowerblue !important">
-            <h5 style="color:gray">app.ispassword</h5>
-        </u>
+       <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">app.ispassword</u>
+        </h5>
         Returns an Ecmascript RegEx pattern to validate a password.
         <pre style="max-width:300px;">&#123; &#123; app.ispassword &#125; &#125;</pre>
         <!--Currently <code>{{app.ispassword}}</code>-->
@@ -714,7 +754,7 @@
     <hr> 
     <div class="section">   
          <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">app.isPassword</u> <i style="color:green !important;">(Function (text_toValidate) )</i>
+                <u style="color:cornflowerblue !important">app.isPassword</u> / <u style="color:cornflowerblue !important">app.is_password</u> <i style="color:green !important;">(Function (text_toValidate) )</i>
         </h5>
         Returns a boolean value after evaluating whether or not a given text is a valid Password; Usage:
         <pre style="max-width:400px;">&#123; &#123; app.isPassword( 'framify' ) &#125; &#125;</pre>
@@ -724,9 +764,9 @@
     <!--isnumber-->
     <hr> 
     <div class="section">   
-        <u style="color:cornflowerblue !important">
-            <h5 style="color:gray">app.isnumber</h5>
-        </u>
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">app.isnumber</u>
+        </h5>
         Returns an Ecmascript RegEx pattern to validate a number.
         <pre style="max-width:300px;">&#123; &#123; app.isnumber &#125; &#125;</pre>
         <!--Currently <code>{{app.isnumber}}</code>-->
@@ -736,7 +776,7 @@
     <hr> 
     <div class="section">   
          <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">app.isNumber</u> <i style="color:green !important;">(Function (text_toValidate) )</i>
+                <u style="color:cornflowerblue !important">app.isNumber</u> / <u style="color:cornflowerblue !important">app.is_number</u> <i style="color:green !important;">(Function (text_toValidate) )</i>
         </h5>
         Returns a boolean value after evaluating whether or not a given text is a valid Number; Usage:
         <pre style="max-width:400px;">&#123; &#123; app.isNumber( 126157412 ) &#125; &#125;</pre>
@@ -746,9 +786,9 @@
     <!--istelephone-->
     <hr> 
     <div class="section">   
-        <u style="color:cornflowerblue !important">
-            <h5 style="color:gray">app.istelephone</h5>
-        </u>
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">app.istelephone</u>
+        </h5>
         Returns an Ecmascript RegEx pattern to validate a telephone.
         <pre style="max-width:300px;">&#123; &#123; app.istelephone &#125; &#125;</pre>
         <!--Currently <code>{{app.istelephone}}</code>-->
@@ -758,7 +798,7 @@
     <hr> 
     <div class="section">   
          <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">app.isTelephone</u> <i style="color:green !important;">(Function (text_toValidate) )</i>
+                <u style="color:cornflowerblue !important">app.isTelephone</u> / <u style="color:cornflowerblue !important">app.is_telephone</u> <i style="color:green !important;">(Function (text_toValidate) )</i>
         </h5>
         Returns a boolean value after evaluating whether or not a given text is a valid Telephone; Usage:
         <pre style="max-width:400px;">&#123; &#123; app.isTelephone( '+254701234567' ) &#125; &#125;</pre>
@@ -768,23 +808,23 @@
     <!--isdateTime-->
     <hr> 
     <div class="section">   
-        <u style="color:cornflowerblue !important">
-            <h5 style="color:gray">app.isdateTime</h5>
-        </u>
+        <h5 style="color:gray">
+                <u style="color:cornflowerblue !important">app.isdatetime</u>
+        </h5>
         Returns an Ecmascript RegEx pattern to validate a date-time value in the format <i><b>DD-MM-YYYY HH:MM e.g 29-02-2013 22:16</b></i>.
-        <pre style="max-width:300px;">&#123; &#123; app.isdateTime &#125; &#125;</pre>
-        <!--Currently <code>{{app.isdateTime}}</code>-->
+        <pre style="max-width:300px;">&#123; &#123; app.isdatetime &#125; &#125;</pre>
+        <!--Currently <code>{{app.isdatetime}}</code>-->
     </div>
 
     <!--isDateTime-->
     <hr> 
     <div class="section">   
          <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">app.isDateTime</u> <i style="color:green !important;">(Function (text_toValidate) )</i>
+                <u style="color:cornflowerblue !important">app.is_date_time</u> / <u style="color:cornflowerblue !important">app.isDateTime</u> <i style="color:green !important;">(Function (text_toValidate) )</i>
         </h5>
         Returns a boolean value after evaluating whether or not a given text is a valid  date-time value in the format <i><b>DD-MM-YYYY HH:MM</b></i>; Usage:
         <pre style="max-width:400px;">&#123; &#123; app.isDateTime(  {{app.dateTime()}} ) &#125; &#125;</pre>
-        Returns <code>{{ app.isDateTime( app.dateTime() ) }}</code>
+        Returns <code>{{ app.isDateTime( '03-05-2017 19:25' ) }}</code>
     </div>
 
     <!--matches-->
@@ -913,7 +953,7 @@
         <pre style="max-width:1000px;">&#123; &#123; app.db({ command: 'get', table: 'users', specifics: 'id,username' }).then(app.handler).catch(app.handler) &#125; &#125;</pre>
         <button 
             class="md-btn md-btn-primary" 
-            ng-click=" app.db({ command: 'get', table: 'users', specifics: 'id,username'' })s.then(app.handler).catch(app.handler)"
+            ng-click=" app.db({ command: 'get', table: 'users', specifics: 'id,username' }).then(app.handler).catch(app.handler)"
         >APP.db REQUEST</button>
     </div>
 
@@ -937,10 +977,11 @@
 </div>
 
 
+ 
 <!-- SO - SMS SERVICE-->
-<div ng-if="false"> 
+<div ng-if="current=='sms'"> 
 
-     <!--SMS Service-->
+    <!--SMS Service-->
     <hr>
     <div class="section">
         <u style="color:cornflowerblue !important"><h3>The <i style="color:red;">sms</i> service</h3></u>
@@ -985,7 +1026,7 @@
         
         Sends an already formatted SMS object.
         <br>The  format required is <code>{ "telephone": "087987986", "message": "Hello Stranger", "password": "Your device's FRAMIFY SMS Authentication Key" }</code>, e.g:
-        <pre style="max-width:600px;">&#123; &#123; sms.SMS( { "telephone": "087987986", "message": "Hello Stranger", "password": "3*5************" } ) &#125; &#125;</pre>
+        <pre style="max-width:900px;">&#123; &#123; sms.SMS( { "telephone": "087987986", "message": "Hello Stranger", "password": "3*5************" } ) &#125; &#125;</pre>
     </div>
 
     <!--oneSMS-->
@@ -1011,7 +1052,7 @@
         
         Sends an SMS String to multiple users.
         <br>To send an SMS message <i>(after establishing a connection to the gateway)</i>, run:
-        <pre style="max-width:600px;">&#123; &#123; sms.bulkSMS(  ["087987986","0324243686"], "Hello Stranger", "3*5************"  ) &#125; &#125;</pre>
+        <pre style="max-width:800px;">&#123; &#123; sms.bulkSMS(  ["087987986","0324243686"], "Hello Stranger", "3*5************"  ) &#125; &#125;</pre>
     </div>
 
     <!--db-->
@@ -1071,15 +1112,16 @@
 </div>
   
 
+
 <!-- SO - CGI SERVICE -->
-<div ng-if="false"> 
+<div ng-if="current=='cgi'"> 
+
     
     <!--CGI Service-->
     <hr>
-    <div class="section">
+    <div class="section" ng-click="current='cgi'">
         <u style="color:cornflowerblue !important"><h3>The <i style="color:red;">cgi</i> service</h3></u>
     </div>
-
 
      <!--ajax-->
     <hr>
@@ -1135,11 +1177,11 @@
 
 
 <!--SO - AUTH SERVICE-->
-<div ng-if="false">  
+<div ng-if="current=='auth'">  
 
-    <!--Auth Service-->
+     <!--Auth Service-->
     <hr>
-    <div class="section">
+    <div class="section" ng-click="current='auth'">
         <u style="color:cornflowerblue !important"><h3>The <i style="color:red;">auth</i> service</h3></u>
         <code>DO NOT USE ON A REMOTELY HOSTED CLIENT</code>
     </div>
@@ -1196,17 +1238,16 @@
 <!--EO - AUTH SERVICE-->
 
 
-
 <!--SO - REMOTEAUTH SERVICE-->
-<div ng-if="false">  
+<div ng-if="current=='remoteAuth'">  
+
 
     <!--remoteAuth Service-->
     <hr>
-    <div class="section">
+    <div class="section" ng-click="current='remoteAuth'">
         <u style="color:cornflowerblue !important"><h3>The <i style="color:red;">remoteAuth</i> service</h3></u>
         <code>USE ON A REMOTELY HOSTED CLIENT.</code>
     </div>
-
 
     <!--url-->
     <hr>
@@ -1285,7 +1326,7 @@
 
 
 <!--SO - CONTENTEDITABLE DIRECTIVE-->
-<div ng-if="false">
+<div ng-if="current=='contenteditable'">
 
    <!--contenteditable-->
     <hr>
@@ -1294,9 +1335,9 @@
         <code>Angular Attribute Only directive.</code>
         <br><br>
         Makes the content on a given UI element editable <code>The directive takes no value. </code>.
-        <pre>&lt;div contenteditable&gt; I AM AN EDITABLE DIV &lt;/div&gt;</pre>
+        <pre>&lt;div contenteditable ng-model="data.contenteditable"&gt; I AM AN EDITABLE DIV &lt;/div&gt;</pre>
         Producing:
-        <div contenteditable="true"> I AM AN EDITABLE DIV </div>
+        <div contenteditable="true" ng-model="data.contenteditable"> I AM AN EDITABLE DIV </div>
 
     </div> 
 
@@ -1306,7 +1347,7 @@
   
 
 <!--SO - FILEMODEL DIRECTIVE-->
-<div ng-if="false">
+<div ng-if="current=='fileModel'">
     
     <!--fileModel-->
     <hr>
@@ -1319,7 +1360,7 @@
         <pre style="max-width:1000px;"> &lt;input type="file" class="btn btn-success" file-model="fileVal"&gt; </pre>
         Which produces <input type="file" class="btn btn-success" file-model="fileVal">
         <pre ng-if="fileVal">
-Fileval   <json-formatter json="fileVal" open="0"></json-formatter>
+Fileval:  <code>{{fileVal}}</code>
         </pre>
     </div> 
 
@@ -1328,15 +1369,13 @@ Fileval   <json-formatter json="fileVal" open="0"></json-formatter>
 
 
 <!--SO - framifyController-->
-<div ng-if="true">  
+<div ng-if="current=='framifyController'">  
 
-     <!--framifyController Controller-->
     <hr>
-    <div class="section">
+    <div class="section" ng-click="current='framifyController'">
         <u style="color:cornflowerblue !important"><h3>The <i style="color:red;">framifyContoller</i> controller</h3></u>
         <code>An <b><i>Absolute</i></b> Necessity.</code>
     </div>
-
 
     <!--current-->
     <hr>
@@ -1758,567 +1797,5 @@ Fileval   <json-formatter json="fileVal" open="0"></json-formatter>
 </div>
 <!--EO - framifyController-->
 
-
-
-
-    <pre style="background-color:black;color:white;">
-
-//@ The main controller
-.controller("framifyController"
-,['$scope' ,'$state' ,'$rootScope','$http' 
-,function($scope ,$state ,$rootScope ,$http) {
-
-        $scope.nav.hasFilters = false;
-
-
-        //** MANAGE THE NAVIGATION SEARCH STATUS
-        $scope.openFilters = (hasFilters) => {
-            if (hasFilters === true) { $scope.nav.hasFilters = false; } else { $scope.nav.hasFilters = true; }
-        };
-
-        //!RE-INITIALIZE APPLICATION DATA
-        $rootScope.app.reinit = () => {
-            $scope.location.path("/framify");
-        };
-
-
-        /**
-         * SECURE THE PARENTAL CONTROLLED URLS
-         */
-        $rootScope.secure = (securityFunc) => {
-
-            var parts = window.location.href.split('/');
-
-            var part = parts[(parts.length - 1)];
-
-            if ($scope.links.indexOf(part) >= 0) {
-
-                $rootScope.exec(securityFunc);
-
-            }
-
-        };
-
-
-        /**
-         * DATABASE CENTRIC ADDITION AND DELETION
-         */
-
-        //Define the main application objects
-        $scope.add = {};
-        $scope.fetch = {};
-        $scope.fetched = {};
-        $scope.counted = {};
-        $scope.data = {};
-
-        $scope.data.login = {};
-        $scope.data.admin = {};
-
-        $rootScope.frame.changeAdmin(false);
-        $scope.logedin = false;
-   
-
-        //Basic User Login
-        $scope.login = (cryptField) => {
-
-            return new Promise( (resolve ,reject) => {
-
-                if (cryptField) {
-                    $scope.data.login[cryptField] = $scope.app.md5($scope.data.login[cryptField])
-                }
-
-                $scope.data.login.command   = "get";
-                $scope.data.login.table     = "users";
-                $scope.data.login.extras    = " AND active is true LIMIT 1";
-
-                //* perform the actual login validation
-                $scope.cgi.ajax($scope.removeUnwanted($scope.data.login))
-                .then((r) => {
-
-                    $scope.data.admin.extras = "";
-
-                    r = $scope.app.json(r);
-
-                    if (r.response == 200) {
-
-                        if (r.data.message.length > 0 && typeof(r.data.message[0]) == "object") {
-
-                            if (r.data.message[0]['username'] == $scope.data.login.username) {
-                                $scope.storage.user = r.data.message[0];
-                                $scope.logedin = true;
-                            } else {
-                                delete $scope.storage.user;
-                                window.location = "/#/";
-                            }
-
-                             resolve();
-
-                        } else {
-                            delete $scope.storage.user;
-                            $scope.app.notify(`<center>You have entered the wrong login credentials.</center>` ,"danger");
-                        }
-
-                    } else {
-
-                        // POSTGRESQL ERROR FORMAT MATCHING
-                        if (Array.isArray(r.data.message)) {
-
-                            var v = r.data.message[2].match(/DETAIL:(.*)/);
-
-                            if (v != undefined || v != null) {
-                                r.data.message = v[1];
-                            } else {
-                                r.data.message = r.data.message[2];
-                            }
-                        }
-
-                        delete $scope.storage.user;
-                        $scope.app.notify(`<center>${ r.data.message }</center>`,"danger");
-                        reject( $scope.app.makeResponse(500 ,r.data.message) );
-
-                    }
-                    //$scope.$apply();
-
-                });
-
-            });
-
-        };
-
-        //Basic admin login
-        $scope.adminLogin = (cryptField) => {
-
-            return new Promise( (resolve,reject) =>{
-
-                if (cryptField) {
-                    $scope.data.admin[cryptField] = $scope.app.md5($scope.data.admin[cryptField])
-                }
-
-                $scope.data.admin.command   = "get";
-                $scope.data.admin.table     = "admins";
-                $scope.data.admin.extras    = " AND active is true LIMIT 1";
-
-                //* perform the actual login
-                $scope.cgi.ajax($scope.removeUnwanted($scope.data.admin) )
-                .then((r) => {
-
-                    $scope.data.admin.extras = "";
-
-                    r = $scope.app.json(r);
-
-                    if (r.response == 200) {
-
-                        if (r.data.message.length > 0 && typeof(r.data.message[0]) != undefined) {
-
-                            if (r.data.message[0]['password'] === $scope.data.admin.password) {
-                                $scope.storage.admin = r.data.message[0];
-                                $scope.storage.admin._ = {};
-                                $scope.storage.admin._.user = r.data.message[0].admin_name;
-                                $scope.storage.admin._.key = r.data.message[0].password;
-                                $rootScope.frame.changeAdmin(true);
-                                //$scope.$apply();
-                                resolve(r)
-                            } else {
-                                delete $scope.data.admin;
-                                delete $scope.storage.admin;
-                                $scope.storage.admin    = {};
-                                window.location = "/#/admin";                                
-                                resolve(r)
-                            }
-
-                        } else {
-                            delete $scope.data.admin;
-                            delete $scope.storage.admin;
-                            $scope.storage.admin    = {};
-                            $scope.app.notify(`<center>You have entered the wrong login credentials.</center>` ,"danger");
-                            window.location = "/#/admin";
-                            reject(false);
-                        }
-
-                    } else {
-
-                        // POSTGRESQL ERROR FORMAT MATCHING
-                        if (Array.isArray(r.data.message)) {
-
-                            var v = r.data.message[2].match(/DETAIL:(.*)/)
-                            if (v != undefined || v != null) {
-                                r.data.message = v[1];
-                            } else {
-                                r.data.message = r.data.message[2];
-                            }
-                        }
-                        delete $scope.storage.admin;
-                        $scope.storage.admin    = {};
-                        $scope.app.notify(`<center>${ r.data.message }</center>`,"danger");
-                        reject( $scope.app.makeResponse(500 ,r.data.message) );
-
-                    }
-                    //$scope.$apply();
-                })
-
-            });
-
-        };
-
-        //@ Handle basic user re-authentication
-        $scope.islogedin = () => {
-
-            return new Promise( (resolve ,reject) => {
-
-                if ($scope.storage.user) {
-                    $scope.data.login.username = $scope.storage.user.username;
-                    $scope.data.login.password = $scope.storage.user.password;
-                    $scope.login();
-                    resolve(true);
-                }else{
-                    $scope.app.notify(`<center>You have no permission to access this content</center>`,'danger')
-                    reject(false);
-                }
-
-            })
-
-        };
-
-        //@ Handle basic app-user logout
-        $scope.logout = () => {
-
-            $scope.islogedin = false;
-            delete $scope.storage.user;
-            window.location = '/#/';
-            return Promise.resolve(true)
-            .catch(function(e){
-                console.log("Encountered an error when processing the logout function.")
-                console.dir(e)
-            });
-            
-        };
-
-        //@ Handle basic application redirection
-        $scope.redirect = (loc) => {
-            if (loc) {
-                window.location = loc
-            } else {
-                window.location = "/#/framify";
-            }
-            return Promise.resolve(true)
-            .catch(function(e){
-                console.log("Encountered an error when processing the redirect function.")
-                console.dir(e)
-            })
-        };
-
-        // Basic Admin Auth
-        $scope.authorize = () => {
-
-            if ($scope.storage.admin && $scope.data.admin.admin_name && $scope.data.admin.password) {
-                $scope.data.admin               = {};
-                $scope.data.admin.admin_name    = $scope.storage.admin.admin_name;
-                $scope.data.admin.password      = $scope.storage.admin.password;
-                $scope.adminLogin();
-            } else {
-                $scope.location = "/#/admin";
-            }
-
-            return Promise.resolve(true)
-            .catch(function(e){
-                console.log("Encountered an error when processing the authorize function.")
-                console.dir(e)
-            });
-
-        };
-
-        //@ HANDLE ADMINISTRATOR DEAUTHORIZATION
-        $scope.deauthorize = () => {
-            delete $scope.storage.admin;
-            $rootScope.frame.changeAdmin(false);
-            window.location = '/#/';
-            return Promise.resolve(true)
-            .catch(function(e){
-                console.log("Encountered an error when processing the deauthorize function.")
-                console.dir(e)
-            });
-        };
-
-        /**
-         * TABLE SORTER
-         */
-        $scope.sort = function(keyname) {
-            $scope.sortKey = keyname; //set the sortKey to the param passed
-            $scope.reverse = !$scope.reverse; //if true make it false and vice versa
-        }
-
-
-
-        
-
-        ///////////////////////////////////////////////////////////////////////////////////////////////////
-        // ADDITIONS ON PROBATION
-	// ----
-
-	    //@ LOAD A SERVICE ONTO THE STAGE
-	    $scope.service = {};
-	    $scope.entity  = {};
-
-	    $scope.showService = (serviceData) => {
-		$scope.service.available = true;
-		$scope.service.current   = serviceData;
-		//$scope.$apply();
-	    };
-
-	    $scope.showEntity = (serviceData) => {
-		$scope.entity.available = true;
-		$scope.entity.current   = serviceData;
-		//$scope.$apply();
-	    };
-
-	    //@ Count my entities
-	    $scope.howMany = (table,data) => {
-
-		var data        = data || {owner: $scope.storage.user.username};
-		data            = (data)?$scope.app.json(data):{};
-		data.table      = table || 'entities';
-		data.command    = "count";
-		data.token      =  {};
-
-		$scope.cgi.ajax( $scope.removeUnwanted(data) )
-		.then( (r) => {   
-		    
-		    r = $scope.app.json(r);
-
-		    if(r.response == 200){
-
-		        if( r.data.message ) {
-		            $scope.app.notify((r.data.message), "success");
-		        }
-		        
-		        $scope.counted[data.table.toString().replace(/vw_/ig,'')] = r.data.message;
-		        
-		    }else{
-
-		        //POSTGRESQL MATCHING
-		        if(Array.isArray(r.data.message)){
-		            var v =  r.data.message[2].match(/DETAIL:(.*)/)
-		            if( v != undefined || v!=null ){
-		                r.data.message = v[1];
-		            }else{
-		                r.data.message = r.data.message[2];
-		            }
-		        }else{
-		            r.data.message;
-		        }
-		    
-		        alert(`<center>${ r.data.message }</center>`);
-		    }           
-		    //$scope.$apply();
-		})    
-
-
-	    };
-
-	// ----
-
-    //@ FRAMIFY HANDLERS
-
-    $scope.data.login       = $scope.data.login || {};
-
-    $scope.data.me          = $scope.data.me || {};
-
-    $scope.setData;
-
-    //@ Initialize the handlers object
-    $scope.handlers = {};
-    $scope.r_handlers = $scope.handlers;
-
-    //@ The registration success handler
-    $scope.handlers.regSuccess = function( message ){
-        $scope.app.notify("You have been successfully registered");
-        $state.go("app.login");
-    };
-    $scope.r_handlers.regSuccess = $scope.handlers.regSuccess;
-
-    //@ The successful login handler
-    $scope.handlers.loginSuccess = function( message ){
-        $scope.app.notify("<i class='fa fa-2x fa-spin fa-circle-o-notch'></i> Processing your login data",'success',4000); 
-        $state.go("app.panel");    
-    };
-    $scope.r_handlers.loginSuccess    = $scope.handlers.loginSuccess;
-
-    //@ The registration error handler
-    $scope.handlers.regError   = function( message ){
-        $scope.app.alert("<font color='red'>Signup Error</font>", message);
-    };
-    $scope.r_handlers.regError    = $scope.handlers.regError;
-
-    //@ The login error handler
-    $scope.handlers.loginError   = function( message ){
-        $scope.app.alert("<font color='red'>Login Error</font>", message);
-    };    
-    $scope.r_handlers.loginError    = $scope.handlers.loginError;
- 
-    //@ The identity check verification handler
-    $scope.handlers.identity    = function(){
-
-        return new Promise(function(reject,resolve){
-            
-            $http.get("/auth/me")
-            .success(function(response){
-               
-               resolve( $scope.data.me = response.data.message  );
-
-            })
-            .error(function(error){
-
-                $scope.auth.Logout()
-                .then(function(){
-
-                    $scope.app.notify("<i class='fa  fa-exclamation-triangle'></i>&nbsp;&nbsp;Your lease has expired <br>Please Login to continue.",'danger');
-                    reject( $state.go("app.login") );
-
-                });
-
-            })
-
-        })
-
-    };
-
-    $scope.r_handlers.identity    = function(){
-
-        return new Promise(function(reject,resolve){
-            
-            console.log("Querying the remote server for identity")
-
-            $http.get(`${$scope.remoteAuth.url}/auth/me`)
-            .success(function(response){
-               
-               console.log("Remote Knows who you are.")
-               resolve( $scope.data.me = response.data.message  );
-
-            })
-            .error(function(error){
-
-                console.log("Something just didn't go well.")
-                $scope.auth.Logout()
-                .then(function(){
-
-                    $scope.app.notify("<i class='fa  fa-exclamation-triangle'></i>&nbsp;&nbsp;Your lease has expired <br>Please Login to continue.",'danger');
-                    reject( $state.go("app.login") );
-
-                });
-
-            })
-
-        })
-
-    };
-
-    //@ The login status check handler
-    $scope.handlers.isLogedIn   = function(){
-
-        return new Promise( function(resolve, reject ){
-
-            if( !$scope.storage.framify_user ){
-
-                console.log("\nNo localstorage value is defined\n")
-
-                if($state.current.name != "app.login" ){
-
-                    console.log("\nRedirecting to the authentication page.\n")
-
-                    $scope.app.notify("<i class='fa  fa-exclamation-triangle'></i>&nbsp;&nbsp;Please Login to continue.",'danger');
-                    reject( $state.go("app.login") );                    
-
-                }
-                
-            }else if( !$http.defaults.headers.common.Authorization || $http.defaults.headers.common.Authorization == undefined || $http.defaults.headers.common.Authorization == '' ){
-
-                    console.log("\nThe authentication header is not yet defined\n")
-
-                    $scope.auth.SetAuth( undefined )
-                    .then(function(  ){
-
-                        console.log(`\nThe authentication header has been set to ${$http.defaults.headers.common.Authorization}\n`)
-
-                        if($state.current.name == "app.login" ){
-                            resolve( $state.go("app.panel") );
-                        }else{
-                            resolve(  );
-                        }
-                        
-                    })
-
-                     
-                    
-
-            }else{
-
-                console.log("\nAll Looks good! Let me see if I can get you into the party\n")
-
-                if($state.current.name == "app.login" ){
-                   resolve( $state.go("app.panel") );
-                }else{
-                    resolve(  );
-                }
-
-            }
-
-
-        })
-
-    };
-
-    $scope.r_handlers.isLogedIn   = function(){
-
-        return new Promise( function(resolve, reject ){
-
-            console.log("Handing you over to the remote authentication server.")
-
-            if( !$scope.storage.framify_user ){
-
-
-                if($state.current.name != "app.login" ){
-
-                    $scope.app.notify("<i class='fa  fa-exclamation-triangle'></i>&nbsp;&nbsp;Please Login to continue.",'danger');
-                    reject( $state.go("app.login") );                    
-
-                }
-                
-            }else if( !$http.defaults.headers.common.Authorization || $http.defaults.headers.common.Authorization == undefined || $http.defaults.headers.common.Authorization == '' ){
-
-                    $scope.remoteAuth.SetAuth( undefined )
-                    .then(function(  ){
-
-                        if($state.current.name == "app.login" ){
-                            resolve( $state.go("app.panel") );
-                        }else{
-                            resolve(  );
-                        }
-                        
-                    })
-
-                     
-                    
-
-            }else{
-
-                if($state.current.name == "app.login" ){
-                   resolve( $state.go("app.panel") );
-                }else{
-                    resolve(  );
-                }
-
-            }
-
-
-        })
-
-    };
-
-}])
-
-
-
-
-    </pre>
 
 </div>
