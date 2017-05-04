@@ -600,9 +600,17 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
         if (response.response == 200) {
             app.alert("<font color=green>Done</font>", app.str(response.data.message));
         } else {
-            app.alert('<font color=red>Failed</font> ( ' + response.response + ' Error )', app.str(response.data.message));
+            app.alert('<font color=red>Uh Oh!</font> ( ' + response.response + ' Error )', app.str(response.data.message));
         }
     };
+
+    //@ Generic Error Handler
+    this.errorHandler = function (response) {
+
+        app.alert('<font color=red>Uh Oh!</font>', app.str(response.data.message));
+    };
+    this.error_handler = this.errorHandler;
+    this.e_handler = this.errorHandler;
 
     //@ Generic Process Remote Event Handler
     this.remote_handler = function (response) {

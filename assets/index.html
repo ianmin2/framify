@@ -99,9 +99,10 @@ ng-init="remoteAuth.setUrl(app.hlink)">
                                 </div>
                                 <div class="uk-width-1-3">
                                     <ul class="uk-nav uk-nav-dropdown uk-panel">
-                                        <li class="uk-nav-header" style="cursor:pointer;" ui-sref="app.panel">Administration</li>
-                                        <li class="uk-nav-header" style="cursor:pointer;" ui-sref="app.index">Documentation</li>
-                                        <li class="uk-nav-header" style="cursor:pointer;" ng-show="frame.isAdmin()" ng-click="deauthorize()">LOGOUT</li>
+                                        <li class="uk-nav-header" style="cursor:pointer;" ui-sref="app.index">Home</li>
+                                        <li class="uk-nav-header" style="cursor:pointer;" ui-sref="app.panel">Dashboard</li>
+                                        <li class="uk-nav-header" style="cursor:pointer;" ui-sref="app.documentation">Documentation</li>
+                                        <li class="uk-nav-header" style="cursor:pointer;" ng-show="storage.framify_user" ng-click="auth.Logout().then(handlers.isLogedIn)">LOGOUT</li>
                                     </ul>
                                 </div>
                             </div>
@@ -203,10 +204,17 @@ ng-init="remoteAuth.setUrl(app.hlink)">
 
         <div class="menu_section">
             <ul>
-                <li title="Documentation">
+                <li title="Home">
                     <a ui-sref="app.index">
+                        <span class="menu_icon"><i class="material-icons">home</i></span>
+                        <span class="menu_title">Home</span>
+                    </a>
+                </li>
+
+                <li title="Documentation">
+                    <a ui-sref="app.documentation">
                         <span class="menu_icon"><i class="material-icons">book</i></span>
-                        <span class="menu_title">Dashboard</span>
+                        <span class="menu_title">Documentation</span>
                     </a>
                 </li>
 

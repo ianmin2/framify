@@ -43,6 +43,10 @@ angular.module('framify', ['framify.js'])
         url: "/index"
         ,templateUrl: "views/index.html"
     })
+    .state("app.documentation", {
+        url: "/documentation"
+        ,templateUrl: "views/documentation.html"
+    })
     .state("app.signup", {
         url: "/signup"
         ,templateUrl: "views/signup.html"
