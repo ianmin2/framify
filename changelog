@@ -67,3 +67,5 @@ v2.4.0
 	=> Added the /#/documentation route
 	=> Updated outdated references to the logout function
 	
+v2.4.1
+	=> Added an ignore directive for the dev folder in the .gitignore file

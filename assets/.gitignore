@@ -1,8 +1,11 @@
 ##! The Bixbyte Framify Spawned Application ".gitignore" file
 
-#!  Ignore all node_module folders and their content
+#!  Ignore all package manager folders and their content
 **node_modules/
 **bower_components
+
+//@ Ignore the development folder
+**dev/
 
 #!  Ignore all shadow files
 **~
