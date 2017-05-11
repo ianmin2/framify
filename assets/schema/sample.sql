@@ -8,10 +8,14 @@ CREATE TABLE organizations (
     org_id          bigserial   PRIMARY KEY,
     org_name        text        NOT NULL CONSTRAINT organization_name_required UNIQUE,
     org_telephone   text        NOT NULL CONSTRAINT organization_telephone_required UNIQUE,
-    org_code        text        NOT NULL CONSTRAINT organization_code_required UNIQUE,
-    org_added       datetime    DEFAULT CURRENT_TIMESTAMP,
+    org_code        varchar(25) NOT NULL CONSTRAINT organization_code_required UNIQUE,
+    org_added       TIMESTAMP WITH TIME ZONE    DEFAULT CURRENT_TIMESTAMP,
     org_active      boolean     DEFAULT false
 );
+INSERT INTO organizations 
+( org_name,org_telephone,org_code) 
+VALUES
+('Bixbyte Solutions Limited','+254725678447','pm_bx_001');
 
 -- SERVICES --
 DROP TABLE IF EXISTS services CASCADE;
@@ -20,9 +24,13 @@ CREATE TABLE services (
     service_name    text        CONSTRAINT  unique_service_name_required UNIQUE NOT NULL,
     service_fee     bigint      CONSTRAINT  service_fee_required NOT NULL,
     service_code    text        CONSTRAINT  unique_service_coed_required UNIQUE NOT NULL,
-    service_added   datetime    DEFAULT     CURRENT_TIMESTAMP,
+    service_added   TIMESTAMP WITH TIME ZONE    DEFAULT     CURRENT_TIMESTAMP,
     service_active  boolean     DEFAULT     true
 );
+INSERT INTO services 
+(service_name,service_fee,service_code)
+VALUES
+('TEST SERVICE',0,'BX_SRV_000');
 
 -- SUBSCRIPTIONS --
 DROP TABLE IF EXISTS subscriptions CASCADE;
@@ -30,7 +38,7 @@ CREATE TABLE subscriptions (
     sub_id          bigserial       PRIMARY KEY,
     sub_org         bigint          NOT NULL CONSTRAINT organization_id_required        REFERENCES organizations( org_id ),
     sub_service     bigint          NOT NULL CONSTRAINT service_subscription_required   REFERENCES services( service_id ),
-    sub_added       datetime        DEFAULT CURRENT_TIMESTAMP,
+    sub_added       TIMESTAMP WITH TIME ZONE        DEFAULT CURRENT_TIMESTAMP,
     sub_active      boolean         DEFAULT  true
 );
 
@@ -40,7 +48,7 @@ CREATE TABLE payment_methods(
     pay_method_id          bigserial       PRIMARY KEY,
     pay_method_name        varchar(60)     NOT NULL,
     pay_method_fee         bigint          DEFAULT 0,
-    pay_method_added       datetime        DEFAULT CURRENT_TIMESTAMP,
+    pay_method_added       TIMESTAMP WITH TIME ZONE        DEFAULT CURRENT_TIMESTAMP,
     pay_method_active      boolean         DEFAULT true
 );
 
@@ -48,12 +56,12 @@ CREATE TABLE payment_methods(
 DROP TABLE IF EXISTS payments CASCADE;
 CREATE TABLE payments (
     pay_id          bigserial       PRIMARY KEY,
-    pay_org         bigint          CONSTRAINT REFERENCES organizations( org_id ),
+    pay_org         bigint          CONSTRAINT valid_organization_required REFERENCES organizations( org_id ),
     pay_amount      bigint          NOT NULL,
-    pay_method      bigint          NOT NULL CONSTRAINT valid_pay_method_required REFERENCES pay_methods( pay_method_id )
+    pay_method      bigint          NOT NULL CONSTRAINT valid_pay_method_required REFERENCES payment_methods( pay_method_id ),
     pay_services    json            NOT NULL,
     pay_message     text,
-    pay_added       datetime        DEFAULT CURRENT_TIMESTAMP,
+    pay_added       TIMESTAMP WITH TIME ZONE        DEFAULT CURRENT_TIMESTAMP,
     pay_active      boolean         DEFAULT true
 );
 
@@ -75,7 +83,7 @@ CREATE TABLE members (
 	password	    text		    NOT NULL,
 	role		    available_roles NOT NULL,
 	telephone	    varchar(15)	    NOT NULL,
-	joined		    timestamp	    DEFAULT CURRENT_TIMESTAMP,
+	joined		    TIMESTAMP WITH TIME ZONE	    DEFAULT CURRENT_TIMESTAMP,
 	active 		    boolean 	    DEFAULT true
 );
 
@@ -95,8 +103,8 @@ CREATE TABLE aud_organizations (
     org_id          bigint      ,
     org_name        text        ,
     org_telephone   text        ,
-    org_code        text        ,
-    org_added       datetime    DEFAULT CURRENT_TIMESTAMP,
+    org_code        varchar(25) ,
+    org_added       TIMESTAMP WITH TIME ZONE    DEFAULT CURRENT_TIMESTAMP,
     org_active      boolean     DEFAULT false,
     func            varchar(15)
 );
@@ -109,7 +117,7 @@ CREATE TABLE aud_services (
     service_name    text        ,
     service_fee     bigint      ,
     service_code    text        ,
-    service_added   datetime    DEFAULT     CURRENT_TIMESTAMP,
+    service_added   TIMESTAMP WITH TIME ZONE    DEFAULT     CURRENT_TIMESTAMP,
     service_active  boolean     DEFAULT     true,
     func            varchar(15)
 );
@@ -121,19 +129,19 @@ CREATE TABLE aud_subscriptions (
     sub_id          bigint          ,
     sub_org         bigint          ,
     sub_service     bigint          ,
-    sub_added       datetime        DEFAULT CURRENT_TIMESTAMP,
+    sub_added       TIMESTAMP WITH TIME ZONE        DEFAULT CURRENT_TIMESTAMP,
     sub_active      boolean         DEFAULT  true,
     func            varchar(15)
 );
 
 
 -- AUD_PAYMENT_METHODS --
--- DROP TABLE IF EXISTS payment_methods CASCADE;
-CREATE TABLE payment_methods(
+-- DROP TABLE IF EXISTS aud_payment_methods CASCADE;
+CREATE TABLE aud_payment_methods(
     pay_method_id          bigint          ,
     pay_method_name        varchar(60)     ,
     pay_method_fee         bigint          DEFAULT 0,
-    pay_method_added       datetime        DEFAULT CURRENT_TIMESTAMP,
+    pay_method_added       TIMESTAMP WITH TIME ZONE        DEFAULT CURRENT_TIMESTAMP,
     pay_method_active      boolean         DEFAULT true,
     func            varchar(15)
 );
@@ -147,7 +155,7 @@ CREATE TABLE aud_payments (
     pay_method      bigint       ,
     pay_services    json         ,
     pay_message     text,
-    pay_added       datetime        DEFAULT CURRENT_TIMESTAMP,
+    pay_added       TIMESTAMP WITH TIME ZONE        DEFAULT CURRENT_TIMESTAMP,
     pay_active      boolean,
     func            varchar(15)
 );
@@ -165,7 +173,7 @@ CREATE TABLE aud_members (
 	password	    text		    ,
 	role		    available_roles ,
 	telephone	    varchar(15)	    ,
-	joined		    timestamp	    DEFAULT CURRENT_TIMESTAMP,
+	joined		    TIMESTAMP WITH TIME ZONE	    DEFAULT CURRENT_TIMESTAMP,
 	active 		    boolean 	    DEFAULT true,
     func            varchar(15)
 );
@@ -404,6 +412,8 @@ SELECT pay_id
 ,pay_method,payment_methods.pay_method_name
 ,pay_active
 FROM payments 
+    LEFT JOIN organizations
+        ON payments.pay_org    =  organizations.org_id
     LEFT JOIN payment_methods
         ON payments.pay_method =  payment_methods.pay_method_id;
 
