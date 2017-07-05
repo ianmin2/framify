@@ -19,8 +19,6 @@ if ( !fs.existsSync(uploadPath) ){
 const upload = multer({});
 
 var router = new express.Router();
-
-var request = require('request');
  
 // Set the headers
 var headers = {
