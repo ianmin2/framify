@@ -72,3 +72,6 @@ v2.4.1
 
 v2.5.0 
 	=> Removed the "request" module call in the upload route in favor of bixbyte-framify's included global "request" module
+
+v2.6.0
+	=> Added the "/db" route for database connectivity via postgresql in line for the deprecation of the php-cgi module

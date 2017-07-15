@@ -27,11 +27,16 @@ global.config   = require(`${__dirname}/../config/config`);
 global.authMeth = "mongo";
 
 //@ postgres initialization
-global.pool = new pg.Pool(config.postgres);
-global.pgClient = () => new pg.Client(config.postgres);
+global.pgdb  = pgp(config.postgres);
+
+//@ Load the global postgres `$connection` object
+require(`${__dirname}/../db/connection`);
+
+//@ Load the express middleware for `n-frame` REST database API integration
+global.apify    = require(`${__dirname}/../db/index`);
 
 //@ Set the application's running port [the default port is 1357]
-app.port =  3000;
+app.port =  3007;
 
 //@ Import the members database schema
 global.member   = require(`${__dirname}/../schema/members`);
@@ -163,7 +168,7 @@ app.use(bodyParser.json());
 
 //@ SETUP THE PHP CGI INTERFACE
 // ,passport.authenticate('jwt', { session: false }) 
-app.use("/php" ,passport.authenticate('jwt', { session: false }) ,php.cgi(`${__dirname}/../php`));
+app.use("/php"  ,php.cgi(`${__dirname}/../php`));
 
 //@ SETUP THE VIEWS STATIC DIRECTORY
 app.use("/views", express.static(__dirname + '/../views'));
@@ -172,13 +177,25 @@ app.use("/views", express.static(__dirname + '/../views'));
 app.use(express.static(__dirname + '/../'));
 
 //@ LOAD THE ROUTING FILE
-app.use("/" , require( `${__dirname}/../routes/main` ))
+app.use("/" , require( `${__dirname}/../routes/main` ));
 
 //@ LOAD THE AUTHENTICATION ROUTES
-app.use("/auth", require(`${__dirname}/../routes/auth`))
+app.use("/auth", require(`${__dirname}/../routes/auth`));
 
 //@ LOAD THE FILE UPLOAD SERVICE
 app.use("/upload" ,passport.authenticate('jwt', { session: false }) , require(`${__dirname}/../routes/upload`) );
+
+// ,passport.authenticate('jwt', {session: false}) 
+//@ LOAD THE NON - CGI POSTGRES DATABASE HANDLER
+app.use("/db" ,require(`${__dirname}/../routes/db`) );
+
+// ================================================================
+// CUSTOM
+
+
+
+// EO - CUSTOM
+// ================================================================
 
 //@ LISTEN  FOR EMAILS
 app.route("/mail")

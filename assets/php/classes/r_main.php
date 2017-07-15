@@ -22,7 +22,7 @@ date_default_timezone_set("Africa/Nairobi");
 
 //$this_site = "eleanor/concept";
 
-$db = 'ueab_admissions'; $host = 'localhost'; $user = 'postgres'; 
+$db = 'mabati'; $host = 'localhost'; $user = 'postgres'; 
 $pass = '146450f7'; $driver="pgsql"; //YOUR_DATABASE_PASSWORD_GOES_HERE
 
 /*

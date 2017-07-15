@@ -19,8 +19,8 @@
 	unset($_REQUEST["password2"]);
 	
 //ADD FILTERS TO PREVENT PIGGYBACKING ON ALL PARAMS
-	$secure = ["add","del","update","truncate","drop","getAll","custom"]; 
-	// $secure = [];
+	// $secure = ["add","del","update","truncate","drop","getAll","custom"]; 
+	$secure = [];
 	
 	$errMsg = $connection->wrapResponse(500,"Could not verify your access level to perform this task!<br>Please login to continue.");
 	
