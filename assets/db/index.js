@@ -5,9 +5,9 @@ module.exports = ( req,res,callback ) => {
 	// res = ( callback ) ? callback : res.send;
 	// res = res.send
 
-	var $_REQUEST = clone( get_params( req ) );
+	var $_REQUEST = ( get_params( req ) );
 
-	$command = clone( $_REQUEST["command"] );
+	$command =  ($_REQUEST["command"]) ? clone( $_REQUEST["command"] ) : undefined;
 	
 	delete ( $_REQUEST["command"] );
 
