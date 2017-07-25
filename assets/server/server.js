@@ -189,6 +189,9 @@ app.use("/upload" ,passport.authenticate('jwt', { session: false }) , require(`$
 //@ LOAD THE NON - CGI POSTGRES DATABASE HANDLER
 app.use("/db" ,require(`${__dirname}/../routes/db`) );
 
+//@ THE PASSWORD RECOVERY HANDLER
+app.use("/passwords", require(`${__dirname}/../routes/passwords`));
+
 // ================================================================
 // CUSTOM
 

@@ -154,10 +154,20 @@ if(  authMeth =="mongo" ){
 
         var params = get_params(req);
 
-        if( isDefined(params,"password,email") ){
+        if( isDefined(params,"password,email,role,telephone,name.first,name.last,account.name") ){
 
             pgdb.any(`INSERT INTO members ("name.first","name.last","account.name",email,password,role,telephone) 
-                    VALUES ('${params["name.first"]}','${params["name.last"]}','${params["account.name"]}','${params["email"]}','${crypt.md5(params["password"])}','${params["role"]}','${params["telephone"]}')`)
+                VALUES ($1,$2,$3,$4,$5,$6,$7)`
+                ,[
+                    params["name.first"]
+                    ,params["name.last"]
+                    ,params["account.name"]
+                    ,params["email"]
+                    ,crypt.md5(params["password"])
+                    ,params["role"]
+                    ,params["telephone"]
+                ]
+            )
             .then(inserted =>{
                 log(`${inserted}`.succ)
                 log(`Registered the user ${params["email"]}`.succ)
@@ -187,7 +197,7 @@ if(  authMeth =="mongo" ){
 
         if( isDefined(req.body, "email,password") ){
 
-            pgdb.any(`SELECT * FROM members WHERE email='${req.body.email}' AND active=true`)
+            pgdb.any(`SELECT * FROM members WHERE email=$1 AND active=true`,[req.body.email])
             .then(user=>{
 
                 if(!user[0]){
@@ -236,7 +246,7 @@ if(  authMeth =="mongo" ){
 
         console.log(`Attempting a profile data fetch`.info)
         
-        pgdb.any(`SELECT * FROM members WHERE email = '${req.whoami.email}'`)
+        pgdb.any(`SELECT * FROM members WHERE email=$1`,[req.whoami.email])
         .then(memberRecord => {
 
             let l = clone( memberRecord[0] );

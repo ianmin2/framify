@@ -89,3 +89,7 @@ v2.7.0
 	=> Removed the sample facebook authentication credentials from the configuration file 
 	=> Changed the default access parameter values ["username,password,database"] for postgresql authentication in preparation for full customization at framify project initiaization
 	=> Slightly Altered the content of the main "index.html" file
+	
+v2.8.0 
+	=> Added the preliminary password recovery feature accessible via the "/passwords" route
+	=> Updated the authentication route handler "/auth" to use simple prepared statements for data entry.
