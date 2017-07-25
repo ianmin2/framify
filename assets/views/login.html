@@ -52,8 +52,10 @@
                     ng-click="auth.Login(data.login).then(handlers.loginSuccess).catch(handlers.loginError)"
                     ng-class="{'md-btn-primary' : !login_form.$invalid }"
                     class="md-btn "> LOGIN</button>
-                    <br>
+                    <br><br>
                     New here? <a class="" ng-click="goTo('app.signup')">Create an Account</a>
+                    <br>
+                    Forgot Your Password? <a class="" href="/passwords">Recover your password</a>
                 </div>
 
             </div>
