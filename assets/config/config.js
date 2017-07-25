@@ -42,8 +42,8 @@ exports.database = {
 
 exports.postgres = {
 	user		: 'postgres'
-	,database	: 'test'
-	,password	: ''
+	,database	: 'tests'
+	,password	: '146450f7'
 	,host		: 'localhost'
 	,port		: 5432
     ,max		: 10

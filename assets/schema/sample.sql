@@ -15,7 +15,7 @@ VALUES
 
 
 -- AUD_ORGANIZATIONS --
--- DROP TABLE IF EXISTS aud_organizations CASCADE;
+DROP TABLE IF EXISTS aud_organizations CASCADE;
 CREATE TABLE aud_organizations (
     org_id          bigint      ,
     org_name        text        ,
@@ -58,7 +58,7 @@ CREATE TRIGGER organizations_audit BEFORE UPDATE OR INSERT OR DELETE
 EXECUTE PROCEDURE audit_organizations();
 
 --- ORGANIZATIONS ---
-DROP VIEW IF EXISTS vw_organizations;
+DROP VIEW IF EXISTS vw_organizations CASCADE;
 CREATE OR REPLACE VIEW vw_organizations AS 
 SELECT org_id,org_name,org_telephone,org_code,org_added,org_active
 FROM organizations;
@@ -82,7 +82,7 @@ VALUES
 ('TEST SERVICE',0,'BX_SRV_000');
 
 -- AUD_SERVICES --
--- DROP TABLE IF EXISTS aud_services CASCADE;
+DROP TABLE IF EXISTS aud_services CASCADE;
 CREATE TABLE aud_services (
     service_id      bigint      ,
     service_name    text        ,
@@ -125,7 +125,7 @@ EXECUTE PROCEDURE audit_services();
 
 
 --- SERVICES ---
-DROP VIEW IF EXISTS vw_services;
+DROP VIEW IF EXISTS vw_services CASCADE;
 CREATE OR REPLACE VIEW vw_services AS 
 SELECT service_id,service_name,service_code,service_added,service_active
 FROM services;
@@ -146,7 +146,7 @@ CREATE TABLE subscriptions (
 );
 
 -- AUD_SUBSCRIPTIONS --
--- DROP TABLE IF EXISTS aud_subscriptions CASCADE;
+DROP TABLE IF EXISTS aud_subscriptions CASCADE;
 CREATE TABLE aud_subscriptions (
     sub_id          bigint          ,
     sub_org         bigint          ,
@@ -189,7 +189,7 @@ EXECUTE PROCEDURE audit_subscriptions();
 
 
 --- SUBSCRIPTIONS ---
-DROP VIEW IF EXISTS vw_subscriptions;
+DROP VIEW IF EXISTS vw_subscriptions CASCADE;
 CREATE OR REPLACE VIEW vw_subscriptions AS 
 SELECT sub_id
 ,sub_org,organizations.org_name as sub_org_name,organizations.org_active
@@ -214,7 +214,7 @@ CREATE TABLE payment_methods(
 );
 
 -- AUD_PAYMENT_METHODS --
--- DROP TABLE IF EXISTS aud_payment_methods CASCADE;
+DROP TABLE IF EXISTS aud_payment_methods CASCADE;
 CREATE TABLE aud_payment_methods(
     pay_method_id          bigint          ,
     pay_method_name        varchar(60)     ,
@@ -255,7 +255,7 @@ EXECUTE PROCEDURE audit_payment_methods();
 
 
 --- PAYMENT_METHODS ---
-DROP VIEW IF EXISTS vw_payment_methods;
+DROP VIEW IF EXISTS vw_payment_methods CASCADE;
 CREATE OR REPLACE VIEW vw_payment_methods AS 
 SELECT pay_method_id,pay_method_name,pay_method_fee,pay_method_added,pay_method_active
 FROM payment_methods;
@@ -278,7 +278,7 @@ CREATE TABLE payments (
 
 
 -- AUD_PAYMENTS --
--- DROP TABLE IF EXISTS aud_payments CASCADE;
+DROP TABLE IF EXISTS aud_payments CASCADE;
 CREATE TABLE aud_payments (
     pay_id          bigint       ,
     pay_org         bigint       ,
@@ -323,7 +323,7 @@ EXECUTE PROCEDURE audit_payments();
 
 
 --- PAYMENTS ---
-DROP VIEW IF EXISTS vw_payments;
+DROP VIEW IF EXISTS vw_payments CASCADE;
 CREATE OR REPLACE VIEW vw_payments AS 
 SELECT pay_id
 ,pay_org,organizations.org_name as pay_org_name
@@ -343,7 +343,7 @@ ON payments.pay_method =  payment_methods.pay_method_id;
 
 -- MEMBER TYPE ENUMERATOR --
 DROP TYPE IF EXISTS available_roles CASCADE;
-CREATE TYPE available_roles AS ENUM ('attendant','technician','admin');
+CREATE TYPE available_roles AS ENUM ('audit','client','admin');
 
 -- MEMBERS --
 DROP TABLE IF EXISTS members CASCADE;
@@ -369,7 +369,7 @@ VALUES
 
 
 -- AUD_MEMBERS --
--- DROP TABLE IF EXISTS aud_members CASCADE;
+DROP TABLE IF EXISTS aud_members CASCADE;
 CREATE TABLE aud_members (
 	member_id		bigint,
 	"name.first"    varchar(25) 	,

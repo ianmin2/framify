@@ -24,7 +24,7 @@ mongoose.promise = global.Promise;
 global.config   = require(`${__dirname}/../config/config`);
 
 //@ Define the authentication database [mongo/postgres]
-global.authMeth = "mongo";
+global.authMeth = "pgsql";
 
 //@ postgres initialization
 global.pgdb  = pgp(config.postgres);

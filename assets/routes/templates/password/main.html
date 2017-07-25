@@ -1,47 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="passwords">
 <head>
-    <title> Password Recovery </title>
-    <script src="/framify/resources/jquery.min.js"></script>
+    <title>Passwords | Recovery</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <script src="/framify/resources/angular.min.js"></script>
+    <script src="/framify/resources/angular-sanitize.min.js"></script>
     <script>
-        $(function(){
+        angular.module("passwords",["ngSanitize"])
+        .controller("passCtrl",["$scope","$http",function($scope,$http){
 
-            var mailRegex = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/ig
+            //@ Mail enumerator regex
+            var mailRegex =  /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/ig
 
-            $("#btn").click(function(){
+            $scope.testMail = function(){
+                return mailRegex.test( $scope.data.email );
+            };
 
-                //@ Capture the provided email address
-                var mail    = $("#email").val()
+            //@ The scope data handler
+            $scope.data      = { 
+                response :  ""
+                ,email:     ""
+            };
 
-                var isValid = mailRegex.test(mail);
+            //@ The recovery attempt function
+            $scope.recover   = function( ){
 
-                //@ Test the captured email address for purity
-                if( isValid ){
+                $scope.data.response = "Loading ...";
 
-                    //@ Reset the email value
-                    $("#email").val("");
-
-                    //@ Request for a password  reset
-                    $.ajax({
-                        url: "/passwords/forgot"
-                        ,data: { email: mail}
-                    })
-                    .then( function( resp ){
-                        alert(  resp.data.message )
-                        console.dir(resp)
-                    })
-
-                }else{ 
-                    alert("Please enter a valid email")
-                }
-
+                $http({ method: "POST", url:"/passwords/forgot", data:{ email: $scope.data.email }})
+                .then(function(response){
+                    $scope.data.response = response.data.data.message;
+                })
                 
+            };
 
-            })
-        })
+
+        }])
+        
     </script>
 </head>
-<body>
+<body ng-controller="passCtrl">
     <div style="width:100%; min-height:100%;border:opx !important;">
 
         <div 
@@ -68,11 +66,13 @@
                 <input 
                 type="text"
                 id="email"
+                ng-model="data.email"
                 placeholder="your email address"
                 style="text-decoration:none !important;color:black; text-shadow:gray 2px 2px 3px, whitesmoke 1px 1px 2px;border: 2px solid; background-color: white !important; min-height: 3em !important; min-width: 12em !important; border-radius:0.5em;text-align:center;"
                 >
                
                 <button 
+                ng-click="recover()"
                 id="btn"
                 style="text-decoration:none !important;border-color:#1976D2 !important;color:white; text-shadow:#1976D2 2px 2px 3px, black 1px 1px 2px;border: 2px solid; background-color: white !important; min-height: 3em !important; min-width: 12em !important; border-radius:0.5em; font-weight:bold;"
                 >
@@ -82,7 +82,14 @@
             </center>
             
             <br><br>
-            <a href="/" style="text-decoration:none; color:blue; font-weight:bold;">Back Home</a>
+            
+            <div 
+            style="width:100% !important;text-align:center !important;font-weight:bold;font-size:1.5em;color:black;" 
+            ng-bind-html="data.response">
+
+            </div>
+            <br><br>
+            <a href="/" style="text-decoration:none; color:blue; font-weight:bold;font-size:1.3em;">Back Home</a>
             <br><br><br>
             <hr>
             <br>

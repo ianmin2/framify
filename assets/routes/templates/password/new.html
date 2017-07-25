@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="passwords">
+<head>
+    <title>Passwords | New</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <script src="/framify/resources/angular.min.js"></script>
+    <script src="/framify/resources/angular-sanitize.min.js"></script>
+    <script>
+        angular.module("passwords",["ngSanitize"])
+        .controller("passCtrl",["$scope","$http",function($scope,$http){
+
+            //@ THE DATA PLACEHOLDER 
+            $scope.data = {
+                password: ""
+                ,password2: ""
+            };
+
+            //@ THE PASSWORD REGEX CHECKER
+            $scope.passRegex = /^[-@./\!\$\%\^|#&,+\w\s]{6,50}$/ig
+
+            //@ The PASSWORD UPDATER FUNCTION
+            $scope.recover   = function( ){
+
+                $scope.data.response = "Loading ...";
+
+                $http({ url:"", method: "POST", data:{ password: $scope.data.password, password2: $scope.data.password2 }})
+                .then(function(response){
+                    $scope.data.response = response.data.data.message;
+                })
+                
+            };
+
+
+        }])
+        
+    </script>
+</head>
+<body ng-controller="passCtrl">
+    <div style="width:100%; min-height:100%;border:opx !important;">
+
+        <div 
+        style="width:90% !important;background-color:#1976D2;color:white;text-align:center;padding:1em; margin: 0 auto;border:1em !important; font-family:Courier New, Courier, monospace"> <font  style="font-size:1.4em;font-weight:bold;"
+        >
+        Framify</font> | New Password
+        </div>
+
+        <div style="width:90% !important;margin: 0 auto;font-family:Courier New, Courier, monospace;">
+            <b>
+                <br>
+                Good to go<font color="navy" style="font-weight:400"></font>,
+                <br><br>
+                Please enter a new password for your account.
+            </b>
+            <br>
+            <br>
+
+            <br>
+            <center> 
+
+                <input 
+                type="password" 
+                ng-model="data.password"
+                style="font-size:1.5em;color:teal;text-align: center;font-family: Courier New, Courier, monospace;" 
+                placeholder="Password">
+                <br><br>
+                <input 
+                type="password" 
+                ng-model="data.password2"
+                style="font-size:1.5em;color:teal;text-align: center;font-family: Courier New, Courier, monospace;" 
+                placeholder="Repeat Password">
+                <br><br>
+
+                
+                <button 
+                ng-show="(data.password==data.password2)&&data.password"
+                ng-click="recover()"
+                style="text-decoration:none !important;border-color:#1976D2 !important;color:black; text-shadow:#1976D2 2px 2px 3px , black 1px 1px 2px !important;border: 2px solid; background-color: white !important; min-height: 3em !important; min-width: 12em !important; border-radius:0.5em; font-weight:bold;"
+                >
+                Reset Password
+                </button>
+            
+            </center>
+            
+            <br><br><br>
+            <div 
+            style="width:100% !important;text-align:center !important;font-weight:bold;font-size:1.5em;color:black;" 
+            ng-bind-html="data.response">
+
+            </div>
+            <br><br>
+            <a href="/" style="text-decoration:none; color:blue; font-weight:bold;font-size:1.3em;">Back Home</a>
+            <br>
+            <hr>
+            <font color="gray">
+                <b> 
+                    Thank you for using Framify.
+                </b> 
+            </font>
+
+        </div>
+
+    </div>
+    <br><br><br><br>
+</body>
+</html>

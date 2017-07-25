@@ -4,7 +4,7 @@ let router          = new express.Router();
 router.route("/")
 .get((req,res)=>{
 
-    res.sendFile(`${__dirname}/templates/password/main.html`)
+    res.sendFile(`${__dirname}/templates/password/main.html`);
 
 })
 
@@ -12,7 +12,7 @@ router.route("/")
 router.route("/forgot")
 .all((req,res) => {
 
-    let params = getParams( req );
+    let params = get_params( req );
 
     if( params.email ){
 
@@ -37,14 +37,14 @@ router.route("/forgot")
                         
                         //@ Replace the template strings with the proper fetched data
                         template = template.replace(/{{user}}/ig, `${userData[0]["name.first"]} ${userData[0]["name.last"]}`)
-                                            .replace(/{{user_account}}/ig, `${userData[0].username}`)
-                                            .replace(/{{user_recovery_link}}/ig, `http://${myAddr}:${app.port}/passwords/recover/${recovery_id}/${userData[0].email}/${userData[0].reckKey}}`)
+                                            .replace(/{{user_account}}/ig, `${userData[0]["account.name"]}`)
+                                            .replace(/{{user_recovery_link}}/ig, `http://${myAddr}:${app.port}/passwords/recover/${recovery_id}/${userData[0].email}/${reckKey}`)
 
                         //@ Format the mail object for sending
                         let mailObj = {
                             from:           'passwords@bixbyte.io'
                             ,to:            userData[0].email
-                            ,subject:       'Framify Password recovery quest'
+                            ,subject:       'Framify Password recovery request'
                             ,html:          template                    
                         }
 
@@ -90,6 +90,79 @@ router.route("/forgot")
     }else{
 
         res.send( make_response(  500, 'Please provide your email address for password recovery' ) );
+
+    }
+
+})
+
+router.route("/recover/:id/:email/:token")
+// router.route("/recover")
+.all((req,res) =>{
+
+    if( isDefined(req.params,"id,email,token") ){
+
+        let params = get_params(req);
+
+        // console.log("Your parameters")
+        // console.dir(params)
+
+        //@ CHECK TO ENSURE THAT THE PROVIDED ROUTE PARAMETERS ARE VALID
+        $connection.query("SELECT password_recovery_id FROM vw_password_recovery WHERE password_recovery_id=$1 AND member_email=$2 AND recovery_key=$3 ",[req.params.id,req.params.email,req.params.token])
+        .then( userData => {
+        
+            if( userData[0] ){
+
+                if( !params.password || !params.password2 || (params.password!=params.password2) ){
+
+                    res.sendFile(`${__dirname}/templates/password/new.html`)
+
+                }else{
+
+
+                    //@ UPDATE THE USER PASSWORD
+                    $connection.query("UPDATE members SET Password=$1 WHERE email=$2 RETURNING member_id",[crypt.md5(params.password),req.params.email])
+                    .then( resp => {
+
+                        if(resp[0]){
+
+                            //@ DISABLE ALL OF THE USER'S PASSWORD RESET TOKENS
+                            $connection.query("UPDATE password_recovery SET used=true WHERE member=$1 AND used=false",[resp[0].member_id])
+                            .then( updatedNull => {
+
+                                res.send( make_response(200, "Your password has successfully been updated.<br>Please login to continue.") )
+
+                            })
+                            .catch( err => {
+                                res.send( make_response(500, err.message) );
+                            })
+
+                        }else{
+
+                            //@ FAILED TO DISABLE THE RECOVERY TOKEN
+                            res.send( make_response(200, "Failed to disable the recovery key you just used") )
+
+                        }
+
+                    })
+                    .catch( err => {
+                        res.send( make_response(500, err.message) )
+                    })
+
+                }
+
+            }else{
+
+                res.send( make_response( 404, "The recovery link you entered is invalid. Please ensure that it hasn't been used already." ) )
+
+            }
+
+            
+
+        })
+
+    }else{
+
+        res.send( make_response( 200, "Please ensure that all the parameters are defined." ) )
 
     }
 
