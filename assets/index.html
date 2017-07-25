@@ -11,7 +11,7 @@
     <!-- Remove Tap Highlight on Windows Phone IE -->
     <meta name="msapplication-tap-highlight" content="no" />
 
-    <link rel="icon" href="favicon.ico">
+    <link rel="icon" type="image/png" href="favicon.png">
     <!--<link rel="icon" type="image/png" href="assets/img/favicon-32x32.png" sizes="32x32">-->
 
     <title>Framify</title>
@@ -143,7 +143,11 @@ ng-init="remoteAuth.setUrl(app.hlink)">
                                                 <button  
                                                 ng-if="storage.framify_user" 
                                                 ng-click="auth.Logout().then(handlers.isLogedIn)"
-                                                class="md-btn"> LOGOUT</button>
+                                                class="md-btn md-btn-danger"> LOGOUT</button>
+                                                <button  
+                                                ng-if="storage.framify_user" 
+                                                ng-click="goTo('app.signup')"
+                                                class="md-btn md-btn-warning">ADD USER</button>
                                             </div>
                                         </li>
                                         <li>

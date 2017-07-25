@@ -393,7 +393,7 @@ CREATE OR REPLACE FUNCTION audit_members()
 $BODY$
 BEGIN 
     IF (TG_OP = 'DELETE') THEN
-        INSERT INTO aud_members (member_id	,"name.first","name.last","account.name","account.balance",email,password,role,telephone,joined,active,func) 
+        INSERT INTO aud_members (member_id,"name.first","name.last","account.name","account.balance",email,password,role,telephone,joined,active,func) 
         SELECT OLD.member_id,OLD."name.first",OLD."name.last",OLD."account.name",OLD."account.balance",OLD.email,OLD.password,OLD.role,OLD.telephone,OLD.joined,OLD.active,TG_OP;
         RETURN OLD;
     END IF;
@@ -403,7 +403,7 @@ BEGIN
         RETURN NEW;
     END IF;
     IF (TG_OP = 'UPDATE') THEN
-        INSERT INTO aud_members (member_id	,"name.first","name.last","account.name","account.balance",email,password,role,telephone,joined,active,func) 
+        INSERT INTO aud_members (member_id,"name.first","name.last","account.name","account.balance",email,password,role,telephone,joined,active,func) 
         SELECT OLD.member_id,OLD."name.first",OLD."name.last",OLD."account.name",OLD."account.balance",OLD.email,OLD.password,OLD.role,OLD.telephone,OLD.joined,OLD.active,TG_OP;
         RETURN NEW;
     END IF;
@@ -425,5 +425,73 @@ SELECT "name.first","name.last","account.name",email,password,role,telephone,joi
 FROM members
     LEFT JOIN organizations
 ON members.organization = organizations.org_id;
+--==========================================================================================================
+
+--- PASSWORD_RECOVERY --
+DROP TABLE IF EXISTS password_recovery CASCADE;
+CREATE TABLE IF NOT EXISTS password_recovery (
+    password_recovery_id                    bigserial PRIMARY KEY
+    ,member                                 bigint NOT NULL CONSTRAINT valid_member_required REFERENCES members(member_id)
+    ,recovery_key                           text
+    ,requested                              TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    ,used                                   boolean DEFAULT false
+    ,used_at                                TIMESTAMP WITH TIME ZONE
+);
+
+--- AUD_PASSWORD_RECOVERY --
+DROP TABLE IF EXISTS aud_password_recovery CASCADE;
+CREATE TABLE IF NOT EXISTS aud_password_recovery (
+    password_recovery_id                    bigint
+    ,member                                 bigint
+    ,recovery_key                           text
+    ,requested                              TIMESTAMP WITH TIME ZONE
+    ,used                                   boolean
+    ,used_at                                TIMESTAMP WITH TIME ZONE
+    ,func                                   varchar(15)
+);
+
+--- PASSWORD_RECOVERY TRIGGER FUNCTION
+CREATE OR REPLACE FUNCTION audit_password_recovery()
+    RETURNS trigger AS
+$BODY$
+BEGIN 
+    IF (TG_OP = 'DELETE') THEN
+        INSERT INTO aud_password_recovery (password_recovery_id,member,recovery_key,requested,used,used_at,func) 
+        SELECT OLD.password_recovery_id,OLD.member,OLD.recovery_key,OLD.requested,OLD.used,OLD.used_at,TG_OP;
+        RETURN OLD;
+    END IF;
+    IF (TG_OP = 'INSERT') THEN
+        -- INSERT INTO aud_password_recovery (password_recovery_id,member,recovery_key,requested,used,used_at,func) 
+        -- SELECT NEW.password_recovery_id,NEW.member,NEW.recovery_key,NEW.requested,NEW.used,NEW.used_at,TG_OP;
+        RETURN NEW;
+    END IF;
+    IF (TG_OP = 'UPDATE') THEN
+        INSERT INTO aud_password_recovery (password_recovery_id,member,recovery_key,requested,used,used_at,func) 
+        SELECT OLD.password_recovery_id,OLD.member,OLD.recovery_key,OLD.requested,OLD.used,OLD.used_at,TG_OP;
+        NEW.used_at = now();
+        NEW.used = true;
+        RETURN NEW;
+    END IF;
+END;
+$BODY$
+LANGUAGE plpgsql VOLATILE;
+
+
+-- PASSWORD_RECOVERY AUDIT TRIGGER
+CREATE TRIGGER password_recovery_audit BEFORE UPDATE OR INSERT OR DELETE
+   ON password_recovery FOR EACH ROW
+EXECUTE PROCEDURE audit_password_recovery();
+
+-- VW_PASSWORD_RECOVERY
+DROP VIEW IF EXISTS vw_password_recovery CASCADE;
+CREATE OR REPLACE VIEW vw_password_recovery AS 
+SELECT password_recovery_id,recovery_key
+,member ,members."name.first" AS member_first_name ,members."name.last" AS member_last_name ,members.telephone AS member_telephone ,members.email AS member_email ,members.role AS member_role
+FROM password_recovery
+    LEFT JOIN members
+        ON password_recovery.member         = members.member_id
+WHERE password_recovery.used = false;
+
+
 --==========================================================================================================
 --==========================================================================================================
