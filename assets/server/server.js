@@ -36,7 +36,7 @@ require(`${__dirname}/../db/connection`);
 global.apify    = require(`${__dirname}/../db/index`);
 
 //@ Set the application's running port [the default port is 1357]
-app.port =  3007;
+app.port =  1357;
 
 //@ Import the members database schema
 global.member   = require(`${__dirname}/../schema/members`);
@@ -201,12 +201,34 @@ app.use("/db" ,require(`${__dirname}/../routes/db`) );
 app.route("/mail")
 .post( passport.authenticate('jwt', { session: false }) ,(req,res) => {
 
-    req.body.to = req.body.to.split(',')
-    req.body.bcc = req.body.bcc.split(',')
+    let params = get_params(req);
+    if(params.from){
 
-    sendMail(req.body)
-    .then(res.send)
-    .catch(res.status(500).json);
+        if( params.to ){
+
+            params.to = (params.to) ? params.to.split(',') : undefined;
+            
+            if( params.bcc ){ 
+                params.bcc =(params.bcc) ? params.bcc.split(',') :undefined;
+            } 
+
+            sendMail(params)
+            .then(resp => {
+                res.send( make_response(200,resp) )
+            })
+            .catch(err=>{
+                res.status(500).json( make_response(500,err.message || err) )
+            });
+
+        }else{
+
+            res.send( make_response(500,"Please provide a recipient's email address") );
+
+        }
+
+    }else{
+        res.send( make_response(500,"Please provide a sender's  address") );
+    }
 
 });
 

@@ -5,7 +5,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jsonFormatter', 'chart.js', 'ngAria', 'ngMaterial', 'ngMessages'])
 
 //@ Application running essentials
-.service("app", ['$http', 'remoteAuth', function ($http, remoteAuth) {
+.service("app", ['$http', 'remoteAuth', '$q', function ($http, remoteAuth, $q) {
 
     var app = this;
 
@@ -38,7 +38,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
         } else {
             window.location = "/";
         }
-        return Promise.resolve(true).catch(function (e) {
+        return $q.resolve(true).catch(function (e) {
             console.log("Encountered an error when processing the redirect function.");
             console.dir(e);
         });
@@ -47,8 +47,24 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     this.setVar = function (obj, key, val) {
 
         obj = obj ? obj : {};
-        obj[key] = val;
+        obj[key] = !isNaN(val) ? parseInt(val) : val;
         return obj;
+    };
+
+    this.set_var = function (obj, key, val) {
+
+        obj = obj ? obj : {};
+        obj[key] = val;
+
+        return $q.resolve(obj);
+    };
+
+    this.set = function (obj, key, value) {
+        obj[key] = value;
+    };
+
+    this.getval = function (obj, key) {
+        return obj[key];
     };
 
     //* CONDITIONALLY TRANSFORM TO STRING
@@ -56,7 +72,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
         return (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === "object" ? JSON.stringify(obj) : obj;
     };
     this.stringify = function (obj) {
-        return Promise.resolve(app.str(obj));
+        return $q.resolve(app.str(obj));
     };
 
     //* CONDITIONALLY TRANSFORM TO JSON
@@ -64,7 +80,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
         return (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === "object" ? obj : JSON.parse(obj);
     };
     this.jsonify = function (obj) {
-        return Promise.resolve(app.json(obj));
+        return $q.resolve(app.json(obj));
     };
 
     //* CONDITIONALLY RETURN AN MD5 HASH
@@ -73,7 +89,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
         );
     };
     this.md5ify = function (str) {
-        return Promise.resolve(app.md5(str));
+        return $q.resolve(app.md5(str));
     };
 
     //BASE64 ENCODE A STRING
@@ -81,7 +97,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
         return CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(string));
     };
     this.base64_encodify = function (string) {
-        return Promise.resolve(app.base64_encode(string));
+        return $q.resolve(app.base64_encode(string));
     };
 
     //BASE64 DECODE A STRING
@@ -89,13 +105,13 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
         return CryptoJS.enc.Base64.parse(encoded).toString(CryptoJS.enc.Utf8);
     };
     this.base64_decodify = function (encoded) {
-        return Promise.resolve(app.base64_decode(encoded));
+        return $q.resolve(app.base64_decode(encoded));
     };
 
     //@ THE OFFICIAL FILE UPLOAD SERVICE
     this.upload = function (data, destination) {
 
-        return new Promise(function (resolve, reject) {
+        return $q(function (resolve, reject) {
             //* create a formdata object
             var fd = new FormData();
 
@@ -156,7 +172,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
 
     //! EMPTY CALLBACK
     this.doNothing = function () {
-        return Promise.resolve().catch(function (e) {
+        return $q.resolve().catch(function (e) {
             console.log("Encountered an error when processing the donothing function.");
             console.dir(e);
         });
@@ -180,7 +196,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
             pos: 'top-center' || position
         });
 
-        return Promise.resolve(true).catch(function (e) {
+        return $q.resolve(true).catch(function (e) {
             console.dir(e);
         });
     };
@@ -315,7 +331,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     //* SHOW A "LOADING" ELEMENT
     this.loadify = function (duration, message) {
 
-        return new Promise(function (resolve, reject) {
+        return $q(function (resolve, reject) {
             var modal = UIkit.modal.blockUI('<center><i style="color:blue;" class="fa fa fa-spinner fa-pulse fa-5x fa-fw"></i></center>' + (message ? '<center><br>' + message + '</center>' : ""));
             if (duration && !isNaN(duration)) {
                 setTimeout(function () {
@@ -334,12 +350,12 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
         UIkit.modal.alert('<font color="#1976D2" style="font-weight:bold;text-transform:uppercase;">' + (title || 'Notice') + '</font>\n            <hr>\n            <center>' + (message || '</center><font color=red font-weight=bold; font-size=2em>Oops!</font><br>False alarm!<center>') + '</center>');
 
         if (cb && typeof cb == "function") {
-            return Promise.resolve(cb(message)).catch(function (e) {
+            return $q.resolve(cb(message)).catch(function (e) {
                 console.log("Encountered an error when processing the alert function.");
                 console.dir(e);
             });
         } else {
-            return Promise.resolve(true).catch(function (e) {
+            return $q.resolve(true).catch(function (e) {
                 console.log("Encountered an error when processing the alert2 function.");
                 console.dir(e);
             });
@@ -349,7 +365,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     //*GENERATE A CUSTOM CONFIRM DIALOG
     this.confirm = function (title, message, cb) {
 
-        return new Promise(function (resolve) {
+        return $q(function (resolve) {
 
             UIkit.modal.confirm('<font color="#1976D2" style="font-weight:bold;text-transform:uppercase;">' + (title || 'Confirmation required.') + '</font>\n                <hr>\n                <center>' + message + '</center>', function () {
                 if (cb && typeof cb == "function") {
@@ -364,7 +380,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     //*GENERATE A CUSTOM PROMPT DIALOG
     this.prompt = function (title, label, placeholder, cb) {
 
-        return new Promise(function (resolve) {
+        return $q(function (resolve) {
 
             UIkit.modal.prompt('<font color="#1976D2" style="font-weight:bold;text-transform:uppercase;">' + (title || 'Info required') + '</font>\n            <hr>\n            ' + (label || 'email') + ' :', placeholder || '', function (userValue) {
                 if (cb && typeof cb == "function") {
@@ -412,6 +428,13 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
         return app.istelephone.test(prospective_telephone);
     };
     this.is_telephone = this.isTelephone;
+
+    //@ VALIDATE IMEI NUMBERS 
+    this.isimei = /^[0-9]{15}$/;
+    this.isImei = function (prospective_imei) {
+        return app.isimei.test(prospective_imei);
+    };
+    this.is_imei = this.isImei;
 
     //*VALIDATE DATETIME VALUES IN THE FORMAT  DD-MM-YYYY HH:MM e.g 29-02-2013 22:16
     this.isdateTime = /^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[012])-(19|20)[0-9]{2} (2[0-3]|[0-1][0-9]):[0-5][0-9]$/;
@@ -533,7 +556,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     //@ POST HTTP DATA HANDLER  
     this.post = function (destination, data) {
 
-        return new Promise(function (resolve, reject) {
+        return $q(function (resolve, reject) {
 
             $http.post(destination, data).success(resolve).error(reject);
         });
@@ -542,7 +565,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     //@ GET HTTP DATA HANDLER  
     this.get = function (destination, data) {
 
-        return new Promise(function (resolve, reject) {
+        return $q(function (resolve, reject) {
 
             $http.get(destination, {
                 params: data
@@ -553,7 +576,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     //@ PUT HTTP DATA HANDLER 
     this.put = function (destination, data) {
 
-        return new Promise(function (resolve, reject) {
+        return $q(function (resolve, reject) {
 
             $http.put(destination, data).success(resolve).error(reject);
         });
@@ -562,7 +585,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     //@ DELETE HTTP DATA HANDLER 
     this.delete = function (destination, data) {
 
-        return new Promise(function (resolve, reject) {
+        return $q(function (resolve, reject) {
 
             $http.delete(destination, {
                 params: data
@@ -573,7 +596,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     //@ Handle background calls to the web server for database integration
     this.db = function (data, destination) {
 
-        return new Promise(function (resolve, reject) {
+        return $q(function (resolve, reject) {
 
             destination = destination ? destination : remoteAuth.url + '/php';
             $http.get(destination, {
@@ -585,9 +608,9 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     //@ Handle email sending requests
     this.mail = function (data, destination) {
 
-        return new Promise(function (resolve, reject) {
+        return $q(function (resolve, reject) {
 
-            destination = destination ? destination : remoteAuth.url + '/sendMail';
+            destination = destination ? destination : remoteAuth.url + '/mail';
             $http.post(destination, data).success(resolve).error(reject);
         });
     };
@@ -621,7 +644,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
 }])
 
 //@ The BASIC sms sending application service
-.service("sms", ['app', 'remoteAuth', function (app, remoteAuth) {
+.service("sms", ['app', 'remoteAuth', '$q', function (app, remoteAuth, $q) {
     var _this = this;
 
     /**
@@ -658,7 +681,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
             console.log("Re-established a connection to the SMS gateway.");
         });
 
-        return Promise.resolve(app.make_response(200, "Starting the SMS gateway")).catch(function (e) {
+        return $q.resolve(app.make_response(200, "Starting the SMS gateway")).catch(function (e) {
             console.log("There was a problem when starting the SMS relay service.");
             console.dir(e);
         });
@@ -676,7 +699,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
         //@ Nullify the existing object
         socket = undefined;
 
-        return Promise.resolve(app.make_response(200, "Stoping the SMS gateway")).catch(function (e) {
+        return $q.resolve(app.make_response(200, "Stoping the SMS gateway")).catch(function (e) {
             console.log("There was a problem when starting the SMS relay service");
             console.dir(e);
         });
@@ -689,7 +712,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
         if (socket) {
 
             socket.emit("sendSMS", smsData);
-            return Promise.resolve(true).catch(function (e) {
+            return $q.resolve(true).catch(function (e) {
                 console.log("Encountered an error when processing the sms function.");
                 console.dir(e);
             });
@@ -698,7 +721,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
         } else {
 
             app.alert("<font  color=red>SMS SERVICE NOT STARTED</font>", "Framify failed to execute an SMS related command.<br>Reason: <code>The SMS service provider has not been defined.</code>");
-            return Promise.reject(false).catch(function (e) {
+            return $q.reject(false).catch(function (e) {
                 console.log("Encountered an error when processing the sms function.");
                 console.dir(e);
             });
@@ -723,7 +746,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
             }
 
             socket.emit("sendSMS", obj);
-            return Promise.resolve(app.make_response(200, "Queued the SMS for sending")).catch(function (e) {
+            return $q.resolve(app.make_response(200, "Queued the SMS for sending")).catch(function (e) {
                 console.log("Encountered an error when processing the sendsms function.");
                 console.dir(e);
             });
@@ -732,7 +755,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
         } else {
 
             app.alert("<font  color=red>SMS SERVICE NOT STARTED</font>", "Framify failed to execute an SMS related command.<br>Reason: <code>The SMS service provider has not been defined.</code>");
-            return Promise.reject(false).catch(function (e) {
+            return $q.reject(false).catch(function (e) {
                 console.log("Encountered an error when processing the sms function.");
                 console.dir(e);
             });
@@ -742,7 +765,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     //@ SEND BULK SMS MESSAGES
     this.bulkSMS = function (contacts, data, apiKey) {
 
-        return new Promise(function (resolve, reject) {
+        return $q(function (resolve, reject) {
 
             //@ Ensure that the SMS service provision gateway is set
             if (socket) {
@@ -809,20 +832,20 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     this.mail = function (data) {
         return $.ajax({
             method: "POST",
-            url: "/sendMail",
+            url: "/mail",
             data: data
         });
     };
 }])
 
 //@@ The Authentication service
-.service('auth', ['$http', '$localStorage', function ($http, $localStorage) {
+.service('auth', ['$http', '$localStorage', '$q', function ($http, $localStorage, $q) {
 
     var auth = this;
 
     auth.SetAuth = function (AuthToken) {
 
-        return new Promise(function (resolve, reject) {
+        return $q(function (resolve, reject) {
 
             resolve($http.defaults.headers.common.Authorization = AuthToken || $localStorage.framify_user ? $localStorage.framify_user.token : undefined);
         });
@@ -832,7 +855,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     //@ Perform User Registration
     auth.Register = function (credentials) {
 
-        return new Promise(function (resolve, reject) {
+        return $q(function (resolve, reject) {
 
             $http.post('/auth/register', credentials).success(function (response) {
 
@@ -853,7 +876,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     //@ Perform a User Login
     auth.Login = function (credentials) {
 
-        return new Promise(function (resolve, reject) {
+        return $q(function (resolve, reject) {
 
             $http.post('/auth/verify', credentials).success(function (response) {
 
@@ -878,7 +901,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     //@ Perform A User Logout
     auth.Logout = function () {
 
-        return new Promise(function (resolve, reject) {
+        return $q(function (resolve, reject) {
 
             delete $localStorage.framify_user;
             auth.SetAuth(undefined).then(resolve);
@@ -889,7 +912,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
 
 //@@ The Remote authentication service
 //@@ The Authentication service ChartJsProvider.service('auth'
-.service('remoteAuth', ['$http', '$localStorage', function ($http, $localStorage) {
+.service('remoteAuth', ['$http', '$localStorage', '$q', function ($http, $localStorage, $q) {
 
     var r_auth = this;
 
@@ -897,7 +920,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
 
     r_auth.setUrl = function (accessUrl) {
 
-        return new Promise(function (resolve, reject) {
+        return $q(function (resolve, reject) {
 
             r_auth.url = accessUrl;
             console.log('The remote access url has been set to ' + accessUrl);
@@ -908,7 +931,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
 
     r_auth.SetAuth = function (AuthToken) {
 
-        return new Promise(function (resolve, reject) {
+        return $q(function (resolve, reject) {
 
             resolve($http.defaults.headers.common.Authorization = AuthToken || $localStorage.framify_user ? $localStorage.framify_user.token : undefined);
         });
@@ -918,7 +941,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     //@ Perform User Registration
     r_auth.Register = function (credentials) {
 
-        return new Promise(function (resolve, reject) {
+        return $q(function (resolve, reject) {
 
             $http.post(r_auth.url + '/auth/register', credentials).success(function (response) {
 
@@ -939,7 +962,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     //@ Perform a User Login
     r_auth.Login = function (credentials) {
 
-        return new Promise(function (resolve, reject) {
+        return $q(function (resolve, reject) {
 
             $http.post(r_auth.url + '/auth/verify', credentials).success(function (response) {
 
@@ -964,7 +987,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     //@ Perform A User Logout
     r_auth.Logout = function () {
 
-        return new Promise(function (resolve, reject) {
+        return $q(function (resolve, reject) {
 
             delete $localStorage.framify_user;
             r_auth.SetAuth(undefined).then(resolve);
@@ -1046,7 +1069,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
 }])
 
 //@ The main controller
-.controller("framifyController", ['$scope', '$state', '$rootScope', '$http', function ($scope, $state, $rootScope, $http) {
+.controller("framifyController", ['$scope', '$state', '$rootScope', '$http', '$q', function ($scope, $state, $rootScope, $http, $q) {
 
     //!APPLICATION GLOBAL SCOPE COMPONENTS
     $scope.current = {};
@@ -1154,7 +1177,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     //! BASIC ADDITION
     $scope.add = function (table, data, cryptFields, cb) {
 
-        return new Promise(function (resolve, reject) {
+        return $q(function (resolve, reject) {
 
             //* populate the data object 
             data = data ? $scope.app.json(data) : {};
@@ -1216,7 +1239,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     //! BASIC UPDATING
     $scope.update = function (table, data, cryptFields, cb) {
 
-        return new Promise(function (resolve, reject) {
+        return $q(function (resolve, reject) {
 
             //* pack the relevant info into the data object
             data = data ? $scope.app.json(data) : {};
@@ -1278,7 +1301,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     //! BASIC DATA FETCHING
     var do_fetch = function do_fetch(table, data, cryptFields) {
 
-        return new Promise(function (resolve, reject) {
+        return $q(function (resolve, reject) {
 
             //* populate the "data" object
             data = data ? $scope.app.json(data) : {};
@@ -1302,11 +1325,13 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
                 r = $scope.app.json(r);
 
                 if (r.response == 200) {
-                    $scope.fetched[table] = r.data.message;
-                    //@ $scope.$apply();
-                    $scope.app.doNothing().then(function (e) {
-                        resolve(r);
-                    });
+                    $scope.fetched[table.toString().replace(/vw_/ig, '')] = r.data.message;
+                    $scope.$apply();
+                    // $scope.app.doNothing()
+                    // .then(e=>{
+                    resolve(r);
+                    // })
+
                 } else {
 
                     // POSTGRESQL ERROR FORMAT MATCHING
@@ -1345,13 +1370,13 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
                 });
 
                 return {
-                    v: Promise.all(promiseArr)
+                    v: $q.all(promiseArr)
                 };
             }();
 
             if ((typeof _ret2 === 'undefined' ? 'undefined' : _typeof(_ret2)) === "object") return _ret2.v;
         } else {
-            return Promise.resolve(do_fetch(table, data, cryptFields)).catch(function (e) {
+            return $q.resolve(do_fetch(table, data, cryptFields)).catch(function (e) {
                 console.log("Encountered an error when processing the fetch function.");
                 console.dir(e);
             });
@@ -1361,7 +1386,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     //! BASIC DELETION  
     $scope.del = function (table, data, cryptFields, cb) {
 
-        return new Promise(function (reject, resolve) {
+        return $q(function (reject, resolve) {
 
             //* populate the data object
             data = data ? $scope.app.json(data) : {};
@@ -1383,7 +1408,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
                 r = $scope.app.json(r);
 
                 if (r.response == 200) {
-                    // // $scope.fetched[table].splice(delID, 1);
+                    // // $scope.fetched[table.toString().replace(/vw_/ig, '')].splice(delID, 1);
                     $scope.app.notify('<center>' + r.data.message + '</center>', "success");
                     $scope.fetch(table);
                     resolve(r);
@@ -1411,7 +1436,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     //Basic User Login
     $scope.login = function (cryptField) {
 
-        return new Promise(function (resolve, reject) {
+        return $q(function (resolve, reject) {
 
             if (cryptField) {
                 $scope.data.login[cryptField] = $scope.app.md5($scope.data.login[cryptField]);
@@ -1471,7 +1496,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     //Basic admin login
     $scope.adminLogin = function (cryptField) {
 
-        return new Promise(function (resolve, reject) {
+        return $q(function (resolve, reject) {
 
             if (cryptField) {
                 $scope.data.admin[cryptField] = $scope.app.md5($scope.data.admin[cryptField]);
@@ -1540,7 +1565,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     //@ Handle basic user re-authentication
     $scope.islogedin = function () {
 
-        return new Promise(function (resolve, reject) {
+        return $q(function (resolve, reject) {
 
             if ($scope.storage.user) {
                 $scope.data.login.username = $scope.storage.user.username;
@@ -1560,7 +1585,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
         $scope.islogedin = false;
         delete $scope.storage.user;
         window.location = '/#/';
-        return Promise.resolve(true).catch(function (e) {
+        return $q.resolve(true).catch(function (e) {
             console.log("Encountered an error when processing the logout function.");
             console.dir(e);
         });
@@ -1573,7 +1598,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
         } else {
             window.location = "/#/framify";
         }
-        return Promise.resolve(true).catch(function (e) {
+        return $q.resolve(true).catch(function (e) {
             console.log("Encountered an error when processing the redirect function.");
             console.dir(e);
         });
@@ -1591,7 +1616,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
             $scope.location = "/#/admin";
         }
 
-        return Promise.resolve(true).catch(function (e) {
+        return $q.resolve(true).catch(function (e) {
             console.log("Encountered an error when processing the authorize function.");
             console.dir(e);
         });
@@ -1602,7 +1627,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
         delete $scope.storage.admin;
         $rootScope.frame.changeAdmin(false);
         window.location = '/#/';
-        return Promise.resolve(true).catch(function (e) {
+        return $q.resolve(true).catch(function (e) {
             console.log("Encountered an error when processing the deauthorize function.");
             console.dir(e);
         });
@@ -1611,7 +1636,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     // BASIC Custom Queries
     $scope.custom = function (table, data, cryptFields, cb) {
 
-        return new Promise(function (resolve, reject) {
+        return $q(function (resolve, reject) {
 
             //* initialize the data object
             data = data ? $scope.app.json(data) : {};
@@ -1636,9 +1661,9 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
 
                     $scope.app.notify('<center>' + (r.data.message || 'Successful') + '</center>', "success");
 
-                    $scope.cFetched[table] = r.data.message;
+                    $scope.cFetched[table.toString().replace(/vw_/ig, '')] = r.data.message;
                     $scope.data[table.toString().replace(/vw_/ig, '')] = {};
-                    //$scope.$apply();
+                    $scope.$apply();
 
                     resolve(r);
                 } else {
@@ -1664,7 +1689,23 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     //BASIC DATABASE INSTANCEOF COUNTER
     $scope.count = function (table, data, cryptFields, cb) {
 
-        return new Promise(function (resolve, reject) {
+        return $q(function (resolve, reject) {
+
+            // if (Array.isArray(table)) {
+
+            //     let promiseArr = new Array();
+
+            //     table
+            //     .filter(e=>typeof(e[0])!='undefined' )
+            //     .forEach( (tData ,tkey) => {
+            //         promiseArr.push( do_fetch(tData[0] ,(tData[1] || {}) ) ,cryptFields)
+            //     });
+
+            //     promiseArr = promiseArr.filter(e=>typeof(e)!='undefined');
+
+            //     return $q.all( promiseArr );
+
+            // }
 
             data = data ? $scope.app.json(data) : {};
             data.table = table;
@@ -1728,7 +1769,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
             keys.split(",").forEach(function (key) {
                 delete data[key];
             });
-            return Promise.resolve(data).catch(function (e) {
+            return $q.resolve(data).catch(function (e) {
                 console.log("Encountered an error when processing the sanitize function.");
                 console.dir(e);
             });
@@ -1745,7 +1786,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     $scope.d_push = $scope.dPush;
 
     $scope.dPushify = function (obj, key, val) {
-        return Promise.resolve($scope.dPush(obj, key, val));
+        return $q.resolve($scope.dPush(obj, key, val));
     };
     $scope.d_pushify = $scope.dPushify;
 
@@ -1777,7 +1818,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     // addExtras(data.my_services,{username: storage.user.username},'username:WHERE owner','password,name,email,telephone,account_number,entity,active'),' ' )
     $scope.addExtras = function (targetObj, extrasObj, subStrings, removeKeys) {
 
-        return new Promise(function (resolve, reject) {
+        return $q(function (resolve, reject) {
 
             targetObj = targetObj || {};
             extrasObj = extrasObj || {};
@@ -1838,7 +1879,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     };
     $scope.add_extras = function (targetObj, extrasObj, subStrings, removeKeys) {
 
-        return new Promise(function (resolve, reject) {
+        return $q(function (resolve, reject) {
 
             targetObj = targetObj || {};
             extrasObj = extrasObj || {};
@@ -2058,7 +2099,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     //@ The identity check verification handler
     $scope.handlers.identity = function () {
 
-        return new Promise(function (reject, resolve) {
+        return $q(function (reject, resolve) {
 
             $http.get("/auth/me").success(function (response) {
 
@@ -2076,7 +2117,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
 
     $scope.r_handlers.identity = function () {
 
-        return new Promise(function (reject, resolve) {
+        return $q(function (reject, resolve) {
 
             console.log("Querying the remote server for identity");
 
@@ -2099,7 +2140,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     //@ The login status check handler
     $scope.handlers.isLogedIn = function () {
 
-        return new Promise(function (resolve, reject) {
+        return $q(function (resolve, reject) {
 
             if (!$scope.storage.framify_user) {
 
@@ -2142,7 +2183,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
 
     $scope.r_handlers.isLogedIn = function () {
 
-        return new Promise(function (resolve, reject) {
+        return $q(function (resolve, reject) {
 
             console.log("Handing you over to the remote authentication server.");
 
@@ -2213,6 +2254,9 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
 .config(["ChartJsProvider", function (ChartJsProvider) {
 
     //@SET THE DEFAULT CHART COLORS
-    ChartJsProvider.setOptions({ colors: ["#4AB151", '#387EF5', '#FF0000', '#DCDCDC', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360'] });
+
+    ChartJsProvider.setOptions({ colors: ['#1976D2', '#000000', '#ff00ff', '#ffff00', '#00ff00', '#00ffff', '#4D5360'] });
+
+    // ChartJsProvider.setOptions({ colors : [ "#4AB151",'#387EF5', '#FF0000', '#DCDCDC', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360'] });
     // ChartJsProvider.setOptions({ colors : [ '#803690', '#00ADF9', '#DCDCDC', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360'] });
 }]);

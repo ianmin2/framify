@@ -40,15 +40,15 @@ prcs.addFunc = ( $addData ) => {
 		$query = "INSERT INTO "+$table+" "+$field_names+" VALUES "+$field_values+" "+( ( $extras ) ? $extras : '' ); 					
 	
 
-		$connection.aQuery( $query, $field_params, `${$table} record added`, `Failed to add ${$table} record` )
+		$connection.query( $query, $field_params )
 		.then( response => {
 
-			resolve( ( response ) );
+			resolve( make_response( 200, `${$table} record added` ) );
 
 		})
 		.catch( err => {
 
-			resolve( ( err.message ) );
+			resolve( make_response( 500, `Failed to add ${$table} record. <br> ${err.message}` ) );
 
 		})
 
@@ -224,15 +224,15 @@ prcs.delFunc = ( $deleteData ) => {
 		
 		$query = `DELETE FROM ${$table} ${$conditions}`;
 
-		$connection.aQuery( $query, $condition_params,`${$table} record removed`, `Failed to remove ${$table} record` )
+		$connection.query( $query, $condition_params )
 		.then( response => {
 
-			resolve( ( response ) );
+			resolve( make_response( 200, `${$table} record removed` ) );
 
 		})
 		.catch( err => {
 
-			resolve( ( err.message ) );
+			resolve( make_response(500, `Failed to remove ${$table} record. <br> ${err.message}` ) );
 
 		})
 
@@ -274,15 +274,15 @@ prcs.updateFunc = ( $updateData ) => {
 		//PREVENT THE UPDATING OF ALL RECORDS WHERE NO IMPLICIT RULE IS SET {{using WHERE}}
 		$query = "UPDATE "+$table+" SET "+$update_string+" WHERE "+(($extras)?$extras:'');
 
-		$connection.aQuery( $query, $update_params,`${$table} record updated`, `Failed to update ${$table} record` )
+		$connection.query( $query, $update_params )
 		.then( response => {
 
-			resolve( ( response ) );
+			resolve( make_response(200, `${$table} record updated`,  ) );
 
 		})
 		.catch( err => {
 
-			resolve( ( err.message ) );
+			resolve( make_response(500, `Failed to update ${$table} record. <br> ${err.message}`  ) );
 
 		})
 
@@ -305,7 +305,7 @@ prcs.truncateFunc = ( $truncateData ) => {
 		
 		$query = "TRUNCATE TABLE "+$table+" "+(($extras)?$extras:'');
 
-		$connection.aQuery( $query,[],`${$table} truncated`, `Failed to truncate ${$table}` )
+		$connection.aQuery( $query,[],`${$table} truncated`, `Failed to truncate ${$table}, please ensure that it exists` )
 		.then( response => {
 
 			resolve( ( response ) );
@@ -335,7 +335,7 @@ prcs.dropFunc = ( $dropData ) => {
 		
 		$query = "DROP TABLE "+$table+" "+(($extras)?$extras:'');
 
-		$connection.aQuery( $query, [],`${$table} dropped`, `Failed to drop ${$table}` )
+		$connection.aQuery( $query, [],`${$table} dropped`, `Failed to drop ${$table}, please ensure that it exists.` )
 		.then( response => {
 
 			resolve( ( response ) );

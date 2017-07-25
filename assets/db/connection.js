@@ -25,8 +25,8 @@ conn.query = ( $statement, $params ) => {
 			resolve(data);
 		})
 		.catch(err=>{
-			console.log(`${$statement}`.yell)
-			console.log(`${err.message}`.err)
+			console.log(`\n${$statement}`.yell)
+			console.log(`${err.message}\n`.err)
 			reject(err)
 		})
 

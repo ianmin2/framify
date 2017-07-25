@@ -37,6 +37,7 @@ if (fs.existsSync(`${__dirname}/../config/mailgun.conf`)) {
 
     };
 
+    c_log(`\n✔`.succ +` Mailgun Email sending parameters successfully loaded.\n`.info);
 
 } else {
 

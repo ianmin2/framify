@@ -36,106 +36,225 @@ var preventRegistrationSpoofing = function(req,res,next){
 
 };
 
-//@ REGISTER NEW USERS
-auth.route("/register")
-.post( preventRegistrationSpoofing, (req,res) => {
+if(  authMeth =="mongo" ){
 
-    if(!req.body.password || !req.body.email){
+    //@ REGISTER NEW USERS
+    auth.route("/register")
+    .post( preventRegistrationSpoofing, (req,res) => {
 
-        res.json( make_response(500, "Please provide both a registration email and password") );
-        
-    }else{
-    
-        var newUser = new member( req.body );
-        // {
-        //     email       : req.body.email
-        //     ,password   : req.body.password
-        //     ,role       : req.body.role
-        // }
+        if(!req.body.password || !req.body.email){
 
-        newUser.save( err => {
-
-            if(err){
-
-                return res.json( make_response(500, err.message ) )
-
-            }
-
-            res.json( make_response( 200, "Successfully registered a new user.") )
-
-        });
-
-                    
-    }
+            res.json( make_response(500, "Please provide both a registration email and password") );
             
-});
+        }else{
+        
+            var newUser = new member( req.body );
+            // {
+            //     email       : req.body.email
+            //     ,password   : req.body.password
+            //     ,role       : req.body.role
+            // }
 
-//@ AUTHENTICATE THE USER AND ISSUE A jwt
-auth.route("/verify")
-.post( (req,res) => {
+            newUser.save( err => {
 
-    if( !req.body.email || !req.body.password  ){
-        res.send( make_response( 500, "Both the username and password are required." ) )
-    }else{
+                if(err){
 
-         member.findOne({
-            email   : req.body.email
-            ,active : true
-        },function(err,user){
+                    return res.json( make_response(500, err.message ) )
 
-            if(err) throw err;
+                }
 
-            if(!user){
-                res.send( make_response( 401, "No such user was found" ) );
-            }else{
+                res.json( make_response( 200, "Successfully registered a new user.") )
 
-                //@ Check if the password matches
-                user.comparePassword( req.body.password, function( err, isMatch ){
+            });
 
-                    if( isMatch && !err ){
+                        
+        }
+                
+    });
 
-                        user._doc.password      = undefined;
-                        user._doc.transactions  = undefined;
-                        user._doc.__v           = undefined;
+    //@ AUTHENTICATE THE USER AND ISSUE A jwt
+    auth.route("/verify")
+    .post( (req,res) => {
 
-                        var token = jwt.sign( user._doc, config.secret, { expiresIn: 3600, issuer: myAddr } )
+        if( !req.body.email || !req.body.password  ){
+            res.send( make_response( 500, "Both the username and password are required." ) )
+        }else{
 
-                        res.json( make_response( 200, { token: `JWT ${token}` }, { role: user._doc.role } ) )
-                    
-                    }else{
-                        res.send( make_response( 401, "Password does not match." ) )
-                    }
+            member.findOne({
+                email   : req.body.email
+                ,active : true
+            },function(err,user){
 
-                });
+                if(err) throw err;
 
-            }
+                if(!user){
+                    res.send( make_response( 401, "No such user was found" ) );
+                }else{
+
+                    //@ Check if the password matches
+                    user.comparePassword( req.body.password, function( err, isMatch ){
+
+                        if( isMatch && !err ){
+
+                            user._doc.password      = undefined;
+                            user._doc.transactions  = undefined;
+                            user._doc.__v           = undefined;
+
+                            var token = jwt.sign( user._doc, config.secret, { expiresIn: 3600, issuer: myAddr } )
+
+                            res.json( make_response( 200, { token: `JWT ${token}` }, { role: user._doc.role } ) )
+                        
+                        }else{
+                            res.send( make_response( 401, "Password does not match." ) )
+                        }
+
+                    });
+
+                }
+
+            })
+
+        }
+
+    
+
+    });
+
+
+    //@ SAMPLE PROTECTED ROUTE THAT RETURNS THE LOGED IN USER'S INFORMATION
+    auth.route('/me')
+    .all( passport.authenticate('jwt', { session: false }) ,function(req,res){
+        
+        member.findOne({email:req.whoami.email},function(err,memberRecord){
+
+                let l = clone( memberRecord );
+            
+                l.password   = undefined;
+                l._id        = undefined;
+                l.__v        = undefined;           
+
+
+                res.send( make_response(200, l ) );      
 
         })
 
-    }
+    });
 
-   
-
-});
-
-
-//@ SAMPLE PROTECTED ROUTE THAT RETURNS THE LOGED IN USER'S INFORMATION
-auth.route('/me')
-.all( passport.authenticate('jwt', { session: false }) ,function(req,res){
     
-    member.findOne({email:req.whoami.email},function(err,memberRecord){
+    module.exports =  auth;
 
-            let l = clone( memberRecord );
+
+}else{
+
+    //@ REGISTER NEW USERS
+    auth.route("/register")
+    .post( preventRegistrationSpoofing, (req,res) => {
+
+        console.log(`Attempting a registration`.info)
+
+        var params = get_params(req);
+
+        if( isDefined(params,"password,email") ){
+
+            pgdb.any(`INSERT INTO members ("name.first","name.last","account.name",email,password,role,telephone) 
+                    VALUES ('${params["name.first"]}','${params["name.last"]}','${params["account.name"]}','${params["email"]}','${crypt.md5(params["password"])}','${params["role"]}','${params["telephone"]}')`)
+            .then(inserted =>{
+                log(`${inserted}`.succ)
+                log(`Registered the user ${params["email"]}`.succ)
+                res.json( make_response( 200, "Successfully registered a new user.",params) )
+            })
+            .catch(error => {
+                log(`Failed to register the user.\n\t\t\t\t${str(params)}`.err)
+                console.dir(error)
+                res.status(500).json( make_response( 500, "Failed to record the user", error.message) )
+            })
+            
+        }else{  
+            
+            res.json( make_response(500, "Please provide both a registration email and password") );        
+                        
+        }
+                
+    });
+
+    //@ AUTHENTICATE THE USER AND ISSUE A jwt
+    auth.route("/verify")
+    .all( (req,res) => {
+
+        console.log(`Attempting a login`.info)
+
+        req.body = get_params( req );
+
+        if( isDefined(req.body, "email,password") ){
+
+            pgdb.any(`SELECT * FROM members WHERE email='${req.body.email}' AND active=true`)
+            .then(user=>{
+
+                if(!user[0]){
+                    res.send( make_response( 401, "No such user was found",req.body ) );
+                }else{
+
+                    var memba = user[0];
+
+                    if(memba.password == crypt.md5(req.body.password)){
+
+                        memba.password          = undefined;
+                        memba.transactions      = undefined;
+
+                        var token = jwt.sign( memba, config.secret, { expiresIn: 36000000000000, issuer: myAddr } )
+
+                        res.json( make_response( 200, { token: `JWT ${token}` }, { 
+                                                                                    role:           memba.role
+                                                                                    ,member_id:     memba.member_id
+                                                                                    ,member_name:   { first: memba["name.first"], last: memba["name.last"]  }
+                                                                                } ) )
+
+
+                    }else{
+
+                        res.send( make_response( 401, "Password does not match." ) )
+
+                    }
+
+                }
+            })
+
+
+        }else{
+
+            res.send( make_response( 500, "Both the email and password are required." ) )
+
+        }
+
+    
+
+    });
+
+    //@ SAMPLE PROTECTED ROUTE THAT RETURNS THE LOGED IN USER'S INFORMATION
+    auth.route('/me')
+    .all( passport.authenticate('jwt', { session: false }) ,function(req,res){
+
+        console.log(`Attempting a profile data fetch`.info)
         
-            l.password   = undefined;
-            l._id        = undefined;
-            l.__v        = undefined;           
+        pgdb.any(`SELECT * FROM members WHERE email = '${req.whoami.email}'`)
+        .then(memberRecord => {
+
+            let l = clone( memberRecord[0] );
+            l.password      = undefined;
+            l._id           = undefined;
+            l.__v           = undefined;
+
+            res.send( make_response(200, l) )
+
+        })
+        .catch(e=>{
+            res.send( make_response(500, e.message) )
+        })
 
 
-            res.send( make_response(200, l ) );      
+    });
 
-    })
+    
+    module.exports =  auth;
 
-});
-
-module.exports =  auth;
+}

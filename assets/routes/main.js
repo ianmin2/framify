@@ -13,20 +13,6 @@ app.route("/echo")
     res.status( params.status || 404 ).send( make_response( params.status || 404 , ( Object.keys(params).length > 0 ) ? params : "Nothing Was found" , 'framify echo service' ) )
 })
 
-// //@ Send the default login page
-// router.route("/login")
-// .all((req, res) => {
-//     //console.log( JSON.stringify(fs.readFileSync(`${__dirname}/../login.html`,'utf8'),null,2) )
-//     res.send(fs.readFileSync(`${__dirname}/../login.html`, 'utf8'));
-// })
-
-// //@ Handle File downloads
-// router.route("/sample/:iara")
-// .all(function(req, res) {
-//     var i = req.params.iara;
-//     res.sendFile(i, { "root": __dirname + "/../" });
-// });
-
 //@ Handle configuration fille requests
 router.route("/config/:fname")
 .all(function(req, res) {

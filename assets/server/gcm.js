@@ -81,6 +81,8 @@ if( !fs.existsSync(gcmConfFile) ) {
 	    });
 	    
 	});
+
+	c_log(`\n✔`.succ +` Google Cloud Messaging parameters successfully loaded.\n`.info);
 	
 }
 

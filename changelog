@@ -75,3 +75,17 @@ v2.5.0
 
 v2.6.0
 	=> Added the "/db" route for database connectivity via postgresql in line for the deprecation of the php-cgi module
+	
+v2.6.1 
+	=> Altered the structure of the sample sql file in favor of a more structure coupled file
+
+v2.7.0
+	=> Updated the structure of the pr-automated db query handler
+	=> Added an implicit link reference to the application favicon in the main html file 
+	=> Updated to the latest version of framify.js with 'app.isimei' validation support
+	=> Updated the structure of the "/mail" path to implicitly catch errors of omission of either of the "to,from" variables as well as the setting of the "bcc" variable where available
+	=> Removed the "server/dbfy.js" file due to it's redundance after the implementation of the "/db" postgres handler route
+	=> Added a notifier log message on startup to show the member authentication method loaded ("mongodb/postgreql")
+	=> Removed the sample facebook authentication credentials from the configuration file 
+	=> Changed the default access parameter values ["username,password,database"] for postgresql authentication in preparation for full customization at framify project initiaization
+	=> Slightly Altered the content of the main "index.html" file

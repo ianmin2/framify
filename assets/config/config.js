@@ -1,8 +1,8 @@
 //@ Oauth Service Providers Configuration
 exports.oauth = {
 	"facebook" : {
-		"client_id": "1086873841376312",
-		"client_secret": "a2b1a70ff8b14440ca9c1057619a840f",
+		"client_id": "",
+		"client_secret": "",
 		"callback": "http://localhost:1357/auth/facebook/callback"
 	},
 	"google" : {
@@ -42,8 +42,8 @@ exports.database = {
 
 exports.postgres = {
 	user		: 'postgres'
-	,database	: 'bahai'
-	,password	: '146450f7'
+	,database	: 'test'
+	,password	: ''
 	,host		: 'localhost'
 	,port		: 5432
     ,max		: 10
