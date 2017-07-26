@@ -93,3 +93,6 @@ v2.7.0
 v2.8.0 
 	=> Added the preliminary password recovery feature accessible via the "/passwords" route
 	=> Updated the authentication route handler "/auth" to use simple prepared statements for data entry.
+
+v2.9.0 
+	=> Added a slightly more intuitive password recovery UI

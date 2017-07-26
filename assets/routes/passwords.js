@@ -53,7 +53,7 @@ router.route("/forgot")
 
                             sendMail( mailObj )
                             .then( msg => {
-                                res.send(  make_response(200, `A password recovery email is on its way to ${params.email}.<br><br>Please check your <b>Junk</b> or <b>spam</b> before trying again.`,msg) )
+                                res.send(  make_response(200, `A password recovery email is on its way to ${params.email}.<br><br>Please check your <b style="color:orange !important;">Junk</b> or <b style="color:orange !important;">spam</b> folders before trying again.`,'continue') )
                             })
                             .catch( err => {
                                 res.send( make_response( 500, `An error occured when trying to send your email.<br>Please try again.<br><br>Error: ${err.message}` ) );
@@ -152,7 +152,7 @@ router.route("/recover/:id/:email/:token")
 
             }else{
 
-                res.send( make_response( 404, "The recovery link you entered is invalid. Please ensure that it hasn't been used already." ) )
+                res.sendFile( `${__dirname}/templates/password/invalid.html`);
 
             }
 

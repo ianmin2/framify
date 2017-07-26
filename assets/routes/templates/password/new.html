@@ -26,6 +26,11 @@
                 $http({ url:"", method: "POST", data:{ password: $scope.data.password, password2: $scope.data.password2 }})
                 .then(function(response){
                     $scope.data.response = response.data.data.message;
+                    // if( response.data.data.command == "continue" ){
+                    //     // setTimeout(function(){
+                    //     //     window.location = 
+                    //     // },3000)
+                    // }
                 })
                 
             };
