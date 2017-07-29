@@ -50,7 +50,7 @@ if( global.authMeth == "mongo" ){
 
             // c_log( jwt_payload );
             
-            pgdb.any('SELECT * FROM members WHERE member_id=$1 AND email=$2 AND role=$3 AND telephone=$4',
+            pgdb.any('SELECT * FROM vw_members WHERE member_id=$1 AND email=$2 AND role=$3 AND telephone=$4 AND active=true',
             [jwt_payload.member_id,
             jwt_payload.email,
             jwt_payload.role,

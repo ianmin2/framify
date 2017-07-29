@@ -197,11 +197,13 @@ if(  authMeth =="mongo" ){
 
         if( isDefined(req.body, "email,password") ){
 
-            pgdb.any(`SELECT * FROM members WHERE email=$1 AND active=true`,[req.body.email])
+            pgdb.any(`SELECT * FROM vw_members WHERE email=$1`,[req.body.email])
             .then(user=>{
 
                 if(!user[0]){
                     res.send( make_response( 401, "No such user was found",req.body ) );
+                }else if( !user[0].active ){
+                    res.send( make_response( 401, "Your account has been terminated.<br>Please consult an administrator for assistance.",req.body ) );
                 }else{
 
                     var memba = user[0];
@@ -246,7 +248,7 @@ if(  authMeth =="mongo" ){
 
         console.log(`Attempting a profile data fetch`.info)
         
-        pgdb.any(`SELECT * FROM members WHERE email=$1`,[req.whoami.email])
+        pgdb.any(`SELECT * FROM vw_members WHERE email=$1 AND active=true`,[req.whoami.email])
         .then(memberRecord => {
 
             let l = clone( memberRecord[0] );

@@ -422,8 +422,8 @@ EXECUTE PROCEDURE audit_members();
 --- VW_MEMBERS ---
 DROP VIEW IF EXISTS vw_members;
 CREATE OR REPLACE VIEW vw_members AS 
-SELECT "name.first","name.last","account.name",email,password,role,telephone,joined,active
-,organization,organizations.org_name as organization_name,organizations.org_email AS organization_email
+SELECT member_id,"name.first","name.last","account.name",email,password,role,telephone,joined,active
+,organization,organizations.org_name as organization_name,organizations.org_email AS organization_email,organizations.org_telephone AS organization_telephone
 FROM members
     LEFT JOIN organizations
 ON members.organization = organizations.org_id;

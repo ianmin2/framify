@@ -100,3 +100,7 @@ v2.9.0
 v2.10.0
 	=> Altered the "config/config.js" file to use ".conf" files for passwords rather than inline text
 	=> Altered the "schema/sample.sql" file to fit an email in organizations as well as a more intuitive easier to debug format
+
+v2.11.0
+	=> Updated the passport JWT strategy and SQL to start support for SAAS 
+	=> Fixed the deactivated user authentication issue
