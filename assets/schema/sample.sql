@@ -2,16 +2,17 @@
 DROP TABLE IF EXISTS organizations CASCADE;
 CREATE TABLE organizations (
     org_id          bigserial   PRIMARY KEY,
-    org_name        text        NOT NULL CONSTRAINT organization_name_required UNIQUE,
-    org_telephone   text        NOT NULL CONSTRAINT organization_telephone_required UNIQUE,
-    org_code        varchar(25) NOT NULL CONSTRAINT organization_code_required UNIQUE,
+    org_name        text        NOT NULL CONSTRAINT unique_organization_name_required UNIQUE,
+    org_telephone   text        NOT NULL CONSTRAINT unique_organization_telephone_required UNIQUE,
+    org_email       text        NOT NULL CONSTRAINT unique_organization_email_required UNIQUE,
+    org_code        varchar(25) NOT NULL CONSTRAINT unique_organization_code_required UNIQUE,
     org_added       TIMESTAMP WITH TIME ZONE    DEFAULT CURRENT_TIMESTAMP,
     org_active      boolean     DEFAULT true
 );
 INSERT INTO organizations 
-( org_name,org_telephone,org_code) 
+( org_name,org_telephone,org_email,org_code) 
 VALUES
-('Bixbyte Solutions Limited','+254725678447','pm_bx_001');
+('Bixbyte Solutions Limited','+254725678447','info@bixbyte.io','pm_bx_001');
 
 
 -- AUD_ORGANIZATIONS --
@@ -20,6 +21,7 @@ CREATE TABLE aud_organizations (
     org_id          bigint      ,
     org_name        text        ,
     org_telephone   text        ,
+    org_email       text        ,
     org_code        varchar(25) ,
     org_added       TIMESTAMP WITH TIME ZONE    DEFAULT CURRENT_TIMESTAMP,
     org_active      boolean     DEFAULT false,
@@ -33,18 +35,18 @@ CREATE OR REPLACE FUNCTION audit_organizations()
 $BODY$
 BEGIN 
     IF (TG_OP = 'DELETE') THEN
-        INSERT INTO aud_organizations (org_id,org_name,org_telephone,org_code,org_added,org_active,func) 
-        SELECT OLD.org_id,OLD.org_name,OLD.org_telephone,OLD.org_code,OLD.org_added,OLD.org_active,TG_OP;
+        INSERT INTO aud_organizations (org_id,org_name,org_telephone,org_email,org_code,org_added,org_active,func) 
+        SELECT OLD.org_id,OLD.org_name,OLD.org_telephone,OLD.org_email,OLD.org_code,OLD.org_added,OLD.org_active,TG_OP;
         RETURN OLD;
     END IF;
     IF (TG_OP = 'INSERT') THEN
-        -- INSERT INTO aud_organizations (org_id,org_name,org_telephone,org_code,org_added,org_active,func) 
-        -- SELECT NEW.org_id,NEW.org_name,NEW.org_telephone,NEW.org_code,NEW.org_added,NEW.org_active,TG_OP;
+        -- INSERT INTO aud_organizations (org_id,org_name,org_telephone,org_email,org_code,org_added,org_active,func) 
+        -- SELECT NEW.org_id,NEW.org_name,NEW.org_telephone,NEW.org_email,NEW.org_code,NEW.org_added,NEW.org_active,TG_OP;
         RETURN NEW;
     END IF;
     IF (TG_OP = 'UPDATE') THEN
-        INSERT INTO aud_organizations (org_id,org_name,org_telephone,org_code,org_added,org_active,func) 
-        SELECT OLD.org_id,OLD.org_name,OLD.org_telephone,OLD.org_code,OLD.org_added,OLD.org_active,TG_OP;
+        INSERT INTO aud_organizations (org_id,org_name,org_telephone,org_email,org_code,org_added,org_active,func) 
+        SELECT OLD.org_id,OLD.org_name,OLD.org_telephone,OLD.org_email,OLD.org_code,now(),OLD.org_active,TG_OP;
         RETURN NEW;
     END IF;
 END;
@@ -60,7 +62,7 @@ EXECUTE PROCEDURE audit_organizations();
 --- ORGANIZATIONS ---
 DROP VIEW IF EXISTS vw_organizations CASCADE;
 CREATE OR REPLACE VIEW vw_organizations AS 
-SELECT org_id,org_name,org_telephone,org_code,org_added,org_active
+SELECT org_id,org_name,org_telephone,org_email,org_code,org_added,org_active
 FROM organizations;
 
 --==========================================================================================================
@@ -192,7 +194,7 @@ EXECUTE PROCEDURE audit_subscriptions();
 DROP VIEW IF EXISTS vw_subscriptions CASCADE;
 CREATE OR REPLACE VIEW vw_subscriptions AS 
 SELECT sub_id
-,sub_org,organizations.org_name as sub_org_name,organizations.org_active
+,sub_org,organizations.org_name as sub_org_name,organizations.org_active,organizations.org_email AS sub_org_email, organizations.org_telephone AS sub_org_telephone
 ,sub_service,services.service_name as sub_service_name,services.service_active
 ,sub_added,sub_active
 FROM subscriptions
@@ -275,7 +277,7 @@ CREATE TABLE payments (
     pay_added       TIMESTAMP WITH TIME ZONE        DEFAULT CURRENT_TIMESTAMP,
     pay_active      boolean         DEFAULT true
 );
-
+INSERT INTO payment_methods (pay_method_name) VALUES ('Card'),('Mpesa'),('Cash'),('Cheque');
 
 -- AUD_PAYMENTS --
 DROP TABLE IF EXISTS aud_payments CASCADE;
@@ -322,11 +324,11 @@ EXECUTE PROCEDURE audit_payments();
 
 
 
---- PAYMENTS ---
+--- VW_PAYMENTS ---
 DROP VIEW IF EXISTS vw_payments CASCADE;
 CREATE OR REPLACE VIEW vw_payments AS 
 SELECT pay_id
-,pay_org,organizations.org_name as pay_org_name
+,pay_org,organizations.org_name as pay_org_name, organizations.org_telephone AS pay_org_telephone, organizations.org_email AS pay_org_email
 ,pay_services
 ,pay_message,pay_added
 ,pay_method,payment_methods.pay_method_name
@@ -421,7 +423,7 @@ EXECUTE PROCEDURE audit_members();
 DROP VIEW IF EXISTS vw_members;
 CREATE OR REPLACE VIEW vw_members AS 
 SELECT "name.first","name.last","account.name",email,password,role,telephone,joined,active
-,organization,organizations.org_name as organization_name
+,organization,organizations.org_name as organization_name,organizations.org_email AS organization_email
 FROM members
     LEFT JOIN organizations
 ON members.organization = organizations.org_id;
@@ -493,5 +495,6 @@ FROM password_recovery
 WHERE password_recovery.used = false;
 
 
+--==========================================================================================================
 --==========================================================================================================
 --==========================================================================================================

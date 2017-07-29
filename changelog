@@ -96,3 +96,6 @@ v2.8.0
 
 v2.9.0 
 	=> Added a slightly more intuitive password recovery UI
+
+v2.10.0
+	=> Altered the "config/config.js" file to use ".conf" files for passwords rather than inline text
