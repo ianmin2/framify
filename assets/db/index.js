@@ -34,10 +34,10 @@ module.exports = ( req,res,callback ) => {
 			case 'add':
 				$proc.addFunc( $_REQUEST )
 				.then(response => { 
-					res.send(response)
+					res.json(response)
 				})
 				.catch( e => { 
-					res.send( make_response(500, e.message) )
+					res.json( make_response(500, e.message) )
 				})
 			break;
 			
@@ -45,10 +45,10 @@ module.exports = ( req,res,callback ) => {
 			case 'count':
 				$proc.countFunc( $_REQUEST )
 				.then(response => { 
-					res.send(response)
+					res.json(response)
 				})
 				.catch( e => { 
-					res.send( make_response(500, e.message) ) 
+					res.json( make_response(500, e.message) ) 
 				})
 			break;
 
@@ -56,10 +56,10 @@ module.exports = ( req,res,callback ) => {
 			case 'get':
 				$proc.getFunc( $_REQUEST )
 				.then(response => { 
-					res.send(response)
+					res.json(response)
 				})
 				.catch( e => { 
-					res.send( make_response(500, e.message) ) 
+					res.json( make_response(500, e.message) ) 
 				})				
 			break;
 			
@@ -67,10 +67,10 @@ module.exports = ( req,res,callback ) => {
 			case 'getAll':
 				$proc.getAllFunc( $_REQUEST )
 				.then(response => { 
-					res.send(response)
+					res.json(response)
 				})
 				.catch( e => { 
-					res.send( make_response(500, e.message) ) 
+					res.json( make_response(500, e.message) ) 
 				})				
 			break;
 			
@@ -79,10 +79,10 @@ module.exports = ( req,res,callback ) => {
 	
 				$proc.delFunc( $_REQUEST )
 				.then(response => { 
-					res.send(response)
+					res.json(response)
 				})
 				.catch( e => { 
-					res.send( make_response(500, e.message) ) 
+					res.json( make_response(500, e.message) ) 
 				})				
 			break;
 			
@@ -90,10 +90,10 @@ module.exports = ( req,res,callback ) => {
 			case 'update':
 				$proc.updateFunc( $_REQUEST )
 				.then(response => { 
-					res.send(response)
+					res.json(response)
 				})
 				.catch( e => { 
-					res.send( make_response(500, e.message) ) 
+					res.json( make_response(500, e.message) ) 
 				})				
 			break;
 			
@@ -101,10 +101,10 @@ module.exports = ( req,res,callback ) => {
 			case 'truncate':
 				$proc.truncateFunc( $_REQUEST )
 				.then(response => { 
-					res.send(response)
+					res.json(response)
 				})
 				.catch( e => { 
-					res.send( make_response(500, e.message) ) 
+					res.json( make_response(500, e.message) ) 
 				})				
 			break;
 			
@@ -112,10 +112,10 @@ module.exports = ( req,res,callback ) => {
 			case 'drop':
 				$proc.dropFunc( $_REQUEST )
 				.then(response => { 
-					res.send(response)
+					res.json(response)
 				})
 				.catch( e => { 
-					res.send( make_response(500, e.message) ) 
+					res.json( make_response(500, e.message) ) 
 				})				
 			break;
 			
@@ -123,10 +123,10 @@ module.exports = ( req,res,callback ) => {
 			case 'custom':
 				$proc.customFunc( $_REQUEST )
 				.then(response => { 
-					res.send(response)
+					res.json(response)
 				})
 				.catch( e => { 
-					res.send( make_response(500, e.message) ) 
+					res.json( make_response(500, e.message) ) 
 				})				
 			break;
 
@@ -134,22 +134,22 @@ module.exports = ( req,res,callback ) => {
 			case 'backup': 
 				$proc.bkup()
 				.then(response => { 
-					res.send(response)
+					res.json(response)
 				})
 				.catch( e => { 
-					res.send( make_response(500, e.message) ) 
+					res.json( make_response(500, e.message) ) 
 				})
 			break;
 			
 			default:
-				res.send( make_response( 500, "The required parameters were not met. Please ensure that they are defined" ) );				
+				res.json( make_response( 500, "The required parameters were not met. Please ensure that they are defined" ) );				
 			break;
 			
 		}
 		
 	}else{
 		
-		res.send( make_response( 500, "The main action definition parameter was not defined. Could not proceed with the specified command." ) );
+		res.json( make_response( 500, "The main action definition parameter was not defined. Could not proceed with the specified command." ) );
 		
 	}
 

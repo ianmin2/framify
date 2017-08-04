@@ -155,28 +155,72 @@ if(  authMeth =="mongo" ){
         var params = get_params(req);
 
         if( isDefined(params,"password,email,role,telephone,name.first,name.last,account.name") ){
+            
+            delete params.password2;
+            params.password = crypt.md5(params.password);
 
-            pgdb.any(`INSERT INTO members ("name.first","name.last","account.name",email,password,role,telephone) 
-                VALUES ($1,$2,$3,$4,$5,$6,$7)`
-                ,[
-                    params["name.first"]
-                    ,params["name.last"]
-                    ,params["account.name"]
-                    ,params["email"]
-                    ,crypt.md5(params["password"])
-                    ,params["role"]
-                    ,params["telephone"]
-                ]
-            )
+
+            // pgdb.any(`INSERT INTO members ("name.first","name.last","account.name",email,password,role,telephone) VALUES ($1,$2,$3,$4,$5,$6,$7)`
+            // ,[
+            //     params["name.first"]
+            //     ,params["name.last"]
+            //     ,params["account.name"]
+            //     ,params["email"]
+            //     ,crypt.md5(params["password"])
+            //     ,params["role"]
+            //     ,params["telephone"]
+            // ])
+
+            $keys   = [];
+            $values = [];
+
+            for( $field_name in params ){
+                $keys.push( $field_name );
+                $values.push( params[$field_name] );
+            }
+            
+            $field_names  = "";
+            $field_params = []
+            $field_values = "(";
+
+            for( var i = 0; i < $keys.length; i++ ){
+               $field_names  += $keys[i]+',';
+            //    $field_names = ( $keys[i].indexOf('.' == -1) ) ? $keys[i] + ',' : `'${$keys[i]}'` + ','
+
+                $field_params.push( ($values[i] || "")  )
+                $field_values += "$"+(i+1)+",";
+            }
+            $field_values = $field_values.replace(/,$/, ')')
+
+
+            $field_names     = $field_names
+                               .split(",")
+                               .reduce((init,val)=>{ 
+                                   return init.concat( ( val.indexOf(".") === -1 ) ? val:(`"${val}"`) ); 
+                                },[])
+                                .join(",")
+                                .replace(/,$/, ')')
+                               
+            $field_names =  `(${$field_names}`;
+            
+
+            $query = `INSERT INTO members ${$field_names} VALUES ${$field_values}`
+
+            // c_log("\n\n")
+            // console.log( $query )
+            // c_log($field_params)
+            // c_log("\n\n")
+                
+            pgdb.any($query,$field_params)
             .then(inserted =>{
                 log(`${inserted}`.succ)
                 log(`Registered the user ${params["email"]}`.succ)
                 res.json( make_response( 200, "Successfully registered a new user.",params) )
             })
             .catch(error => {
-                log(`Failed to register the user.\n\t\t\t\t${str(params)}`.err)
-                console.dir(error)
-                res.status(500).json( make_response( 500, "Failed to record the user", error.message) )
+                log(`Failed to register the user.\n\t\t\t\t${str(error.message)}`.err)
+                console.dir(error.message)
+                res.status(500).json( make_response( 500, `Failed to record the user. <br><br>Please try changing:<br>1. Email<br>2. Username<br>3. Telephone`, error.message) )
             })
             
         }else{  

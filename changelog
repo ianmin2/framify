@@ -104,3 +104,11 @@ v2.10.0
 v2.11.0
 	=> Updated the passport JWT strategy and SQL to start support for SAAS 
 	=> Fixed the deactivated user authentication issue
+	
+v2.12.0 
+	=> Updated the "auth"/register route via the postgres database implementation to accommodate a more flexible datase for insertion of main applixation members
+
+v2.13.0
+	=> Updated the "process" pgdb file
+	=> Updated the "db"/index.js file to return json rather than plain text
+	=> Slight updates made to the main HTML file navigation menu

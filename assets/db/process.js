@@ -34,11 +34,23 @@ prcs.addFunc = ( $addData ) => {
 			$field_values += "$"+(i+1)+",";
 		}
 		
-		$field_names     = $field_names.replace(/,$/, ')');
+		$field_names     = 	$field_names
+							.split(",")
+							.reduce((init,val)=>{ 
+								return init.concat( ( val.indexOf(".") === -1 ) ? val:(`"${val}"`) ); 
+							},[])
+							.join(",")
+							.replace(/,$/, ')')
+
+		// $field_names     = $field_names.replace(/,$/, ')');
 		$field_values    = $field_values.replace(/,$/, ')');
 		
 		$query = "INSERT INTO "+$table+" "+$field_names+" VALUES "+$field_values+" "+( ( $extras ) ? $extras : '' ); 					
 	
+		// c_log("\n\n")
+		// console.log( $query )
+		// j_log($field_params)
+		// c_log("\n\n")
 
 		$connection.query( $query, $field_params )
 		.then( response => {
@@ -261,6 +273,11 @@ prcs.updateFunc = ( $updateData ) => {
 			$values.push( $updateData[$field_name] );
 		}
 		
+		$keys     = $keys
+					.reduce((init,val)=>{ 
+						return init.concat( ( val.indexOf(".") === -1 ) ? val:(`"${val}"`) ); 
+					},[])
+
 		$update_string = "";
 		$update_params = [];
 
@@ -269,6 +286,7 @@ prcs.updateFunc = ( $updateData ) => {
 			$update_params.push( ($values[i] || "") );
 		}
 		
+
 		$update_string     = $update_string.replace(/,$/,'');
 		
 		//PREVENT THE UPDATING OF ALL RECORDS WHERE NO IMPLICIT RULE IS SET {{using WHERE}}
@@ -277,7 +295,7 @@ prcs.updateFunc = ( $updateData ) => {
 		$connection.query( $query, $update_params )
 		.then( response => {
 
-			resolve( make_response(200, `${$table} record updated`,  ) );
+			resolve( make_response(200, `${$table} record updated` ) );
 
 		})
 		.catch( err => {
