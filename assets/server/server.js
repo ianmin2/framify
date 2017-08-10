@@ -22,7 +22,10 @@ require("bixbyte-frame");
 global.config   = require(path.join(__dirname,'../config/config'));
 
 //@ Define the authentication database [mongo/postgres]
-global.authMeth = "pgsql";
+global.authMeth = "postgres";
+
+//@ postgres initialization
+global.pgdb  = pgp(config.postgres);
 
 //@ Load the global postgres `$connection` object
 require(path.join(__dirname,'../db/connection'));

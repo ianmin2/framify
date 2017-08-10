@@ -115,3 +115,6 @@ v2.13.0
 
 v.2.14.0 
 	=> added the "keepMatch" and "removeMatch" methods that perform regex checks on csv's and Arrays alike returning an Array
+
+v.2.15.0
+	=> Fixed the "pgdb" not found exclusion error
