@@ -112,3 +112,6 @@ v2.13.0
 	=> Updated the "process" pgdb file
 	=> Updated the "db"/index.js file to return json rather than plain text
 	=> Slight updates made to the main HTML file navigation menu
+
+v.2.14.0 
+	=> added the "keepMatch" and "removeMatch" methods that perform regex checks on csv's and Arrays alike returning an Array
