@@ -232,7 +232,7 @@ prcs.delFunc = ( $deleteData ) => {
 		}
 		
 		
-		$conditions = ( $conditions.length > 0 )? ( " WHERE "+$conditions.join(" AND ")  ) : "";		
+		$conditions = ( $conditions.length > 0 )? ( " WHERE "+$conditions.join(" AND ")  ) : " IMPLICIT DELETES ARE NOT ALLOWED";		
 		
 		$query = `DELETE FROM ${$table} ${$conditions}`;
 

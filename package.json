@@ -1,46 +1,46 @@
 {
-  "name": "framify",
-  "version": "2.15.0",
-  "description": "An application bootstrapping tool by b!xbyte",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"\nThank you for choosing framify\n\""
-  },
-  "preferGlobal": true,
-  "engineStrict": true,
-  "engines": {
-    "node": ">=6.0.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ianmin2/framify.git"
-  },
-  "keywords": [
-    "bixbyte",
-    "framify",
-    "bixbyte-cli",
-    "project generator",
-    "generator",
-    "drivify",
-    "gitify",
-    "cli"
-  ],
-  "author": "Ian Innocent",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/ianmin2/framify/issues"
-  },
-  "website": "https://bixbyte.io",
-  "homepage": "https://github.com/ianmin2/framify#readme",
-  "email": "framify@bixbyte.io",
-  "dependencies": {
-    "bixbyte-frame": "*",
-    "shelljs": "*",
-    "wrench": "*"
-  },
-  "bin": {
-    "framify": "index.js",
-    "git-framify": "git/git_cli.js",
-    "drivify": "drive/drive_cli.js"
-  }
+    "name": "framify",
+    "version": "2.16.0",
+    "description": "An application bootstrapping tool by b!xbyte",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"\nThank you for choosing framify\n\""
+    },
+    "preferGlobal": true,
+    "engineStrict": true,
+    "engines": {
+        "node": ">=6.0.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ianmin2/framify.git"
+    },
+    "keywords": [
+        "bixbyte",
+        "framify",
+        "bixbyte-cli",
+        "project generator",
+        "generator",
+        "drivify",
+        "gitify",
+        "cli"
+    ],
+    "author": "Ian Innocent",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/ianmin2/framify/issues"
+    },
+    "website": "https://bixbyte.io",
+    "homepage": "https://github.com/ianmin2/framify#readme",
+    "email": "framify@bixbyte.io",
+    "dependencies": {
+        "bixbyte-frame": "*",
+        "shelljs": "*",
+        "wrench": "*"
+    },
+    "bin": {
+        "framify": "index.js",
+        "git-framify": "git/git_cli.js",
+        "drivify": "drive/drive_cli.js"
+    }
 }

@@ -1,39 +1,39 @@
 <div ng-init="current='intro'"></div>
 <div id="top_bar">
-        <div class="md-top-bar">
-            <div class="uk-width-large-8-10 uk-container-center">
-                <ul class="top_bar_nav" id="snippets_grid_filter">
-                    <li ng-class="{'uk-active' : current=='intro'}">
-                        <a ng-click="current='intro'" style="color:red;">intro</a> 
-                    </li>
-                    <li ng-class="{'uk-active' : current=='app'}">
-                        <a ng-click="current='app'" style="color:red;">app</a> 
-                    </li>
-                    <li ng-class="{'uk-active' : current=='sms'}">
-                        <a ng-click="current='sms'" style="color:red;">sms</a> 
-                    </li>
-                    <li ng-class="{'uk-active' : current=='cgi'}">
-                         <a ng-click="current='cgi'" style="color:red;">cgi</a>
-                    </li>
-                    <li ng-class="{'uk-active' : current=='auth'}">
-                         <a ng-click="current='auth'" style="color:red;">auth</a>
-                    </li>
-                    <li ng-class="{'uk-active' : current=='remoteAuth'}">
-                         <a ng-click="current='remoteAuth'" style="color:red;">remoteAuth</a>
-                    </li>
-                    <li ng-class="{'uk-active' : current=='fileModel'}">
-                         <a ng-click="current='fileModel'" style="color:red;">fileModel</a>
-                    </li>
-                    <li ng-class="{'uk-active' : current=='contenteditable'}">
-                         <a ng-click="current='contenteditable'" style="color:red;">contenteditable</a>
-                    </li>
-                    <li ng-class="{'uk-active' : current=='framifyController'}">
-                         <a ng-click="current='framifyController'" style="color:red;">framifyController</a>
-                    </li>
-                </ul>
-            </div>
+    <div class="md-top-bar">
+        <div class="uk-width-large-8-10 uk-container-center uk-animation-slide-right">
+            <ul class="top_bar_nav" id="snippets_grid_filter">
+                <li ng-class="{'uk-active' : current=='intro'}">
+                    <a ng-click="current='intro'" style="color:red;">intro</a>
+                </li>
+                <li ng-class="{'uk-active' : current=='app'}">
+                    <a ng-click="current='app'" style="color:red;">app</a>
+                </li>
+                <li ng-class="{'uk-active' : current=='sms'}">
+                    <a ng-click="current='sms'" style="color:red;">sms</a>
+                </li>
+                <li ng-class="{'uk-active' : current=='cgi'}">
+                    <a ng-click="current='cgi'" style="color:red;">cgi</a>
+                </li>
+                <li ng-class="{'uk-active' : current=='auth'}">
+                    <a ng-click="current='auth'" style="color:red;">auth</a>
+                </li>
+                <li ng-class="{'uk-active' : current=='remoteAuth'}">
+                    <a ng-click="current='remoteAuth'" style="color:red;">remoteAuth</a>
+                </li>
+                <li ng-class="{'uk-active' : current=='fileModel'}">
+                    <a ng-click="current='fileModel'" style="color:red;">fileModel</a>
+                </li>
+                <li ng-class="{'uk-active' : current=='contenteditable'}">
+                    <a ng-click="current='contenteditable'" style="color:red;">contenteditable</a>
+                </li>
+                <li ng-class="{'uk-active' : current=='framifyController'}">
+                    <a ng-click="current='framifyController'" style="color:red;">framifyController</a>
+                </li>
+            </ul>
         </div>
     </div>
+</div>
 
 
 <div ng-if="current=='intro'">
@@ -43,19 +43,16 @@
     </center>
     <br>
     <br>
-    <br>    
-    Welcome to Framify,
-    <br><br>
-    The Framify framework is built upon the <code>bixbyte-frame</code> framework ( a back end development framework for the nodejs runtime )
-    and <code>framify.js</code> ( an Angular 1X UI agnostic platform for eased interaction with the bixbyte-frame platform).
+    <br> Welcome to Framify,
+    <br><br> The Framify framework is built upon the <code>bixbyte-frame</code> framework ( a back end development framework for the nodejs runtime ) and <code>framify.js</code> ( an Angular 1X UI agnostic platform for eased interaction with the bixbyte-frame
+    platform).
 
-    <div class="section">       
+    <div class="section">
         The Angular Module to be included in your application is <code>framify.js</code>
-        <br>    
-        It depends on <code>ui.router ,framify-paginate ,ngStorage ,jsonForatter ,chart.js ,ngAria ,ngMaterial, UIKit, socket.io, jQuery and ngMessages</code> all of which can be found in the <code>framify_dependencies.js</code> or <code>framify_bundled.js</code> files of the <code>framify.js</code> package.
+        <br> It depends on <code>ui.router ,framify-paginate ,ngStorage ,jsonForatter ,chart.js ,ngAria ,ngMaterial, UIKit, socket.io, jQuery and ngMessages</code> all of which can be found in the <code>framify_dependencies.js</code> or <code>framify_bundled.js</code>        files of the <code>framify.js</code> package.
     </div>
 
-</div>   
+</div>
 
 <!-- SO - APP SERVICE -->
 <div ng-if="current=='app'">
@@ -67,21 +64,20 @@
     </div>
 
     <!--scheme-->
-    <hr> 
-    <div class="section">   
+    <hr>
+    <div class="section">
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">app.scheme</u> 
+            <u style="color:cornflowerblue !important">app.scheme</u>
         </h5>
         This is a reference to access scheme that the application is utilizing.
-        <pre style="max-width:300px;">&#123; &#123; app.scheme &#125; &#125;</pre>
-        Currently <code>{{app.scheme}}</code>
+        <pre style="max-width:300px;">&#123; &#123; app.scheme &#125; &#125;</pre> Currently <code>{{app.scheme}}</code>
     </div>
-          
+
     <!--ip-->
-    <hr> 
-    <div class="section">   
+    <hr>
+    <div class="section">
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">app.ip</u> 
+            <u style="color:cornflowerblue !important">app.ip</u>
         </h5>
         This is a reference to the ip or server_name that the application is being accesssed on.
         <pre style="max-width:300px;">&#123; &#123; app.ip &#125; &#125;</pre>
@@ -90,9 +86,9 @@
 
     <!--port-->
     <hr>
-    <div class="section">   
+    <div class="section">
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">app.port</u> 
+            <u style="color:cornflowerblue !important">app.port</u>
         </h5>
         This is a reference to the port that the application is being accessed through.
         <pre style="max-width:300px;">&#123; &#123; app.port &#125; &#125;</pre>
@@ -101,9 +97,9 @@
 
     <!--hlink/url-->
     <hr>
-    <div class="section">   
+    <div class="section">
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">app.hlink</u> / <u style="color:cornflowerblue !important">app.url</u> 
+            <u style="color:cornflowerblue !important">app.hlink</u> / <u style="color:cornflowerblue !important">app.url</u>
         </h5>
         This is a reference to the root url of the application.
         <pre style="max-width:300px;">&#123; &#123; app.hlink &#125; &#125; or &#123; &#123; app.url &#125; &#125;</pre>
@@ -113,9 +109,9 @@
 
     <!--nav-->
     <hr>
-    <div class="section">   
+    <div class="section">
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">app.nav</u> 
+            <u style="color:cornflowerblue !important">app.nav</u>
         </h5>
         This is a reference to the application's main navigation object.
         <pre style="max-width:300px;">&#123; &#123; app.nav &#125; &#125;</pre>
@@ -124,44 +120,42 @@
 
     <!--redirect-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important"> app.redirect</u> <i style="color:green !important;">(Function (http_location) )</i>
+            <u style="color:cornflowerblue !important"> app.redirect</u> <i style="color:green !important;">(Function (http_location) )</i>
         </h5>
-        
+
         This performs a plain http redirect by updating the global <code>window.location</code> reference.
         <pre style="max-width:300px;">&#123; &#123; app.redirect( http_path ) &#125; &#125;</pre>
         <br>Example: <code>app.redirect('https://google.com')</code> will redirect you to google's homepage at <i>https://google.com</i>.
         <br><button class="md-btn md-btn-primary" ng-click="app.redirect('https://google.com')">Redirect to Google</button>
     </div>
 
-   <!--setVar-->
-   <hr>
-    <div class="section">   
-       
+    <!--setVar-->
+    <hr>
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important"> app.setVar</u> <i style="color:green !important;">(Function (object_name ,key_to_add ,value_to_add) )</i>
+            <u style="color:cornflowerblue !important"> app.setVar</u> <i style="color:green !important;">(Function (object_name ,key_to_add ,value_to_add) )</i>
         </h5>
-        
+
         Adds a key value pair to a JSON object or returns a new one where none exists.
-        <br>Example <br>
-        With an object <code> var people = {} </code>
-        <br> To set add a new value 'John' with the value <code>{ "name": "John Doe", "age":20 }</code>
-        ,Run <pre style="max-width:600px;">&#123; &#123; people = app.setVar(people, 'John', { "name": "John Doe", "age":20 } ) &#125; &#125;</pre>
-        Giving the resultant object <pre style="max-width:600px;"> <code >{{data.sample_setVar}}</code> </pre>
+        <br>Example <br> With an object <code> var people = {} </code>
+        <br> To set add a new value 'John' with the value <code>{ "name": "John Doe", "age":20 }</code> ,Run <pre style="max-width:600px;">&#123; &#123; people = app.setVar(people, 'John', { "name": "John Doe", "age":20 } ) &#125; &#125;</pre> Giving
+        the resultant object <pre style="max-width:600px;"> <code >{{data.sample_setVar}}</code> </pre>
         <span hidden> {{ data.sample_setVar =  app.setVar(people, 'John', { "name": "John Doe", "age":20 } ) }} </span>
-        
+
     </div>
 
     <!--str-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important"> app.str</u> <i style="color:green !important;">(Function (json_encoded_object) )</i>
+            <u style="color:cornflowerblue !important"> app.str</u> <i style="color:green !important;">(Function (json_encoded_object) )</i>
         </h5>
-        
+
         Transforms a viable JSON object into a string.
         <br>To transform the JSON object <code>{ name: { first: 'John', last: 'Doe' }, age: 1000 }</code>, run
         <pre style="max-width:600px;">&#123; &#123; app.str( { name: { first: 'John', last: 'Doe' }, age: 1000 } ) &#125; &#125;</pre>
@@ -170,12 +164,12 @@
 
     <!--json-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important"> app.json</u> <i style="color:green !important;">(Function (stringified_json_object) )</i>
+            <u style="color:cornflowerblue !important"> app.json</u> <i style="color:green !important;">(Function (stringified_json_object) )</i>
         </h5>
-        
+
         Transforms a viable string into an accessible JSON object.
         <br>To transform the string <code>'{"name":{"first":"John","last":"Doe"},"age":1000}'</code>, run
         <pre style="max-width:600px;">&#123; &#123; app.json('{"name":{"first":"John","last":"Doe"},"age":1000}') &#125; &#125;</pre>
@@ -185,12 +179,12 @@
 
     <!--jsonify-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important"> app.jsonify</u> <i style="color:green !important;">(Promise (stringified_json_object) )</i>
+            <u style="color:cornflowerblue !important"> app.jsonify</u> <i style="color:green !important;">(Promise (stringified_json_object) )</i>
         </h5>
-        
+
         Transforms a viable string into an accessible JSON object.
         <br>To transform the string <code>'{"name":{"first":"John","last":"Doe"},"age":1000}'</code>, run
         <pre style="max-width:600px;">&#123; &#123; app.jsonify('{"name":{"first":"John","last":"Doe"},"age":1000}') &#125; &#125;</pre>
@@ -199,12 +193,12 @@
 
     <!--md5-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important"> app.md5</u> <i style="color:green !important;">(Function (object_to_encode) )</i>
+            <u style="color:cornflowerblue !important"> app.md5</u> <i style="color:green !important;">(Function (object_to_encode) )</i>
         </h5>
-        
+
         Outputs an MD5 hash of the provided argument.
         <br>To <b>MD5</b> the value <code>'framify'</code>, run
         <pre style="max-width:600px;">&#123; &#123; app.md5( 'framify' ) &#125; &#125;</pre>
@@ -213,12 +207,12 @@
 
     <!--md5ify-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important"> app.md5ify</u> <i style="color:green !important;">(Promise (object_to_encode) )</i>
+            <u style="color:cornflowerblue !important"> app.md5ify</u> <i style="color:green !important;">(Promise (object_to_encode) )</i>
         </h5>
-        
+
         Outputs an MD5 hash of the provided argument.
         <br>To <b>MD5</b> the value <code>'framify'</code>, run
         <pre style="max-width:600px;">&#123; &#123; app.md5ify( 'framify' ) &#125; &#125;</pre>
@@ -227,12 +221,12 @@
 
     <!--base64_encode-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important"> app.base64_encode</u> <i style="color:green !important;">(Function (object_to_encode) )</i>
+            <u style="color:cornflowerblue !important"> app.base64_encode</u> <i style="color:green !important;">(Function (object_to_encode) )</i>
         </h5>
-        
+
         Outputs a base64 encoded string of the provided argument.
         <br>To <b>base64 encode </b> the value <code>'framify'</code>, run
         <pre style="max-width:600px;">&#123; &#123; app.base64_encode( 'framify' ) &#125; &#125;</pre>
@@ -241,12 +235,12 @@
 
     <!--base64_encodify-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important"> app.base64_encodify</u> <i style="color:green !important;">(Promise (object_to_encode) )</i>
+            <u style="color:cornflowerblue !important"> app.base64_encodify</u> <i style="color:green !important;">(Promise (object_to_encode) )</i>
         </h5>
-        
+
         Outputs a base64 encoded string of the provided argument.
         <br>To <b>base64 encode </b> the value <code>'framify'</code>, run
         <pre style="max-width:600px;">&#123; &#123; app.base64_encodify( 'framify' ) &#125; &#125;</pre>
@@ -255,12 +249,12 @@
 
     <!--base64_decode-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important"> app.base64_decode</u> <i style="color:green !important;">(Function (base64_encoded_object_to_decode) )</i>
+            <u style="color:cornflowerblue !important"> app.base64_decode</u> <i style="color:green !important;">(Function (base64_encoded_object_to_decode) )</i>
         </h5>
-        
+
         Outputs a base64 decode string of the provided base64 encoded string.
         <br>To <b>base64 encode </b> the value <code>'ZnJhbWlmeQ=='</code>, run
         <pre style="max-width:600px;">&#123; &#123; app.base64_decode( 'ZnJhbWlmeQ==' ) &#125; &#125;</pre>
@@ -269,12 +263,12 @@
 
     <!--base64_decodify-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important"> app.base64_decodify</u> <i style="color:green !important;">(Promise (base64_encoded_object_to_decode) )</i>
+            <u style="color:cornflowerblue !important"> app.base64_decodify</u> <i style="color:green !important;">(Promise (base64_encoded_object_to_decode) )</i>
         </h5>
-        
+
         Outputs a base64 decode string of the provided base64 encoded string.
         <br>To <b>base64 encode </b> the value <code>'ZnJhbWlmeQ=='</code>, run
         <pre style="max-width:600px;">&#123; &#123; app.base64_decodify( 'ZnJhbWlmeQ==' ) &#125; &#125;</pre>
@@ -283,12 +277,12 @@
 
     <!--upload-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important"> app.upload</u> <i style="color:green !important;">(Function (file_data,upload_handler_location) )</i>
+            <u style="color:cornflowerblue !important"> app.upload</u> <i style="color:green !important;">(Function (file_data,upload_handler_location) )</i>
         </h5>
-        
+
         This performs a basic file upload using <code>Angular JS' $http.post</code> method.
         <br><i>It is therefore advisable to use the inbuilt <b>'fileModel'</b> directive when using this method.</i>
         <pre style="max-width:600px;">&#123; &#123; app.upload( { file_reference_object, 'minutes'  } ) &#125; &#125;</pre>
@@ -297,103 +291,101 @@
 
     <!--keys-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important"> app.keys</u> <i style="color:green !important;">(Function (json_object) )</i>
+            <u style="color:cornflowerblue !important"> app.keys</u> <i style="color:green !important;">(Function (json_object) )</i>
         </h5>
-        
+
         Outputs an Array containing all of the provided objects' <b>first level</b> keys.
         <br>To <b>obtain the keys </b> of the object <code>{ name: { first: 'John', last: 'Doe' }, age: 1000 })</code>, run
         <pre style="max-width:600px;">&#123; &#123; app.keys( { name: { first: 'John', last: 'Doe' }, age: 1000 }) ) &#125; &#125;</pre>
-         <br>which outputs <pre style="max-width:600px;"> <code >{{data.sample_keys}}</code> </pre>
+        <br>which outputs <pre style="max-width:600px;"> <code >{{data.sample_keys}}</code> </pre>
         <span hidden> {{ data.sample_keys =  app.keys({ name: { first: 'John', last: 'Doe' }, age: 1000 }) }} </span>
     </div>
 
     <!--vals-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important"> app.vals</u> <i style="color:green !important;">(Function (json_object) )</i>
+            <u style="color:cornflowerblue !important"> app.vals</u> <i style="color:green !important;">(Function (json_object) )</i>
         </h5>
-        
+
         Outputs an Array containing all of the provided objects' <b>first level</b> values.
         <br>To <b>obtain the values </b> of the object <code>{ name: { first: 'John', last: 'Doe' }, age: 1000 }</code>, run
         <pre style="max-width:600px;">&#123; &#123; app.vals( { name: { first: 'John', last: 'Doe' }, age: 1000 }) ) &#125; &#125;</pre>
-         <br>which outputs <pre style="max-width:600px;"> <code >{{data.sample_vals}}</code> </pre>
+        <br>which outputs <pre style="max-width:600px;"> <code >{{data.sample_vals}}</code> </pre>
         <span hidden> {{ data.sample_vals =  app.vals({ name: { first: 'John', last: 'Doe' }, age: 1000 }) }} </span>
     </div>
 
     <!--parseInt-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important"> app.parseInt</u> <i style="color:green !important;">(Function (str_to_parse) )</i>
+            <u style="color:cornflowerblue !important"> app.parseInt</u> <i style="color:green !important;">(Function (str_to_parse) )</i>
         </h5>
-        
+
         <br>Parses a String value into an integer.
-        <br>To <b>parseInt</b> a String  <i><b>'1234'</b></i>, run
+        <br>To <b>parseInt</b> a String <i><b>'1234'</b></i>, run
         <pre style="max-width:600px;">&#123; &#123; app.parseInt( '1234' ) &#125; &#125;</pre>
         <br>which returns <i><code>{{app.parseInt( '1234' )}}</code></i>.
     </div>
 
     <!--doNothing-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important"> app.doNothing</u> <i style="color:green !important;">(Promise () )</i>
+            <u style="color:cornflowerblue !important"> app.doNothing</u> <i style="color:green !important;">(Promise () )</i>
         </h5>
-        
-        <br>A placeholder promise to do absolutely nothing. 
+
+        <br>A placeholder promise to do absolutely nothing.
         <br><i>Sometimes you just to do nothing and yet the application screams for something. <b>This is to silence it</b></i>
-        <pre style="max-width:600px;">&#123; &#123; app.doNothing( ) &#125; &#125;</pre>
-        can be chained with a <i><code>.then</code></i> or <i><code>.catch</code></i> e.g.
+        <pre style="max-width:600px;">&#123; &#123; app.doNothing( ) &#125; &#125;</pre> can be chained with a <i><code>.then</code></i> or <i><code>.catch</code></i> e.g.
         <pre style="max-width:600px;">&#123; &#123; app.doNothing( ).then(app.doNothing).catch(app.doNothing) &#125; &#125;</pre>
     </div>
 
     <!--getNumbers-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important"> app.getNumbers</u> <i style="color:green !important;">(Function (str_to_analyse) )</i>
+            <u style="color:cornflowerblue !important"> app.getNumbers</u> <i style="color:green !important;">(Function (str_to_analyse) )</i>
         </h5>
-        
+
         <br>Extracts the first consecutive array of number(s) from a String.
-        <br>To <b>getNumbers</b> from a String  <i><b>'BabyDimples1234'</b></i>, run
+        <br>To <b>getNumbers</b> from a String <i><b>'BabyDimples1234'</b></i>, run
         <pre style="max-width:600px;">&#123; &#123; app.getNumbers('BabyDimples1234' ) &#125; &#125;</pre>
         <br>which returns <i><code>{{app.getNumbers( 'BabyDimples1234' )}}</code></i>.
     </div>
 
     <!--notify-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important"> app.notify</u> <i style="color:green !important;">(Promise (message ,bootstrap_class ,timeout, position) )</i>
+            <u style="color:cornflowerblue !important"> app.notify</u> <i style="color:green !important;">(Promise (message ,bootstrap_class ,timeout, position) )</i>
         </h5>
-        
-        <br>Simple UIKit based notification. 
+
+        <br>Simple UIKit based notification.
         <br><i>Defaults
         <br><b>message</b></i>: <code>'A blank notification was triggered.'</code>
         <br><b>bootstrap_class</b></i>: <code>info</code> <b>[<font color="green">success</font> ,<font  color="blue">primary</font> ,<font color="orange">warning</font> ,<font color="red">danger</font> ]</b>
-        <br><b>timeout</b></i>: <code>6000</code> 
+        <br><b>timeout</b></i>: <code>6000</code>
         <br><b>position</b></i>: <code>'top-center'</code> <b>[top-left ,top-center ,top-right ,bottom-left ,bottom-center ,bottom-right]</b>
-        <pre style="max-width:600px;">&#123; &#123; app.notify( ) &#125; &#125;</pre>
-        Example
+        <pre style="max-width:600px;">&#123; &#123; app.notify( ) &#125; &#125;</pre> Example
         <pre style="max-width:900px;">&lt;button class="md-btn md-btn-primary" ng-click="app.notify('Welcome to Framify').catch(app.doNothing)"&gt; Notify &lt;/button&gt;</pre>
         <button class="md-btn md-btn-primary" ng-click="app.notify('Welcome to Framify').catch(app.doNothing)">Notify</button>
     </div>
-    
+
 
     <!--countries-->
     <hr>
-    <div class="section">   
+    <div class="section">
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important"> app.countries</u>
+            <u style="color:cornflowerblue !important"> app.countries</u>
         </h5>
         Outputs an Array of alphabetically ordered 240 country objects in the format <code>{ name: "x", value: 'y' }</code> <i>(Ideal for use in select elements)</i>.
         <pre style="max-width:300px;">&#123; &#123; app.countries &#125; &#125;</pre>
@@ -402,12 +394,12 @@
 
     <!--makeResponse-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">app.makeResponse</u> / <u style="color:cornflowerblue !important"> app.make_response</u> <i style="color:green !important;">(Function (response_code,message,command) )</i>
+            <u style="color:cornflowerblue !important">app.makeResponse</u> / <u style="color:cornflowerblue !important"> app.make_response</u> <i style="color:green !important;">(Function (response_code,message,command) )</i>
         </h5>
-        
+
         Outputs a standard framify JSON response object.
         <br>To give a standard framify <i>Unauthorized</i> response, <code>{ response: 401, data: { message: "Unauthorized", command: "retry" } }</code>, run
         <pre style="max-width:600px;">&#123; &#123; app.makeResponse(401,'Unauthorized','retry') &#125; &#125;</pre>
@@ -417,12 +409,12 @@
 
     <!--date-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important"> app.date</u> <i style="color:green !important;">(Function () )</i>
+            <u style="color:cornflowerblue !important"> app.date</u> <i style="color:green !important;">(Function () )</i>
         </h5>
-        
+
         Outputs the complete current Date Object.
         <br>To output the <b>current date object</b>, run
         <pre style="max-width:600px;">&#123; &#123; app.date( ) &#125; &#125;</pre>
@@ -431,12 +423,12 @@
 
     <!--newDate-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important"> app.newDate</u> / <u style="color:cornflowerblue !important"> app.new_date</u> <i style="color:green !important;">(Function () )</i>
+            <u style="color:cornflowerblue !important"> app.newDate</u> / <u style="color:cornflowerblue !important"> app.new_date</u> <i style="color:green !important;">(Function () )</i>
         </h5>
-        
+
         Outputs the complete current Date String.
         <br>To output the <b>current date string</b>, run
         <pre style="max-width:600px;">&#123; &#123; app.newDate( ) &#125; &#125;</pre>
@@ -445,12 +437,12 @@
 
     <!--isoDate-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important"> app.isoDate</u>  / <u style="color:cornflowerblue !important"> app.iso_date</u> <i style="color:green !important;">(Function () )</i>
+            <u style="color:cornflowerblue !important"> app.isoDate</u> / <u style="color:cornflowerblue !important"> app.iso_date</u> <i style="color:green !important;">(Function () )</i>
         </h5>
-        
+
         Outputs the complete current Date in <i><b>ISO</b></i> format.
         <br>To output the <b>current date</b>, run
         <pre style="max-width:600px;">&#123; &#123; app.isoDate( ) &#125; &#125;</pre>
@@ -459,12 +451,12 @@
 
     <!--getIsoDate-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important"> app.getIsoDate</u> / <u style="color:cornflowerblue !important"> app.get_iso_date</u>   <i>(Function (date_string) )</i>
+            <u style="color:cornflowerblue !important"> app.getIsoDate</u> / <u style="color:cornflowerblue !important"> app.get_iso_date</u> <i>(Function (date_string) )</i>
         </h5>
-        
+
         Converts a date string to <b><i>ISO</i></b> format.
         <br>To output the <b>current date</b> <code>{{app.newDate()}}</code> into <i>ISO</i> format, run
         <pre style="max-width:600px;">&#123; &#123; app.getIsoDate( {{ app.newDate() }}  ) &#125; &#125;</pre>
@@ -473,26 +465,25 @@
 
     <!--toIsoDate-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important"> app.toIsoDate</u>  / <u style="color:cornflowerblue !important"> app.to_iso_date</u>  <i>(Function (date_object) )</i>
+            <u style="color:cornflowerblue !important"> app.toIsoDate</u> / <u style="color:cornflowerblue !important"> app.to_iso_date</u> <i>(Function (date_object) )</i>
         </h5>
-        
+
         Converts a date object to <b><i>ISO</i></b> format.
         <br>To output a <b>date object</b> <code>{{app.date()}}</code> into <i>ISO</i> format, run
-        <pre style="max-width:600px;">&#123; &#123; app.toIsoDate( {{app.date()}} ) &#125; &#125;</pre>
-        which outputs <i><code> {{ app.toIsoDate( app.date() ) }} </code></i>
+        <pre style="max-width:600px;">&#123; &#123; app.toIsoDate( {{app.date()}} ) &#125; &#125;</pre> which outputs <i><code> {{ app.toIsoDate( app.date() ) }} </code></i>
     </div>
 
     <!--dateTime-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important"> app.dateTime</u> / <u style="color:cornflowerblue !important"> app.date_time</u>  <i>(Function () )</i>
+            <u style="color:cornflowerblue !important"> app.dateTime</u> / <u style="color:cornflowerblue !important"> app.date_time</u> <i>(Function () )</i>
         </h5>
-        
+
         Outputs the complete current Date in <i><b>dd-mm-yyyy hh:mm</b></i> format.
         <br>To output the <b>current date</b>, run
         <pre style="max-width:600px;">&#123; &#123; app.dateTime( ) &#125; &#125;</pre>
@@ -501,12 +492,12 @@
 
     <!--getDateTime-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important"> app.getDateTime</u> / <u style="color:cornflowerblue !important"> app.get_date_time</u>  <i>(Function (date_string) )</i>
+            <u style="color:cornflowerblue !important"> app.getDateTime</u> / <u style="color:cornflowerblue !important"> app.get_date_time</u> <i>(Function (date_string) )</i>
         </h5>
-        
+
         Outputs the provided date String in <i><b>dd-mm-yyyy hh:mm</b></i> format.
         <br>To output the <b>current date</b> <code>{{app.newDate()}}</code> in <i>date-time</i> format, run
         <pre style="max-width:600px;">&#123; &#123; app.getDateTime( {{app.newDate()}}  ) &#125; &#125;</pre>
@@ -516,26 +507,25 @@
 
     <!--toDateTime-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important"> app.toDateTime</u>  / <u style="color:cornflowerblue !important"> app.to_date_time</u>  <i>(Function (date_object) )</i>
+            <u style="color:cornflowerblue !important"> app.toDateTime</u> / <u style="color:cornflowerblue !important"> app.to_date_time</u> <i>(Function (date_object) )</i>
         </h5>
-        
+
         Converts a date object to <b><i>dd-mm-yyyy hh:mm</i></b> format.
         <br>To output a <b>date object</b> <code>{{app.date()}}</code> into <i>ISO</i> format, run
-        <pre style="max-width:600px;">&#123; &#123; app.toDateTime( {{app.date()}} ) &#125; &#125;</pre>
-        which outputs <i><code> {{ app.toDateTime( app.date() ) }} </code></i>
+        <pre style="max-width:600px;">&#123; &#123; app.toDateTime( {{app.date()}} ) &#125; &#125;</pre> which outputs <i><code> {{ app.toDateTime( app.date() ) }} </code></i>
     </div>
 
     <!--monthNum-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important"> app.monthNum</u>  / <u style="color:cornflowerblue !important"> app.month_num</u>  <i>(Function () )</i>
+            <u style="color:cornflowerblue !important"> app.monthNum</u> / <u style="color:cornflowerblue !important"> app.month_num</u> <i>(Function () )</i>
         </h5>
-        
+
         Outputs the current month number in.
         <br>To output the <b>current month number</b>, run
         <pre style="max-width:600px;">&#123; &#123; app.monthNum( ) &#125; &#125;</pre>
@@ -544,12 +534,12 @@
 
     <!--getMonthNum-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important"> app.getMonthNum</u>  / <u style="color:cornflowerblue !important"> app.get_month_num</u>  <i>(Function (date_string) )</i>
+            <u style="color:cornflowerblue !important"> app.getMonthNum</u> / <u style="color:cornflowerblue !important"> app.get_month_num</u> <i>(Function (date_string) )</i>
         </h5>
-        
+
         Outputs the provided date String in <i><b>mm</b></i> format.
         <br>To output the <b>current date</b> <code>{{app.newDate()}}</code> in <i>month-number</i> format, run
         <pre style="max-width:600px;">&#123; &#123; app.getMonthNum( {{app.newDate()}}  ) &#125; &#125;</pre>
@@ -558,24 +548,23 @@
 
     <!--toMonthNum-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important"> app.toMonthNum</u>  / <u style="color:cornflowerblue !important"> app.to_month_num</u>  <i>(Function (date_object) )</i>
+            <u style="color:cornflowerblue !important"> app.toMonthNum</u> / <u style="color:cornflowerblue !important"> app.to_month_num</u> <i>(Function (date_object) )</i>
         </h5>
-        
+
         Converts a date object to <b><i>mm</i></b> format.
         <br>To convert a <b>date object</b> <code>{{app.date()}}</code> into <i>month-number</i> format, run
-        <pre style="max-width:600px;">&#123; &#123; app.toMonthNum( {{app.date()}} ) &#125; &#125;</pre>
-        which outputs <i><code> {{ app.toMonthNum( app.date() ) }} </code></i>
+        <pre style="max-width:600px;">&#123; &#123; app.toMonthNum( {{app.date()}} ) &#125; &#125;</pre> which outputs <i><code> {{ app.toMonthNum( app.date() ) }} </code></i>
     </div>
 
 
-     <!--month_array-->
+    <!--month_array-->
     <hr>
-    <div class="section">   
+    <div class="section">
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important"> app.month_array</u> 
+            <u style="color:cornflowerblue !important"> app.month_array</u>
         </h5>
         This is a reference to a zero indexed month array.
         <pre style="max-width:300px;">&#123; &#123; app.month_array &#125; &#125;</pre>
@@ -584,11 +573,11 @@
 
     <!--month_o_array-->
     <hr>
-    <div class="section">  
+    <div class="section">
 
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">app.month_o_array</u> 
-        </h5> 
+            <u style="color:cornflowerblue !important">app.month_o_array</u>
+        </h5>
         This is a reference to a month object array in the format <code>[{id: "", name: ""}]</code>.
         <br> <i>It is ideal for use in select lists.</i>
         <pre style="max-width:300px;">&#123; &#123; app.month_o_array &#125; &#125;</pre>
@@ -597,109 +586,91 @@
 
     <!--ajax-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">app.ajax</u> / <u style="color:cornflowerblue !important">app.cgi</u> <i style="color:green !important;">(Promise (http_method, target_url, data) )</i>
+            <u style="color:cornflowerblue !important">app.ajax</u> / <u style="color:cornflowerblue !important">app.cgi</u> <i style="color:green !important;">(Promise (http_method, target_url, data) )</i>
         </h5>
         Returns a jQuery then-able after performing a http request guided by the provided parameters.
         <br>To make an http <i>POST</i> request to <i><b>{{remoteAuth.url}}/echo</b></i> where the parameters are <i><b>user=framify@bixbyte.io</b></i> and <i><b>status=200</b></i>, run
         <pre style="max-width:1000px;">&#123; &#123; app.ajax('GET','{{remoteAuth.url}}/echo',{ user: 'framify@bixbyte.io'  , status : 200 }).then(app.handler).catch(app.handler) &#125; &#125;</pre>
-        <button 
-            class="md-btn md-btn-primary" 
-            ng-click="app.ajax('POST',remoteAuth.url+'/echo',{ user: 'framify@bixbyte.io'  , status : 200 }).then(app.handler).catch(app.handler)"
-        >MAKE AN APP.AJAX REQUEST</button>
+        <button class="md-btn md-btn-primary" ng-click="app.ajax('POST',remoteAuth.url+'/echo',{ user: 'framify@bixbyte.io'  , status : 200 }).then(app.handler).catch(app.handler)">MAKE AN APP.AJAX REQUEST</button>
     </div>
 
     <!--getJson-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">app.getJSON</u> / <u style="color:cornflowerblue !important">app.get_json</u> <i style="color:green !important;">(Promise (http_method, target_url, data) )</i>
+            <u style="color:cornflowerblue !important">app.getJSON</u> / <u style="color:cornflowerblue !important">app.get_json</u> <i style="color:green !important;">(Promise (http_method, target_url, data) )</i>
         </h5>
         Returns a jQuery then-able after performing a http getJSON request guided by the provided parameters.
         <br>To make a request to github's API at <i><b>https://api.github.com/users/ianmin2</b></i>, run
         <pre style="max-width:800px;">&#123; &#123; app.getJSON('https://api.github.com/users/ianmin2').then(app.remote_handler).catch(app.remote_handler) &#125; &#125;</pre>
-        <button 
-            class="md-btn md-btn-primary" 
-            ng-click="app.getJSON('https://api.github.com/users/ianmin2').then(app.remote_handler).catch(app.remote_handler)"
-        >MAKE AN APP.GETJSON REQUEST</button>
+        <button class="md-btn md-btn-primary" ng-click="app.getJSON('https://api.github.com/users/ianmin2').then(app.remote_handler).catch(app.remote_handler)">MAKE AN APP.GETJSON REQUEST</button>
     </div>
 
     <!--loadify-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">app.loadify</u> <i style="color:green !important;">(Promise (timeout_duration_in_ms, message) )</i>
+            <u style="color:cornflowerblue !important">app.loadify</u> <i style="color:green !important;">(Promise (timeout_duration_in_ms, message) )</i>
         </h5>
         Blocks the UI for the specified amount of time while displaying the specified message.
         <br><code><i>If no timeout duration is specified, </i> the promise returns an instance the resultant<i>modal element</i> ready for a custom <i><b>.hide()</b></i></code>
-        <br>To show the loadify modal saying <i><b>Performing Task</b></i> for  <i><b>4000ms</b></i>, run
+        <br>To show the loadify modal saying <i><b>Performing Task</b></i> for <i><b>4000ms</b></i>, run
         <pre style="max-width:600px;">&#123; &#123; app.loadify(4000,'Performing task') &#125; &#125;</pre>
-        <button 
-            class="md-btn md-btn-primary" 
-            ng-click="app.loadify(4000,'Performing task')"
-        >LOADIFY</button>
+        <button class="md-btn md-btn-primary" ng-click="app.loadify(4000,'Performing task')">LOADIFY</button>
     </div>
 
     <!--alert-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">app.alert</u> <i style="color:green !important;">(Promise (title, message, callback) )</i>
+            <u style="color:cornflowerblue !important">app.alert</u> <i style="color:green !important;">(Promise (title, message, callback) )</i>
         </h5>
         Displays a custom modal bearing the specified title and message.
         <br><code><i>If a callback function is passed, the </i>message<i> parameter is </i> passed to it.</code>
-        <br>To show the alert modal titled  <i><b>Sample Alert</b></i> bearing the message  <i><b>You are connected to framify on {{app.hlink}}.</b></i>, run
+        <br>To show the alert modal titled <i><b>Sample Alert</b></i> bearing the message <i><b>You are connected to framify on {{app.hlink}}.</b></i>, run
         <pre style="max-width:800px;">&#123; &#123; app.alert('Sample Alert','You are connected to framify on {{app.hlink}}') &#125; &#125;</pre>
-        <button 
-            class="md-btn md-btn-primary" 
-            ng-click=" app.alert('Sample Alert','You are connected to framify on ' + app.hlink )"
-        >alert</button>
+        <button class="md-btn md-btn-primary" ng-click=" app.alert('Sample Alert','You are connected to framify on ' + app.hlink )">alert</button>
     </div>
 
     <!--confirm-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">app.confirm</u> <i style="color:green !important;">(Promise (title, message, callback) )</i>
+            <u style="color:cornflowerblue !important">app.confirm</u> <i style="color:green !important;">(Promise (title, message, callback) )</i>
         </h5>
         Displays a custom confirmation modal bearing the specified title and message.
         <br><code><i>If a callback function is passed, the </i>message<i> parameter is </i> passed to it.</code>
-        <br>To show the confirm modal titled  <i><b>Sample confirm</b></i> bearing the message  <i><b>Make a donation for the Framify Application at {{app.hlink}}.</b></i>, run
+        <br>To show the confirm modal titled <i><b>Sample confirm</b></i> bearing the message <i><b>Make a donation for the Framify Application at {{app.hlink}}.</b></i>, run
         <pre style="max-width:800px;">&#123; &#123; app.confirm('Sample confirm','Make a donation for the Framify Application at {{app.hlink}}') &#125; &#125;</pre>
-        <button 
-            class="md-btn md-btn-primary" 
-            ng-click=" app.confirm('Sample confirm','Make a donation for the Framify Application at ' + app.hlink )"
-        >confirm</button>
+        <button class="md-btn md-btn-primary" ng-click=" app.confirm('Sample confirm','Make a donation for the Framify Application at ' + app.hlink )">confirm</button>
     </div>
 
     <!--prompt-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">app.prompt</u> <i style="color:green !important;">(Promise (title ,label ,placeholder ,callback) )</i>
+            <u style="color:cornflowerblue !important">app.prompt</u> <i style="color:green !important;">(Promise (title ,label ,placeholder ,callback) )</i>
         </h5>
         Displays a custom promptation modal bearing the specified title and message.
         <br><code><i>If a callback function is passed, the </i>message<i> parameter is </i> passed to it.</code>
-        <br>To show the prompt modal titled  <i><b>What site are you currently on?</b></i> with the label <i><b>Website:</b></i> and the placeholder <i><b>{{app.hlink}}</b></i>, run
+        <br>To show the prompt modal titled <i><b>What site are you currently on?</b></i> with the label <i><b>Website:</b></i> and the placeholder <i><b>{{app.hlink}}</b></i>, run
         <pre style="max-width:800px;">&#123; &#123; app.prompt('What site are you currently on?','Website','{{app.hlink}}') &#125; &#125;</pre>
-        <button 
-            class="md-btn md-btn-primary" 
-            ng-click=" app.prompt('What site are you currently on?','Website:', app.hlink )"
-        >prompt</button>
+        <button class="md-btn md-btn-primary" ng-click=" app.prompt('What site are you currently on?','Website:', app.hlink )">prompt</button>
     </div>
 
     <!--isemail-->
-    <hr> 
-    <div class="section">   
+    <hr>
+    <div class="section">
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">app.isemail</u>
+            <u style="color:cornflowerblue !important">app.isemail</u>
         </h5>
         Returns an Ecmascript RegEx pattern to validate email addresses.
         <pre style="max-width:300px;">&#123; &#123; app.isemail &#125; &#125;</pre>
@@ -707,21 +678,20 @@
     </div>
 
     <!--isEmail-->
-    <hr> 
-    <div class="section">   
-         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">app.isEmail</u> / <u style="color:cornflowerblue !important">app.is_email</u> <i style="color:green !important;">(Function (text_toValidate) )</i>
+    <hr>
+    <div class="section">
+        <h5 style="color:gray">
+            <u style="color:cornflowerblue !important">app.isEmail</u> / <u style="color:cornflowerblue !important">app.is_email</u> <i style="color:green !important;">(Function (text_toValidate) )</i>
         </h5>
         Returns a boolean value after evaluating whether or not a given text is a valid email address; Usage:
-        <pre style="max-width:400px;">&#123; &#123; app.isEmail( 'framify@bixbyte.io' ) &#125; &#125;</pre>
-        Returns <code>{{ app.isEmail( 'framify@bixbyte.io' ) }}</code>
+        <pre style="max-width:400px;">&#123; &#123; app.isEmail( 'framify@bixbyte.io' ) &#125; &#125;</pre> Returns <code>{{ app.isEmail( 'framify@bixbyte.io' ) }}</code>
     </div>
 
     <!--isusername-->
-    <hr> 
-    <div class="section">   
+    <hr>
+    <div class="section">
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">app.isusername</u>
+            <u style="color:cornflowerblue !important">app.isusername</u>
         </h5>
         Returns an Ecmascript RegEx pattern to validate a username.
         <pre style="max-width:300px;">&#123; &#123; app.isusername &#125; &#125;</pre>
@@ -729,21 +699,20 @@
     </div>
 
     <!--isUsername-->
-    <hr> 
-    <div class="section">   
-         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">app.isUsername</u> / <u style="color:cornflowerblue !important">app.is_username</u> <i style="color:green !important;">(Function (text_toValidate) )</i>
+    <hr>
+    <div class="section">
+        <h5 style="color:gray">
+            <u style="color:cornflowerblue !important">app.isUsername</u> / <u style="color:cornflowerblue !important">app.is_username</u> <i style="color:green !important;">(Function (text_toValidate) )</i>
         </h5>
         Returns a boolean value after evaluating whether or not a given text is a valid username; Usage:
-        <pre style="max-width:400px;">&#123; &#123; app.isUsername( 'framify' ) &#125; &#125;</pre>
-        Returns <code>{{ app.isUsername( 'framify' ) }}</code>
+        <pre style="max-width:400px;">&#123; &#123; app.isUsername( 'framify' ) &#125; &#125;</pre> Returns <code>{{ app.isUsername( 'framify' ) }}</code>
     </div>
 
     <!--ispassword-->
-    <hr> 
-    <div class="section">   
-       <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">app.ispassword</u>
+    <hr>
+    <div class="section">
+        <h5 style="color:gray">
+            <u style="color:cornflowerblue !important">app.ispassword</u>
         </h5>
         Returns an Ecmascript RegEx pattern to validate a password.
         <pre style="max-width:300px;">&#123; &#123; app.ispassword &#125; &#125;</pre>
@@ -751,21 +720,20 @@
     </div>
 
     <!--isPassword-->
-    <hr> 
-    <div class="section">   
-         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">app.isPassword</u> / <u style="color:cornflowerblue !important">app.is_password</u> <i style="color:green !important;">(Function (text_toValidate) )</i>
+    <hr>
+    <div class="section">
+        <h5 style="color:gray">
+            <u style="color:cornflowerblue !important">app.isPassword</u> / <u style="color:cornflowerblue !important">app.is_password</u> <i style="color:green !important;">(Function (text_toValidate) )</i>
         </h5>
         Returns a boolean value after evaluating whether or not a given text is a valid Password; Usage:
-        <pre style="max-width:400px;">&#123; &#123; app.isPassword( 'framify' ) &#125; &#125;</pre>
-        Returns <code>{{ app.isPassword( 'framify' ) }}</code>
+        <pre style="max-width:400px;">&#123; &#123; app.isPassword( 'framify' ) &#125; &#125;</pre> Returns <code>{{ app.isPassword( 'framify' ) }}</code>
     </div>
 
     <!--isnumber-->
-    <hr> 
-    <div class="section">   
+    <hr>
+    <div class="section">
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">app.isnumber</u>
+            <u style="color:cornflowerblue !important">app.isnumber</u>
         </h5>
         Returns an Ecmascript RegEx pattern to validate a number.
         <pre style="max-width:300px;">&#123; &#123; app.isnumber &#125; &#125;</pre>
@@ -773,21 +741,20 @@
     </div>
 
     <!--isNumber-->
-    <hr> 
-    <div class="section">   
-         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">app.isNumber</u> / <u style="color:cornflowerblue !important">app.is_number</u> <i style="color:green !important;">(Function (text_toValidate) )</i>
+    <hr>
+    <div class="section">
+        <h5 style="color:gray">
+            <u style="color:cornflowerblue !important">app.isNumber</u> / <u style="color:cornflowerblue !important">app.is_number</u> <i style="color:green !important;">(Function (text_toValidate) )</i>
         </h5>
         Returns a boolean value after evaluating whether or not a given text is a valid Number; Usage:
-        <pre style="max-width:400px;">&#123; &#123; app.isNumber( 126157412 ) &#125; &#125;</pre>
-        Returns <code>{{ app.isNumber( 126157412 ) }}</code>
+        <pre style="max-width:400px;">&#123; &#123; app.isNumber( 126157412 ) &#125; &#125;</pre> Returns <code>{{ app.isNumber( 126157412 ) }}</code>
     </div>
 
     <!--istelephone-->
-    <hr> 
-    <div class="section">   
+    <hr>
+    <div class="section">
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">app.istelephone</u>
+            <u style="color:cornflowerblue !important">app.istelephone</u>
         </h5>
         Returns an Ecmascript RegEx pattern to validate a telephone.
         <pre style="max-width:300px;">&#123; &#123; app.istelephone &#125; &#125;</pre>
@@ -795,21 +762,20 @@
     </div>
 
     <!--isTelephone-->
-    <hr> 
-    <div class="section">   
-         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">app.isTelephone</u> / <u style="color:cornflowerblue !important">app.is_telephone</u> <i style="color:green !important;">(Function (text_toValidate) )</i>
+    <hr>
+    <div class="section">
+        <h5 style="color:gray">
+            <u style="color:cornflowerblue !important">app.isTelephone</u> / <u style="color:cornflowerblue !important">app.is_telephone</u> <i style="color:green !important;">(Function (text_toValidate) )</i>
         </h5>
         Returns a boolean value after evaluating whether or not a given text is a valid Telephone; Usage:
-        <pre style="max-width:400px;">&#123; &#123; app.isTelephone( '+254701234567' ) &#125; &#125;</pre>
-        Returns <code>{{ app.isTelephone( '+254701234567' ) }}</code>
+        <pre style="max-width:400px;">&#123; &#123; app.isTelephone( '+254701234567' ) &#125; &#125;</pre> Returns <code>{{ app.isTelephone( '+254701234567' ) }}</code>
     </div>
 
     <!--isdateTime-->
-    <hr> 
-    <div class="section">   
+    <hr>
+    <div class="section">
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">app.isdatetime</u>
+            <u style="color:cornflowerblue !important">app.isdatetime</u>
         </h5>
         Returns an Ecmascript RegEx pattern to validate a date-time value in the format <i><b>DD-MM-YYYY HH:MM e.g 29-02-2013 22:16</b></i>.
         <pre style="max-width:300px;">&#123; &#123; app.isdatetime &#125; &#125;</pre>
@@ -817,169 +783,147 @@
     </div>
 
     <!--isDateTime-->
-    <hr> 
-    <div class="section">   
-         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">app.is_date_time</u> / <u style="color:cornflowerblue !important">app.isDateTime</u> <i style="color:green !important;">(Function (text_toValidate) )</i>
+    <hr>
+    <div class="section">
+        <h5 style="color:gray">
+            <u style="color:cornflowerblue !important">app.is_date_time</u> / <u style="color:cornflowerblue !important">app.isDateTime</u> <i style="color:green !important;">(Function (text_toValidate) )</i>
         </h5>
-        Returns a boolean value after evaluating whether or not a given text is a valid  date-time value in the format <i><b>DD-MM-YYYY HH:MM</b></i>; Usage:
-        <pre style="max-width:400px;">&#123; &#123; app.isDateTime(  {{app.dateTime()}} ) &#125; &#125;</pre>
-        Returns <code>{{ app.isDateTime( '03-05-2017 19:25' ) }}</code>
+        Returns a boolean value after evaluating whether or not a given text is a valid date-time value in the format <i><b>DD-MM-YYYY HH:MM</b></i>; Usage:
+        <pre style="max-width:400px;">&#123; &#123; app.isDateTime(  {{app.dateTime()}} ) &#125; &#125;</pre> Returns <code>{{ app.isDateTime( '03-05-2017 19:25' ) }}</code>
     </div>
 
     <!--matches-->
-    <hr> 
-    <div class="section">   
-         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">app.matches</u> <i style="color:green !important;">(Function (value_1,value_2) )</i>
+    <hr>
+    <div class="section">
+        <h5 style="color:gray">
+            <u style="color:cornflowerblue !important">app.matches</u> <i style="color:green !important;">(Function (value_1,value_2) )</i>
         </h5>
         Returns a boolean value after evaluating whether or not the given parameters are identical to each other. Example:
-        <pre style="max-width:600px;">&#123; &#123; app.matches(  {{app.dateTime()}} , {{app.dateTime()}}  ) &#125; &#125;</pre>
-        Returns <code>{{ app.matches( app.dateTime() , app.dateTime() ) }}</code>
+        <pre style="max-width:600px;">&#123; &#123; app.matches(  {{app.dateTime()}} , {{app.dateTime()}}  ) &#125; &#125;</pre> Returns <code>{{ app.matches( app.dateTime() , app.dateTime() ) }}</code>
     </div>
 
     <!--num2month-->
-    <hr> 
-    <div class="section">   
-         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">app.num2month</u> <i style="color:green !important;">(Function (zero_initiated_month_number) )</i>
+    <hr>
+    <div class="section">
+        <h5 style="color:gray">
+            <u style="color:cornflowerblue !important">app.num2month</u> <i style="color:green !important;">(Function (zero_initiated_month_number) )</i>
         </h5>
         Returns the month name when fed the month number. <i><b>Jan = 0 & Dec = 11</b></i> . Example:
-        <pre style="max-width:600px;">&#123; &#123; app.num2month( 1 ) &#125; &#125;</pre>
-        Returns <code>{{ app.num2month( '1' ) }}</code>
+        <pre style="max-width:600px;">&#123; &#123; app.num2month( 1 ) &#125; &#125;</pre> Returns <code>{{ app.num2month( '1' ) }}</code>
         <br> <i>It is ideal for use with the <b>app.month_array</b> and <b>app.month_o_array</b> objects</i>
     </div>
 
-        <!--unique-->
-    <hr> 
-    <div class="section">   
-         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">app.unique</u> /<u style="color:cornflowerblue !important">app.removeDuplicates</u> / <u style="color:cornflowerblue !important">app.remove_duplicates</u> <i style="color:green !important;">(Function (Array) )</i>
+    <!--unique-->
+    <hr>
+    <div class="section">
+        <h5 style="color:gray">
+            <u style="color:cornflowerblue !important">app.unique</u> /<u style="color:cornflowerblue !important">app.removeDuplicates</u> / <u style="color:cornflowerblue !important">app.remove_duplicates</u> <i style="color:green !important;">(Function (Array) )</i>
         </h5>
-        Returns an array with no duplicate values. To remove duplicates in the Array <code> [ "Apple","Apple","Banana","Rice","Beans","Apple","Mango","Beans","Banana" ] </code>,  run:
-        <pre style="max-width:800px;">&#123; &#123; app.unique(  [ "Apple","Apple","Banana","Rice","Beans","Apple","Mango","Beans","Banana" ]  ) &#125; &#125;</pre>
-        Returns <code>{{ app.unique( [ "Apple","Apple","Banana","Rice","Beans","Apple","Mango","Beans","Banana" ] ) }}</code>
+        Returns an array with no duplicate values. To remove duplicates in the Array <code> [ "Apple","Apple","Banana","Rice","Beans","Apple","Mango","Beans","Banana" ] </code>, run:
+        <pre style="max-width:800px;">&#123; &#123; app.unique(  [ "Apple","Apple","Banana","Rice","Beans","Apple","Mango","Beans","Banana" ]  ) &#125; &#125;</pre> Returns <code>{{ app.unique( [ "Apple","Apple","Banana","Rice","Beans","Apple","Mango","Beans","Banana" ] ) }}</code>
     </div>
 
     <!--count-->
-    <hr> 
-    <div class="section">   
-         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">app.count</u>  <i>(Function (value_to_search_for, Array_to_search) )</i>
+    <hr>
+    <div class="section">
+        <h5 style="color:gray">
+            <u style="color:cornflowerblue !important">app.count</u> <i>(Function (value_to_search_for, Array_to_search) )</i>
         </h5>
-        Returns the number of instances of an object/element in an array. E.g 
+        Returns the number of instances of an object/element in an array. E.g
         <br>To find the total number of occurences of <b><i>"Apple"</i></b> in <code>[ "Apple","Apple","Banana","Rice","Beans","Apple","Mango","Beans","Banana" ]</code>, run:
-        <pre style="max-width:800px;">&#123; &#123; app.count( "Apple", [ "Apple","Apple","Banana","Rice","Beans","Apple","Mango","Beans","Banana" ]  ) &#125; &#125;</pre>
-        which returns <code>{{app.count( "Apple", [ "Apple","Apple","Banana","Rice","Beans","Apple","Mango","Beans","Banana" ]  )}}</code>
-        <br><h5>Multiple Item search</h5>
-        <br>You can also search for multiple terms provided they are specified as an Array. e.g To find the number of references to <i><b>Apple, Banana, Nanasi</b></i> and <i><b>Beans</b></i> that occurs in the Array <code> [ "Apple","Apple","Banana","Rice","Beans","Apple","Mango","Beans","Banana" ] </code>,  run:
-        <pre style="max-width:1000px;">&#123; &#123; app.count( ["Apple","Banana","Nanasi","Beans"], [ "Apple","Apple","Banana","Rice","Beans","Apple","Mango","Beans","Banana" ]  ) &#125; &#125;</pre>
-        Which returns <code>{{ app.count( ["Apple","Banana","Nanasi","Beans"], [ "Apple","Apple","Banana","Rice","Beans","Apple","Mango","Beans","Banana" ] ) }}</code>
+        <pre style="max-width:800px;">&#123; &#123; app.count( "Apple", [ "Apple","Apple","Banana","Rice","Beans","Apple","Mango","Beans","Banana" ]  ) &#125; &#125;</pre> which returns <code>{{app.count( "Apple", [ "Apple","Apple","Banana","Rice","Beans","Apple","Mango","Beans","Banana" ]  )}}</code>
+        <br>
+        <h5>Multiple Item search</h5>
+        <br>You can also search for multiple terms provided they are specified as an Array. e.g To find the number of references to <i><b>Apple, Banana, Nanasi</b></i> and <i><b>Beans</b></i> that occurs in the Array <code> [ "Apple","Apple","Banana","Rice","Beans","Apple","Mango","Beans","Banana" ] </code>,
+        run:
+        <pre style="max-width:1000px;">&#123; &#123; app.count( ["Apple","Banana","Nanasi","Beans"], [ "Apple","Apple","Banana","Rice","Beans","Apple","Mango","Beans","Banana" ]  ) &#125; &#125;</pre> Which returns <code>{{ app.count( ["Apple","Banana","Nanasi","Beans"], [ "Apple","Apple","Banana","Rice","Beans","Apple","Mango","Beans","Banana" ] ) }}</code>
     </div>
 
     <!--post-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">app.post</u> <i style="color:green !important;">(Promise ( target_url, data) )</i>
+            <u style="color:cornflowerblue !important">app.post</u> <i style="color:green !important;">(Promise ( target_url, data) )</i>
         </h5>
         Returns a then-able after performing a http request guided by the provided parameters.
         <br>To make an http <i>POST</i> request to <i><b>{{remoteAuth.url}}/echo</b></i> where the parameters are <i><b>service=demo, time={{app.date()}}</b></i> and <i><b>status=200</b></i>, run
         <pre style="max-width:1200px;">&#123; &#123; app.post('{{remoteAuth.url}}/echo',{ service: "demo", time : {{app.date()}} , status : 200 }).then(app.handler).catch(app.handler) &#125; &#125;</pre>
-        <button 
-            class="md-btn md-btn-primary" 
-            ng-click=" app.post(remoteAuth.url+'/echo',{ service: 'demo', time : app.date() , status : 200 }).then(app.handler).catch(app.handler)"
-        >APP.post REQUEST</button>
+        <button class="md-btn md-btn-primary" ng-click=" app.post(remoteAuth.url+'/echo',{ service: 'demo', time : app.date() , status : 200 }).then(app.handler).catch(app.handler)">APP.post REQUEST</button>
     </div>
 
     <!--get-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">app.get</u> <i style="color:green !important;">(Promise ( target_url, data) )</i>
+            <u style="color:cornflowerblue !important">app.get</u> <i style="color:green !important;">(Promise ( target_url, data) )</i>
         </h5>
         Returns a then-able after performing a http request guided by the provided parameters.
         <br>To make an http <i>get</i> request to <i><b>{{remoteAuth.url}}/echo</b></i> where the parameters are <i><b>q=framify and status=401</b></i>, run
         <pre style="max-width:1000px;">&#123; &#123; app.get('{{remoteAuth.url}}/echo',{ q: 'framify', status: 401}).then(app.handler).catch(app.handler) &#125; &#125;</pre>
-        <button 
-            class="md-btn md-btn-primary" 
-            ng-click=" app.get(remoteAuth.url+'/echo',{ q: 'framify', status: 401}).then(app.handler).catch(app.handler)"
-        >APP.get REQUEST</button>
+        <button class="md-btn md-btn-primary" ng-click=" app.get(remoteAuth.url+'/echo',{ q: 'framify', status: 401}).then(app.handler).catch(app.handler)">APP.get REQUEST</button>
     </div>
 
     <!--put-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">app.put</u> <i style="color:green !important;">(Promise ( target_url, data) )</i>
+            <u style="color:cornflowerblue !important">app.put</u> <i style="color:green !important;">(Promise ( target_url, data) )</i>
         </h5>
         Returns a then-able after performing a http request guided by the provided parameters.
         <br>To make an http <i>put</i> request to <i><b>{{remoteAuth.url}}/echo</b></i> where the parameters are <i><b>q=framify and status=401</b></i>, run
         <pre style="max-width:1000px;">&#123; &#123; app.put('{{remoteAuth.url}}/echo',{ q: 'framify', status: 500}).then(app.handler).catch(app.handler) &#125; &#125;</pre>
-        <button 
-            class="md-btn md-btn-primary" 
-            ng-click=" app.put(remoteAuth.url+'/echo',{ q: 'framify', status: 500}).then(app.handler).catch(app.handler)"
-        >APP.put REQUEST</button>
+        <button class="md-btn md-btn-primary" ng-click=" app.put(remoteAuth.url+'/echo',{ q: 'framify', status: 500}).then(app.handler).catch(app.handler)">APP.put REQUEST</button>
     </div>
 
     <!--delete-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">app.delete</u> <i style="color:green !important;">(Promise ( target_url, data) )</i>
+            <u style="color:cornflowerblue !important">app.delete</u> <i style="color:green !important;">(Promise ( target_url, data) )</i>
         </h5>
         Returns a then-able after performing a http request guided by the provided parameters.
         <br>To make an http <i>delete</i> request to <i><b>{{remoteAuth.url}}/echo</b></i> where the parameters are <i><b>q=framify and status=401</b></i>, run
         <pre style="max-width:1000px;">&#123; &#123; app.delete('{{remoteAuth.url}}/echo',{ q: 'framify', status: 301}).then(app.handler).catch(app.handler) &#125; &#125;</pre>
-        <button 
-            class="md-btn md-btn-primary" 
-            ng-click=" app.delete(remoteAuth.url+'/echo',{ q: 'framify', status: 301}).then(app.handler).catch(app.handler)"
-        >APP.delete REQUEST</button>
+        <button class="md-btn md-btn-primary" ng-click=" app.delete(remoteAuth.url+'/echo',{ q: 'framify', status: 301}).then(app.handler).catch(app.handler)">APP.delete REQUEST</button>
     </div>
 
     <!--db-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">app.db</u> <i style="color:green !important;">(Promise ( data, target_url) )</i>
+            <u style="color:cornflowerblue !important">app.db</u> <i style="color:green !important;">(Promise ( data, target_url) )</i>
         </h5>
         Performs a request to interact with the framify-db component.
         <br>To query the database, ensure that the database is well configured and that you are loged in as a user ; then run
         <pre style="max-width:1000px;">&#123; &#123; app.db({ command: 'get', table: 'users', specifics: 'id,username' }).then(app.handler).catch(app.handler) &#125; &#125;</pre>
-        <button 
-            class="md-btn md-btn-primary" 
-            ng-click=" app.db({ command: 'get', table: 'users', specifics: 'id,username' }).then(app.handler).catch(app.handler)"
-        >APP.db REQUEST</button>
+        <button class="md-btn md-btn-primary" ng-click=" app.db({ command: 'get', table: 'users', specifics: 'id,username' }).then(app.handler).catch(app.handler)">APP.db REQUEST</button>
     </div>
 
-     <!--handler-->
+    <!--handler-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">app.handler</u> <i style="color:green !important;">(Function( framify_make_response_object) )</i>
+            <u style="color:cornflowerblue !important">app.handler</u> <i style="color:green !important;">(Function( framify_make_response_object) )</i>
         </h5>
         Creates an alert based on the http status code in the <i><b>response_object.status</b></i> object value
-        <br>A sample framify formatted response of  <code>{"response":200, "data": { "message": "Successfully set the parameter", "command": "done" } }</code> can be <i>handled</i> by running:
+        <br>A sample framify formatted response of <code>{"response":200, "data": { "message": "Successfully set the parameter", "command": "done" } }</code> can be <i>handled</i> by running:
         <pre style="max-width:1000px;">&#123; &#123; app.handler({"response":200, "data": { "message": "Successfully set the parameter", "command": "done" } }) &#125; &#125;</pre>
-        <button 
-            class="md-btn md-btn-primary" 
-            ng-click="app.handler({'response':200, 'data': { 'message': 'Successfully set the parameter', 'command': 'done' } })"
-        >APP.HANDLER EXAMPLE</button>
+        <button class="md-btn md-btn-primary" ng-click="app.handler({'response':200, 'data': { 'message': 'Successfully set the parameter', 'command': 'done' } })">APP.HANDLER EXAMPLE</button>
     </div>
 
-<!-- EO - APP SERVICE -->
+    <!-- EO - APP SERVICE -->
 </div>
 
 
- 
+
 <!-- SO - SMS SERVICE-->
-<div ng-if="current=='sms'"> 
+<div ng-if="current=='sms'">
 
     <!--SMS Service-->
     <hr>
@@ -989,12 +933,12 @@
 
     <!--start-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important"> sms.start</u> <i style="color:green !important;">(Promise (framify_sms_gateway_server_url) )</i>
+            <u style="color:cornflowerblue !important"> sms.start</u> <i style="color:green !important;">(Promise (framify_sms_gateway_server_url) )</i>
         </h5>
-        
+
         Starts the SMS gateway connection
         <br>To start the SMS gateway connection via the official SMS gateway, run
         <pre style="max-width:600px;">&#123; &#123; sms.start( 'http://41.89.162.252:3000' ) &#125; &#125;</pre>
@@ -1004,12 +948,12 @@
 
     <!--stop-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important"> sms.stop</u> <i style="color:green !important;">(Promise () )</i>
+            <u style="color:cornflowerblue !important"> sms.stop</u> <i style="color:green !important;">(Promise () )</i>
         </h5>
-        
+
         stops the SMS gateway connection
         <br>To stop the SMS gateway connection to an SMS gateway, run
         <pre style="max-width:600px;">&#123; &#123; sms.stop( ) &#125; &#125;</pre>
@@ -1018,25 +962,25 @@
 
     <!--SMS-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important"> sms.SMS</u> <i style="color:green !important;">(Promise ( formatted_sms_object ) )</i>
+            <u style="color:cornflowerblue !important"> sms.SMS</u> <i style="color:green !important;">(Promise ( formatted_sms_object ) )</i>
         </h5>
-        
+
         Sends an already formatted SMS object.
-        <br>The  format required is <code>{ "telephone": "087987986", "message": "Hello Stranger", "password": "Your device's FRAMIFY SMS Authentication Key" }</code>, e.g:
+        <br>The format required is <code>{ "telephone": "087987986", "message": "Hello Stranger", "password": "Your device's FRAMIFY SMS Authentication Key" }</code>, e.g:
         <pre style="max-width:900px;">&#123; &#123; sms.SMS( { "telephone": "087987986", "message": "Hello Stranger", "password": "3*5************" } ) &#125; &#125;</pre>
     </div>
 
     <!--oneSMS-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important"> sms.oneSMS</u> <i style="color:green !important;">(Promise ( recipient_telephone ,message ,client_authentication_key ) )</i>
+            <u style="color:cornflowerblue !important"> sms.oneSMS</u> <i style="color:green !important;">(Promise ( recipient_telephone ,message ,client_authentication_key ) )</i>
         </h5>
-        
+
         Sends a single SMS message.
         <br>To send an SMS message <i>(after establishing a connection to the gateway)</i>, run:
         <pre style="max-width:600px;">&#123; &#123; sms.oneSMS(  "087987986", "Hello Stranger", "3*5************"  ) &#125; &#125;</pre>
@@ -1044,12 +988,12 @@
 
     <!--bulkSMS-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important"> sms.bulkSMS</u> <i style="color:green !important;">(Promise ( recipients_telephone_array ,message ,client_authentication_key ) )</i>
+            <u style="color:cornflowerblue !important"> sms.bulkSMS</u> <i style="color:green !important;">(Promise ( recipients_telephone_array ,message ,client_authentication_key ) )</i>
         </h5>
-        
+
         Sends an SMS String to multiple users.
         <br>To send an SMS message <i>(after establishing a connection to the gateway)</i>, run:
         <pre style="max-width:800px;">&#123; &#123; sms.bulkSMS(  ["087987986","0324243686"], "Hello Stranger", "3*5************"  ) &#125; &#125;</pre>
@@ -1057,10 +1001,10 @@
 
     <!--db-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">app.db</u> <i style="color:green !important;">(Promise ( data, target_url) )</i>
+            <u style="color:cornflowerblue !important">app.db</u> <i style="color:green !important;">(Promise ( data, target_url) )</i>
         </h5>
         Performs a request to interact with the framify-db component.
         <br>To query the database, ensure that the database is well configured and that you are loged in as a user ; then run
@@ -1073,10 +1017,10 @@
 
     <!--mail-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">app.mail</u> <i style="color:green !important;">(Promise ( data, target_url) )</i>
+            <u style="color:cornflowerblue !important">app.mail</u> <i style="color:green !important;">(Promise ( data, target_url) )</i>
         </h5>
         Performs a request to interact with the framify-mail component.
         <br>To send an email, run
@@ -1105,30 +1049,30 @@
                 };    
             ).then(app.handler).catch(app.handler) 
        &#125; &#125;</pre>
-       
+
     </div>
 
-<!-- EO - SMS SERVICE -->
+    <!-- EO - SMS SERVICE -->
 </div>
-  
+
 
 
 <!-- SO - CGI SERVICE -->
-<div ng-if="current=='cgi'"> 
+<div ng-if="current=='cgi'">
 
-    
+
     <!--CGI Service-->
     <hr>
     <div class="section" ng-click="current='cgi'">
         <u style="color:cornflowerblue !important"><h3>The <i style="color:red;">cgi</i> service</h3></u>
     </div>
 
-     <!--ajax-->
+    <!--ajax-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">cgi.ajax</u> <i style="color:green !important;">(Promise ( data, target_url) )</i>
+            <u style="color:cornflowerblue !important">cgi.ajax</u> <i style="color:green !important;">(Promise ( data, target_url) )</i>
         </h5>
         Performs a jQuery POST request to interact with the framify-db component.
         <br>To query the database, ensure that the database is well configured and that you are loged in as a user ; then run
@@ -1138,10 +1082,10 @@
 
     <!--mail-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">cgi.mail</u> <i style="color:green !important;">(Promise ( data, target_url) )</i>
+            <u style="color:cornflowerblue !important">cgi.mail</u> <i style="color:green !important;">(Promise ( data, target_url) )</i>
         </h5>
         Performs a jQuery http POST request to interact with the framify-mail component.
         <br>To send an email, run
@@ -1170,16 +1114,16 @@
                 };    
             ).then(app.handler).catch(app.handler) 
        &#125; &#125;</pre>
-       
+
     </div>
-</div>   
+</div>
 <!-- EO - CGI SERVICE-->
 
 
 <!--SO - AUTH SERVICE-->
-<div ng-if="current=='auth'">  
+<div ng-if="current=='auth'">
 
-     <!--Auth Service-->
+    <!--Auth Service-->
     <hr>
     <div class="section" ng-click="current='auth'">
         <u style="color:cornflowerblue !important"><h3>The <i style="color:red;">auth</i> service</h3></u>
@@ -1188,10 +1132,10 @@
 
     <!--SetAuth-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">auth.SetAuth</u> / <u style="color:cornflowerblue !important">auth.set_auth</u> <i style="color:green !important;">(Promise ( auth_token ) )</i>
+            <u style="color:cornflowerblue !important">auth.SetAuth</u> / <u style="color:cornflowerblue !important">auth.set_auth</u> <i style="color:green !important;">(Promise ( auth_token ) )</i>
         </h5>
         Sets the authentication header in the http headers. Where no token is passed as a parameter, it seeks to see if any signs of a token exist.
         <br>To inject an authentication token, <i>( Which should be done sparingly since it is otherwise automatically handled )</i>; run
@@ -1200,10 +1144,10 @@
 
     <!--register-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-               <u style="color:cornflowerblue !important">auth.Register</u> / <u style="color:cornflowerblue !important">auth.register</u> <i style="color:green !important;">(Promise ( registration_object_parameters ) )</i>
+            <u style="color:cornflowerblue !important">auth.Register</u> / <u style="color:cornflowerblue !important">auth.register</u> <i style="color:green !important;">(Promise ( registration_object_parameters ) )</i>
         </h5>
         Handles the registration of users on the local platform.
         <br>To perform a user registration, <i>ensure that all required registration parameters are provided</i>; then run
@@ -1212,10 +1156,10 @@
 
     <!--login-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">auth.Login</u> / <u style="color:cornflowerblue !important">auth.login</u> <i style="color:green !important;">(Promise ( login_authentication_object ) )</i>
+            <u style="color:cornflowerblue !important">auth.Login</u> / <u style="color:cornflowerblue !important">auth.login</u> <i style="color:green !important;">(Promise ( login_authentication_object ) )</i>
         </h5>
         Handles the login of users on the local platform.
         <br>To perform a user login, <i>ensure that all required login parameters are provided</i>; then run
@@ -1224,10 +1168,10 @@
 
     <!--logout-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">auth.Logout</u> / <u style="color:cornflowerblue !important">auth.logout</u> <i style="color:green !important;">(Promise (  ) )</i>
+            <u style="color:cornflowerblue !important">auth.Logout</u> / <u style="color:cornflowerblue !important">auth.logout</u> <i style="color:green !important;">(Promise (  ) )</i>
         </h5>
         Handles the logout of users on the local platform.
         <br>To perform a user logout, run
@@ -1239,7 +1183,7 @@
 
 
 <!--SO - REMOTEAUTH SERVICE-->
-<div ng-if="current=='remoteAuth'">  
+<div ng-if="current=='remoteAuth'">
 
 
     <!--remoteAuth Service-->
@@ -1251,22 +1195,21 @@
 
     <!--url-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">remoteAuth.url</u>
+            <u style="color:cornflowerblue !important">remoteAuth.url</u>
         </h5>
         Returns a string of the currently defined remote server . <i> The default is http://bixbyte.io</i>.
-        <pre style="max-width:1000px;">&#123; &#123; remoteAuth.url &#125; &#125;</pre>
-        returns <code>{{remoteAuth.url}}</code>
+        <pre style="max-width:1000px;">&#123; &#123; remoteAuth.url &#125; &#125;</pre> returns <code>{{remoteAuth.url}}</code>
     </div>
 
     <!--setUrl-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">remoteAuth.setUrl</u> / <u style="color:cornflowerblue !important">remoteAuth.set_url</u> <i style="color:green !important;">(Promise ( remote_server_root_url ) )</i>
+            <u style="color:cornflowerblue !important">remoteAuth.setUrl</u> / <u style="color:cornflowerblue !important">remoteAuth.set_url</u> <i style="color:green !important;">(Promise ( remote_server_root_url ) )</i>
         </h5>
         Sets the remote server that the client application communicates with. ( <i> Defaults to http://bixbyte.io</i> ) where no parameter is defined.
         <br>To setup a remote server URL definition; run
@@ -1275,10 +1218,10 @@
 
     <!--SetAuth-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">remoteAuth.SetAuth</u> / <u style="color:cornflowerblue !important">remoteAuth.set_auth</u> <i style="color:green !important;">(Promise ( auth_token ) )</i>
+            <u style="color:cornflowerblue !important">remoteAuth.SetAuth</u> / <u style="color:cornflowerblue !important">remoteAuth.set_auth</u> <i style="color:green !important;">(Promise ( auth_token ) )</i>
         </h5>
         Sets the authentication header in the http headers. Where no token is passed as a parameter, it seeks to see if any signs of a token exist.
         <br>To inject an authentication token, <i>( Which should be done sparingly since it is otherwise automatically handled )</i>; run
@@ -1287,10 +1230,10 @@
 
     <!--register-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">remoteAuth.Register</u> / <u style="color:cornflowerblue !important">remoteAuth.register</u> <i style="color:green !important;">(Promise ( registration_object_parameters ) )</i>
+            <u style="color:cornflowerblue !important">remoteAuth.Register</u> / <u style="color:cornflowerblue !important">remoteAuth.register</u> <i style="color:green !important;">(Promise ( registration_object_parameters ) )</i>
         </h5>
         Handles the registration of users against a remote platform.
         <br>To perform a user registration, <i>ensure that all required registration parameters are provided</i>; then run
@@ -1299,10 +1242,10 @@
 
     <!--login-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">remoteAuth.Login</u> / <u style="color:cornflowerblue !important">remoteAuth.login</u> <i style="color:green !important;">(Promise ( login_authentication_object ) )</i>
+            <u style="color:cornflowerblue !important">remoteAuth.Login</u> / <u style="color:cornflowerblue !important">remoteAuth.login</u> <i style="color:green !important;">(Promise ( login_authentication_object ) )</i>
         </h5>
         Handles the login of users against a remote platform.
         <br>To perform a user login, <i>ensure that all required login parameters are provided</i>; then run
@@ -1311,10 +1254,10 @@
 
     <!--logout-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">remoteAuth.Logout</u> / <u style="color:cornflowerblue !important">remoteAuth.logout</u> <i style="color:green !important;">(Promise (  ) )</i>
+            <u style="color:cornflowerblue !important">remoteAuth.Logout</u> / <u style="color:cornflowerblue !important">remoteAuth.logout</u> <i style="color:green !important;">(Promise (  ) )</i>
         </h5>
         Handles the logout of users against a remote platform.
         <br>To perform a user logout, run
@@ -1328,48 +1271,46 @@
 <!--SO - CONTENTEDITABLE DIRECTIVE-->
 <div ng-if="current=='contenteditable'">
 
-   <!--contenteditable-->
+    <!--contenteditable-->
     <hr>
     <div class="section">
         <u style="color:cornflowerblue !important"><h3>The <i style="color:red;">contenteditable</i> directive</h3></u>
         <code>Angular Attribute Only directive.</code>
-        <br><br>
-        Makes the content on a given UI element editable <code>The directive takes no value. </code>.
-        <pre>&lt;div contenteditable ng-model="data.contenteditable"&gt; I AM AN EDITABLE DIV &lt;/div&gt;</pre>
-        Producing:
-        <div contenteditable="true" ng-model="data.contenteditable"> I AM AN EDITABLE DIV </div>
+        <br><br> Makes the content on a given UI element editable <code>The directive takes no value. </code>.
+        <pre>&lt; div contenteditable ng_model="data.contenteditable"&gt; I AM AN EDITABLE DIV &lt; /div &gt;</pre>
+        <!-- Producing:
+        <br>
+        <div contenteditable ng-model="data.contenteditable"> I AM AN EDITABLE DIV </div> -->
 
-    </div> 
+    </div>
 
 
 </div>
 <!--EO - CONTENTEDITABLE DIRECTIVE-->
-  
+
 
 <!--SO - FILEMODEL DIRECTIVE-->
 <div ng-if="current=='fileModel'">
-    
+
     <!--fileModel-->
     <hr>
     <div class="section">
         <u style="color:cornflowerblue !important"><h3>The <i style="color:red;">fileModel</i> directive</h3></u>
         <code>Angular Attribute Only directive.</code>
-        <br><br>
-        Binds the value of an HTML file input to the parent angular $scope <code>It takes the value equivalent to the value of the desired $scope binding.</code>.
+        <br><br> Binds the value of an HTML file input to the parent angular $scope <code>It takes the value equivalent to the value of the desired $scope binding.</code>.
         <br>To bind the value of a selected file to the model <b><i>fileVal</i></b>, we run
-        <pre style="max-width:1000px;"> &lt;input type="file" class="btn btn-success" file-model="fileVal"&gt; </pre>
-        Which produces <input type="file" class="btn btn-success" file-model="fileVal">
+        <pre style="max-width:1000px;"> &lt;input type="file" class="btn btn-success" file-model="fileVal"&gt; </pre> Which produces <input type="file" class="btn btn-success" file-model="fileVal">
         <pre ng-if="fileVal">
 Fileval:  <code>{{fileVal}}</code>
         </pre>
-    </div> 
+    </div>
 
 </div>
 <!--EO - FILEMODEL DIRECTIVE-->
 
 
 <!--SO - framifyController-->
-<div ng-if="current=='framifyController'">  
+<div ng-if="current=='framifyController'">
 
     <hr>
     <div class="section" ng-click="current='framifyController'">
@@ -1379,61 +1320,57 @@ Fileval:  <code>{{fileVal}}</code>
 
     <!--current-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">current</u>
+            <u style="color:cornflowerblue !important">current</u>
         </h5>
         Returns a string of the currently defined remote server . <i> The default is http://bixbyte.io</i>.
-        <pre style="max-width:1000px;">&#123; &#123; current &#125; &#125;</pre>
-        Currently: <code>{{current}}</code>
+        <pre style="max-width:1000px;">&#123; &#123; current &#125; &#125;</pre> Currently: <code>{{current}}</code>
     </div>
 
 
     <!--ui-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">ui</u>
+            <u style="color:cornflowerblue !important">ui</u>
         </h5>
         Returns a JSON object of the currently active UI parameters/elements.
-        <pre style="max-width:1000px;">&#123; &#123; ui &#125; &#125;</pre>
-        Currently: <code>{{ui}}</code>
+        <pre style="max-width:1000px;">&#123; &#123; ui &#125; &#125;</pre> Currently: <code>{{ui}}</code>
     </div>
-    
 
-    
+
+
     <!--nav-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">nav</u>
+            <u style="color:cornflowerblue !important">nav</u>
         </h5>
         Returns a JSON Aray of the applcation navigation elements.
-        <pre style="max-width:1000px;">&#123; &#123; nav &#125; &#125;</pre>
-        Currently: <code>{{nav}}</code>
+        <pre style="max-width:1000px;">&#123; &#123; nav &#125; &#125;</pre> Currently: <code>{{nav}}</code>
     </div>
 
     <!--links-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">links</u>
+            <u style="color:cornflowerblue !important">links</u>
         </h5>
         Returns a JSON Aray of the applcation generated navigation links.
-        <pre style="max-width:1000px;">&#123; &#123; links &#125; &#125;</pre>
-        Currently: <code>{{links}}</code>
+        <pre style="max-width:1000px;">&#123; &#123; links &#125; &#125;</pre> Currently: <code>{{links}}</code>
     </div>
 
     <!--exec-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">exec</u>  <i>(Function ( function_or_promise_to_run ) )</i>
+            <u style="color:cornflowerblue !important">exec</u> <i>(Function ( function_or_promise_to_run ) )</i>
         </h5>
         performs the execution of a dormant function/promise.
         <pre style="max-width:1000px;">&#123; &#123; exec( function_reference ) &#125; &#125;</pre>
@@ -1441,71 +1378,66 @@ Fileval:  <code>{{fileVal}}</code>
 
     <!--setVar-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">setVar</u> / <u style="color:cornflowerblue !important">set_var</u> <i style="color:green !important;">(Function ( initial_object, [key], value ) )</i>
+            <u style="color:cornflowerblue !important">setVar</u> / <u style="color:cornflowerblue !important">set_var</u> <i style="color:green !important;">(Function ( initial_object, [key], value ) )</i>
         </h5>
         Returns a JSON Object containing the new values as well as the old. ( Appends a key:value pair to a JSON Object. )
-        <pre style="max-width:1000px;">&#123; &#123; set_var( {}, ["application"], "framify.js" ) &#125; &#125;</pre>
-        Which returns <code>{{  setVar( {}, ["application"], "framify.js" ) }}</code>
+        <pre style="max-width:1000px;">&#123; &#123; set_var( {}, ["application"], "framify.js" ) &#125; &#125;</pre> Which returns <code>{{  setVar( {}, ["application"], "framify.js" ) }}</code>
     </div>
 
     <!--appRedirect-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">appRedirect</u> / <u style="color:cornflowerblue !important">app_redirect</u> <i style="color:green !important;">(Function ( partial_app_substate ) )</i>
+            <u style="color:cornflowerblue !important">appRedirect</u> / <u style="color:cornflowerblue !important">app_redirect</u> <i style="color:green !important;">(Function ( partial_app_substate ) )</i>
         </h5>
         Redirects the application to app.<code>partial_app_substate</code>
-        <pre style="max-width:1000px;">&#123; &#123; app_redirect( "login" ) &#125; &#125;</pre>
-        redirects to <code><i><b>app.login</b></i></code>
+        <pre style="max-width:1000px;">&#123; &#123; app_redirect( "login" ) &#125; &#125;</pre> redirects to <code><i><b>app.login</b></i></code>
     </div>
 
     <!--goTo-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">goTo</u> / <u style="color:cornflowerblue !important">go_to</u> <i style="color:green !important;">(Function ( complete_app_substate ) )</i>
+            <u style="color:cornflowerblue !important">goTo</u> / <u style="color:cornflowerblue !important">go_to</u> <i style="color:green !important;">(Function ( complete_app_substate ) )</i>
         </h5>
         Redirects the application to app.<code>complete_app_substate</code>
-        <pre style="max-width:1000px;">&#123; &#123; go_to( "login" ) &#125; &#125;</pre>
-        redirects to <code><i><b>login</b></i></code>
+        <pre style="max-width:1000px;">&#123; &#123; go_to( "login" ) &#125; &#125;</pre> redirects to <code><i><b>login</b></i></code>
     </div>
 
     <!--unwanted-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">unwanted</u>
+            <u style="color:cornflowerblue !important">unwanted</u>
         </h5>
         Returns an Array of the unwanted Object Keys.
-        <pre style="max-width:1000px;">&#123; &#123; unwanted &#125; &#125;</pre>
-        Currently:  <code>{{unwanted}}</code>
+        <pre style="max-width:1000px;">&#123; &#123; unwanted &#125; &#125;</pre> Currently: <code>{{unwanted}}</code>
     </div>
 
     <!--removeUnwanted-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">removeUnwanted</u> / <u style="color:cornflowerblue !important">remove_unwanted</u> <i style="color:green !important;">(Function ( object_to_work_on ) )</i>
+            <u style="color:cornflowerblue !important">removeUnwanted</u> / <u style="color:cornflowerblue !important">remove_unwanted</u> <i style="color:green !important;">(Function ( object_to_work_on ) )</i>
         </h5>
         Removes the currently defined <i><b>unwanted</b></i> Keys from the specified object e.g
-        <pre style="max-width:1000px;">&#123; &#123; remove_unwanted(  { $index: 1, $$hashKey: "23467324h" , name: "Author" } ) &#125; &#125;</pre>
-        returns <code><i><b>{{ removeUnwanted( { $index: 1, $$hashKey: "23467324h" , name: "Author" } ) }}</b></i></code>
+        <pre style="max-width:1000px;">&#123; &#123; remove_unwanted(  { $index: 1, $$hashKey: "23467324h" , name: "Author" } ) &#125; &#125;</pre> returns <code><i><b>{{ removeUnwanted( { $index: 1, $$hashKey: "23467324h" , name: "Author" } ) }}</b></i></code>
     </div>
 
-    
+
     <!--add-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">add</u>  <i>(Promise ( table ,data ,field_names_to_md5 ,callback ) )</i>
+            <u style="color:cornflowerblue !important">add</u> <i>(Promise ( table ,data ,field_names_to_md5 ,callback ) )</i>
         </h5>
         Adds a data record to the database table defined while performaing any required md5-ing on the client side
         <pre style="max-width:1000px;">&#123; &#123; add( 'people', { name: 'John Doe', age: '100123', email: 'john@vampires.com', secret_key: 'john_doe' }, 'secret_key' ) &#125; &#125;</pre>
@@ -1513,10 +1445,10 @@ Fileval:  <code>{{fileVal}}</code>
 
     <!--update-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">update</u> <i style="color:green !important;">(Promise ( table ,data ,field_names_to_md5 ,callback ) )</i>
+            <u style="color:cornflowerblue !important">update</u> <i style="color:green !important;">(Promise ( table ,data ,field_names_to_md5 ,callback ) )</i>
         </h5>
         Updates a data record in the database table defined while performaing any required md5-ing on the client side
         <pre style="max-width:1000px;">&#123; &#123; update( 'people', { name: 'John Doe', age: '100123', email: 'john@vampires.com', secret_key: 'john_doe_new_pass' }, 'secret_key', extras: ' email=john@vampires.com ' ) &#125; &#125;</pre>
@@ -1524,43 +1456,43 @@ Fileval:  <code>{{fileVal}}</code>
 
     <!--fetch-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">fetch</u> <i style="color:green !important;">(Promise ( table ,data ,field_names_to_md5 ,callback ) )</i>
+            <u style="color:cornflowerblue !important">fetch</u> <i style="color:green !important;">(Promise ( table ,data ,field_names_to_md5 ,callback ) )</i>
         </h5>
-        Fetches  data record(s) in the database table defined while performaing any required md5-ing on the client side
+        Fetches data record(s) in the database table defined while performaing any required md5-ing on the client side
         <pre style="max-width:1000px;">&#123; &#123; fetch( 'people', { 'extras': 'LIMIT 10' ) &#125; &#125;</pre>
     </div>
 
     <!--del-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">del</u> <i style="color:green !important;">(Promise ( table ,data ,field_names_to_md5 ,callback ) )</i>
+            <u style="color:cornflowerblue !important">del</u> <i style="color:green !important;">(Promise ( table ,data ,field_names_to_md5 ,callback ) )</i>
         </h5>
-        Deletes  data record(s) in the database table defined while performaing any required md5-ing on the client side
+        Deletes data record(s) in the database table defined while performaing any required md5-ing on the client side
         <pre style="max-width:1000px;">&#123; &#123; del( 'people', { email: 'john@vampires.com' ) &#125; &#125;</pre>
     </div>
 
     <!--custom-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">custom</u> <i style="color:green !important;">(Promise ( table ,data ,field_names_to_md5 ,callback ) )</i>
+            <u style="color:cornflowerblue !important">custom</u> <i style="color:green !important;">(Promise ( table ,data ,field_names_to_md5 ,callback ) )</i>
         </h5>
         Performs a custom SQL query in the database table defined
         <pre style="max-width:1000px;">&#123; &#123; custom( 'people', { query: 'SELECT * FROM people' ) &#125; &#125;</pre>
     </div>
 
-     <!--count-->
+    <!--count-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">count</u> <i style="color:green !important;">(Promise ( table ,data ,field_names_to_md5 ,callback ) )</i>
+            <u style="color:cornflowerblue !important">count</u> <i style="color:green !important;">(Promise ( table ,data ,field_names_to_md5 ,callback ) )</i>
         </h5>
         Performs a count of the specified parameter value(s) in the database table defined
         <pre style="max-width:1000px;">&#123; &#123; count( 'people', { specifics: 'name', email: 'john@vampires.com' ) &#125; &#125;</pre>
@@ -1568,10 +1500,10 @@ Fileval:  <code>{{fileVal}}</code>
 
     <!--sanitize-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">sanitize</u> / <u style="color:cornflowerblue !important">delParams</u> / <u style="color:cornflowerblue !important">del_params</u> <i style="color:green !important;">(Promise ( object, comma_delimited_keys_to_remove ) )</i>
+            <u style="color:cornflowerblue !important">sanitize</u> / <u style="color:cornflowerblue !important">delParams</u> / <u style="color:cornflowerblue !important">del_params</u> <i style="color:green !important;">(Promise ( object, comma_delimited_keys_to_remove ) )</i>
         </h5>
         Removes the currently defined <i><b> coma delimited purge keys</b></i> from the specified object e.g
         <pre style="max-width:1000px;">&#123; &#123; sanitize( { name: 'Author', 'age': 12234, telephone: '0756159785', 'position': 'General Manager' }, 'age,telephone' ) &#125; &#125;</pre>
@@ -1580,60 +1512,58 @@ Fileval:  <code>{{fileVal}}</code>
 
     <!--dPush-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">dPush</u> / <u style="color:cornflowerblue !important">d_push</u> <i style="color:green !important;">(Function ( object, key_name, key_value ) )</i>
+            <u style="color:cornflowerblue !important">dPush</u> / <u style="color:cornflowerblue !important">d_push</u> <i style="color:green !important;">(Function ( object, key_name, key_value ) )</i>
         </h5>
         Adds a key - value pair to the supplied object e.g
-        <pre style="max-width:1000px;">&#123; &#123; dPush( {}, 'framework', { name: 'framify', last_viewed: '{{app.date_time()}}' } ) &#125; &#125;</pre>
-        Resulting in <code> {{ dPush( {}, 'framework', { name: 'framify', last_viewed: app.date_time() } ) }}</code>
+        <pre style="max-width:1000px;">&#123; &#123; dPush( {}, 'framework', { name: 'framify', last_viewed: '{{app.date_time()}}' } ) &#125; &#125;</pre> Resulting in <code> {{ dPush( {}, 'framework', { name: 'framify', last_viewed: app.date_time() } ) }}</code>
     </div>
 
     <!--dPushify-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">dPushify</u> / <u style="color:cornflowerblue !important">d_pushify</u> <i style="color:green !important;">(Promise ( object, key_name, key_value ) )</i>
+            <u style="color:cornflowerblue !important">dPushify</u> / <u style="color:cornflowerblue !important">d_pushify</u> <i style="color:green !important;">(Promise ( object, key_name, key_value ) )</i>
         </h5>
         Adds a key - value pair to the supplied object e.g
         <pre style="max-width:1000px;">&#123; &#123; dPushify( {}, 'framework', { name: 'framify', last_viewed: '{{app.date_time()}}' } ) &#125; &#125;</pre>
-         <button class="btn md-btn" ng-click="dPushify(  {}, 'framework', { name: 'framify', last_viewed: app.date_time() } ).then(app.stringify).then(app.notify).catch(app.notify)">Run Example</button>
+        <button class="btn md-btn" ng-click="dPushify(  {}, 'framework', { name: 'framify', last_viewed: app.date_time() } ).then(app.stringify).then(app.notify).catch(app.notify)">Run Example</button>
     </div>
 
     <!--currmoin-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">currmoin</u>
+            <u style="color:cornflowerblue !important">currmoin</u>
         </h5>
         Returns the current <i><b>non framify-formatted</b></i> month number.
-        <pre style="max-width:1000px;">&#123; &#123; currmoin &#125; &#125; or &#123; &#123; app.month_array[ currmoin - 1 ]  &#125; &#125;</pre>
-        i.e : <code> {{currmoin}} or {{app.month_array[ currmoin - 1 ] }}</code> 
+        <pre style="max-width:1000px;">&#123; &#123; currmoin &#125; &#125; or &#123; &#123; app.month_array[ currmoin - 1 ]  &#125; &#125;</pre> i.e : <code> {{currmoin}} or {{app.month_array[ currmoin - 1 ] }}</code>
     </div>
 
     <!--setMoin-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">setMoin</u> / <u style="color:cornflowerblue !important">set_moin</u> <i style="color:green !important;">(Function ( month_number ) )</i>
+            <u style="color:cornflowerblue !important">setMoin</u> / <u style="color:cornflowerblue !important">set_moin</u> <i style="color:green !important;">(Function ( month_number ) )</i>
         </h5>
-        Changes the numeric value of the current Month <i><b>currmoin</b></i> object. Usage: 
+        Changes the numeric value of the current Month <i><b>currmoin</b></i> object. Usage:
         <pre style="max-width:1000px;">&#123; &#123; setMoin( 01 ) &#125; &#125;</pre>
     </div>
 
 
     <!--addExtras-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">addExtras</u> <i style="color:green !important;">(Promise ((targetObj ,extrasObj ,comma_delimeted_key_rename_in_extras ,keys_to_remove_from_extras) )</i>
+            <u style="color:cornflowerblue !important">addExtras</u> <i style="color:green !important;">(Promise ((targetObj ,extrasObj ,comma_delimeted_key_rename_in_extras ,keys_to_remove_from_extras) )</i>
         </h5>
-        Adds an extras object to an Object while performing some modifications. e.g. running: 
+        Adds an extras object to an Object while performing some modifications. e.g. running:
         <pre style="max-width:1000px;">
         &#123; &#123; 
             addExtras(  
@@ -1646,17 +1576,17 @@ Fileval:  <code>{{fileVal}}</code>
             ) 
         &#125; &#125;
         </pre>
-        <button class="btn md-btn" ng-click="addExtras({ to_do: ['Breakfast with Brad','Meeting with Vlad','Lunch in Chad','Tea with Bad','Supper in bed'] },{ 'moin':currmoin ,'heure':app.date_time() ,autres: 'Pas d\'autres' },'moin:month,heure:date','autres').then(app.stringify).then(app.notify).catch(app.notify)" >RUN EXAMPLE </button>
+        <button class="btn md-btn" ng-click="addExtras({ to_do: ['Breakfast with Brad','Meeting with Vlad','Lunch in Chad','Tea with Bad','Supper in bed'] },{ 'moin':currmoin ,'heure':app.date_time() ,autres: 'Pas d\'autres' },'moin:month,heure:date','autres').then(app.stringify).then(app.notify).catch(app.notify)">RUN EXAMPLE </button>
     </div>
 
-     <!--add_extras-->
+    <!--add_extras-->
     <hr>
-    <div class="section">  
+    <div class="section">
 
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">add_extras</u> <i style="color:green !important;">(Promise ((targetObj ,extrasObj ,[target_rename_keys,extras_rename_keys] ,[target_remove_keys,extras_remove_keys]) )</i>
+            <u style="color:cornflowerblue !important">add_extras</u> <i style="color:green !important;">(Promise ((targetObj ,extrasObj ,[target_rename_keys,extras_rename_keys] ,[target_remove_keys,extras_remove_keys]) )</i>
         </h5>
-        Adds an extras object to an Object while performing some modifications. e.g. running: 
+        Adds an extras object to an Object while performing some modifications. e.g. running:
         <pre style="max-width:1000px;">
         &#123; &#123; 
             add_extras(  
@@ -1675,121 +1605,121 @@ Fileval:  <code>{{fileVal}}</code>
                ,['forget','autres']
             ) 
         &#125; &#125;
-        </pre> 
-        <button class="btn md-btn" ng-click=" add_extras({'to_do': ['Lunch in Chad','Tea with Bad','Supper in bed'],'done': ['Breakfast with Brad','Meeting with Vlad'],'another_time': ['Buy Milk'],'forget': ['Say Happy birthday to nemesis']},{moin:currmoin,heure:app.date_time(),autres:'Pas d\'autres'},['another_time:postponed','moin:month,heure:date'],['forget','autres']).then(app.stringify).then(app.notify).catch(app.notify)" >RUN EXAMPLE </button>
+        </pre>
+        <button class="btn md-btn" ng-click=" add_extras({'to_do': ['Lunch in Chad','Tea with Bad','Supper in bed'],'done': ['Breakfast with Brad','Meeting with Vlad'],'another_time': ['Buy Milk'],'forget': ['Say Happy birthday to nemesis']},{moin:currmoin,heure:app.date_time(),autres:'Pas d\'autres'},['another_time:postponed','moin:month,heure:date'],['forget','autres']).then(app.stringify).then(app.notify).catch(app.notify)">RUN EXAMPLE </button>
     </div>
-    
+
 
     <!--handlers.regSuccess-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">handlers.regSuccess</u> / <u style="color:cornflowerblue !important">handlers.reg_success</u> <i style="color:green !important;">(Function ( message ) )</i>
+            <u style="color:cornflowerblue !important">handlers.regSuccess</u> / <u style="color:cornflowerblue !important">handlers.reg_success</u> <i style="color:green !important;">(Function ( message ) )</i>
         </h5>
-        Displays a registration succeeded message and redirects the application to the <b><i>app.login</i></b>  state. Usage: 
+        Displays a registration succeeded message and redirects the application to the <b><i>app.login</i></b> state. Usage:
         <pre style="max-width:1000px;">&#123; &#123; handlers.regSuccess(  ) &#125; &#125;</pre>
     </div>
 
     <!--r_handlers.regSuccess-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">r_handlers.regSuccess</u> / <u style="color:cornflowerblue !important">r_handlers.reg_success</u> <i style="color:green !important;">(Function ( message ) )</i>
+            <u style="color:cornflowerblue !important">r_handlers.regSuccess</u> / <u style="color:cornflowerblue !important">r_handlers.reg_success</u> <i style="color:green !important;">(Function ( message ) )</i>
         </h5>
-        Displays a registration succeeded message and redirects the application to the <b><i>app.login</i></b>  state. Usage: 
+        Displays a registration succeeded message and redirects the application to the <b><i>app.login</i></b> state. Usage:
         <pre style="max-width:1000px;">&#123; &#123; r_handlers.regSuccess(  ) &#125; &#125;</pre>
     </div>
 
 
     <!--handlers.loginSuccess-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">handlers.loginSuccess</u> / <u style="color:cornflowerblue !important">handlers.login_success</u> <i style="color:green !important;">(Function ( message ) )</i>
+            <u style="color:cornflowerblue !important">handlers.loginSuccess</u> / <u style="color:cornflowerblue !important">handlers.login_success</u> <i style="color:green !important;">(Function ( message ) )</i>
         </h5>
-        Displays a login succeeded message and redirects the application to the <b><i>app.panel</i></b>  state. Usage: 
+        Displays a login succeeded message and redirects the application to the <b><i>app.panel</i></b> state. Usage:
         <pre style="max-width:1000px;">&#123; &#123; handlers.loginSuccess(  ) &#125; &#125;</pre>
     </div>
 
     <!--r_handlers.loginSuccess-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">r_handlers.loginSuccess</u> / <u style="color:cornflowerblue !important">r_handlers.login_success</u> <i style="color:green !important;">(Function ( message ) )</i>
+            <u style="color:cornflowerblue !important">r_handlers.loginSuccess</u> / <u style="color:cornflowerblue !important">r_handlers.login_success</u> <i style="color:green !important;">(Function ( message ) )</i>
         </h5>
-        Displays a login succeeded message and redirects the application to the <b><i>app.panel</i></b>  state. Usage: 
+        Displays a login succeeded message and redirects the application to the <b><i>app.panel</i></b> state. Usage:
         <pre style="max-width:1000px;">&#123; &#123; r_handlers.loginSuccess(  ) &#125; &#125;</pre>
     </div>
 
 
     <!--handlers.regError-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">handlers.regError</u> / <u style="color:cornflowerblue !important">handlers.reg_error</u> <i style="color:green !important;">(Function ( message ) )</i>
+            <u style="color:cornflowerblue !important">handlers.regError</u> / <u style="color:cornflowerblue !important">handlers.reg_error</u> <i style="color:green !important;">(Function ( message ) )</i>
         </h5>
-        Displays a login failed message. Usage: 
+        Displays a login failed message. Usage:
         <pre style="max-width:1000px;">&#123; &#123; handlers.regError(  ) &#125; &#125;</pre>
     </div>
 
     <!--r_handlers.regError-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">r_handlers.regError</u> / <u style="color:cornflowerblue !important">r_handlers.reg_error</u> <i style="color:green !important;">(Function ( message ) )</i>
+            <u style="color:cornflowerblue !important">r_handlers.regError</u> / <u style="color:cornflowerblue !important">r_handlers.reg_error</u> <i style="color:green !important;">(Function ( message ) )</i>
         </h5>
-        Displays a login failed message. Usage: 
+        Displays a login failed message. Usage:
         <pre style="max-width:1000px;">&#123; &#123; r_handlers.regError(  ) &#125; &#125;</pre>
     </div>
 
     <!--handlers.identity-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">handlers.identity</u> <i style="color:green !important;">(Function (  ) )</i>
+            <u style="color:cornflowerblue !important">handlers.identity</u> <i style="color:green !important;">(Function (  ) )</i>
         </h5>
-        Checks with the application server for the user's access credentials and redirects to <b><i>app.login</i></b> state If the user is loged out, inexistent or the lease has expired. Usage: 
+        Checks with the application server for the user's access credentials and redirects to <b><i>app.login</i></b> state If the user is loged out, inexistent or the lease has expired. Usage:
         <pre style="max-width:1000px;">&#123; &#123; handlers.identity(  ) &#125; &#125;</pre>
     </div>
 
     <!--r_handlers.identity-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">r_handlers.identity</u> <i style="color:green !important;">(Function (  ) )</i>
+            <u style="color:cornflowerblue !important">r_handlers.identity</u> <i style="color:green !important;">(Function (  ) )</i>
         </h5>
-        Checks with the application server for the user's access credentials and redirects to <b><i>app.login</i></b> state If the user is loged out, inexistent or the lease has expired. Usage: 
+        Checks with the application server for the user's access credentials and redirects to <b><i>app.login</i></b> state If the user is loged out, inexistent or the lease has expired. Usage:
         <pre style="max-width:1000px;">&#123; &#123; r_handlers.identity(  ) &#125; &#125;</pre>
     </div>
 
 
     <!--handlers.isLogedIn-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">handlers.isLogedIn</u> / <u style="color:cornflowerblue !important">handlers.is_loged_in</u> <i style="color:green !important;">(Function ( message ) )</i>
+            <u style="color:cornflowerblue !important">handlers.isLogedIn</u> / <u style="color:cornflowerblue !important">handlers.is_loged_in</u> <i style="color:green !important;">(Function ( message ) )</i>
         </h5>
-        Performs a login status check to ensure that a User is rightly aloted their privileges on the system: 
+        Performs a login status check to ensure that a User is rightly aloted their privileges on the system:
         <pre style="max-width:1000px;">&#123; &#123; handlers.isLogedIn(  ) &#125; &#125;</pre>
     </div>
 
     <!--r_handlers.isLogedIn-->
     <hr>
-    <div class="section">   
-       
+    <div class="section">
+
         <h5 style="color:gray">
-                <u style="color:cornflowerblue !important">r_handlers.isLogedIn</u> / <u style="color:cornflowerblue !important">r_handlers.is_loged_in</u> <i style="color:green !important;">(Function ( message ) )</i>
+            <u style="color:cornflowerblue !important">r_handlers.isLogedIn</u> / <u style="color:cornflowerblue !important">r_handlers.is_loged_in</u> <i style="color:green !important;">(Function ( message ) )</i>
         </h5>
-        Performs a login status check to ensure that a User is rightly aloted their privileges on the system: 
+        Performs a login status check to ensure that a User is rightly aloted their privileges on the system:
         <pre style="max-width:1000px;">&#123; &#123; r_handlers.isLogedIn(  ) &#125; &#125;</pre>
     </div>
 

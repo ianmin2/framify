@@ -39,8 +39,8 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
             window.location = "/";
         }
         return $q.resolve(true).catch(function (e) {
-            console.log("Encountered an error when processing the redirect function.");
-            console.dir(e);
+            // console.log("Encountered an error when processing the redirect function.")
+            // console.dir(e)
         });
     };
 
@@ -114,11 +114,17 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
         return $q(function (resolve, reject) {
             //* create a formdata object
             var fd = new FormData();
-
+            // fd.files = {}
+            // fd.files.upload = {}
             //* add the defined keys to the formdata object
             for (var key in data) {
+                // // console.dir(data[key])
                 fd.append(key, data[key]);
+                // fd.files.upload[key] = data[key];
+                // fd[key] = data[key]
             };
+
+            // // console.dir(fd)
 
             //* post the data to the /upload route of the running server
             $http.post(hlink + '/upload/' + destination, fd, {
@@ -173,8 +179,8 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     //! EMPTY CALLBACK
     this.doNothing = function () {
         return $q.resolve().catch(function (e) {
-            console.log("Encountered an error when processing the donothing function.");
-            console.dir(e);
+            // console.log("Encountered an error when processing the donothing function.")
+            // console.dir(e)
         });
     };
 
@@ -197,7 +203,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
         });
 
         return $q.resolve(true).catch(function (e) {
-            console.dir(e);
+            // console.dir(e)
         });
     };
 
@@ -347,17 +353,17 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     //*GENERATE A CUSTOM ALERT DIALOG
     this.alert = function (title, message, cb) {
 
-        UIkit.modal.alert('<font color="#1976D2" style="font-weight:bold;text-transform:uppercase;">' + (title || 'Notice') + '</font>\n            <hr>\n            <center>' + (message || '</center><font color=red font-weight=bold; font-size=2em>Oops!</font><br>False alarm!<center>') + '</center>');
+        UIkit.modal.alert('<font color="#1976D2" style="font-weight:bold;text-transform:uppercase;">' + (title || 'Notice') + '</font>\n            <hr>\n            <center>' + (message || '</center><font color=red font-weight=bold; font-size=2em>Oops!</font><br>Something nasty happened!<center>') + '</center>');
 
         if (cb && typeof cb == "function") {
             return $q.resolve(cb(message)).catch(function (e) {
-                console.log("Encountered an error when processing the alert function.");
-                console.dir(e);
+                // console.log("Encountered an error when processing the alert function.")
+                // console.dir(e)
             });
         } else {
             return $q.resolve(true).catch(function (e) {
-                console.log("Encountered an error when processing the alert2 function.");
-                console.dir(e);
+                // console.log("Encountered an error when processing the alert2 function.")
+                // console.dir(e)
             });
         }
     };
@@ -424,6 +430,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
 
     //*VALIDATE TELEPHONE NUMBERS
     this.istelephone = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+    this.ismultitelephone = /^([\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}(?:,|$))+$/im;
     this.isTelephone = function (prospective_telephone) {
         return app.istelephone.test(prospective_telephone);
     };
@@ -598,7 +605,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
 
         return $q(function (resolve, reject) {
 
-            destination = destination ? destination : remoteAuth.url + '/php';
+            destination = destination ? destination : remoteAuth.url + '/db';
             $http.get(destination, {
                 params: data
             }).success(resolve).error(reject);
@@ -630,6 +637,8 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     //@ Generic Error Handler
     this.errorHandler = function (response) {
 
+        response = response.response ? response : response.data;
+
         app.alert('<font color=red>Uh Oh!</font>', app.str(response.data.message));
     };
     this.error_handler = this.errorHandler;
@@ -641,6 +650,11 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
         app.alert("<font color=blue>Data Response</font>", app.str(app.str(response)));
     };
     this.remoteHandler = this.remote_handler;
+
+    //@ SMS FIGURE COUNTER
+    this.countSMS = function (data) {
+        return Math.ceil(data.length / 160) == 0 ? 1 : Math.ceil(data.length / 160);
+    };
 }])
 
 //@ The BASIC sms sending application service
@@ -670,20 +684,20 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
         socket = io.connect(framify_sms_server_url || remoteAuth.url);
 
         socket.on("connect", function () {
-            console.log("Successfully established a connection to the framify SMS gateway");
+            // console.log("Successfully established a connection to the framify SMS gateway");
         });
 
         socket.on("disconnect", function () {
-            console.log("Dropped the framify SMS gateway connection.");
+            // console.log("Dropped the framify SMS gateway connection.")
         });
 
         socket.on("reconnect", function () {
-            console.log("Re-established a connection to the SMS gateway.");
+            // console.log("Re-established a connection to the SMS gateway.")
         });
 
         return $q.resolve(app.make_response(200, "Starting the SMS gateway")).catch(function (e) {
-            console.log("There was a problem when starting the SMS relay service.");
-            console.dir(e);
+            // console.log("There was a problem when starting the SMS relay service.")
+            // console.dir(e)
         });
     };
 
@@ -693,15 +707,15 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
         if (socket) {
 
             socket.disconnect();
-            console.log("Terminated all existing SMS gateway connections.");
+            // console.log("Terminated all existing SMS gateway connections.");
         }
 
         //@ Nullify the existing object
         socket = undefined;
 
         return $q.resolve(app.make_response(200, "Stoping the SMS gateway")).catch(function (e) {
-            console.log("There was a problem when starting the SMS relay service");
-            console.dir(e);
+            // console.log("There was a problem when starting the SMS relay service")
+            // console.dir(e)
         });
     };
 
@@ -713,8 +727,8 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
 
             socket.emit("sendSMS", smsData);
             return $q.resolve(true).catch(function (e) {
-                console.log("Encountered an error when processing the sms function.");
-                console.dir(e);
+                // console.log("Encountered an error when processing the sms function.")
+                // console.dir(e)
             });
 
             //@ Ask the user to initialize the sms service
@@ -722,8 +736,8 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
 
             app.alert("<font  color=red>SMS SERVICE NOT STARTED</font>", "Framify failed to execute an SMS related command.<br>Reason: <code>The SMS service provider has not been defined.</code>");
             return $q.reject(false).catch(function (e) {
-                console.log("Encountered an error when processing the sms function.");
-                console.dir(e);
+                // console.log("Encountered an error when processing the sms function.")
+                // console.dir(e)
             });
         }
     };
@@ -747,8 +761,8 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
 
             socket.emit("sendSMS", obj);
             return $q.resolve(app.make_response(200, "Queued the SMS for sending")).catch(function (e) {
-                console.log("Encountered an error when processing the sendsms function.");
-                console.dir(e);
+                // console.log("Encountered an error when processing the sendsms function.")
+                // console.dir(e)
             });
 
             //@ Ask the user to initialize the sms service
@@ -756,8 +770,8 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
 
             app.alert("<font  color=red>SMS SERVICE NOT STARTED</font>", "Framify failed to execute an SMS related command.<br>Reason: <code>The SMS service provider has not been defined.</code>");
             return $q.reject(false).catch(function (e) {
-                console.log("Encountered an error when processing the sms function.");
-                console.dir(e);
+                // console.log("Encountered an error when processing the sms function.")
+                // console.dir(e)
             });
         }
     };
@@ -823,7 +837,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     this.ajax = function (data) {
         return $.ajax({
             method: "GET",
-            url: "/php",
+            url: "/db",
             data: data
         });
     };
@@ -923,7 +937,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
         return $q(function (resolve, reject) {
 
             r_auth.url = accessUrl;
-            console.log('The remote access url has been set to ' + accessUrl);
+            // console.log(`The remote access url has been set to ${accessUrl}` );
             resolve(accessUrl);
         });
     };
@@ -994,7 +1008,135 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
         });
     };
     r_auth.logout = r_auth.Logout;
-}]).run(["app", "cgi", "$rootScope", "$state", "$localStorage", "sms", "auth", "remoteAuth", "$http", function (app, cgi, $rootScope, $state, $localStorage, sms, auth, remoteAuth, $http) {
+}])
+
+//@ The infobip SMS integration module
+.service("iSMS", ['$http', '$q', 'app', function ($http, $q, app) {
+
+    var me = this;
+
+    me.provider = '/sms';
+
+    me.setProvider = function (providerURL) {
+
+        me.provider = providerURL.toString().includes('/sms') ? providerURL : providerURL + '/sms';
+        // console.log(`All SMS requests via the i service will now be routed to ${me.provider}`);
+    };
+
+    me.one = function (data) {
+
+        return $q(function (resolve, reject) {
+
+            $http.post(me.provider + '/one', data).success(function (response) {
+
+                if (response.response == 200) {
+
+                    resolve(response);
+                } else {
+
+                    reject(response);
+                }
+            }).error(function (response) {
+                reject(app.make_response(500, JSON.stringify((response ? response.data ? response.data.message : response : response) || "Could not obtain a response from the server.")));
+            });
+        });
+    };
+
+    me.many = function (data) {
+
+        return $q(function (resolve, reject) {
+
+            $http.post(me.provider + '/many', data).success(function (response) {
+
+                if (response.response == 200) {
+
+                    resolve(response);
+                } else {
+
+                    reject(response);
+                }
+            }).error(function (response) {
+                reject(app.make_response(500, JSON.stringify((response ? response.data ? response.data.message : response : response) || "Could not obtain a response from the server.")));
+            });
+        });
+    };
+
+    me.template = function (data) {
+
+        return $q(function (resolve, reject) {
+
+            $http.post(me.provider + '/template', data).success(function (response) {
+
+                if (response.response == 200) {
+
+                    resolve(response);
+                } else {
+
+                    reject(response);
+                }
+            }).error(function (response) {
+                reject(app.make_response(500, JSON.stringify((response ? response.data ? response.data.message : response : response) || "Could not obtain a response from the server.")));
+            });
+        });
+    };
+
+    me.test = function (data) {
+
+        return $q(function (resolve, reject) {
+
+            $http.post('' + me.provider, data).success(function (response) {
+
+                if (response.response == 200) {
+
+                    resolve(response);
+                } else {
+
+                    reject(response);
+                }
+            }).error(function (response) {
+                reject(app.make_response(500, JSON.stringify((response ? response.data ? response.data.message : response : response) || "Could not obtain a response from the server.")));
+            });
+        });
+    };
+
+    me.echo = function (data) {
+
+        return $q(function (resolve, reject) {
+
+            $http.post(me.provider + '/echo', data).success(function (response) {
+
+                if (response.response == 200) {
+
+                    app.alert("<font color=green>SMS ECHO</font>", app.str(response.data.message));
+                    resolve(response);
+                } else {
+
+                    reject(response);
+                }
+            }).error(function (response) {
+                reject(app.make_response(500, JSON.stringify((response ? response.data ? response.data.message : response : response) || "Could not obtain a response from the server.")));
+            });
+        });
+    };
+
+    me.handler = function (responseData) {
+
+        return $q(function (resolve, reject) {
+
+            var resp = responseData.response ? app.clone(responseData) : app.clone(responseData.data);
+
+            if (responseData.response == 200) {
+                app.alert("<font color=green>SMS RESPONSE</font>", "The SMS messages have been queued for sending ");
+                resolve(resp);
+            } else {
+                app.alert('<font color=red>Uh Oh!</font> ( ' + responseData.response + ' Error )', app.str(responseData.data.message));
+                reject(resp);
+            }
+        });
+    };
+
+    return me;
+}]).run(["app", "cgi", "$rootScope", "$state", "$localStorage", "sms", "auth", "remoteAuth", "$http", "iSMS", function (app, cgi, $rootScope, $state, $localStorage, sms, auth, remoteAuth, $http, iSMS) {
 
     //! INJECT THE LOCATION SOURCE TO THE ROOT SCOPE
     $rootScope.location = $state;
@@ -1014,6 +1156,9 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     //#! INJECT THE SMS INSTANCE INTO THE MAIN SCOPE
     $rootScope.sms = sms;
 
+    //@ INJECT THE infobip SMS sender into the root scope
+    $rootScope.iSMS = iSMS;
+
     //@ INJECT THE AUTHENTICATION SERVICE
     $rootScope.auth = auth;
     $rootScope.remoteAuth = remoteAuth;
@@ -1024,32 +1169,11 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     };
     //p.split("/#/")[0]+"/#/"+p.split("/#/")[1].split("#")[0]
 
-    //@ INITIALIZE THE STORAGE ADMIN VARIABLE
-    $rootScope.storage.admin = {};
 
     //! RELOCATION HANDLING
     $rootScope.frame.relocate = function (loc) {
-        console.log('Relocating to: #' + loc);
+        // console.log(`Relocating to: #${loc}`)
         $rootScope.location.go(loc);
-    };
-
-    //! ADMIN HANDLING  
-    $rootScope.frame.is_admin = false;
-
-    //! ADMIN STATUS CHECKER 
-    $rootScope.frame.isAdmin = function () {
-        return $rootScope.frame.is_admin ? true : false;
-    };
-
-    //! ROOT USER STATUS CHECKER
-    $rootScope.frame.isRoot = function () {
-        return $rootScope.storage.admin.access == 0 ? true : false;
-    };
-
-    //! ADMIN STATUS SWITCH
-    $rootScope.frame.changeAdmin = function (bool) {
-        $rootScope.frame.is_admin = bool;
-        //  $rootScope.$apply();
     };
 
     //! RESET THE ADMIN STATUS
@@ -1060,6 +1184,75 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
         $rootScope.storage.user = {};
         $rootScope.frame.changeAdmin(false);
         window.location = "/#/";
+    };
+
+    $rootScope.permissions = {
+
+        //@ ALLOW ONLY ADMIN USERS
+        admin_only: function admin_only(user) {
+            return user.role == 'admin' ? true : false;
+        }
+        //@! FROM MATCHING ORGANIZATIONS
+
+        , admin_only_org: function admin_only_org(user, item_org) {
+            return user.role == 'admin' && user.organization == item_org ? true : false;
+        }
+
+        //@ ALLOW ONLY CLIENT USERS
+
+        , client_only: function client_only(user) {
+            return user.role == 'client' ? true : false;
+        }
+        //@! FROM MATCHING ORGANIZATIONS
+
+        , client_only_org: function client_only_org(user, item_org) {
+            return user.role == 'client' && user.organization == item_org ? true : false;
+        }
+
+        //@ ALLOW ONLY AUDIT USERS
+
+        , audit_only: function audit_only(user) {
+            return user.role == 'audit' ? true : false;
+        }
+        //@! FROM MATCHING ORGANIZATIONS
+
+        , audit_only_org: function audit_only_org(user, item_org) {
+            return user.role == 'audit' && user.organization == item_org ? true : false;
+        }
+
+        //@ ALLOW BOTH ADMIN AND CLIENT USERS
+
+        , admin_client: function admin_client(user) {
+            return user.role == 'admin' || user.role == 'client' ? true : false;
+        }
+        //@! FROM MATCHING ORGANIZATIONS
+
+        , admin_client_org: function admin_client_org(user, item_org) {
+            return (user.role == 'admin' || user.role == 'client') && user.organization == item_org ? true : false;
+        }
+        //@! FROM MATCHING ORGANIZATIONS WITH ADMIN EXEMPT
+
+        , any_admin_client_org: function any_admin_client_org(user, item_org) {
+
+            return user.role == 'audit' ? false : user.role == 'admin' ? true : user.organization == item_org ? true : false;
+        }
+
+        //@ ALLOW ALL USERS    
+
+        , any: function any(user) {
+            return true;
+        }
+        //@! FROM MATCHING ORGANIZATIONS
+
+        , any_org: function any_org(user, item_org) {
+            return user.organization == item_org ? true : false;
+        }
+        //@! EXCLUDE ADMINS FROM SCRUTINY
+
+        , any_admin_other_org: function any_admin_other_org(user, item_org) {
+            return user.role == 'admin' ? true : user.organization == item_org ? true : false;
+        }
+
     };
 
     //@ SET THE DEFAULT HTTP AUTHORIZATION HEADERS WHERE NEED BE
@@ -1094,7 +1287,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
 
     //!RE-INITIALIZE APPLICATION DATA
     $rootScope.app.reinit = function () {
-        $scope.location.path("/framify");
+        $scope.location.path("/");
     };
 
     //@ FUNCTION EXECUTOR
@@ -1308,7 +1501,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
             data.command = "get";
             data.table = table;
 
-            console.log("\nprocessing the fetching of table " + table + "\n");
+            // console.log("\nprocessing the fetching of table " + table + "\n")
 
             //* Encrypt the specified cryptFields
             if (cryptFields) {
@@ -1377,8 +1570,8 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
             if ((typeof _ret2 === 'undefined' ? 'undefined' : _typeof(_ret2)) === "object") return _ret2.v;
         } else {
             return $q.resolve(do_fetch(table, data, cryptFields)).catch(function (e) {
-                console.log("Encountered an error when processing the fetch function.");
-                console.dir(e);
+                // console.log("Encountered an error when processing the fetch function.")
+                // console.dir(e)
             });
         }
     };
@@ -1433,164 +1626,6 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
         });
     };
 
-    //Basic User Login
-    $scope.login = function (cryptField) {
-
-        return $q(function (resolve, reject) {
-
-            if (cryptField) {
-                $scope.data.login[cryptField] = $scope.app.md5($scope.data.login[cryptField]);
-            }
-
-            $scope.data.login.command = "get";
-            $scope.data.login.table = "users";
-            $scope.data.login.extras = " AND active is true LIMIT 1";
-
-            //* perform the actual login validation
-            $scope.app.db($scope.removeUnwanted($scope.data.login)).then(function (r) {
-
-                $scope.data.admin.extras = "";
-
-                r = $scope.app.json(r);
-
-                if (r.response == 200) {
-
-                    if (r.data.message.length > 0 && _typeof(r.data.message[0]) == "object") {
-
-                        if (r.data.message[0]['username'] == $scope.data.login.username) {
-                            $scope.storage.user = r.data.message[0];
-                            $scope.logedin = true;
-                        } else {
-                            delete $scope.storage.user;
-                            window.location = "/#/";
-                        }
-
-                        resolve();
-                    } else {
-                        delete $scope.storage.user;
-                        $scope.app.notify('<center>You have entered the wrong login credentials.</center>', "danger");
-                    }
-                } else {
-
-                    // POSTGRESQL ERROR FORMAT MATCHING
-                    if (Array.isArray(r.data.message)) {
-
-                        var v = r.data.message[2].match(/DETAIL:(.*)/);
-
-                        if (v != undefined || v != null) {
-                            r.data.message = v[1];
-                        } else {
-                            r.data.message = r.data.message[2];
-                        }
-                    }
-
-                    delete $scope.storage.user;
-                    $scope.app.notify('<center>' + r.data.message + '</center>', "danger");
-                    reject($scope.app.makeResponse(500, r.data.message));
-                }
-                //$scope.$apply();
-            });
-        });
-    };
-
-    //Basic admin login
-    $scope.adminLogin = function (cryptField) {
-
-        return $q(function (resolve, reject) {
-
-            if (cryptField) {
-                $scope.data.admin[cryptField] = $scope.app.md5($scope.data.admin[cryptField]);
-            }
-
-            $scope.data.admin.command = "get";
-            $scope.data.admin.table = "admins";
-            $scope.data.admin.extras = " AND active is true LIMIT 1";
-
-            //* perform the actual login
-            $scope.app.db($scope.removeUnwanted($scope.data.admin)).then(function (r) {
-
-                $scope.data.admin.extras = "";
-
-                r = $scope.app.json(r);
-
-                if (r.response == 200) {
-
-                    if (r.data.message.length > 0 && _typeof(r.data.message[0]) != undefined) {
-
-                        if (r.data.message[0]['password'] === $scope.data.admin.password) {
-                            $scope.storage.admin = r.data.message[0];
-                            $scope.storage.admin._ = {};
-                            $scope.storage.admin._.user = r.data.message[0].admin_name;
-                            $scope.storage.admin._.key = r.data.message[0].password;
-                            $rootScope.frame.changeAdmin(true);
-                            //$scope.$apply();
-                            resolve(r);
-                        } else {
-                            delete $scope.data.admin;
-                            delete $scope.storage.admin;
-                            $scope.storage.admin = {};
-                            window.location = "/#/admin";
-                            resolve(r);
-                        }
-                    } else {
-                        delete $scope.data.admin;
-                        delete $scope.storage.admin;
-                        $scope.storage.admin = {};
-                        $scope.app.notify('<center>You have entered the wrong login credentials.</center>', "danger");
-                        window.location = "/#/admin";
-                        reject(false);
-                    }
-                } else {
-
-                    // POSTGRESQL ERROR FORMAT MATCHING
-                    if (Array.isArray(r.data.message)) {
-
-                        var v = r.data.message[2].match(/DETAIL:(.*)/);
-                        if (v != undefined || v != null) {
-                            r.data.message = v[1];
-                        } else {
-                            r.data.message = r.data.message[2];
-                        }
-                    }
-                    delete $scope.storage.admin;
-                    $scope.storage.admin = {};
-                    $scope.app.notify('<center>' + r.data.message + '</center>', "danger");
-                    reject($scope.app.makeResponse(500, r.data.message));
-                }
-                //$scope.$apply();
-            });
-        });
-    };
-
-    //@ Handle basic user re-authentication
-    $scope.islogedin = function () {
-
-        return $q(function (resolve, reject) {
-
-            if ($scope.storage.user) {
-                $scope.data.login.username = $scope.storage.user.username;
-                $scope.data.login.password = $scope.storage.user.password;
-                $scope.login();
-                resolve(true);
-            } else {
-                $scope.app.notify('<center>You have no permission to access this content</center>', 'danger');
-                reject(false);
-            }
-        });
-    };
-
-    //@ Handle basic app-user logout
-    $scope.logout = function () {
-
-        $scope.islogedin = false;
-        delete $scope.storage.user;
-        window.location = '/#/';
-        return $q.resolve(true).catch(function (e) {
-            console.log("Encountered an error when processing the logout function.");
-            console.dir(e);
-        });
-    };
-
     //@ Handle basic application redirection
     $scope.redirect = function (loc) {
         if (loc) {
@@ -1599,37 +1634,8 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
             window.location = "/#/framify";
         }
         return $q.resolve(true).catch(function (e) {
-            console.log("Encountered an error when processing the redirect function.");
-            console.dir(e);
-        });
-    };
-
-    // Basic Admin Auth
-    $scope.authorize = function () {
-
-        if ($scope.storage.admin && $scope.data.admin.admin_name && $scope.data.admin.password) {
-            $scope.data.admin = {};
-            $scope.data.admin.admin_name = $scope.storage.admin.admin_name;
-            $scope.data.admin.password = $scope.storage.admin.password;
-            $scope.adminLogin();
-        } else {
-            $scope.location = "/#/admin";
-        }
-
-        return $q.resolve(true).catch(function (e) {
-            console.log("Encountered an error when processing the authorize function.");
-            console.dir(e);
-        });
-    };
-
-    //@ HANDLE ADMINISTRATOR DEAUTHORIZATION
-    $scope.deauthorize = function () {
-        delete $scope.storage.admin;
-        $rootScope.frame.changeAdmin(false);
-        window.location = '/#/';
-        return $q.resolve(true).catch(function (e) {
-            console.log("Encountered an error when processing the deauthorize function.");
-            console.dir(e);
+            // console.log("Encountered an error when processing the redirect function.")
+            // console.dir(e)
         });
     };
 
@@ -1770,8 +1776,8 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
                 delete data[key];
             });
             return $q.resolve(data).catch(function (e) {
-                console.log("Encountered an error when processing the sanitize function.");
-                console.dir(e);
+                // console.log("Encountered an error when processing the sanitize function.")
+                // console.dir(e)
             });
         }
     };
@@ -1877,6 +1883,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
             resolve(targetObj);
         });
     };
+
     $scope.add_extras = function (targetObj, extrasObj, subStrings, removeKeys) {
 
         return $q(function (resolve, reject) {
@@ -1946,7 +1953,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
 
                     if (target_keys.indexOf(e) != -1) {
 
-                        // console.log( `Renaming the target ${e} to ${target_v[i]}` )
+                        // // console.log( `Renaming the target ${e} to ${target_v[i]}` )
 
                         targetObj[target_v[i]] = targetObj[e];
                         targetObj[e] = null;
@@ -1959,7 +1966,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
 
                     if (extras_keys.indexOf(e) != -1) {
 
-                        // console.log( `Renaming the extras ${e} to ${extras_v[i]}` )
+                        // // console.log( `Renaming the extras ${e} to ${extras_v[i]}` )
 
                         extrasObj[extras_v[i]] = extrasObj[e];
                         extrasObj[e] = null;
@@ -2119,15 +2126,15 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
 
         return $q(function (reject, resolve) {
 
-            console.log("Querying the remote server for identity");
+            // console.log("Querying the remote server for identity")
 
             $http.get($scope.remoteAuth.url + '/auth/me').success(function (response) {
 
-                console.log("Remote Knows who you are.");
+                // console.log("Remote Knows who you are.")
                 resolve($scope.data.me = response.data.message);
             }).error(function (error) {
 
-                console.log("Something just didn't go well.");
+                // console.log("Something just didn't go well.")
                 $scope.auth.Logout().then(function () {
 
                     $scope.app.notify("<i class='fa  fa-exclamation-triangle'></i>&nbsp;&nbsp;Your lease has expired <br>Please Login to continue.", 'danger');
@@ -2144,22 +2151,22 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
 
             if (!$scope.storage.framify_user) {
 
-                console.log("\nNo localstorage value is defined\n");
+                // console.log("\nNo localstorage value is defined\n")
 
                 if ($state.current.name != "app.login") {
 
-                    console.log("\nRedirecting to the authentication page.\n");
+                    // console.log("\nRedirecting to the authentication page.\n")
 
                     $scope.app.notify("<i class='fa  fa-exclamation-triangle'></i>&nbsp;&nbsp;Please Login to continue.", 'danger');
                     reject($state.go("app.login"));
                 }
             } else if (!$http.defaults.headers.common.Authorization || $http.defaults.headers.common.Authorization == undefined || $http.defaults.headers.common.Authorization == '') {
 
-                console.log("\nThe authentication header is not yet defined\n");
+                // console.log("\nThe authentication header is not yet defined\n")
 
                 $scope.auth.SetAuth(undefined).then(function () {
 
-                    console.log('\nThe authentication header has been set to ' + $http.defaults.headers.common.Authorization + '\n');
+                    // console.log(`\nThe authentication header has been set to ${$http.defaults.headers.common.Authorization}\n`)
 
                     if ($state.current.name == "app.login") {
                         resolve($state.go("app.panel"));
@@ -2169,7 +2176,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
                 });
             } else {
 
-                console.log("\nAll Looks good! Let me see if I can get you into the party\n");
+                // console.log("\nAll Looks good! Let me see if I can get you into the party\n")
 
                 if ($state.current.name == "app.login") {
                     resolve($state.go("app.panel"));
@@ -2185,7 +2192,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
 
         return $q(function (resolve, reject) {
 
-            console.log("Handing you over to the remote authentication server.");
+            // console.log("Handing you over to the remote authentication server.")
 
             if (!$scope.storage.framify_user) {
 
@@ -2237,18 +2244,35 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
 }).directive('fileModel', ['$parse', function ($parse) {
 
     return {
-        restrict: "A",
-        link: function link(scope, element, attr) {
-            var model = $parse(attr.fileModel);
+        restrict: 'A',
+        link: function link(scope, element, attrs) {
+            var model = $parse(attrs.fileModel);
             var modelSetter = model.assign;
+
             element.bind('change', function () {
                 scope.$apply(function () {
-                    modelSetter(scope, element[0].files[0]);
+                    if (attrs.multiple) {
+                        modelSetter(scope, element[0].files);
+                    } else {
+                        modelSetter(scope, element[0].files[0]);
+                    }
                 });
             });
         }
     };
 }])
+
+// .directive('showTab',[ function () {
+//     return {
+//         link: function (scope, element, attrs) {
+//             // console.dir(element);
+//             element.on('click',function (e) {
+//                 e.preventDefault();
+//                 jQuery(element).tab('show');
+//             });
+//         }
+//     };
+// }])
 
 //!CONFIGURE THE BNASIC PRE-RUNTIME STATES OF THE APPLICATION
 .config(["ChartJsProvider", function (ChartJsProvider) {

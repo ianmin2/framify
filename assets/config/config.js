@@ -1,7 +1,8 @@
 let files = {
-	jwt_secret 		: `${__dirname}/jwt-secret.conf`
-	,mongo_config 	: `${__dirname}/mongo.conf`
-	,pg_config		: `${__dirname}/postgres.conf`
+	jwt_secret 		: path.join(__dirname,`jwt-secret.conf`)
+	,mongo_config 	        : path.join(__dirname,`mongo.conf`)
+	,pg_config		: path.join(__dirname,`postgres.conf`)
+	,sms_config		: path.join(__dirname,'sms.conf')
 }
 
 
@@ -41,7 +42,7 @@ if(fs.existsSync(files.mongo_config)){
 	// j_log(exports.database)
 }else{
 	exports.database = {};
-	console.log(`\nA mongodb configuration file is required so as to achieve a connection to mongodb`.err
+	throw new Error(`\nA mongodb configuration file is required so as to achieve a connection to mongodb`.err
 	+`\nTo do this, create a `.yell + `mongo.conf` + ` file in the `.yell+`config`+` folder of your project with the content:`.yell
 	+`\n
 module.exports = 
@@ -68,7 +69,7 @@ if(fs.existsSync(files.pg_config)){
 	// j_log(exports.postgres)
 }else{
 	exports.postgres = {};
-	console.log(`\nA postgresql configuration file is required so as to achieve a connection to the postgres database`.err
+	throw new Error(`\nA postgresql configuration file is required so as to achieve a connection to the postgres database`.err
 	+`\nTo do this, create a `.yell + `postgres.conf` + ` file in the `.yell+`config`+` folder of your project with the content:`.yell
 	+`\n
 module.exports = 
@@ -92,9 +93,29 @@ if( fs.existsSync(files.jwt_secret) ){
 
 }else{
 
-	log(`A `.err + `jwt-secret.conf` + ` file containing a JWT signing key is required for your access tokens`.err +
+	throw new Error(`A `.err + `jwt-secret.conf` + ` file containing a JWT signing key is required for your access tokens`.err +
 	`\n\nPlease create a `.yell+`json-secret.conf`+` file in the config folder of your project.`.yell
 	+`\n\nPlease add a strong and very lengthy random key into the `.info+`json-secret.conf`+` file to protect your login sessions`.info);
 	process.exit(1);
 
+}
+
+
+//@ SMS CREDENTIALS
+if(fs.existsSync(files.sms_config)){
+	exports.sms = require(files.sms_config,'utf8');
+	c_log(`\n✔`.succ + `  Loaded the user defined SMS configuration file`.info)
+	// j_log(exports.sms)
+}else{
+	exports.sms = {};
+	throw new Error(`\nAn SMS configuration file is required so as to send SMS messages`.err
+	+`\nTo do this, create a `.yell + `sms.conf` + ` file in the `.yell+`config`+` folder of your project with the content:`.yell
+	+`\n
+module.exports = 
+{
+	"username"	    : "SMS_USERNAME"
+	,"password"	    : "SMS_PASSWORD"
+	,"sender"	    : "SMS_SENDER_ID"
+}
+	`);
 }

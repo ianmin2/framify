@@ -118,3 +118,11 @@ v.2.14.0
 
 v.2.15.0
 	=> Fixed the "pgdb" not found exclusion error
+
+v.2.16.0
+	=> Merged the SMS frame project into the main application (logically and in the database schema as well) **need_to_rename_tables
+	=> Fixed major database security flaws
+	=> Allowed easy and atomic (regEx based) database security access definitions
+	=> Integrated the encrypt,decrypt module
+	=> Added the framify.js customizer via the "src" folder
+		... build your project specific version by running "gulp"

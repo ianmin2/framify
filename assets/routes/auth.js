@@ -219,7 +219,7 @@ if(  authMeth =="mongo" ){
             })
             .catch(error => {
                 log(`Failed to register the user.\n\t\t\t\t${str(error.message)}`.err)
-                console.dir(error.message)
+                // console.dir(error.message)
                 res.status(500).json( make_response( 500, `Failed to record the user. <br><br>Please try changing:<br>1. Email<br>2. Username<br>3. Telephone`, error.message) )
             })
             
@@ -290,7 +290,7 @@ if(  authMeth =="mongo" ){
     auth.route('/me')
     .all( passport.authenticate('jwt', { session: false }) ,function(req,res){
 
-        console.log(`Attempting a profile data fetch`.info)
+        // console.log(`Attempting a profile data fetch`.info)
         
         pgdb.any(`SELECT * FROM vw_members WHERE email=$1 AND active=true`,[req.whoami.email])
         .then(memberRecord => {
