@@ -126,3 +126,6 @@ v.2.16.0
 	=> Integrated the encrypt,decrypt module
 	=> Added the framify.js customizer via the "src" folder
 		... build your project specific version by running "gulp"
+		
+v.2.16.1 
+	=> Fixed the missing command parameters for the route "/auth/verify"

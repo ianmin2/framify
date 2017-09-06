@@ -102,7 +102,12 @@ if(  authMeth =="mongo" ){
 
                             var token = jwt.sign( user._doc, config.secret, { expiresIn: 3600, issuer: myAddr } )
 
-                            res.json( make_response( 200, { token: `JWT ${token}` }, { role: user._doc.role } ) )
+                            res.json( make_response( 200, { token: `JWT ${token}` }, { 
+                                    role        : user._doc.role 
+                                    ,member_id  : user._doc.member_id
+                                    ,member_name: user._doc.name
+                                })
+                            )
                         
                         }else{
                             res.send( make_response( 401, "Password does not match." ) )
