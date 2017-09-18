@@ -25,6 +25,7 @@ sysinfo.txt
 
 #! Ignore all backup files
 **.bak
+**backup/
 
 #! Ignore all test files and folders
 **tests/**

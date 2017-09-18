@@ -78,8 +78,7 @@ global.adminOnly = function(req,res,next){
 
 };
 
-//@ Framify Security Middleware Defiinition
-//@ Framify Security Middleware Defiinition
+//@ Framify Security Middleware Definition
 var framifySecurity = function ( req ,res ,next) {
 
         let payload = req.headers.authorization
