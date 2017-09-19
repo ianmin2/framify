@@ -103,8 +103,13 @@ class SMS {
                             if (error){
                                  reject( make_response(500 ,error.message) );
                             }
-                        
-                                update_balance( whoami , body ,summary )
+                            else if( body.requestError ){
+
+                                reject( make_response(400, JSON.stringify( body.requestError ) ) );
+
+                            }else{
+
+                                 update_balance( whoami , body ,summary )
                                 .then( balance_stored => {
 
                                     //@ LET THE USER KNOW
@@ -116,6 +121,8 @@ class SMS {
                                     reject( ( b_err.response )? b_err : make_response( 500, b_err.message||b_err ) );
                                 })
 
+                            }
+                            
                         }); 
 
                     })

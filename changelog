@@ -135,3 +135,6 @@ v.2.17.1
 
 v.2.17.2
 	=> Fixed missing dependency for gulp packaging the src files
+	
+v.2.17.3
+	=> Fixed the erroneous SMS balance deduction upon the provision of falsy SMS credentials 
