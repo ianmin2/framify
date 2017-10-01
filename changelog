@@ -141,3 +141,6 @@ v.2.17.3
 	
 v.2.17.4
 	=> Fixed the  missing organization record for the members trigger function
+	
+v.2.17.5
+	=> Re-did the login and signup forms to merge more fluently the UI-KIT design language

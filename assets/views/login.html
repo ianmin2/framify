@@ -2,32 +2,32 @@
 <div class="md-card" style="font-family: Andale Mono,Andalemono">
     <form name="login_form" class="" style="" novalidate>
         <div class="md-card-content">
-            <h3 class="heading_a">LOGIN</h3>
+            <h2 class="heading_a uk-badge uk-badge-primary" style="border-radius:40%; text-shadow:1px 1px rgba(48,155,198,0.5);color:white;">LOGIN</h2>
             <div class="uk-grid" data-uk-grid-margin>
 
                 
 
-                <div style="margin-top:1em !important;"  class="uk-width-large-4-4 uk-width-medium-2-2">
-                    <label>Email <sup style="color:red">*</sup></label>
-                    <input 
-                        type="text" 
-                        class="md-input"
-                        name="email" 
-                        ng-model="data.login.email" 
-                        ng-pattern="app.isemail"
-                    required>
-                    <div 
-                        class="help-block" 
-                        style="font-family: Andale Mono;color:lightgray;" 
-                        ng-messages="login_form.email.$error" ng-if="login_form.email.$touched">
-                            <p ng-message="required">An email address is required.</p>
-                            <p ng-message="pattern">Please enter a valid email address.</p>
-                    </div>
-                </div>
-
-                <br>
-
-                 <div style="margin-top:1em !important;"  class="uk-width-large-4-4 uk-width-medium-2-2">
+           
+                <md-input-container class="uk-width-medium-2-5 uk-animation-slide-top">
+                        <label>Email <sup style="color:red">*</sup></label>
+                        <input 
+                            type="text" 
+                            class="md-input"
+                            name="email" 
+                            ng-model="data.login.email" 
+                            ng-pattern="app.isemail"
+                        required>
+                        <div 
+                            class="help-block" 
+                            style="font-family: Andale Mono;color:lightgray;" 
+                            ng-messages="login_form.email.$error" ng-if="login_form.email.$touched">
+                                <p ng-message="required">An email address is required.</p>
+                                <p ng-message="pattern">Please enter a valid email address.</p>
+                        </div>
+                </md-input-container>
+                
+                
+                <md-input-container  class="uk-width-medium-2-5 uk-animation-slide-bottom">
                     <label>Password <sup style="color:red">*</sup></label>
                     <input 
                     name="password"
@@ -43,20 +43,25 @@
                             <p ng-message="required">A password is required.</p>
                             <p ng-message="pattern">Please enter a more secure password.</p>
                     </div>
-                </div>
+                </md-input-container>
+              
 
-                <br>
-                <div style="margin-top:1em !important;" class="uk-width-large-4-4 uk-width-medium-2-2">
+                <div  class="uk-width-medium-1-5">
                     <button  
+                    style="margin-top:2.2em !important;min-width:12vw !important;"
                     ng-disabled="login_form.$invalid" 
                     ng-click="auth.Login(data.login).then(handlers.loginSuccess).catch(handlers.loginError)"
                     ng-class="{'md-btn-primary' : !login_form.$invalid }"
-                    class="md-btn "> LOGIN</button>
-                    <br><br>
-                    New here? <a class="" ng-click="goTo('app.signup')">Create an Account</a>
-                    <br>
-                    Forgot Your Password? <a class="" href="/passwords">Recover your password</a>
+                    class="md-btn uk-animation-slide-left"> LOGIN</button>
+                   
                 </div>
+                
+                 <p></p>
+            <div class="uk-row uk-align-left uk-animation-fade">
+                New here? <a class="" ng-click="goTo('app.signup')">Create an Account</a>
+                <p></p>
+                Forgot Your Password? <a class="" href="/passwords">Recover your password</a>
+            </div>
 
             </div>
 

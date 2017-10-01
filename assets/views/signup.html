@@ -5,173 +5,96 @@ ng-init="fetch([['organizations']])"
 >
     <form name="add_user_form" class="" style="" novalidate>
         <div class="md-card-content">
-            <h3 class="heading_a"><u style="color:cornflowerblue;">Signup</u></h3>
+            <h2 class="heading_a uk-badge uk-badge-primary" style="border-radius:40%; text-shadow:1px 1px rgba(48,155,198,0.5);color:white;">SIGNUP</h2>
             <div class="uk-grid" data-uk-grid-margin>
 
                 <div class="uk-width-medium-1-2">
                     <div class="uk-form-row">
                         <div class="uk-grid">
-                            <div class="uk-width-medium-1-2">
-                                <label>First Name <sup style="color:red">*</sup></label>
-                                <input 
-                                type="text" 
-                                name="first_name"
-                                class="md-input"
-                                ng-model="signup['name.first']"
-                                required>
-                                    <div 
-                                    class="help-block" 
-                                    style="font-family: Andale Mono;color:lightgray;" 
-                                    ng-messages="add_user_form.first_name.$error" ng-if="add_user_form.first_name.$touched">
-                                    <p ng-message="required">A first name is required.</p>
+                            <md-input-container class="uk-width-medium-1-2 uk-animation-slide-right">
+                                <label>Name<sup style="color:red">*</sup></label>
+                                <input type="text" name="first_name" class="md-input" ng-model="signup['name.first']" required>
+                                <div class="help-block" style="font-family: Andale Mono;color:lightgray;" ng-messages="add_user_form.first_name.$error" ng-if="add_user_form.first_name.$touched">
+                                    <p ng-message="required">A name is required.</p>
                                 </div>
-                            </div>
-                            <div class="uk-width-medium-1-2">
-                                <label>Last Name <sup style="color:red">*</sup></label>
-                                <input 
-                                type="text" 
-                                name="last_name"
-                                class="md-input label-fixed"
-                                ng-model="signup['name.last']" 
-                                required>
-                            </div>
-                                <div 
-                                class="help-block" 
-                                style="font-family: Andale Mono;color:lightgray;" 
-                                ng-messages="add_user_form.last_name.$error" ng-if="add_user_form.last_name.$touched">
-                                <p ng-message="required">A last name is required.</p>
-                            </div>
+                            </md-input-container>
+                            <md-input-container class="uk-width-medium-1-2 uk-animation-slide-left">
+                                <label>Username<sup style="color:red">*</sup></label>
+                                <input type="text" name="accountName" class="md-input" ng-model="signup['account.name']" ng-minlength="5" required>
+                                <div class="help-block" style="font-family: Andale Mono;color:lightgray;" ng-messages="add_user_form.accountName.$error" ng-if="add_user_form.accountName.$touched">
+                                    <p ng-message="required">An account name is required.</p>
+                                    <p ng-message="minlength">That account name is too short</p>
+                                </div>
+                            </md-input-container>
+                                    
+                   
                         </div>
-                    </div>
-                    <div class="uk-form-row">
-                        <label>Password <sup style="color:red">*</sup></label>
-                        <input 
-                        name="password"
-                        type="password" 
-                        class="md-input"
-                        ng-model="signup.password" 
-                        ng-pattern="app.ispassword" 
-                        required>
-                        <div 
-                            class="help-block" 
-                            style="font-family: Andale Mono;color:lightgray;" 
-                            ng-messages="add_user_form.password.$error" ng-if="add_user_form.password.$touched">
-                                <p ng-message="required">A password is required.</p>
-                                <p ng-message="pattern">Please enter a more secure password.</p>
-                        </div>
-                    </div>
-                    <div class="uk-form-row">
-                        <label>Repeat Passsword <sup style="color:red">*</sup></label>
-                        <input 
-                        type="password" 
-                        name="password2"
-                        class="md-input" 
-                        ng-model="signup.password2"
-                        required/>
-                        <div 
-                            class="help-block" 
-                            style="font-family: Andale Mono;color:lightgray;" 
-                            ng-messages="add_user_form.password2.$error" ng-if="add_user_form.password.$touched">
-                                <p ng-message="required">Please enter a password confirmation.</p>
-                                <p ng-message="pattern">Please enter a more secure password.</p>
-                                <p ng-if="!app.matches(signup.password,signup.password2)&&signup.password" >The passwords don't match.</p>
-                        </div>
+
                     </div>
 
-                    <div class="uk-form-row">
-                        <label>Member Organization <sup style="color:red">*</sup></label>
-                        <select  
-                        name="organization"
-                        class="md-input items has-options" 
-                        ng-model="signup.organization"
-                        required>
-                            <option value="">Please pick an organization</option>
-                            <option ng-repeat="org in fetched.organizations" ng-if="org.org_active" value="{{org.org_id}}">{{org.org_name}}</option>
-                        </select>
-                        <div class="help-block" style="font-family: Andale Mono;color:lightgray;" ng-messages="add_user_form.organization.$error" ng-if="add_user_form.organization.$touched">
-                                <p ng-message="required">A member organization is required.</p>
-                        </div>
+
+                    <div class="uk-grid uk-form-row">
+                        <md-input-container class="uk-width-medium-1-2 uk-animation-slide-top">
+                            <label>Password<sup style="color:red">*</sup></label>
+                            <input name="password" type="password" class="md-input" ng-model="signup.password" ng-pattern="app.ispassword" required>
+                            <div class="help-block" style="font-family: Andale Mono;color:lightgray;" ng-messages="add_user_form.password.$error" ng-if="add_user_form.password.$touched">
+                                <p ng-message="required">A password is required.</p>
+                                <p ng-message="pattern">Please enter a more secure password.</p>
+                            </div>
+                        </md-input-container>
+                        <md-input-container class="uk-width-medium-1-2 uk-animation-slide-bottom">
+                            <label>Repeat Passsword<sup style="color:red">*</sup></label>
+                            <input type="password" name="password2" class="md-input" ng-model="signup.password2" required/>
+                            <div class="help-block" style="font-family: Andale Mono;color:lightgray;" ng-messages="add_user_form.password2.$error" ng-if="add_user_form.password.$touched">
+                                <p ng-message="required">Please enter a password confirmation.</p>
+                                <p ng-message="pattern">Please enter a more secure password.</p>
+                                <p ng-if="!app.matches(signup.password,signup.password2)&&signup.password">The passwords don't match.</p>
+                            </div>
+                        </md-input-container>
                     </div>
+
+
+
 
                 </div>
                 <div class="uk-width-medium-1-2">
-                    <div class="uk-form-row">
-                        <label>Telephone <sup style="color:red">*</sup></label>
-                        <input 
-                            type="text" 
-                            class="md-input"
-                            name="telephone" 
-                            ng-model="signup.telephone" 
-                            ng-pattern="app.istelephone"
-                        required>
-                        <div 
-                            class="help-block" 
-                            style="font-family: Andale Mono;color:lightgray;" 
-                            ng-messages="add_user_form.telephone.$error" ng-if="add_user_form.telephone.$touched">
+
+                    <div class="uk-grid">
+                        <md-input-container class="uk-width-medium-1-2 uk-animation-slide-bottom">
+                            <label>Telephone <sup style="color:red">*</sup></label>
+                            <input type="text" class="md-input" name="telephone" ng-model="signup.telephone" ng-pattern="app.istelephone" required>
+                            <div class="help-block" style="font-family: Andale Mono;color:lightgray;" ng-messages="add_user_form.telephone.$error" ng-if="add_user_form.telephone.$touched">
                                 <p ng-message="required">A telephone number is required.</p>
                                 <p ng-message="pattern">Please enter a valid telephone number.</p>
-                        </div>
-                    </div>
-                    <div class="uk-form-row">
-                        <label>Email <sup style="color:red">*</sup></label>
-                        <input 
-                            type="email" 
-                            class="md-input"
-                            name="email" 
-                            ng-model="signup.email" 
-                            ng-pattern="app.isemail"
-                        required>
-                        <div 
-                            class="help-block" 
-                            style="font-family: Andale Mono;color:lightgray;" 
-                            ng-messages="add_user_form.email.$error" ng-if="add_user_form.email.$touched">
+                            </div>
+                        </md-input-container>
+                        <md-input-container class="uk-width-medium-1-2 uk-animation-slide-top">
+                            <label>Email <sup style="color:red">*</sup></label>
+                            <input type="email" class="md-input" name="email" ng-model="signup.email" ng-pattern="app.isemail" required>
+                            <div class="help-block" style="font-family: Andale Mono;color:lightgray;" ng-messages="add_user_form.email.$error" ng-if="add_user_form.email.$touched">
                                 <p ng-message="required">An email account is required.</p>
                                 <p ng-message="pattern">Please enter a valid email address.</p>
-                        </div>
-                    </div>
-                    <div class="uk-form-row">
-                        <label>Account Name <sup style="color:red">*</sup></label>
-                        <input 
-                            type="text" 
-                            name="accountName"
-                            class="md-input"
-                            ng-model="signup['account.name']"
-                            ng-minlength="5"
-                            required
-                        >
-                        <div 
-                            class="help-block" 
-                            style="font-family: Andale Mono;color:lightgray;" 
-                            ng-messages="add_user_form.accountName.$error" ng-if="add_user_form.accountName.$touched">
-                                <p ng-message="required">An account name is required.</p>
-                                <p ng-message="minlength">That account name is too short</p>
-                        </div>
+                            </div>
+                        </md-input-container>
                     </div>
 
-                    
-
-
-                    <div class="uk-form-row">
-                        <label>Account Type <sup style="color:red">*</sup></label>                        
-                        <select  
-                        name="role"
-                        class="md-input items has-options" 
-                        ng-model="signup.role"
-                        required>
-                            <option value="">Please pick an account type</option>
-                            <option value="client" ng-disabled="!data.me||(data.me.role!='admin')">Basic Account</option>
-                            <option value="audit">Audit Account</option>
-                            <option value="admin" ng-disabled="!data.me||(data.me.role!='admin')">Administrative Account</option>
-                        </select>
+                    <md-input-container class="uk-grid">
+                        <!-- <label>Account Type <sup style="color:red">*</sup></label> -->
+                        <md-select class="uk-width-medium-1-1 uk-animation-slide-bottom" name="role" placeholder="Please pick an account type" ng-model="signup.role" required>
+                            <md-option value="">...</md-option>
+                            <md-option value="client" ng-if="permissions.admin_client(data.me)">Enterprise Account</md-option>
+                            <md-option value="audit">Audit Account</md-option>
+                            <md-option value="admin" ng-if="permissions.admin_only(data.me)">Owner's Account</md-option>
+                        </md-select>
                         <div class="help-block" style="font-family: Andale Mono;color:lightgray;" ng-messages="add_user_form.role.$error" ng-if="add_user_form.role.$touched">
-                                <p ng-message="required">A signup role is required.</p>
+                            <p ng-message="required" class="uk-text-danger">A signup role is required.</p>
                         </div>
-                    </div>
+                    </md-input-container>
                 </div>
 
             </div>
             <div class="uk-grid" data-uk-grid-margin>
-                <div class="uk-width-large-1-4 uk-width-medium-1-2">
+                <div class="uk-width-large-1-4 uk-width-medium-1-2 uk-animation-slide-right">
                     <button  
                     ng-disabled="add_user_form.$invalid" 
                     ng-click="auth.Register(signup).then(handlers.regSuccess).catch(handlers.regError)"
