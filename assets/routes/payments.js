@@ -16,7 +16,7 @@ router.route("/")
         token = token.toString().replace( /JWT /ig, '').replace(/\s/ig, '')
         let curr_user   = json( crypt.base64_decode( token.replace(/JWT /ig, '').split(".")[1] ) )
         //@ EXTRACT THE USER'S ORGANIZATION
-        let org         = curr_user.organization;
+        // let org         = curr_user.organization;
 
         //@ CAPTURE THE PASSED PARAMETERS
         let params = getParams(req);
@@ -40,14 +40,14 @@ router.route("/")
                     //@ RECORD THE PAYMENT INTO THE DATABASE
                     pgdb.any(`INSERT INTO payments (pay_org,pay_amount,pay_method,pay_services,pay_message,pay_token) VALUES ($1,$2,1,$3,$4,$5)`,
                     [
-                        1,
+                        curr_user.organization,
                         pay_amount
                         ,{payments: [{services:[1]}] }
                         ,`Loaded by ${curr_user.member_id} ${curr_user.email}.`
                         ,params.pay_code
                     ])
                     .then(a=>{
-                        res.send( make_response( 200, `Successfully loaded ${pay_amount} SMS credits` ) )
+                        res.send( make_response( 200, `Successfully loaded ${pay_amount} SMS credits for the organization` ) )
                     })
                     .catch(e=>{
                         res.send( make_response(500, `Failed to understand that token, please try again.`) )
