@@ -416,18 +416,17 @@ CREATE OR REPLACE FUNCTION audit_members()
 $BODY$
 BEGIN 
     IF (TG_OP = 'DELETE') THEN
-        INSERT INTO aud_members (member_id,"name.first","name.last","account.name","account.balance",email,password,role,telephone,joined,active,func) 
-        SELECT OLD.member_id,OLD."name.first",OLD."name.last",OLD."account.name",OLD."account.balance",OLD.email,OLD.password,OLD.role,OLD.telephone,OLD.joined,OLD.active,TG_OP;
+        INSERT INTO aud_members (member_id,"name.first","name.last","account.name","account.balance",organization,email,password,role,telephone,joined,active,func) 
+        SELECT OLD.member_id,OLD."name.first",OLD."name.last",OLD."account.name",OLD."account.balance",OLD.organization,OLD.email,OLD.password,OLD.role,OLD.telephone,OLD.joined,OLD.active,TG_OP;
         RETURN OLD;
     END IF;
-    IF (TG_OP = 'INSERT') THEN
-        -- INSERT INTO aud_members (member_id,"name.first","name.last","account.name","account.balance",email,password,role,telephone,joined,active,func) 
-        -- SELECT NEW.member_id,NEW."name.first",NEW."name.last",NEW."account.name",NEW."account.balance",NEW.email,NEW.password,NEW.role,NEW.telephone,NEW.joined,NEW.active,TG_OP;
+        -- INSERT INTO aud_members (member_id,"name.first","name.last","account.name","account.balance",organization,email,password,role,telephone,joined,active,func) 
+        -- SELECT NEW.member_id,NEW."name.first",NEW."name.last",NEW."account.name",NEW."account.balance",NEW.organization,NEW.email,NEW.password,NEW.role,NEW.telephone,NEW.joined,NEW.active,TG_OP;
         RETURN NEW;
     END IF;
     IF (TG_OP = 'UPDATE') THEN
-        INSERT INTO aud_members (member_id,"name.first","name.last","account.name","account.balance",email,password,role,telephone,joined,active,func) 
-        SELECT OLD.member_id,OLD."name.first",OLD."name.last",OLD."account.name",OLD."account.balance",OLD.email,OLD.password,OLD.role,OLD.telephone,OLD.joined,OLD.active,TG_OP;
+        INSERT INTO aud_members (member_id,"name.first","name.last","account.name","account.balance",organization,email,password,role,telephone,joined,active,func) 
+        SELECT OLD.member_id,OLD."name.first",OLD."name.last",OLD."account.name",OLD."account.balance",OLD.organization,OLD.email,OLD.password,OLD.role,OLD.telephone,OLD.joined,OLD.active,TG_OP;
         RETURN NEW;
     END IF;
 END;

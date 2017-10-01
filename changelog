@@ -138,3 +138,6 @@ v.2.17.2
 	
 v.2.17.3
 	=> Fixed the erroneous SMS balance deduction upon the provision of falsy SMS credentials 
+	
+v.2.17.4
+	=> Fixed the  missing organization record for the members trigger function
