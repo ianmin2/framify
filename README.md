@@ -168,8 +168,8 @@ Comes with a **JSON** *API* ORM with optional *CORS* packaging of ***HTTP*** req
 	  + package.json
 	
 
-*KEY*
-> 
+#### *KEY*
+
 >    (=>)			Primary Major Segment folder
 
 >	(->)			Subsidiary folder
