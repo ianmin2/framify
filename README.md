@@ -22,7 +22,7 @@ An fast and easy to use application bootstrapping tool for [node](http://nodejs.
    
 > framify appName
 
-** *Note:*  **
+***Note:***
 
 * The *appName* provided will be turned into lowercase
 
@@ -32,7 +32,7 @@ The result of this will however be ***my_application***
 * The new application directory will be created in the ***current working directory *** (**$PWD**) at the time of running the command.
 
 ----
-##A Brief Introduction
+## A Brief Introduction
 
 Bixbyte's **framify** rapid app development framework base relies primarily on the **UIKit**  and **AngularJs** frameworks for *UI* development. 
 
@@ -60,7 +60,7 @@ Some of the things that come with ***bixbyte-frame*** *and therefore available i
 Comes with a **JSON** *API* ORM with optional *CORS* packaging of ***HTTP*** requests using ***JSONP*** 
 
 ----
-## ** APP STRUCTURE **
+## **APP STRUCTURE**
 
     | appName
 	
