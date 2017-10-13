@@ -1,6 +1,6 @@
 -- ORGANIZATIONS --
 DROP TABLE IF EXISTS organizations CASCADE;
-CREATE TABLE organizations (
+CREATE TABLE IF NOT EXISTS organizations (
     org_id          bigserial   PRIMARY KEY,
     org_name        text        NOT NULL CONSTRAINT unique_organization_name_required UNIQUE,
     org_telephone   text        NOT NULL CONSTRAINT unique_organization_telephone_required UNIQUE,
@@ -17,7 +17,7 @@ VALUES
 
 -- AUD_ORGANIZATIONS --
 DROP TABLE IF EXISTS aud_organizations CASCADE;
-CREATE TABLE aud_organizations (
+CREATE TABLE IF NOT EXISTS aud_organizations (
     org_id          bigint      ,
     org_name        text        ,
     org_telephone   text        ,
@@ -70,7 +70,7 @@ FROM organizations;
 
 -- SERVICES --
 DROP TABLE IF EXISTS services CASCADE;
-CREATE TABLE services (
+CREATE TABLE IF NOT EXISTS services (
     service_id      bigserial   PRIMARY KEY,
     service_name    text        CONSTRAINT  unique_service_name_required UNIQUE NOT NULL,
     service_fee     bigint      CONSTRAINT  service_fee_required NOT NULL,
@@ -85,7 +85,7 @@ VALUES
 
 -- AUD_SERVICES --
 DROP TABLE IF EXISTS aud_services CASCADE;
-CREATE TABLE aud_services (
+CREATE TABLE IF NOT EXISTSaud_services (
     service_id      bigint      ,
     service_name    text        ,
     service_fee     bigint      ,
@@ -139,7 +139,7 @@ FROM services;
 
 -- SUBSCRIPTIONS --
 DROP TABLE IF EXISTS subscriptions CASCADE;
-CREATE TABLE subscriptions (
+CREATE TABLE IF NOT EXISTS subscriptions (
     sub_id          bigserial       PRIMARY KEY,
     sub_org         bigint          NOT NULL CONSTRAINT organization_id_required        REFERENCES organizations( org_id ),
     sub_service     bigint          NOT NULL CONSTRAINT service_subscription_required   REFERENCES services( service_id ),
@@ -153,7 +153,7 @@ VALUES
 
 -- AUD_SUBSCRIPTIONS --
 DROP TABLE IF EXISTS aud_subscriptions CASCADE;
-CREATE TABLE aud_subscriptions (
+CREATE TABLE IF NOT EXISTS aud_subscriptions (
     sub_id          bigint          ,
     sub_org         bigint          ,
     sub_service     bigint          ,
@@ -211,7 +211,7 @@ ON subscriptions.sub_service    = services.service_id;
 
 -- PAYMENT_METHODS --
 DROP TABLE IF EXISTS payment_methods CASCADE;
-CREATE TABLE payment_methods(
+CREATE TABLE IF NOT EXISTS payment_methods(
     pay_method_id          bigserial       PRIMARY KEY,
     pay_method_name        varchar(60)     NOT NULL,
     pay_method_fee         bigint          DEFAULT 0,
@@ -226,7 +226,7 @@ VALUES
 
 -- AUD_PAYMENT_METHODS --
 DROP TABLE IF EXISTS aud_payment_methods CASCADE;
-CREATE TABLE aud_payment_methods(
+CREATE TABLE IF NOT EXISTS aud_payment_methods(
     pay_method_id          bigint          ,
     pay_method_name        varchar(60)     ,
     pay_method_fee         bigint          DEFAULT 0,
@@ -276,7 +276,7 @@ FROM payment_methods;
 
 -- PAYMENTS --
 DROP TABLE IF EXISTS payments CASCADE;
-CREATE TABLE payments (
+CREATE TABLE IF NOT EXISTS payments (
     pay_id          bigserial       PRIMARY KEY,
     pay_org         bigint          CONSTRAINT valid_organization_required REFERENCES organizations( org_id ),
     pay_amount      bigint          NOT NULL,
@@ -292,7 +292,7 @@ CREATE TABLE payments (
 
 -- AUD_PAYMENTS --
 DROP TABLE IF EXISTS aud_payments CASCADE;
-CREATE TABLE aud_payments (
+CREATE TABLE IF NOT EXISTS aud_payments (
     pay_id          bigint       ,
     pay_org         bigint       ,
     pay_amount      bigint       ,
@@ -370,7 +370,7 @@ CREATE TYPE available_roles AS ENUM ('audit','client','admin');
 
 -- MEMBERS --
 DROP TABLE IF EXISTS members CASCADE;
-CREATE TABLE members (
+CREATE TABLE IF NOT EXISTS members (
 	member_id		bigserial 	    PRIMARY KEY,
 	"name.first"    varchar(25) 	NOT NULL,
 	"name.last"	    varchar(25),
@@ -388,12 +388,11 @@ CREATE TABLE members (
 INSERT INTO members 
 ( member_id,"name.first", "name.last","account.name",email, password, role, telephone,organization ) 
 VALUES
-(1,'User','Administrator','userAdmin','useradmin@bixbyte.io',MD5('bixbyte'),'admin', 0725678447, 1);
-
+(1,'User','Administrator','userAdmin','useradmin@bixbyte.io',MD5('ianmin2'),'admin', 0725678447, 1);
 
 -- AUD_MEMBERS --
 DROP TABLE IF EXISTS aud_members CASCADE;
-CREATE TABLE aud_members (
+CREATE TABLE IF NOT EXISTS aud_members (
 	member_id		bigint,
 	"name.first"    varchar(25) 	,
 	"name.last"	    varchar(25),
@@ -536,7 +535,7 @@ WHERE password_recovery.used = false;
 
 -- GROUPS --
 DROP TABLE IF EXISTS groups CASCADE;
-CREATE TABLE groups (
+CREATE TABLE IF NOT EXISTS groups (
     group_id           bigserial   PRIMARY KEY
     ,group_name        text        NOT NULL CONSTRAINT unique_group_name_required UNIQUE
     ,group_organization bigint     NOT NULL  CONSTRAINT group_organization_reqired REFERENCES organizations(org_id)
@@ -551,7 +550,7 @@ VALUES
 
 -- AUD_GROUPS --
 DROP TABLE IF EXISTS aud_groups CASCADE;
-CREATE TABLE aud_groups (
+CREATE TABLE IF NOT EXISTS aud_groups (
     group_id           bigint      
     ,group_name        text   
     ,group_organization bigint     
@@ -606,7 +605,7 @@ FROM groups
 
 -- GROUP_MEMBERS --
 DROP TABLE IF EXISTS group_members CASCADE;
-CREATE TABLE group_members (
+CREATE TABLE IF NOT EXISTS group_members (
     mem_id              bigserial   PRIMARY KEY
     ,mem_name           varchar(55)        
     ,mem_user           text
@@ -627,7 +626,7 @@ VALUES
 
 -- AUD_GROUP_MEMBERS --
 DROP TABLE IF EXISTS aud_group_members CASCADE;
-CREATE TABLE aud_group_members (
+CREATE TABLE IF NOT EXISTS aud_group_members (
     mem_id              bigint
     ,mem_name           varchar(55)        
     ,mem_user           text
@@ -698,7 +697,7 @@ GROUP BY    mem_group_name;
 
 -- TEMPLATES --
 DROP TABLE IF EXISTS templates CASCADE;
-CREATE TABLE templates (
+CREATE TABLE IF NOT EXISTS templates (
     t_id           bigserial   PRIMARY KEY
     ,t_name        text        NOT NULL CONSTRAINT unique_template_name_required UNIQUE
     ,t_organization bigint     NOT NULL CONSTRAINT valid_template_organization_reqired REFERENCES organizations(org_id)
@@ -715,7 +714,7 @@ VALUES
 
 -- AUD_TEMPLATES --
 DROP TABLE IF EXISTS aud_templates CASCADE;
-CREATE TABLE aud_templates (
+CREATE TABLE IF NOT EXISTS aud_templates (
     t_id           bigint      
     ,t_name        text   
     ,t_organization bigint     
@@ -770,7 +769,7 @@ FROM templates
 
 -- LOGS --
 DROP TABLE IF EXISTS logs;
-CREATE TABLE logs (
+CREATE TABLE IF NOT EXISTS logs (
     log_id              bigserial   PRIMARY KEY
     ,log_summary        jsonb
     ,log_organization   bigint  CONSTRAINT valid_organization_required REFERENCES organizations(org_id)
@@ -781,7 +780,7 @@ CREATE TABLE logs (
 
 -- AUD_LOGS --
 DROP TABLE IF EXISTS aud_logs;
-CREATE TABLE aud_logs (
+CREATE TABLE IF NOT EXISTS aud_logs (
     log_id              bigint
     ,log_summary        jsonb
     ,log_organization   bigint
@@ -836,8 +835,4 @@ FROM logs
 INSERT INTO payments 
 (pay_id,pay_org,pay_amount,pay_method,pay_services,pay_message,pay_token)
 VALUES
-(1,1,10,1,'{"payments": [{"services":[1]}]}','10 Complementary SMS messages','bixbyte');
-
---==========================================================================================================
---==========================================================================================================
---==========================================================================================================
+(1,1,10,1,'{"payments": [{"services":[1]}]}','10 logged Complementary SMS messages','bixbyte');
