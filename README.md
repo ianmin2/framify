@@ -1,4 +1,13 @@
-# Bixbyte Framify
+[![Framify Logo](https://www.dropbox.com/s/ln27509gcfearkx/Framify.png?dl=1)](https://bixbyte.io/framify)
+
+An fast and easy to use application bootstrapping tool for [node](http://nodejs.org).
+
+
+  [![NPM Version][npm-image]][npm-url]
+  [![NPM Downloads][downloads-image]][downloads-url]
+  <!-- [![Linux Build][linux-image]][downloads-url]
+  [![Windows Build][windows-image]][downloads-url]
+  [![Test Coverage][test-image]][downloads-url] -->
 
 ----
 ### **To install**
@@ -182,3 +191,17 @@ Some of the things that come with ***bixbyte-frame*** *and therefore available i
 ----
 ## thanks
 * [ianmin2](https://ianmin2.cf)
+
+
+## License
+
+  [MIT](LICENSE)
+
+[npm-image]: https://img.shields.io/npm/v/framify.svg
+[npm-url]: https://npmjs.org/package/framify
+[downloads-image]: https://img.shields.io/npm/dm/framify.svg
+[downloads-url]: https://npmjs.org/package/framify
+[linux-image]: https://img.shields.io/travis/ianmin2/framify/master.svg?label=linux
+[windows-image]: https://img.shields.io/appveyor/ci/dougwilson/express/master.svg?label=windows
+
+[test-image]: https://img.shields.io/coveralls/ianmin2/framify/master.svg
