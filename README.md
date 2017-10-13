@@ -233,7 +233,7 @@ Comes with a **JSON** *API* ORM with optional *CORS* packaging of ***HTTP*** req
 ----
 
 ## Changelog
-[Open Changelog Document](https://github.com/ianmin2/framify/blob/master/changelog.md)
+[Open Changelog Document](changelog.md)
 
 ----
 ## Contributors

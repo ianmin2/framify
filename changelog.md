@@ -236,3 +236,7 @@ Added support for angular-charts
 	=> Removed some unecessary files
 
 	=> Added sample configuration files for the user
+	
+> ## v2.18.2
+	
+	=> Deleted the redundant files (from previous versions)
