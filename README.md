@@ -225,6 +225,7 @@ Comes with a **JSON** *API* ORM with optional *CORS* packaging of ***HTTP*** req
 
  ----
  ### LINKS
+
 [ Google Material Icons](https://design.google.com/icons/)
 
 [ Out of the box application example](https://bixbyte.io/framify)
