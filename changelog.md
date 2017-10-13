@@ -241,6 +241,12 @@ Added support for angular-charts
 	
 	=> Deleted the redundant files (from previous versions)
 
-## v2.18.4
+> ## v2.18.4
 
 	=> Fixed a provider attribution in the 'in-app' password recovery file 
+
+> ## v2.18.5
+
+	=> Fixed lingering SQL issues
+
+	=> Fixed a lingering *"property role undefined not found"* for authentication in the main framework file
