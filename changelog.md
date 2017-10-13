@@ -237,6 +237,10 @@ Added support for angular-charts
 
 	=> Added sample configuration files for the user
 	
-> ## v2.18.2
+> ## v2.18.3
 	
 	=> Deleted the redundant files (from previous versions)
+
+## v2.18.4
+
+	=> Fixed a provider attribution in the 'in-app' password recovery file 
