@@ -174,7 +174,7 @@ Comes with a **JSON** *API* ORM with optional *CORS* packaging of ***HTTP*** req
 
 >	(->)			Subsidiary folder
 
->	(\*) Files that require to be created at project initialization
+>	(*) Files that require to be created at project initialization
 
 >	(-) 			Mainly User genrated files ( ***Edit at will*** )
 
