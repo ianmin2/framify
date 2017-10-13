@@ -1152,11 +1152,12 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     };
 
     return me;
-}]).run(["app", "cgi", "$rootScope", "$state", "$localStorage", "sms", "auth", "remoteAuth", "$http", "iSMS", "$templateCache", function (app, cgi, $rootScope, $state, $localStorage, sms, auth, remoteAuth, $http, iSMS, $templateCache) {
+}]).run(["app", "cgi", "$rootScope", "$state", "$localStorage", "sms", "auth", "remoteAuth", "$http", "iSMS", function (app, cgi, $rootScope, $state, $localStorage, sms, auth, remoteAuth, $http, iSMS) {
 
-    $rootScope.$on('$viewContentLoaded', function () {
-        $templateCache.removeAll();
-    });
+    // $rootScope.$on('$viewContentLoaded', function() {
+    //     $templateCache.removeAll();
+    // });
+
 
     //! INJECT THE LOCATION SOURCE TO THE ROOT SCOPE
     $rootScope.location = $state;
@@ -1210,66 +1211,62 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
 
         //@ ALLOW ONLY ADMIN USERS
         admin_only: function admin_only(user) {
-            return user.role == 'admin' ? true : false;
-        }
-        //@! FROM MATCHING ORGANIZATIONS
+            return user.role ? user.role == 'admin' ? true : false : false;
+        },
 
-        , admin_only_org: function admin_only_org(user, item_org) {
-            return user.role == 'admin' && user.organization == item_org ? true : false;
-        }
+        //@! FROM MATCHING ORGANIZATIONS
+        admin_only_org: function admin_only_org(user, item_org) {
+            return user.role ? user.role == 'admin' && user.organization == item_org ? true : false : false;
+        },
 
         //@ ALLOW ONLY CLIENT USERS
+        client_only: function client_only(user) {
+            return user.role ? user.role == 'client' ? true : false : false;
+        },
 
-        , client_only: function client_only(user) {
-            return user.role == 'client' ? true : false;
-        }
         //@! FROM MATCHING ORGANIZATIONS
-
-        , client_only_org: function client_only_org(user, item_org) {
-            return user.role == 'client' && user.organization == item_org ? true : false;
-        }
+        client_only_org: function client_only_org(user, item_org) {
+            return user.role ? user.role == 'client' && user.organization == item_org ? true : false : false;
+        },
 
         //@ ALLOW ONLY AUDIT USERS
+        audit_only: function audit_only(user) {
+            return user.role ? user.role == 'audit' ? true : false : false;
+        },
 
-        , audit_only: function audit_only(user) {
-            return user.role == 'audit' ? true : false;
-        }
-        //@! FROM MATCHING ORGANIZATIONS
-
-        , audit_only_org: function audit_only_org(user, item_org) {
-            return user.role == 'audit' && user.organization == item_org ? true : false;
-        }
+        //@! FROM MATCHING ORGANIZATIONS        
+        audit_only_org: function audit_only_org(user, item_org) {
+            return user.role ? user.role == 'audit' && user.organization == item_org ? true : false : false;
+        },
 
         //@ ALLOW BOTH ADMIN AND CLIENT USERS
+        admin_client: function admin_client(user) {
+            return user.role ? user.role == 'admin' || user.role == 'client' ? true : false : false;
+        },
 
-        , admin_client: function admin_client(user) {
-            return user.role == 'admin' || user.role == 'client' ? true : false;
-        }
         //@! FROM MATCHING ORGANIZATIONS
+        admin_client_org: function admin_client_org(user, item_org) {
+            return user.role ? (user.role == 'admin' || user.role == 'client') && user.organization == item_org ? true : false : false;
+        },
 
-        , admin_client_org: function admin_client_org(user, item_org) {
-            return (user.role == 'admin' || user.role == 'client') && user.organization == item_org ? true : false;
-        }
         //@! FROM MATCHING ORGANIZATIONS WITH ADMIN EXEMPT
+        any_admin_client_org: function any_admin_client_org(user, item_org) {
 
-        , any_admin_client_org: function any_admin_client_org(user, item_org) {
+            return user.role ? user.role == 'audit' ? false : user.role == 'admin' ? true : user.organization == item_org ? true : false : false;
+        },
 
-            return user.role == 'audit' ? false : user.role == 'admin' ? true : user.organization == item_org ? true : false;
-        }
-
-        //@ ALLOW ALL USERS    
-
-        , any: function any(user) {
+        //@ ALLOW ALL USERS 
+        any: function any(user) {
             return true;
-        }
+        },
+
         //@! FROM MATCHING ORGANIZATIONS
-
-        , any_org: function any_org(user, item_org) {
+        any_org: function any_org(user, item_org) {
             return user.organization == item_org ? true : false;
-        }
-        //@! EXCLUDE ADMINS FROM SCRUTINY
+        },
 
-        , any_admin_other_org: function any_admin_other_org(user, item_org) {
+        //@! EXCLUDE ADMINS FROM SCRUTINY
+        any_admin_other_org: function any_admin_other_org(user, item_org) {
             return user.role == 'admin' ? true : user.organization == item_org ? true : false;
         }
 
@@ -1538,7 +1535,8 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
                 r = $scope.app.json(r);
 
                 if (r.response == 200) {
-                    $scope.fetched[table.toString().replace(/vw_/ig, '')] = r.data.message;
+                    //.replace(/vw_/ig, '')
+                    $scope.fetched[table.toString()] = r.data.message;
                     $scope.$apply();
                     // $scope.app.doNothing()
                     // .then(e=>{
@@ -1687,7 +1685,8 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
 
                     $scope.app.notify('<center>' + (r.data.message || 'Successful') + '</center>', "success");
 
-                    $scope.cFetched[table.toString().replace(/vw_/ig, '')] = r.data.message;
+                    //.replace(/vw_/ig, '')
+                    $scope.cFetched[table.toString()] = r.data.message;
                     $scope.data[table.toString().replace(/vw_/ig, '')] = {};
                     $scope.$apply();
 
