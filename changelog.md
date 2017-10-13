@@ -1,54 +1,54 @@
-> v.1.14.0
+> ## v1.14.0
 
 	Added the frame.path() function 
 		returns the current route without subroutes
 
-> v.1.14.1 
+> ## v1.14.1 
 	
 	Added the $scope.custom() query handler in app.ctrl.js
 		Allows for custom SQL query processing 
 			!! Handle with care.
 
-> v.1.14.2
+> ## v1.14.2
 
 	Simple quick edit to the query handler 
 
-> v.1.14.3
+> ## v1.14.3
 
 	Made the p-frame $connection->db_name and $connection->db_host public
 
-> v.1.15.0
+> ## v1.15.0
 
 	Removed the reference JS and CSS files in favor of concatenated library files js.js and css.css respectively
 
-> v.1.16.0
+> ## v1.16.0
 Added support for angular-charts 
 
 	Documentation at https://jtblin.github.io/angular-chart.js/
 
-> v.1.16.1
+> ## v1.16.1
 
 	Added a standard startup database schema in schema>sample.sql
 
-> v.1.16.2
+> ## v1.16.2
 
 	Changed the user and admin login pages to encrypt their respective password field before attempted login
 
-> v.1.16.3
+> ## v1.16.3
 
 	Added required asterix's and basic defaults to the user and administrator management pages
 
-> v.1.17.0
+> ## v1.17.0
 	
 	Added the cgi db based smart instanceOf counter
 
-> v.1.17.1
+> ## v1.17.1
 
 	=> 	Changed the php cgi process file to dish more custom messages
 
 	=> 	Fixed an audit table no_reference to "aud_suppliers" error
 
-> v.1.18.0
+> ## v1.18.0
 	
 	=> 	Added email sending support for the mailgun api
 
@@ -56,37 +56,37 @@ Added support for angular-charts
 
 	-> Set preference for global installation
 
-> v.1.18.1
+> ## v1.18.1
 	
 	=> Added pre crash handling
 	
-> v.2.0.0 
+> ## v2.0.0 
 	
 	=> Added support for mongodb based JWT authentication and deprecated the previous default authentication.
 	
-> v.2.0.1
+> ## v2.0.1
 	
 	=> made the sendmail function globally accessible
 
-> v.2.1.0
+> ## v2.1.0
 	
 	=> Added support for postgresql JWT authentication switchable via the global 'authMeth' variable in server/server.js
 
 	=> Modified the sample schema to include the new required 'members' tuple needed for JWT authentication.
 
-> v.2.2.0 
+> ## v2.2.0 
 	
 	=> Added essential documentation for integration with framify.js 
 
 	=> Made changes for eased remote client adaptability in framify.js
 	
-> v.2.3.0
+> ## v2.3.0
 	
 	=> Grouped the documentation into tabs
 
 	=> Added methods to the framify.js dependency file
 	
-> v.2.4.0
+> ## v2.4.0
 	
 	=> Added an app.e_handler/error_handler/errorHandler method
 
@@ -94,23 +94,23 @@ Added support for angular-charts
 
 	=> Updated outdated references to the logout function
 	
-> v.2.4.1
+> ## v2.4.1
 	
 	=> Added an ignore directive for the dev.folder in the .gitignore file
 
-> v.2.5.0 
+> ## v2.5.0 
 	
 	=> Removed the "request" module call in the upload route in favor of bixbyte-framify's included global "request" module
 
-> v.2.6.0
+> ## v2.6.0
 	
 	=> Added the "/db" route for database connectivity via postgresql in line for the deprecation of the php-cgi module
 	
-> v.2.6.1 
+> ## v2.6.1 
 	
 	=> Altered the structure of the sample sql file in favor of a more structure coupled file
 
-> v.2.7.0
+> ## v2.7.0
 	
 	=> Updated the structure of the pr-automated db query handler
 
@@ -130,33 +130,33 @@ Added support for angular-charts
 
 	=> Slightly Altered the content of the main "index.html" file
 	
-> v.2.8.0 
+> ## v2.8.0 
 
 	=> Added the preliminary password recovery feature accessible via the "/passwords" route
 
 	=> Updated the authentication route handler "/auth" to use simple prepared statements for data entry.
 
-> v.2.9.0 
+> ## v2.9.0 
 
 	=> Added a slightly more intuitive password recovery UI
 
-> v.2.10.0
+> ## v2.10.0
 
 	=> Altered the "config/config.js" file to use ".conf" files for passwords rather than inline text
 
 	=> Altered the "schema/sample.sql" file to fit an email in organizations as well as a more intuitive easier to debug format
 
-> v.2.11.0
+> ## v2.11.0
 
 	=> Updated the passport JWT strategy and SQL to start support for SAAS 
 
 	=> Fixed the deactivated user authentication issue
 	
-> v.2.12.0 
+> ## v2.12.0 
 
 	=> Updated the "auth"/register route via the postgres database implementation to accommodate a more flexible datase for insertion of main applixation members
 
-> v.2.13.0
+> ## v2.13.0
 
 	=> Updated the "process" pgdb file
 
@@ -164,15 +164,15 @@ Added support for angular-charts
 
 	=> Slight updates made to the main HTML file navigation menu
 
-> v.2.14.0 
+> ## v2.14.0 
 
 	=> added the "keepMatch" and "removeMatch" methods that perform regex checks on csv's and Arrays alike returning an Array
 
-> v.2.15.0
+> ## v2.15.0
 
 	=> Fixed the "pgdb" not found exclusion error
 
-> v.2.16.0
+> ## v2.16.0
 
 	=> Merged the SMS frame project into the main application (logically and in the database schema as well) **need_to_rename_tables
 
@@ -185,37 +185,37 @@ Added support for angular-charts
 	=> Added the framify.js customizer via the "src" folder
 		... build your project specific version by running "gulp"
 		
-> v.2.16.1 
+> ## v2.16.1 
 
 	=> Fixed the missing command parameters for the route "/auth/verify"
 	
-> v.2.17.1
+> ## v2.17.1
 
 	=> Added the db/backup ignore directive in the .gitignore file
 
-> v.2.17.2
+> ## v2.17.2
 
 	=> Fixed missing dependency for gulp packaging the src files
 	
-> v.2.17.3
+> ## v2.17.3
 
 	=> Fixed the erroneous SMS balance deduction upon the provision of falsy SMS credentials 
 	
-> v.2.17.4
+> ## v2.17.4
 
 	=> Fixed the  missing organization record for the members trigger function
 	
-> v.2.17.5
+> ## v2.17.5
 
 	=> Re-did the login and signup forms to merge more fluently the UI-KIT design language
 
 	=> Fixed a critical error that limited SMS credit loading to default organizationn rather than the User's Organization
 	
-> v.2.17.6
+> ## v2.17.6
 
 	=> Changed the main password recovery  router from static file referencing to utilize the more stable path module
 	
-> v.2.18.0 
+> ## v2.18.0 
 
 	=> Added user welcome email capability
 
@@ -229,7 +229,7 @@ Added support for angular-charts
 
 	=> Fixed a lingering unnecesary field "name.last" required on signup issue
 
-> v.2.18.1
+> ## v2.18.1
 
 	=> Updated the documentation and changelog format.
 
