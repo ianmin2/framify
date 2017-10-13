@@ -231,6 +231,7 @@ Comes with a **JSON** *API* ORM with optional *CORS* packaging of ***HTTP*** req
 [ Out of the box application example](https://bixbyte.io/framify)
 
 ----
+
 ## Changelog
 [Open Changelog Document](https://github.com/ianmin2/framify/blob/master/changelog.md)
 
