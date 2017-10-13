@@ -1,0 +1,4 @@
+module.exports = {
+                    apiKey: "key-framify",
+                    domain: "mg.framify"
+                 }

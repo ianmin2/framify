@@ -1,4 +1,4 @@
-[![Framify Logo](http://cards.ueab.ac.ke/Framify.png)](https://www.npmjs.com/package/framify)
+[![##Framify](http://cards.ueab.ac.ke/Framify.png)](https://www.npmjs.com/package/framify)
 
 An fast and easy to use application bootstrapping tool for [node](http://nodejs.org).
 
@@ -11,7 +11,7 @@ An fast and easy to use application bootstrapping tool for [node](http://nodejs.
 
 ----
 ### **To install**
-    npm install -g framify
+> npm install -g framify
 
 ---
 ## **usage**
@@ -20,7 +20,7 @@ An fast and easy to use application bootstrapping tool for [node](http://nodejs.
 ### To create a new application ...
 *On the command line, navigate to the directory where you would like to start your application then type :*
    
-    framify appName
+> framify appName
 
 ** *Note:*  **
 
@@ -29,164 +29,209 @@ An fast and easy to use application bootstrapping tool for [node](http://nodejs.
 * Spaces are not allowed in the *appName* unless you use  escape characters e.g ** framify *My Application* ** can be typed as ** framify *My\ \Application* **
 The result of this will however be ***my_application***
 
-* The new application will be created in the ***current working directory *** (**$PWD**) at the time of running the command.
+* The new application directory will be created in the ***current working directory *** (**$PWD**) at the time of running the command.
 
 ----
 ##A Brief Introduction
 
-Bixbyte's **framify** rapid app development framework base relies primarily on the **ionic** *{v1}* and **angularJs** framework for *UI* development. 
-This means that it can effectively be used as a *UI* base for both desktop and mobile applications. 
+Bixbyte's **framify** rapid app development framework base relies primarily on the **UIKit**  and **AngularJs** frameworks for *UI* development. 
 
-**framify** is also built upon *Bixbyte's* **bixbyte-frame** application base which is essentially  a set of components that are often used in nodejs applications.
-This allows for the development of a full stack application essentially following an **MVC** *ish* architecture.
+it can also easily be ported as a *UI* base for mobile applications. 
+
+**framify** UI builder is built out of the box to interact *Bixbyte's* **bixbyte-frame** application base which is a rapid API development framework complete with a GraphQl like ORM with built in simple yet powerful user access control management.
+
+This aids in the rapid development of a full stack application essentially following an **MVC** *ish* architecture.
 
 Some of the things that come with ***bixbyte-frame*** *and therefore available in **framify*** by default are:
-* ***mongodb*** reusable connections and sample schema based off ***mongoose***
-
-* Simple server side factories running off ***wagner-core***
-
-* A simple communications module for SMS sending via modem or an installed android - application and email sending via the **mandrill api**
-
-* An automated form generation module for generation of json based forms from **mongodb** *ish* schemas rendered by **angular-formly**
-
-* A simple **gulp** based javascript file concatenating module that allows for the packaging of all custom built javascript files into one *++++>* ***application.js***
 
 * A **socket.io** and *CORS* enabled *standardized* **express** based server - base application
 
-* A rapid php API development framework by Bixbyte ( ***m4Labs p-frame*** ) complete with ***ODBC*** database management, encryption and mail sending classes with a **JSON** *API* producing engine with optional *CORS* packaging of ***HTTP*** requests using ***JSONP*** and a **php_cgi** module for **nodejs**
+* A simple communications module for email sending via the **mandrill api**
 
-* An automated route generator for use with ionic's inbuilt ***ui-router***
+* A simple Branded SMS sender module **premium rate api**
+
+* ***mongodb*** reusable connections and sample schema based off ***mongoose*** and Simple server side factories running off ***wagner-core***
+
+* ***postgresql*** promise based query handler complete with an easy to use 'no alteration required' ORM.
+
+* A simple **gulp** based javascript framework packaging module that allows for customization of the default shipped angular modules 
+
+* A CGI based handler to allow the running of php scripts in nodejs.
+Comes with a **JSON** *API* ORM with optional *CORS* packaging of ***HTTP*** requests using ***JSONP*** 
+
 ----
 ## ** APP STRUCTURE **
 
     | appName
 	
 	  => assets	  
+
 	     -> css
 		 	-> fonts
+			-> themes
+			- + .css
+
 		 -> img 
+
+		 -> icons
+		 	-> material-design-icons
+
 		 -> js
-		 	-> controllers
-			 	- *.ctrl.js
-			 	+ main.js
-				 % contollers.js
-			 -> directives
-			 	- *.dir.js
-			 	+ main.js
-				 % directives.js
-			-> services
-			 	- *.serv.js
-			 	+ main.js
-				 % services.js
-			& app.js
-			& app.router.js
-			- *js
+		 	-> maps
+			- & .js
+
 	  => config
-			+ app.json
-			+ config.json
-			% app-routes.json
-	  => forms
-	  		=> dist
-			  	% mainForm.json			  
+			- app.json
+			+ & config.js
+			- app-routes.json
+> ### *These files are to be created manually*
+>			* & jwt-secret.conf
+>			* & mailgun.conf
+>			* & mongo.conf
+> 			* & postgres.conf
+> 			* & sms.conf
+> ### *These files are to be created manually*
+
+	  => db
+>#####	*POSTGRESQL ORM HANDLER*
+
+	  		& .js	
+
 	  => php
-	  		+  index.php
+>#####	*PHP CGI & ORM HANDLER*
+	  		&  index.php
 	  	 	-> classes
-				  & *.php			   
+				  & *.php	
+
+	  => routes
+
+	  	 => templates
+
+		   	=> welcome
+			   	+ *.html
+
+			=>password
+				+ *.html
+
+		 & auth.js
+		 & db.js
+		 & main.js
+		 & passwords.js
+		 & payments.js
+		 & sms.js
+		 & template2sms.js
+		 & upload.js
+
 	  => sample
-		 + sample.json
+
+		  - sample.json
+
 	  => schema
-	     + sample-schema.js
-		 => forms
-		 	- main.js
-		 	& main.min.js
+
+	     & members.js
+		 - sample.sql
+
 	  => server
-			 & formGenerator.js
-			 & formStacker.js
-			 + server.js
+			 & enc_dec.js
+			 & gcm.js
+			 & mail.js
+			 + & server.js
+			 + server_cleanup.js
+			 & sms.js
+			 & sms_actions.js
+
+	  =>src
+
+		=> framework
+
+			+ & framify.es6		
+
+		+ & app.es6
+	  
+	  
 	  => views
-	  		 ^ 1app.html
-			 + *.html 
+
+	  		 & login.html
+			 & signup.html
+			 & manage_users.html
+			 & passwords.html
+
+			 -+ index.html
+			 -+ dash.html
+			 -+ panel.html
+
+			 - *.html 
+
 	  & gulpfile.js
 	  & index.html
 	  & main.js
 	  + package.json
-	  & package.sh
-	  & routerify.js
-	  % application.js
-			
-			
-			 
 	
 
 *KEY*
 > 
-    =>			Primary Major Segment folder
-	->			Subsidiary folder
-	- 			Mainly User genrated files ( ***Edit at will*** )
-	+ 			Pre - existing configuration files ( ***Edit with some caution*** )
-	& 			Fragile Major configuration files ( ***Edit only if you are sure of what tou are doing*** )
-	% 			Auto -generated application files ( ***Edit to play a frustrating game of 'chasing the wind and wild geese'*** )
+>    (=>)			Primary Major Segment folder
+
+>	(->)			Subsidiary folder
+
+>	(\*) Files that require to be created at project initialization
+
+>	(-) 			Mainly User genrated files ( ***Edit at will*** )
+
+>	(+) 			Pre - existing configuration files ( ***Edit with some caution*** )
+
+>	(&) 			Fragile Major configuration files ( ***Edit only if you are sure of what tou are doing*** )
+
+>	(%) 			Auto -generated application files ( ***Edit to play a frustrating game of 'chasing the wind and wild geese'*** )
 	
 
 ---
-##handling files in ***assets/js/ {{ services | directives | controllers }}***
+##handling files in ***src/ {{ services | directives | controllers }}***
 
-> use an ***"app."*** prefix in your code for the controllers, directives and  services e.g( **app.**controller("myController",['$scope',function($scope){]) ) 	
->
-	Note:	*The **app** variable is defined in the **assets/js/app.js** file*
-	[ Failure to do this is as fruitful as chasing the wind with the sole purpose being to catch and jail it for causing hurricanes ]
+> Make your main controller and directive changes in the ***framework/framify.es6*** file	
+
+Note:	
+	
+	*This file is required to run the application*
+
+	[ Editing it carelessly may prove as fruitful as chasing the wind with the sole purpose being to catch and jail it for causing hurricanes ]
 	
 
-> make sure to follow the prescribed **suffix for filenames** ie ( ****.serv.js*** *in services* | ****.ctrl.js*** *in controllers* | ****.dir.js*** *in directives* )  
+> Edit the ***app.es6***  file such that all your application files are included therein* )  
 >  
-	[*Failure to do this will cause the automated compiler to fail to capture changes as they happen in the specific folders*]
-
-> add the paths to your custom services, directives and controllers to their respective main.js file using the ***require("./filename.suffix.js")*** syntax
->
-	For instance  require("./myController.ctrl.js")  in *assets/js/controllers/main.js* in order for it to be packaged in the compiled file ( controllers.js )
-				  require("./myDirective.dir.js")  in *assets/js/directives/main.js* in order for it to be packaged in the compiled file ( directives.js )
-	              require("./myService.serv.js")  in *assets/js/services/main.js* in order for it to be packaged in the compiled file ( services.js )
-	[Failure to do this will prevent the files from being included in the final concatenated "application.js" which is used in index.html]
+	[*Failure to do this means that you have to implement an even dirtier routing mechanism*]
 
 ---
 ##VIEW DEVELOPMENT
 
-> Avoid at all costs temptation(s) to place your view directly in the ***index.html*** file. 
-	[ ***Free advice:*** You will die of frustration if you insist ***Place ALL of your views in the [views] folder*** ]
+> Avoid at all costs temptation(s) to place your view directly in the ***index.html***, ***dash.html*** or **panel.html** files. 
+	
+	[*Create sub routers for that purpose*]
 
-###DEVELOPING A VIEW THAT WILL BE AUTOMATICALLY ADDED TO YOUR APP PATH ( *and optionally to your side menu* )
- 
- > It's as simple as pie
- 
- 	Add the tag <framify menu="true" path="home" url="/" title="Home" parent="false" icon="home"  controller="myController" ></framify>
-	 
-	 	For the icon, framify relies on google material icons which you can visit form the link provided below and paster the desired icon name to use it in the menu or anywhere else in your project
-		 
-		 [Failure to add the <framify ... ></framify> tag with ALL OPTIONS DEFINED is like looking for a specific dissolved molecule of salt in an ocean  ]
- 
+
  ----
-###AUTOMATED JAVASCRIPT PACKAGING AND APP PREVIEW RELOADING
+### JAVASCRIPT PACKAGING
 
-**To package your application just once, **
-> Run **gulp package** 
+***To package your application after making changes to the files in "/src"***
+
+##### Run 
+> **gulp** 
 
 
-**To watch for ongoing file changes, ** 
-> Run **gulp watch**
-
-**To run an auto refreshing copy of the app as you make changes**
->Run **gulp serve**
+***To watch for ongoing file changes,*** 
+##### Run 
+>**gulp watch**
 
 
  ----
  ##LINKS
 [ Google Material Icons](https://design.google.com/icons/)
 
-[ Out of the box application example](https://ianmin2.cf/framify)
+[ Out of the box application example](https://bixbyte.io/framify)
 
 ----
 ## changelog
-* March 21st 2016	 ( @framify-core Structure redefinition )
+[Changelog Document](https://github.com/ianmin2/framify/blob/master/changelog.md)
 
 ----
 ## thanks

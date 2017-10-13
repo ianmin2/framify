@@ -1,0 +1,13 @@
+module.exports = 
+{
+    "name"         : "framify"
+    ,"user"        : "framify"
+    ,"password"    : "framify"
+    ,"host"        : 
+    {
+        "url"     : "localhost"
+        ,"port"   : 27017
+        ,"idle"   : 30
+        ,"max_connections": 100
+    }
+}
