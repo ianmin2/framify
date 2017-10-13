@@ -186,11 +186,11 @@ Comes with a **JSON** *API* ORM with optional *CORS* packaging of ***HTTP*** req
 	
 
 ---
-##handling files in ***src/ {{ services | directives | controllers }}***
+#### handling files in ***src/ {{ services | directives | controllers }}***
 
 > Make your main controller and directive changes in the ***framework/framify.es6*** file	
 
-Note:	
+#### Note:	
 	
 	*This file is required to run the application*
 
@@ -202,7 +202,7 @@ Note:
 	[*Failure to do this may mean that you have to implement an even dirtier routing mechanism*]
 
 ---
-##VIEW DEVELOPMENT
+### VIEW DEVELOPMENT
 
 > Avoid at all costs temptation(s) to place your view directly in the ***index.html***, ***dash.html*** or **panel.html** files. 
 	
@@ -224,18 +224,18 @@ Note:
 
 
  ----
- ##LINKS
+ ### LINKS
 [ Google Material Icons](https://design.google.com/icons/)
 
 [ Out of the box application example](https://bixbyte.io/framify)
 
 ----
-## changelog
-[Changelog Document](https://github.com/ianmin2/framify/blob/master/changelog.md)
+## Changelog
+[Open Changelog Document](https://github.com/ianmin2/framify/blob/master/changelog.md)
 
 ----
-## thanks
-* [ianmin2](https://ianmin2.cf)
+## Contributors
+* [ianmin2](https://github.com/ianmin2)
 
 
 ## License
