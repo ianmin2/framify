@@ -170,7 +170,7 @@ Comes with a **JSON** *API* ORM with optional *CORS* packaging of ***HTTP*** req
 
 #### *KEY*
 
->	(=>)			Primary Major Segment folder
+	(=>)			Primary Major Segment folder
 
 >	(->)			Subsidiary folder
 
