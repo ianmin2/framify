@@ -1,0 +1,136 @@
+<div id="top_bar" class="uk-animation-slide-bottom" style="background-color:rgba(0,0,0,0.7);">
+    <div class="md-top-bar">
+        <div class="uk-width-large-10-10 uk-text-justify uk-container-justify">
+            <ul class="top_bar_nav" id="snippets_grid_filter">
+
+                <li ng-class="{'uk-active': frame.currTab == 'add' }">
+                    <a ng-click="frame.currTab='add'" style="font-weight:bold;color:white;text-shadow: 1px 1px 2px #1976D2, 0.5px 0.5px 1px black ;">Add User</a>
+                </li>
+                <li ng-class="{'uk-active': frame.currTab == 'edit' }" >
+                    <a ng-click="frame.currTab='edit'" style="font-weight:bold;color:white;text-shadow: 1px 1px 2px #1976D2, 0.5px 0.5px 1px black ;">Modify Users</a>
+                </li>
+
+                <li class="pull-right" ng-if="data.me.role">
+                    <a style="font-weight:bold;color:white;text-decoration:none !important;cursor:pointer;">
+                            {{data.me["name.first"]}} -- <font ng-class=" (permissions.admin_only(data.me))? 'uk-text-success' : 'uk-text-primary' "> {{data.me.role | uppercase}} MODE</font> 
+                        </a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="" ng-init="handlers.isLogedIn().then(handlers.identity).then(app.doNothing).catch(app.doNothing)"></div>
+
+
+<div class="" >
+    <div class="" ng-init="fetch('vw_member_info');frame.currTab='edit';sort('name');">
+
+        <div class="col-lg-12">
+
+            <div class="tab-content" style="padding-top:1em;">
+                <div ng-switch="frame.currTab">
+
+                    <!--ADD-->
+                    <div ng-switch-when="add">
+
+                       <div class="md-btn md-btn-primary" ng-click="goTo('app.signup')">Add User</div>
+
+                    </div>
+
+                    <!-- EDIT -->
+                    <div ng-switch-when="edit"  ng-if="frame.currTab=='edit'">
+                        <!--<json-formatter json="fetched.vw_admins" open="2"></json-formatter>-->
+
+
+                        <div class="uk-alert uk-alert-danger uk-text-center uk-animation-slide-bottom"  ng-hide="permissions.admin_only(data.me)" >
+                            Your Access level does not permit you to perform this action.<br>
+                            Please consult your administrator for assistance
+                        </div>
+
+                        <div ng-if="permissions.admin_only(data.me)">
+
+
+                            <!-- <div  class="uk-alert uk-text-center uk-alert-warning">CURRENTLY DOWN FOR SECURITY IMPLICATION REVIEW</div> -->
+                        
+                            <div class="list list-inset uk-animation-slide-top">
+                                <label class="item item-input">
+                                            <i class="icon ion-search placeholder-icon"></i>
+                                            <input type="text" ng-model="search" value="" class="md-input" placeholder="Search">
+                                        </label>
+                                <button class="md-btn" ng-click="fetch([['vw_member_info']])"><i class="fa fa-refresh"></i></button>
+                            </div>
+                            <table id="table-id" align="center" class=" uk-animation-slide-bottom uk-table uk-table-striped  responsive-table" name="content">
+                                <thead>
+                                    <tr style="font-weight:bold; text-transform:uppercase; color:white !important; font-weight:bold !important; background-color: #309BBE !important;">
+                                        <th style="color:white !important; font-weight:bold;" ng-click="sort('member_id')">Id
+                                            <span class="icon " ng-show="sortKey=='member_id'" ng-class="{'ion-arrow-up-b':reverse,'ion-arrow-down-b':!reverse}"></span>
+                                        </th>
+                                        <th style="color:white !important; font-weight:bold;" ng-click="sort('name.first')">Name
+                                            <span class="icon " ng-show="sortKey=='name.first'" ng-class="{'ion-arrow-up-b':reverse,'ion-arrow-down-b':!reverse}"></span>
+                                        </th>
+                                        <th style="color:white !important; font-weight:bold;" ng-click="sort('telephone')">Telephone
+                                            <span class="icon " ng-show="sortKey=='telephone'" ng-class="{'ion-arrow-up-b':reverse,'ion-arrow-down-b':!reverse}"></span>
+                                        </th>
+                                        <th style="color:white !important; font-weight:bold;" ng-click="sort('email')">Email
+                                            <span class="icon " ng-show="sortKey=='email'" ng-class="{'ion-arrow-up-b':reverse,'ion-arrow-down-b':!reverse}"></span>
+                                        </th>
+                                        <th style="color:white !important; font-weight:bold;" ng-click="sort('account.name')">Account name
+                                            <span class="icon " ng-show="sortKey=='account.name'" ng-class="{'ion-arrow-up-b':reverse,'ion-arrow-down-b':!reverse}"></span>
+                                        </th>
+                                        <th style="color:white !important; font-weight:bold;" class="noprint" style="margin:0 auto;text-align:center;">Update</th>
+                                        <th style="color:white !important; font-weight:bold;" class="noprint" style="margin:0 auto;text-align:center;">Availability</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <form name="admin_edit" novalidate>
+                                        <tr dir-paginate="admin in fetched.vw_member_info |orderBy:sortKey:reverse|filter:search|itemsPerPage:5">
+
+                                            <th scope="row" data-label="ID">{{admin["member_id"]}}</th>
+                                            <th scope="row" data-label="Name" contenteditable ng-model="admin['name.first']"></th>
+                                            <td data-label="Telephone" contenteditable ng-model="admin.telephone"></td>
+                                            <td data-label="Email" contenteditable ng-model="admin.email"></td>
+                                            <td data-label="Username">
+                                                {{admin['account.name']| lowercase}}
+                                            </td>
+                                            <td data-label="" class="noprint" style="margin:0 auto;text-align:center;"> {{data.temp}}
+                                                <!--ng-if="(storage.admin.admin_name==admin.admin_name || permissions.admin_only(data.me) )&& admin.admin_name!='userAdmin'" -->
+                                                <button title="Update" 
+                                                ng-disabled="admin['name.first'].length < 3 || !app.isEmail(admin.email) || !app.isTelephone(admin.telephone)" 
+                                                ng-class="(!admin.active||admin['name.first'].length < 3 || !app.isEmail(admin.email) || !app.isTelephone(admin.telephone))?'md-btn-danger':'md-btn-success'"  class="md-btn"  ng-click="update('members',setVar({ 'telephone': admin.telephone, 'name.first': admin['name.first'], email: admin.email },['extras'], ' member_id='+admin.member_id ))">
+                                                    <i style="color:white;" class="uk-icon-edit"></i>
+                                                </button>
+                                            </td>
+                                            <td data-label="" class="noprint" style="margin:0 auto;text-align:center;">
+                                                <!--ng-disabled="(admin.admin_name==storage.admin.admin_name || (admin.access==0 && storage.admin.access!=0)) || admin.admin_name=='userAdmin'" -->
+                                                <button 
+                                                title="{{(admin.member_id > 4)?'Toggle Availability':'Cannot disable base administrators'}}" 
+                                                class="md-btn" 
+                                                ng-class="!admin.active ? ' md-btn-danger':'md-btn-success';{'md-btn-warning': (admin.member_id<=4), 'md-btn-success': (admin.member_id > 4 &&admin.active), 'md-btn-danger': (admin.member_id > 4 &&!admin.active)}" 
+                                                ng-disabled="admin.member_id <= 4" 
+                                                style="font-weight:bold; font-size:1em !important; color:white !important; text-align:center;" 
+                                                ng-click="update('members', setVar({ active: !admin.active },['extras'], 'member_id='+admin.member_id) )">
+                                                    <i class="fa" ng-class="( !admin.active ? 'fa-eye-slash':'fa-eye')"></i>
+                                                </button>
+                                            </td>
+
+                                        </tr>
+                                    </form>
+                                </tbody>
+                            </table>
+                            <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true">
+                            </dir-pagination-controls>
+
+                        </div>
+
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>

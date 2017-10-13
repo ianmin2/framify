@@ -159,7 +159,7 @@ if(  authMeth =="mongo" ){
 
         var params = get_params(req);
 
-        if( isDefined(params,"password,email,role,telephone,name.first,name.last,account.name") ){
+        if( isDefined(params,"password,email,role,telephone,name.first,account.name") ){
             
             delete params.password2;
             params.password = crypt.md5(params.password);
@@ -220,10 +220,37 @@ if(  authMeth =="mongo" ){
             .then(inserted =>{
                 log(`${inserted}`.succ)
                 log(`Registered the user ${params["email"]}`.succ)
-                res.json( make_response( 200, "Successfully registered a new user.",params) )
+
+                //@ Welcome the user to the by SMS platform 
+                // mysms.one( { 
+                //     to:params.telephone, 
+                //     text: 
+                //     `Jambo ${params['name.first']}!\nWelcome to framify!\nYou may now login https://${myAddr}:${app.port}`
+                // } ,{ 
+                //     'user.name': 'userAdmin', 
+                //     'organization': 1, 
+                //     'name.first': 'SYSTEM ROBOT ADMINISTRATOR', 
+                //     'email': 'sms@bixbyte.io',
+                //     'telephone':'+254725678447'
+                // })
+                // .then(()=>{
+                //     // j_log(a)
+                //     log(`Successfully sent a welcome SMS to the user ${params['name.first']} (${params.telephone})`.succ);
+                //     res.json(make_response(200, `Successfully registered ${params['name.first']}.`, params))
+                // })
+                // .catch(e=>{
+                //     c_log(`\n================================================\nERROR AT USER REGISTRATION SMS`.error)
+                //     j_log(e)
+                //     c_log(`\n================================================\n`.error)
+                //     log(`Failed to send a welcome SMS to the user ${params['name.first']} (${params.telephone})`.err);
+                //     res.json(make_response(200, `Successfully registered ${params['name.first']}.`, params))
+                // })
+               
+
+                res.json( make_response( 200, `Successfully registered ${params['name.first']}.`,params) )
             })
             .catch(error => {
-                log(`Failed to register the user.\n\t\t\t\t${str(error.message)}`.err)
+                log(`Failed to register the user ${params['name.first']}.\n\t\t\t\t${str(error.message)}`.err)
                 // console.dir(error.message)
                 res.status(500).json( make_response( 500, `Failed to record the user. <br><br>Please try changing:<br>1. Email<br>2. Username<br>3. Telephone`, error.message) )
             })

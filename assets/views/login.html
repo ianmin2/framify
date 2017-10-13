@@ -2,12 +2,11 @@
 <div class="md-card" style="font-family: Andale Mono,Andalemono">
     <form name="login_form" class="" style="" novalidate>
         <div class="md-card-content">
-            <h2 class="heading_a uk-badge uk-badge-primary" style="border-radius:40%; text-shadow:1px 1px rgba(48,155,198,0.5);color:white;">LOGIN</h2>
+            <h2 class="heading_a uk-badge uk-badge-primary" style="border-radius:40%; background-color: rgba(48,155,198,1); padding:0.2em;color:white;">LOGIN</h2>
             <div class="uk-grid" data-uk-grid-margin>
 
                 
 
-           
                 <md-input-container class="uk-width-medium-2-5 uk-animation-slide-top">
                         <label>Email <sup style="color:red">*</sup></label>
                         <input 
@@ -50,20 +49,21 @@
                     <button  
                     style="margin-top:2.2em !important;min-width:12vw !important;"
                     ng-disabled="login_form.$invalid" 
-                    ng-click="auth.Login(data.login).then(handlers.loginSuccess).catch(handlers.loginError)"
+                    ng-click="app.notify('Attempting to login','info',1000);auth.Login(data.login).then(handlers.loginSuccess).catch(handlers.loginError)"
                     ng-class="{'md-btn-primary' : !login_form.$invalid }"
                     class="md-btn uk-animation-slide-left"> LOGIN</button>
                    
                 </div>
-                
-                 <p></p>
+
+            <p></p>
             <div class="uk-row uk-align-left uk-animation-fade">
                 New here? <a class="" ng-click="goTo('app.signup')">Create an Account</a>
                 <p></p>
-                Forgot Your Password? <a class="" href="/passwords">Recover your password</a>
+                Forgot Your Password? <a class="" ng-click="goTo('app.passwords')">Recover your password</a>
             </div>
+            
+        </div>
 
-            </div>
 
         </div>
 

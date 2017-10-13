@@ -4,7 +4,7 @@ let router = new express.Router();
 router.route("/")
     .get((req, res) => {
 
-        res.sendFile(`${__dirname}/templates/password/main.html`);
+        res.sendFile(path.join(__dirname,`templates/password/main.html`));
 
     })
 
@@ -15,6 +15,8 @@ router.route("/forgot")
         let params = get_params(req);
 
         if (params.email) {
+
+            c_log(`Attempting a password recovery for ${params.email}`.info)
 
             $connection.query("SELECT * from members WHERE email=$1 LIMIT 1", [params.email])
                 .then(userData => {
@@ -33,7 +35,7 @@ router.route("/forgot")
                                     let recovery_id = recovery[0].recovery_id;
 
                                     //@ Fetch the password recovery html template 
-                                    let template = fs.readFileSync(`${__dirname}/templates/password/forgot.html`, 'utf8');
+                                    let template = fs.readFileSync( path.join( __dirname,`./templates/password/forgot.html`), 'utf8');
 
                                     //@ Replace the template strings with the proper fetched data
                                     template = template.replace(/{{user}}/ig, `${userData[0]["name.first"]}`)
@@ -42,7 +44,7 @@ router.route("/forgot")
 
                                     //@ Format the mail object for sending
                                     let mailObj = {
-                                        from: 'passwords@bixbyte.io',
+                                        from: 'Framify Passwords <passwords@bixbyte.io>',
                                         to: userData[0].email,
                                         subject: 'Framify Password recovery request',
                                         html: template
@@ -53,29 +55,35 @@ router.route("/forgot")
 
                                         sendMail(mailObj)
                                             .then(msg => {
+                                                log(`Successfully sent  a password recovery email to ${userData[0].email}`.yell)
                                                 res.send(make_response(200, `A password recovery email is on its way to ${params.email}.<br><br>Please check your <b style="color:orange !important;">Junk</b> or <b style="color:orange !important;">spam</b> folders before trying again.`, 'continue'))
                                             })
                                             .catch(err => {
+                                                log(`Something went wrong when trying to send a  password recovery email to ${str(userData[0])}`.err)
+                                                errorEmail({ message: `Failed to send a password recovery email to the user <br><br>${str(userData[0])}`, details: err })
                                                 res.send(make_response(500, `An error occured when trying to send your email.<br>Please try again.<br><br>Error: ${err.message}`));
                                             })
 
                                     } else {
 
+                                        log(`This server does not seem to be configured for email sending!!`.err)
+                                        errorEmail(`The application server at ${myAddr} is not configured for mail sending!`)
                                         res.send(make_response(500, 'The email sending server has not been defined for this application.<br> Please consult your administrator for assistance'))
 
                                     }
 
                                 } else {
 
+                                    log(`Someone tried password recovery with invalid credentials: ${params.email}`.yell)
                                     res.send(make_response(500, "Failed to recover your password due to password recovery technicalities.<br>Please try again.", recovery))
 
                                 }
 
-
-
                             })
                             .catch(err => {
-                                res.send(make_response(500, "Failed to generate a recovery token.<br>Please try again", err.message))
+                                errorEmail({ message: `The application at ${myAddr} failed to record a password recovery email token for ${params.email}`, details: err });
+                                log(`Failed to record a password recovery token.\nReason:\n\n${err}`)
+                                res.send(make_response(500, "Failed to record a recovery token.<br>Please try again", err.message))
                             })
 
                     } else {
@@ -84,6 +92,7 @@ router.route("/forgot")
 
                 })
                 .catch(err => {
+                    errorEmail({message:`A nasty error showed up at the user data selection point of the password recovery engine for ${params.email}`, details: err})
                     res.send(make_response(500, err.message));
                 })
 
@@ -114,7 +123,7 @@ router.route("/recover/:id/:email/:token")
 
                         if (!params.password || !params.password2 || (params.password != params.password2)) {
 
-                            res.sendFile(`${__dirname}/templates/password/new.html`)
+                            res.sendFile(`${__dirname}/templates/password/new.html`);
 
                         } else {
 
@@ -127,25 +136,31 @@ router.route("/recover/:id/:email/:token")
 
                                         //@ DISABLE ALL OF THE USER'S PASSWORD RESET TOKENS
                                         $connection.query("UPDATE password_recovery SET used=true WHERE member=$1 AND used=false", [resp[0].member_id])
-                                            .then(updatedNull => {
+                                            .then(() => {
 
+                                                log(`Successfully updated a password for the account ${params.email}`.succ)
                                                 res.send(make_response(200, "Your password has successfully been updated.<br>Please login to continue."))
 
                                             })
                                             .catch(err => {
+                                                errorEmail({message: `Failed to update the password for ${params.email}`, details: err})
+                                                log(`Failed to update the password for ${params.email}\nReason:\n\n${err.message}`)
                                                 res.send(make_response(500, err.message));
                                             })
 
                                     } else {
 
                                         //@ FAILED TO DISABLE THE RECOVERY TOKEN
-                                        res.send(make_response(200, "Failed to disable the recovery key you just used"))
+                                        errorEmail({message: `Failed to capture member details for the user ${params.email} at password recovery`, details: err})
+                                        res.send(make_response(500, "Something nasty happened when attempting password recovery."))
 
                                     }
 
                                 })
                                 .catch(err => {
-                                    res.send(make_response(500, err.message))
+                                    errorEmail({message: `Failed to disable used recovery tokens for the account ${params.email}`, details: err})
+                                    res.send(make_response(500, "Failed to update password. Please try again."))
+                                    // res.send(make_response(500, err.message))
                                 })
 
                         }

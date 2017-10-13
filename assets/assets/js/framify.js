@@ -622,6 +622,14 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
         });
     };
 
+    //@ Handle The sending of welcome messages
+    this.welcomeMail = function (data, destination) {
+        return $q(function (resolve, reject) {
+            destination = destination ? destination : '/welcome';
+            $http.post(destination, data).success(resolve).error(reject);
+        });
+    };
+
     //@ Generic Process Event Handler
     this.handler = function (response) {
 
@@ -848,6 +856,14 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
             method: "POST",
             url: "/mail",
             data: data
+        });
+    };
+
+    //@ Handle The sending of welcome messages
+    this.welcomeMail = function (data, destination) {
+        return $q(function (resolve, reject) {
+            destination = destination ? destination : '/welcome';
+            $http.post(destination, data).success(resolve).error(reject);
         });
     };
 }])
@@ -1136,7 +1152,11 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     };
 
     return me;
-}]).run(["app", "cgi", "$rootScope", "$state", "$localStorage", "sms", "auth", "remoteAuth", "$http", "iSMS", function (app, cgi, $rootScope, $state, $localStorage, sms, auth, remoteAuth, $http, iSMS) {
+}]).run(["app", "cgi", "$rootScope", "$state", "$localStorage", "sms", "auth", "remoteAuth", "$http", "iSMS", "$templateCache", function (app, cgi, $rootScope, $state, $localStorage, sms, auth, remoteAuth, $http, iSMS, $templateCache) {
+
+    $rootScope.$on('$viewContentLoaded', function () {
+        $templateCache.removeAll();
+    });
 
     //! INJECT THE LOCATION SOURCE TO THE ROOT SCOPE
     $rootScope.location = $state;
@@ -2114,7 +2134,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
             }).error(function (error) {
 
                 $scope.auth.Logout().then(function () {
-
+                    $scope.data.me = undefined;
                     $scope.app.notify("<i class='fa  fa-exclamation-triangle'></i>&nbsp;&nbsp;Your lease has expired <br>Please Login to continue.", 'danger');
                     reject($state.go("app.login"));
                 });
@@ -2136,7 +2156,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
 
                 // console.log("Something just didn't go well.")
                 $scope.auth.Logout().then(function () {
-
+                    $scope.data.me = undefined;
                     $scope.app.notify("<i class='fa  fa-exclamation-triangle'></i>&nbsp;&nbsp;Your lease has expired <br>Please Login to continue.", 'danger');
                     reject($state.go("app.login"));
                 });
@@ -2151,6 +2171,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
 
             if (!$scope.storage.framify_user) {
 
+                $scope.data.me = undefined;
                 // console.log("\nNo localstorage value is defined\n")
 
                 if ($state.current.name != "app.login") {
@@ -2193,6 +2214,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
         return $q(function (resolve, reject) {
 
             // console.log("Handing you over to the remote authentication server.")
+            $scope.data.me = undefined;
 
             if (!$scope.storage.framify_user) {
 
@@ -2222,6 +2244,53 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
         });
     };
     $scope.r_handlers.is_loged_in = $scope.r_handlers.isLogedIn;
+
+    $scope.data.recovery = {};
+
+    //@ The recovery attempt function
+    $scope.recover_password = function (email) {
+
+        $scope.data.recovery.response = "Loading ...";
+
+        $http({
+            method: "POST",
+            url: "/passwords/forgot",
+            data: {
+                email: email
+            }
+        }).then(function (response) {
+            $scope.data.recovery.response = response.data.data.message;
+            $scope.app.alert('Password Recovery', response.data.data.message);
+            $scope.data.recovery.email = "";
+        });
+    };
+
+    $scope.isSignedUp = function (obj) {
+        return $q(function (resolve, reject) {
+            // if(obj.response == 200){
+
+            // alert( $scope.data )
+
+            $scope.cgi.welcomeMail({
+                from: "Framify User Accounts <accounts@bixbyte.io>",
+                to: $scope.signup.email,
+                subject: "Welcome to our platform",
+                data: { name: $scope.signup["name.first"], telephone: $scope.signup.telephone, username: $scope.signup["account.name"] }
+            }).then(function (r) {
+
+                $scope.app.alert("Welcome on board!", "<center style='font-size:1.4em;'>Thank you <font color='green'>" + $scope.signup['name.first'] + "</font>.<br><br> You are now successfully registered. </center>"); // window.location = "http://admin.infomed.co.ke";
+                resolve(true);
+            }).catch(function (e) {
+
+                $scope.app.alert("Welcome on board!", "<center style='font-size:1.4em;'>Thank you <font color='green'>" + $scope.signup['name.first'] + "</font>.<br><br> You are now successfully registered. </center>");
+                resolve(true);
+            });
+
+            // }else{   
+            //     reject(obj)
+            // }           
+        });
+    };
 }]).directive("contenteditable", function () {
     return {
         restrict: "A",

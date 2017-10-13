@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Welcome to Framify!</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+</head>
+
+<body>
+    <div style="width:100%; min-height:100%;border:opx !important;">
+
+        <div style="width:90% !important;background-color:#309BBE;color:white;text-align:center;padding:1em; margin: 0 auto;border:1em !important; font-family:Courier New, Courier, monospace">
+            <font style="font-size:1.4em;font-weight:bold;">
+                Framify</font> Welcomes you!
+
+        </div>
+
+        <div style="width:90% !important;margin: 0 auto;font-family:Courier New, Courier, monospace;">
+            <br> Hello
+            <font color="navy" style="font-weight:400"> {{user}} </font>,
+            <br><br> We are excited to have you on board our platform.
+            <br>
+            <br>
+            The following are your user details:
+            <br>
+            <i>Account Name:</i> 
+            <font color="red">{{user_account}}</font>
+            <i>Contact Email:</i> 
+            <font color="red">{{user_email}}</font>
+            <i>Contact Telephone:</i> 
+            <font color="red">{{user_telephone}}</font>
+            <br>
+            <br>
+            You can access the administrative portal at 
+            <a href="http://${myAddr}:${app.port}">https://${myAddr}:${app.port}</a>
+            <br>
+            <br> 
+            For any assistance, drop us an email at <font color="green">support@bixbyte.io</font>
+            
+            <br><br>
+            <hr>
+            <br>
+            <font color="gray">
+                Sincerely,
+                <br>
+                <b> 
+                    The Framify team 
+                </b>
+            </font>
+
+        </div>
+
+    </div>
+    <br><br><br><br>
+</body>
+
+</html>

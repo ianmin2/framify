@@ -447,6 +447,23 @@ SELECT member_id,"name.first","name.last","account.name",email,password,role,tel
 FROM members
     LEFT JOIN organizations
 ON members.organization = organizations.org_id;
+
+--- VW_INACTIVE_MEMBERS ---
+DROP VIEW IF EXISTS vw_inactive_members;
+CREATE OR REPLACE VIEW vw_inactive_members AS 
+SELECT  member_id,"name.first","name.last","account.name",email
+,role,telephone,joined,active
+,organization,organization_name,organization_email,organization_telephone FROM vw_members 
+WHERE active = false;
+
+--- VW_MEMBER_INFO ---
+DROP VIEW IF EXISTS vw_member_info CASCADE;
+CREATE OR REPLACE VIEW vw_member_info AS
+SELECT member_id,"name.first","name.last","account.name",email
+,role,telephone,joined,active
+,organization,organization_name,organization_email,organization_telephone
+FROM vw_members;
+
 --==========================================================================================================
 
 --- PASSWORD_RECOVERY --

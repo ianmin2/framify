@@ -35,7 +35,7 @@ exports.oauth = {
 	}
 };
 
-//@ MONGODB DATABASE CONNECTION PARAMETERS
+//@ MONGODB DATABASE CONNECTION PARAMETERS (.database)
 if(fs.existsSync(files.mongo_config)){
 	exports.database = require(files.mongo_config)
 	c_log(`\n✔`.succ + `  Loaded the user defined mongodb connection definition file`.info)
@@ -62,7 +62,7 @@ module.exports =
 }
 
 
-//@ POSTGRESQL DATABASE CONNECTION PARAMETERS
+//@ POSTGRESQL DATABASE CONNECTION PARAMETERS (.postgres)
 if(fs.existsSync(files.pg_config)){
 	exports.postgres = require(files.pg_config,'utf8');
 	c_log(`\n✔`.succ + `  Loaded the user defined postgresql connection definition file`.info)
@@ -85,7 +85,7 @@ module.exports =
 	`);
 }
 
-//@ JWT SIGNING KEY
+//@ JWT SIGNING KEY  (.secret)
 if( fs.existsSync(files.jwt_secret) ){
 
 	exports.secret = fs.readFileSync(files.jwt_secret,'utf8');
@@ -101,7 +101,7 @@ if( fs.existsSync(files.jwt_secret) ){
 }
 
 
-//@ SMS CREDENTIALS
+//@ SMS CREDENTIALS (.sms)
 if(fs.existsSync(files.sms_config)){
 	exports.sms = require(files.sms_config,'utf8');
 	c_log(`\n✔`.succ + `  Loaded the user defined SMS configuration file`.info)

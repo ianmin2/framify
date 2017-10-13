@@ -1,13 +1,12 @@
 <!--<h2 class="heading_b uk-margin-bottom">USER SIGNUP</h2>-->
 
-<div class="md-card uk-animation-slide-top" style="font-family: Andale Mono,Andalemono"
-ng-init="fetch([['organizations']])" 
->
-    <form name="add_user_form" class="" style="" novalidate>
-        <div class="md-card-content">
-            <h2 class="heading_a uk-badge uk-badge-primary" style="border-radius:40%; text-shadow:1px 1px rgba(48,155,198,0.5);color:white;">SIGNUP</h2>
-            <div class="uk-grid" data-uk-grid-margin>
+<div class="md-card uk-animation-slide-top" style="font-family: Andale Mono,Andalemono" ng-init="fetch([['organizations']])">
+    <form name="add_user_form" class="" style="" novalidate>      
 
+        <div class="md-card-content">
+                <h2 class="heading_a uk-badge uk-badge-primary" style="border-radius:40%; background-color: rgba(48,155,198,1); padding:0.2em;color:white;">SIGNUP</h2>
+            <div class="uk-grid" data-uk-grid-margin>
+                    
                 <div class="uk-width-medium-1-2">
                     <div class="uk-form-row">
                         <div class="uk-grid">
@@ -27,7 +26,7 @@ ng-init="fetch([['organizations']])"
                                 </div>
                             </md-input-container>
                                     
-                   
+                    
                         </div>
 
                     </div>
@@ -62,7 +61,7 @@ ng-init="fetch([['organizations']])"
                     <div class="uk-grid">
                         <md-input-container class="uk-width-medium-1-2 uk-animation-slide-bottom">
                             <label>Telephone <sup style="color:red">*</sup></label>
-                            <input type="text" class="md-input" name="telephone" ng-model="signup.telephone" ng-pattern="app.istelephone" required>
+                            <input type="tel" class="md-input" name="telephone" ng-model="signup.telephone" ng-pattern="app.istelephone" required>
                             <div class="help-block" style="font-family: Andale Mono;color:lightgray;" ng-messages="add_user_form.telephone.$error" ng-if="add_user_form.telephone.$touched">
                                 <p ng-message="required">A telephone number is required.</p>
                                 <p ng-message="pattern">Please enter a valid telephone number.</p>
@@ -78,18 +77,37 @@ ng-init="fetch([['organizations']])"
                         </md-input-container>
                     </div>
 
-                    <md-input-container class="uk-grid">
-                        <!-- <label>Account Type <sup style="color:red">*</sup></label> -->
-                        <md-select class="uk-width-medium-1-1 uk-animation-slide-bottom" name="role" placeholder="Please pick an account type" ng-model="signup.role" required>
-                            <md-option value="">...</md-option>
-                            <md-option value="client" ng-if="permissions.admin_client(data.me)">Enterprise Account</md-option>
-                            <md-option value="audit">Audit Account</md-option>
-                            <md-option value="admin" ng-if="permissions.admin_only(data.me)">Owner's Account</md-option>
-                        </md-select>
-                        <div class="help-block" style="font-family: Andale Mono;color:lightgray;" ng-messages="add_user_form.role.$error" ng-if="add_user_form.role.$touched">
-                            <p ng-message="required" class="uk-text-danger">A signup role is required.</p>
-                        </div>
-                    </md-input-container>
+                    <div class="uk-grid">
+                            <md-input-container class="uk-width-medium-1-2">
+                                    <!-- <label>Account Type <sup style="color:red">*</sup></label> -->
+                                <md-select class=" uk-animation-slide-bottom" name="role" placeholder="Pick an account type" ng-model="signup.role" required>
+                                    <md-option value="">...</md-option>
+                                    <md-option value="client">Enterprise Account</md-option>
+                                    <!-- <md-option value="audit">Audit Account</md-option> -->
+                                    <md-option value="admin" ng-if="permissions.admin_only(data.me)">Owner's Account</md-option>
+                                </md-select>
+                                <div class="help-block" style="font-family: Andale Mono;color:lightgray;" ng-messages="add_user_form.role.$error" ng-if="add_user_form.role.$touched">
+                                    <p ng-message="required" class="uk-text-danger">A signup role is required.</p>
+                                </div>
+                            </md-input-container>
+                            <div class="uk-width-medium-1-2 " ng-if="data.me">
+                                
+                                <div ng-if="data.me.role!='admin'">
+                                    {{signup.organization=data.me.organization}}
+                                </div>
+                                <div ng-if="data.me.role=='admin'">
+                                        <!-- <label>Member Organization <sup style="color:red">*</sup></label> -->
+                                        <md-select name="organization" ng-model="signup.organization" placeholder="Pick an organization"  required>
+                                            <md-option value="">...</md-option>
+                                            <md-option ng-repeat="org in fetched.organizations" ng-value="org.org_id" ng-hide="!org.org_active">{{org.org_name}}</md-option>
+                                        </md-select>
+                                        <div class="help-block" style="font-family: Andale Mono;color:lightgray;" ng-messages="add_user_form.organization.$error" ng-if="add_user_form.organization.$touched">
+                                            <p ng-message="required" class="uk-text-danger">A member organization is required.</p>
+                                        </div>
+                                </div>
+                                
+                            </div>
+                    </div>
                 </div>
 
             </div>
@@ -97,14 +115,17 @@ ng-init="fetch([['organizations']])"
                 <div class="uk-width-large-1-4 uk-width-medium-1-2 uk-animation-slide-right">
                     <button  
                     ng-disabled="add_user_form.$invalid" 
-                    ng-click="auth.Register(signup).then(handlers.regSuccess).catch(handlers.regError)"
+                    ng-click="app.notify('Attempting to register new user.');auth.Register(signup).then(isSignedUp).catch(handlers.regError)"
                     ng-class="{'md-btn-primary' : !add_user_form.$invalid }"
                     class="md-btn "> Signup</button>
                     <br><br>
                     Have an Account? <a class="" ng-click="goTo('app.login')">Login</a>
                 </div>
             </div>
-        
+                            
+
         </div>
+
+                                
     </form>
 </div>

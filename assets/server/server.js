@@ -43,10 +43,10 @@ global.apify    = require(path.join(__dirname,'../db/index'));
 //@ Set the application's running port [the default port is 1357]
 // app.port =  1357;
 
-//@ Import the members database schema
-global.member   = require(path.join(__dirname,'../schema/members'));
+//@ Import the members database schema for mongodb
+// global.member   = require(path.join(__dirname,'../schema/members'));
 
-//@ Establish a database connection
+//@ Establish a mongodb database connection
 // db("mongo", config.database);
 
 //@ THE PREVENT UNAUTHORIZED TASKS MIDDLEWARE
@@ -79,98 +79,114 @@ global.adminOnly = function(req,res,next){
 };
 
 //@ Framify Security Middleware Definition
-var framifySecurity = function ( req ,res ,next) {
-
+var framifySecurity = function(req, res, next) {
+    
         let payload = req.headers.authorization
-        req.whoami  = ( payload ) ? json( crypt.base64_decode( payload.replace(/JWT /ig, '').split(".")[1]  ) ) : {};
-        req.role    = ( payload ) ? req.whoami.role : "guest";
-
+        req.whoami = (payload) ? json(crypt.base64_decode(payload.replace(/JWT /ig, '').split(".")[1])) : {};
+        req.role = (payload) ? req.whoami.role : "guest";
+    
         //@ JS configuration file filter
         let isConfig = /^\/config\/[A-Za-z0-9\*\!\-\_\%]+(.conf|.config|.js|.ts|.es6)$/ //.*\/(.*)\.(.*)
-        let isSchema = /^\/schema\/*/
-        let isRoutes = /^\/routes\/*/
-        let isServer = /^\/server\/*/
-
-        let isDb     = /^\/db\/*/
-        let isPhp    = /^\/php\/*/
-
+        let isSchema = /^\/schema\/*/;
+        let isRoutes = /^\/routes\/*/;
+        let isServer = /^\/server\/*/;
+    
+        let isDb = /^\/db\/*/;
+        let isPhp = /^\/php\/*/;
+    
         // console.dir(`${req.path}  == ${isConfig.test(req.path)}`)
-
+    
         // console.dir(req.path)
-
+    
         //@ HANDLE SPECIAL PATHS
-        if( ( isDb.test(req.path) || isPhp.test(req.path) ) ){   
-
+        if ((isDb.test(req.path) || isPhp.test(req.path))) {
+    
             let pars = get_params(req);
-
+    
             //@ ENSURE THAT THE REQUIRED PARAMETERS ARE DEFINED
-            if( isDefined(pars,["command","table"]) ){
-
+            if (isDefined(pars, ["command", "table"])) {
+    
                 //@ DON'T SCRUTINIZE BACKUP REQUESTS
-                if( pars.command == "backup" ){
+                if (pars.command == "backup") {
                     next();
-                }else{
-
+                } else {
+    
                     //@ CONSTRUCT A PATH FORBIDDER
-                    let forbidden = 
-                    {
-                        add                 : /logs|password_recovery|aud_./ig 
-                        ,update             : /password_recovery|payments|^members$|aud_./ig
-                        ,get                : /^members$|password_recovery|vw_members|aud_./ig
-                        ,del                : /^(?!.*(group_members))/ig
-                        ,count              : /aud_./ig
-                        ,truncate           : /./ig
-                        ,drop               : /./ig
-                        ,custom             : /./ig
-                        ,getAll             : /./ig
+                    let forbidden = {
+                        add: /logs|password_recovery|^members$|aud_./ig,
+                        update: /password_recovery|payments|^members$|aud_./ig,
+                        get: /^members$|password_recovery|vw_members|aud_./ig,
+                        del: /^(?!.*(group_members))|^members$|aud_./ig,
+                        count: /aud_./ig,
+                        truncate: /./ig,
+                        drop: /./ig,
+                        custom: /./ig,
+                        getAll: /./ig
                     };
-
-                    //@ ENSURE THAT THE REQUESTED COMMAND HAS A DEFINED BARRIER 
-                    if( forbidden[pars.command] ){
+    
+                    let administrative_privilege = ['vw_member_info','members'];
+                    let administrative_paths = ["update","get","getAll"];
+    
+                    //@ Grant the Administrative user all the power within the defined bounds                    
+                    if(req.role=='admin' && (administrative_paths.indexOf(pars.command) != -1) && (administrative_privilege.indexOf(pars.table) != -1) ){
                         
+                        next();
+    
+                    }
+    
+                    //@ ENSURE THAT THE REQUESTED COMMAND HAS A DEFINED BARRIER 
+                    else if ( forbidden[pars.command]) {
+    
                         //@ TEST THE PARAMETERS FOR FORBIDDEN PATHS
-                        if( forbidden[pars.command].test( pars.table ) ){
-                            res.json( make_response( 403, 'Could not perform the requested action'  ) )
-                        }else{
+                        if (forbidden[pars.command].test(pars.table)) {
+                            res.json(make_response(403, 'Permission to perform the database action was denied.'));
+                        }else {
                             next()
                         }
-
-                    }else{
-                        res.json( make_response(501, `The path you requested has not been implemented.`) )
+    
+                        
+    
+                        
+    
+                    } else {
+    
+                        c_log(`${pars.command} is not defined`)
+                        c_log(forbidden[pars.command])
+                        res.json(make_response(501, `The path you requested has not been implemented.`))
                     }
-                    
-
-
+    
+    
+    
                     // j_log(pars)
-
+    
                     // // console.log( payload )
                     // // console.dir( req.path )
                     // // console.dir( req._parsedUrl.path )
-
-
+    
+    
                 }
-
-                
-            }else{
-
-                    next()
-
+    
+    
+            } else {
+    
+                next()
+    
             }
-
-
-            
-
-        //@ Prevent rendering of unauthorized files in the project
-        }else if( isConfig.test(req.path) || isSchema.test(req.path) || isRoutes.test(req.path) || isServer.test(req.path) ){
-            res.status(401).json(make_response(401,'Unauthorized'))
+    
+    
+    
+    
+            //@ Prevent rendering of unauthorized files in the project
+        } else if (isConfig.test(req.path) || isSchema.test(req.path) || isRoutes.test(req.path) || isServer.test(req.path)) {
+            res.status(401).json(make_response(401, 'Unauthorized'))
             console.log("Prevented access to unauthorized file".yell)
-        }else{
-
+        } else {
+    
             next()
-
+    
         }
-
-};
+    
+    };
 
 //@ Inject the security middleware
 app.use( framifySecurity );
@@ -229,11 +245,6 @@ require("../config/passport")( passport );
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-//@ SETUP THE PHP CGI INTERFACE
-// ,passport.authenticate('jwt', { session: false }) 
-// app.use("/php"  ,php.cgi(path.join(__dirname,'../php')));
-app.use("/php" ,require(path.join(__dirname,'../routes/db')) );
-
 //@ SETUP THE VIEWS STATIC DIRECTORY
 app.use("/views", express.static(path.join(__dirname,'../views')));
 
@@ -253,11 +264,54 @@ app.use("/upload" ,passport.authenticate('jwt', { session: false }) , require(pa
 //@ LOAD THE NON - CGI POSTGRES DATABASE HANDLER
 app.use("/db" ,require(path.join(__dirname,'../routes/db')) );
 
+//@ SETUP THE PHP CGI INTERFACE
+// ,passport.authenticate('jwt', { session: false }) 
+// app.use("/php"  ,php.cgi(path.join(__dirname,'../php')));
+// app.use("/php" ,require(path.join(__dirname,'../routes/db')) );
+
 //@ THE PASSWORD RECOVERY HANDLER
 app.use("/passwords", require(path.join(__dirname,'../routes/passwords')) );
 
 //@ THE SMS SENDING ROUTE 
-app.use("/sms", require( path.join(__dirname,'../routes/sms') ))
+app.use("/sms", require( path.join(__dirname,'../routes/sms') ));
+
+//@ Error Email Template
+global.errorEmail = (params) => {
+    
+    sendMail({
+        from: `Framify Errors <errors@bixbyte.io>`,
+        to: 'ianmin2@live.com',
+        subject: `Framify System error Experienced.`,
+        text: ``,
+        html: 
+        `<font color="red"><u><h2>A system error occured at http://${myAddr}:${app.port}!</u></font></h2>
+        <br>
+        Wassup,
+        <br>
+        There seems to be trouble in paradise.
+        <br><br>
+        SUMMARY:<br>
+        <font color="red">
+        ${str(params)}
+        </font>
+        <br>
+        <hr>
+        <font color="gray">It's about time for a fix buddy!</font>
+        <br><br><br>
+        `
+        })
+    .then(d => {
+        log('Error notification email sent'.yell)
+        // console.dir(d)
+    })
+    .catch(e => {
+        log(`Failed to send error notification mail!! Reason:`.err)
+        log(`${str(e)}`.yell);
+        console.dir(e)
+    })
+    
+
+};
 
 // ================================================================
 // CUSTOM
@@ -269,38 +323,88 @@ app.use("/payments" ,require(path.join(__dirname,'../routes/payments')) );
 
 //@ LISTEN  FOR EMAILS
 app.route("/mail")
-.post( passport.authenticate('jwt', { session: false }) ,(req,res) => {
+.post(passport.authenticate('jwt', { session: false }), (req, res) => {
 
     let params = get_params(req);
-    if(params.from){
+    if (params.from) {
 
-        if( params.to ){
+        if (params.to) {
 
             params.to = (params.to) ? params.to.split(',') : undefined;
-            
-            if( params.bcc ){ 
-                params.bcc =(params.bcc) ? params.bcc.split(',') :undefined;
-            } 
+
+            if (params.bcc) {
+                params.bcc = (params.bcc) ? params.bcc.split(',') : undefined;
+            }
 
             sendMail(params)
             .then(resp => {
-                res.send( make_response(200,resp) )
+                log(`Successfully sent an email to ${params.to}.`.succ);
+                res.send(make_response(200, resp));
             })
-            .catch(err=>{
-                res.status(500).json( make_response(500,err.message || err) )
+            .catch(err => {
+                log(`Failed to send an email to ${params.to}\nReason:\n`.err);
+                log(err);
+                res.status(500).json(make_response(500, err.message || err))
             });
 
-        }else{
+        } else {
 
-            res.send( make_response(500,"Please provide a recipient's email address") );
+            res.send(make_response(500, "Please provide a recipient's email address"));
 
         }
 
-    }else{
-        res.send( make_response(500,"Please provide a sender's  address") );
+    } else {
+        res.send(make_response(500, "Please provide a sender's  address"));
     }
 
 });
+
+app.route("/welcome")
+.post((req,res) => {
+
+    let params = get_params(req);
+    if (params.to) {
+        
+        params.to = (params.to) ? params.to.split(',') : undefined;
+
+        if (params.bcc) {
+            params.bcc = (params.bcc) ? params.bcc.split(',') : undefined;
+        }
+
+         //@ Fetch the user welcome html template 
+         let template = fs.readFileSync( path.join( __dirname,`../routes/templates/welcome/welcome.html`), 'utf8');
+         
+        //@ Replace the template strings with the proper fetched data
+        template = template.replace(/{{user}}/ig, `${params.data.name}`)
+            .replace(/{{user_account}}/ig, `${params.data.username}`)
+            .replace(/{{user_email}}/ig, `${params.to}`)
+            .replace(/{{user_telephone}}/ig, `${params.data.telephone}`)
+
+        sendMail({
+            from: "Framify User Accounts <accounts@bixbyte.io>",
+            to : params.to,
+            subject: "Welcome to Framify",
+            html: template,
+            text: `Hello ${params.data.name},\n\nWe are glad that you have chosen to use the framify platform.\n\nYou have been recorded under the account name "${params.data.username}".\n\nYou can access the administrative portal at http://${myAddr}:${app.port}\n\nFor any assistance, feel free to write to us at support@bixbyte.io.\n\nSincerely,\nThe Framify Team.`
+        })
+        .then(resp => {
+            log(`Successfully sent an email to ${params.to}.`.succ);
+            res.send(make_response(200, resp));
+        })
+        .catch(err => {
+            log(`Failed to send an email to ${params.to}\nReason:\n`.err);
+            log(err);
+            res.status(500).json(make_response(500, err.message || err))
+        });
+
+    } else {
+
+        res.send(make_response(500, "Please provide a recipient's email address"));
+
+    }
+
+})
+
 
 
 /**

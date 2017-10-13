@@ -9,7 +9,9 @@ var sort_by = function(field,reverse,primer){
 
 angular.module('framify', ['framify.js'])
 // !CONFIGURE THE BNASIC PRE-RUNTIME STATES OF THE APPLICATION
-.config(["$stateProvider","$urlRouterProvider","$provide", function($stateProvider,$urlRouterProvider,$provide) {
+.config(["$stateProvider","$urlRouterProvider","$provide","$sceProvider", function($stateProvider,$urlRouterProvider,$provide,$sceProvider) {
+
+    $sceProvider.enabled(false);
 
     $stateProvider
 
@@ -26,9 +28,10 @@ angular.module('framify', ['framify.js'])
     //@  Main application routes
     .state('app', {
         url: "/app"
+        ,cache:false
         ,templateUrl: 'views/dash.html'
         // ,abstract: 'app.index'
-        ,controller: 'framifyController'
+        // ,controller: 'framifyController'
         // resolve: {
         //     currentStats: function($http) {
         //         // return $http.get('/currentStats')
@@ -41,18 +44,22 @@ angular.module('framify', ['framify.js'])
     })
     .state("app.index", {
         url: "/index"
+        ,cache:false
         ,templateUrl: "views/index.html"
     })
     .state("app.documentation", {
         url: "/documentation"
+        ,cache:false
         ,templateUrl: "views/documentation.html"
     })
     .state("app.signup", {
         url: "/signup"
+        ,cache:false
         ,templateUrl: "views/signup.html"
     })
     .state("app.login",{
         url: "/login"
+        ,cache:false
         ,templateUrl: "views/login.html"
     })
     .state("app.panel",{
@@ -60,6 +67,17 @@ angular.module('framify', ['framify.js'])
         ,cache:false
         ,templateUrl: "views/panel.html"
     })
+    .state("app.passwords",{
+        url: "/passwords"
+        ,cache:false
+        ,templateUrl: "views/passwords.html"
+    })
+    .state("app.manage_users",{
+        url: "/manage_users"
+        ,cache:false
+        ,templateUrl: "views/manage_users.html"
+    })
+    
 
     //!EXTENDED ROUTE SETTING
     var setRoutes = (routeArray) => {
@@ -137,84 +155,96 @@ angular.module('framify', ['framify.js'])
 }])
 
 //!DEFINE THE APPLICATION RUNTIME DEFAULTS
+//$templateCache
 .run(
 ["app","cgi","$rootScope","$state","$localStorage","sms"
 ,function(app,cgi,$rootScope,$state,$localStorage,sms) {
 
-        $rootScope.sort_by = function(field,reverse,primer){
-            var key     = primer ? function(x){ return primer(x[field]) } : function(x){ return x[field] } ;
-            reverse     = !reverse ? 1 : -1;
-            return function(a,b){
-                return a = key(a), b = key(b), reverse* ((a>b) - (b>a));
-            }
-        };
+
+    // $rootScope.$on('$viewContentLoaded', function() {
+    //     $templateCache.removeAll();
+    // });
 
 
-        //# SETUP AND DEFINE THE APPLICATION ROUTES INTO AN ALL ACCESSIBLE 'links' VARIABLE
-        $rootScope.links = [];
-        $.getJSON("./config/app-routes.json")
-        .then(function(routes){
-            $rootScope.links = routes.sort($rootScope.sort_by('title',false,function(a){return a.toLowerCase()}));
-        });
+    $rootScope.sort_by = function(field,reverse,primer){
+        var key     = primer ? function(x){ return primer(x[field]) } : function(x){ return x[field] } ;
+        reverse     = !reverse ? 1 : -1;
+        return function(a,b){
+            return a = key(a), b = key(b), reverse* ((a>b) - (b>a));
+        }
+    };
 
-        //! INJECT THE LOCATION SOURCE TO THE ROOT SCOPE
-        $rootScope.location = $state;
 
-        //! INJECT THE $localStorage instance into the root scope
-        $rootScope.storage = $localStorage;
+    //# SETUP AND DEFINE THE APPLICATION ROUTES INTO AN ALL ACCESSIBLE 'links' VARIABLE
+    $rootScope.links = [];
+    $.getJSON("./config/app-routes.json")
+    .then(function(routes){
+        $rootScope.links = routes.sort($rootScope.sort_by('title',false,function(a){return a.toLowerCase()}));
+    });
 
-        //! INJECT THE APPLICATION'S MAIN SERVICE TO THE ROOT SCOPE SUCH THAT ALL SCOPES MAY INHERIT IT
-        $rootScope.app = app;
+    //! INJECT THE LOCATION SOURCE TO THE ROOT SCOPE
+    $rootScope.location = $state;
 
-        //! INJECT THE APP BASICS SERVICE
-        $rootScope.cgi = cgi;
+    //! INJECT THE $localStorage instance into the root scope
+    $rootScope.storage = $localStorage;
 
-        //! SIMPLE APPLICATION BEHAVIOR SETUP
-        $rootScope.frame = {};
+    //! INJECT THE APPLICATION'S MAIN SERVICE TO THE ROOT SCOPE SUCH THAT ALL SCOPES MAY INHERIT IT
+    $rootScope.app = app;
 
-        //#! INJECT THE SMS INSTANCE INTO THE MAIN SCOPE
-        $rootScope.sms = sms;
+    //! INJECT THE APP BASICS SERVICE
+    $rootScope.cgi = cgi;
 
-        //! IDENTIFY THE CURRENT PATH
-        $rootScope.frame.path = function() {
-            return $state.absUrl().split("/#/")[0] + "/#/" + $state.absUrl().split("/#/")[1].split("#")[0];
-        };
-        //p.split("/#/")[0]+"/#/"+p.split("/#/")[1].split("#")[0]
+    //! SIMPLE APPLICATION BEHAVIOR SETUP
+    $rootScope.frame = {};
 
-        //! RELOCATION HANDLING
-        $rootScope.frame.relocate = function(loc) {
-            console.log('Relocating to: #' + loc);
-            $rootScope.location.go(loc);
-        };
+    //#! INJECT THE SMS INSTANCE INTO THE MAIN SCOPE
+    $rootScope.sms = sms;
 
-        //! ADMIN HANDLING  
-        $rootScope.frame.is_admin = false;
+    //! IDENTIFY THE CURRENT PATH
+    $rootScope.frame.path = function() {
+        return $state.absUrl().split("/#/")[0] + "/#/" + $state.absUrl().split("/#/")[1].split("#")[0];
+    };
+    //p.split("/#/")[0]+"/#/"+p.split("/#/")[1].split("#")[0]
 
-        //! ADMIN STATUS CHECKER 
-        $rootScope.frame.isAdmin = function() {
-            return $rootScope.frame.is_admin ? true : false;
-        };
+    //! RELOCATION HANDLING
+    $rootScope.frame.relocate = function(loc) {
+        console.log('Relocating to: #' + loc);
+        $rootScope.location.go(loc);
+    };
 
-        //! ROOT USER STATUS CHECKER
-        $rootScope.frame.isRoot = function() {
-            return $rootScope.storage.admin.access == 0 ? true : false;
-        };
+    //! ADMIN HANDLING  
+    $rootScope.frame.is_admin = false;
 
-        //! ADMIN STATUS SWITCH
-        $rootScope.frame.changeAdmin = function(bool) {
-            $rootScope.frame.is_admin = bool;
-            //  $rootScope.$apply();
-        };
+    //! ADMIN STATUS CHECKER 
+    $rootScope.frame.isAdmin = function() {
+        return $rootScope.frame.is_admin ? true : false;
+    };
 
-        //! RESET THE ADMIN STATUS
-        $rootScope.frame.reset = function() {
-            delete $rootScope.storage.admin;
-            delete $rootScope.storage.user;
-            $rootScope.frame.changeAdmin(false);
-            window.location = "/#/";
-        };
-    }])
-    
-    .controller("frameController", ["$scope", function($scope) {
+    //! ROOT USER STATUS CHECKER
+    $rootScope.frame.isRoot = function() {
+        return $rootScope.storage.admin.access == 0 ? true : false;
+    };
 
-    }])
+    //! ADMIN STATUS SWITCH
+    $rootScope.frame.changeAdmin = function(bool) {
+        $rootScope.frame.is_admin = bool;
+        //  $rootScope.$apply();
+    };
+
+    //! RESET THE ADMIN STATUS
+    $rootScope.frame.reset = function() {
+        delete $rootScope.storage.admin;
+        delete $rootScope.storage.user;
+        $rootScope.frame.changeAdmin(false);
+        window.location = "/#/";
+    };
+
+}])
+
+
+.filter('startFrom', function() {
+    return function(input, start) {
+        start = +start; //parse to int
+        return input.slice(start);
+    }
+});

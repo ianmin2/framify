@@ -14,7 +14,9 @@ var sort_by = function sort_by(field, reverse, primer) {
 
 angular.module('framify', ['framify.js'])
 // !CONFIGURE THE BNASIC PRE-RUNTIME STATES OF THE APPLICATION
-.config(["$stateProvider", "$urlRouterProvider", "$provide", function ($stateProvider, $urlRouterProvider, $provide) {
+.config(["$stateProvider", "$urlRouterProvider", "$provide", "$sceProvider", function ($stateProvider, $urlRouterProvider, $provide, $sceProvider) {
+
+    $sceProvider.enabled(false);
 
     $stateProvider
 
@@ -30,9 +32,10 @@ angular.module('framify', ['framify.js'])
     //@  Main application routes
     .state('app', {
         url: "/app",
+        cache: false,
         templateUrl: 'views/dash.html'
         // ,abstract: 'app.index'
-        , controller: 'framifyController'
+        // ,controller: 'framifyController'
         // resolve: {
         //     currentStats: function($http) {
         //         // return $http.get('/currentStats')
@@ -44,20 +47,32 @@ angular.module('framify', ['framify.js'])
         // }
     }).state("app.index", {
         url: "/index",
+        cache: false,
         templateUrl: "views/index.html"
     }).state("app.documentation", {
         url: "/documentation",
+        cache: false,
         templateUrl: "views/documentation.html"
     }).state("app.signup", {
         url: "/signup",
+        cache: false,
         templateUrl: "views/signup.html"
     }).state("app.login", {
         url: "/login",
+        cache: false,
         templateUrl: "views/login.html"
     }).state("app.panel", {
         url: "/panel",
         cache: false,
         templateUrl: "views/panel.html"
+    }).state("app.passwords", {
+        url: "/passwords",
+        cache: false,
+        templateUrl: "views/passwords.html"
+    }).state("app.manage_users", {
+        url: "/manage_users",
+        cache: false,
+        templateUrl: "views/manage_users.html"
     });
 
     //!EXTENDED ROUTE SETTING
@@ -126,7 +141,13 @@ angular.module('framify', ['framify.js'])
 }])
 
 //!DEFINE THE APPLICATION RUNTIME DEFAULTS
+//$templateCache
 .run(["app", "cgi", "$rootScope", "$state", "$localStorage", "sms", function (app, cgi, $rootScope, $state, $localStorage, sms) {
+
+    // $rootScope.$on('$viewContentLoaded', function() {
+    //     $templateCache.removeAll();
+    // });
+
 
     $rootScope.sort_by = function (field, reverse, primer) {
         var key = primer ? function (x) {
@@ -204,4 +225,9 @@ angular.module('framify', ['framify.js'])
         $rootScope.frame.changeAdmin(false);
         window.location = "/#/";
     };
-}]).controller("frameController", ["$scope", function ($scope) {}]);
+}]).filter('startFrom', function () {
+    return function (input, start) {
+        start = +start; //parse to int
+        return input.slice(start);
+    };
+});

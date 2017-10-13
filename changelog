@@ -145,3 +145,14 @@ v.2.17.4
 v.2.17.5
 	=> Re-did the login and signup forms to merge more fluently the UI-KIT design language
 	=> Fixed a critical error that limited SMS credit loading to default organizationn rather than the User's Organization
+	
+v.2.17.6
+	=> Changed the main password recovery  router from static file referencing to utilize the more stable path module
+	
+v.2.18.0 
+	=> Added user welcome email capability
+	=> Fixed the pesky user data lingering after logout issue
+	=> Added support for error Emails on some routes
+	=> Started the move to a more modular system 
+	=> Added in-app password recovery
+	=> Fixed a lingering unnecesary field "name.last" required on signup issue
