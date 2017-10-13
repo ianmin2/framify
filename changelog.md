@@ -232,3 +232,7 @@ Added support for angular-charts
 > v.2.18.1
 
 	=> Updated the documentation and changelog format.
+
+	=> Removed some unecessary files
+
+	=> Added sample configuration files for the user
