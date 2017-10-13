@@ -1,4 +1,4 @@
-[![Framify Logo](https://bixbyte.io/Framify.png)](http://cards.ueab.ac.ke/Framify.png)
+[![Framify Logo](http://cards.ueab.ac.ke/Framify.png)](https://www.npmjs.com/package/framify)
 
 An fast and easy to use application bootstrapping tool for [node](http://nodejs.org).
 
