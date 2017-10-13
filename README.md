@@ -199,7 +199,7 @@ Note:
 
 > Edit the ***app.es6***  file such that all your application files are included therein* )  
 >  
-	[*Failure to do this means that you have to implement an even dirtier routing mechanism*]
+	[*Failure to do this may mean that you have to implement an even dirtier routing mechanism*]
 
 ---
 ##VIEW DEVELOPMENT
