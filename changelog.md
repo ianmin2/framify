@@ -250,3 +250,8 @@ Added support for angular-charts
 	=> Fixed lingering SQL issues
 
 	=> Fixed a lingering *"property role undefined not found"* for authentication in the main framework file
+
+
+> ## v2.19.0
+
+	=> Added  a global  http intercept to replace the after authentication handler

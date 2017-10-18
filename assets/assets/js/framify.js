@@ -2,7 +2,22 @@
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jsonFormatter', 'chart.js', 'ngAria', 'ngMaterial', 'ngMessages'])
+angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jsonFormatter', 'chart.js', 'ngAria', 'ngMaterial', 'ngMessages']).factory('authIntercept', ['$localStorage', function ($localStorage) {
+    return {
+        request: function request(config) {
+
+            if ($localStorage.framify_user) {
+
+                config.headers.Authorization = $localStorage.framify_user.token;
+                // console.log('Token Intercept executed!')
+                return config;
+            } else {
+
+                return config;
+            }
+        }
+    };
+}])
 
 //@ Application running essentials
 .service("app", ['$http', 'remoteAuth', '$q', function ($http, remoteAuth, $q) {
@@ -914,7 +929,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
 
                     $localStorage.framify_user = response.data.message;
 
-                    auth.SetAuth(response.data.message.token);
+                    // auth.SetAuth(response.data.message.token);
 
                     resolve(response.data.message);
                 } else {
@@ -934,7 +949,10 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
         return $q(function (resolve, reject) {
 
             delete $localStorage.framify_user;
-            auth.SetAuth(undefined).then(resolve);
+
+            // auth.SetAuth(undefined)
+            //     .then(resolve)
+            resolve();
         });
     };
     auth.logout = auth.Logout;
@@ -1000,7 +1018,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
 
                     $localStorage.framify_user = response.data.message;
 
-                    r_auth.SetAuth(response.data.message.token);
+                    // r_auth.SetAuth(response.data.message.token);
 
                     resolve(response.data.message);
                 } else {
@@ -1020,7 +1038,9 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
         return $q(function (resolve, reject) {
 
             delete $localStorage.framify_user;
-            r_auth.SetAuth(undefined).then(resolve);
+            // r_auth.SetAuth(undefined)
+            //     .then(resolve)
+            resolve();
         });
     };
     r_auth.logout = r_auth.Logout;
@@ -2343,10 +2363,12 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
 // }])
 
 //!CONFIGURE THE BNASIC PRE-RUNTIME STATES OF THE APPLICATION
-.config(["ChartJsProvider", function (ChartJsProvider) {
+.config(["ChartJsProvider", "$httpProvider", function (ChartJsProvider, $httpProvider) {
+
+    //@ Set the authentication header for each request
+    $httpProvider.interceptors.push('authIntercept');
 
     //@SET THE DEFAULT CHART COLORS
-
     ChartJsProvider.setOptions({ colors: ['#1976D2', '#000000', '#ff00ff', '#ffff00', '#00ff00', '#00ffff', '#4D5360'] });
 
     // ChartJsProvider.setOptions({ colors : [ "#4AB151",'#387EF5', '#FF0000', '#DCDCDC', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360'] });
