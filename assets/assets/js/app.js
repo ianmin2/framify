@@ -142,7 +142,7 @@ angular.module('framify', ['framify.js'])
 
 //!DEFINE THE APPLICATION RUNTIME DEFAULTS
 //$templateCache
-.run(["app", "cgi", "$rootScope", "$state", "$localStorage", "sms", function (app, cgi, $rootScope, $state, $localStorage, sms) {
+.run(["app", "$rootScope", "$state", "$localStorage", function (app, $rootScope, $state, $localStorage) {
 
     // $rootScope.$on('$viewContentLoaded', function() {
     //     $templateCache.removeAll();
@@ -178,14 +178,8 @@ angular.module('framify', ['framify.js'])
     //! INJECT THE APPLICATION'S MAIN SERVICE TO THE ROOT SCOPE SUCH THAT ALL SCOPES MAY INHERIT IT
     $rootScope.app = app;
 
-    //! INJECT THE APP BASICS SERVICE
-    $rootScope.cgi = cgi;
-
     //! SIMPLE APPLICATION BEHAVIOR SETUP
     $rootScope.frame = {};
-
-    //#! INJECT THE SMS INSTANCE INTO THE MAIN SCOPE
-    $rootScope.sms = sms;
 
     //! IDENTIFY THE CURRENT PATH
     $rootScope.frame.path = function () {

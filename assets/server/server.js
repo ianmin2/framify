@@ -379,6 +379,8 @@ app.route("/welcome")
             .replace(/{{user_account}}/ig, `${params.data.username}`)
             .replace(/{{user_email}}/ig, `${params.to}`)
             .replace(/{{user_telephone}}/ig, `${params.data.telephone}`)
+            .replace(/{{portal_url}}/ig, `http://${myAddr}:${app.port}`);
+            
 
         sendMail({
             from: "Framify User Accounts <accounts@bixbyte.io>",
