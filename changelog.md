@@ -255,3 +255,15 @@ Added support for angular-charts
 > ## v2.19.0
 
 	=> Added  a global  http intercept to replace the after authentication handler
+
+> ## v2.20.0
+
+	=> Changed the resolved registration value to the initial user input to accomodate the post -registration notification handler.
+
+	=> Added npm scripts *start* and *build*
+
+	=> Altered the welcome email template
+
+	=> Better fixed the "auth" service to make it a clone of the  "remoteAuth" service such that remote authentication is a first class citizen
+
+	=> Dropped the "sms" and "cgi" services in favor of the "iSMS" and "app" services respectively

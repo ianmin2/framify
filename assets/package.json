@@ -25,7 +25,9 @@
         "gulp": "*"
     },
     "scripts": {
-        "app": "node server/server.js"
+        "start": "node server/server.js",
+        "app": "node server/server.js",
+        "build": "gulp"
     },
     "author": "Bixbyte",
     "license": "ISC"

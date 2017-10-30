@@ -23,7 +23,7 @@
 <div class="" ng-init="handlers.isLogedIn().then(handlers.identity).then(app.doNothing).catch(app.doNothing)"></div>
 
 
-<div class="" >
+<div ng-if="storage.framify_user && data.me" >
     <div class="" ng-init="fetch('vw_member_info');frame.currTab='edit';sort('name');">
 
         <div class="col-lg-12">
@@ -62,24 +62,28 @@
                             </div>
                             <table id="table-id" align="center" class=" uk-animation-slide-bottom uk-table uk-table-striped  responsive-table" name="content">
                                 <thead>
-                                    <tr style="font-weight:bold; text-transform:uppercase; color:white !important; font-weight:bold !important; background-color: #309BBE !important;">
+                                    <tr style="font-weight:bold; text-transform:uppercase; color:white !important; font-weight:bold !important; background-color: #00467C !important;">
                                         <th style="color:white !important; font-weight:bold;" ng-click="sort('member_id')">Id
-                                            <span class="icon " ng-show="sortKey=='member_id'" ng-class="{'ion-arrow-up-b':reverse,'ion-arrow-down-b':!reverse}"></span>
+                                            <span class="icon " ng-show="sortKey=='member_id'" ng-class="{'uk-icon-chevron-up':reverse,'uk-icon-chevron-down':!reverse}"></span>
                                         </th>
-                                        <th style="color:white !important; font-weight:bold;" ng-click="sort('name.first')">Name
-                                            <span class="icon " ng-show="sortKey=='name.first'" ng-class="{'ion-arrow-up-b':reverse,'ion-arrow-down-b':!reverse}"></span>
+                                        <th style="color:white !important; font-weight:bold;" ng-click="sort('name.first')">First Name
+                                            <span class="icon " ng-show="sortKey=='name.first'" ng-class="{'uk-icon-chevron-up':reverse,'uk-icon-chevron-down':!reverse}"></span>
+                                        </th>
+                                        <th style="color:white !important; font-weight:bold;" ng-click="sort('name.last')">Last Name
+                                            <span class="icon " ng-show="sortKey=='name.last'" ng-class="{'uk-icon-chevron-up':reverse,'uk-icon-chevron-down':!reverse}"></span>
                                         </th>
                                         <th style="color:white !important; font-weight:bold;" ng-click="sort('telephone')">Telephone
-                                            <span class="icon " ng-show="sortKey=='telephone'" ng-class="{'ion-arrow-up-b':reverse,'ion-arrow-down-b':!reverse}"></span>
+                                            <span class="icon " ng-show="sortKey=='telephone'" ng-class="{'uk-icon-chevron-up':reverse,'uk-icon-chevron-down':!reverse}"></span>
                                         </th>
                                         <th style="color:white !important; font-weight:bold;" ng-click="sort('email')">Email
-                                            <span class="icon " ng-show="sortKey=='email'" ng-class="{'ion-arrow-up-b':reverse,'ion-arrow-down-b':!reverse}"></span>
+                                            <span class="icon " ng-show="sortKey=='email'" ng-class="{'uk-icon-chevron-up':reverse,'uk-icon-chevron-down':!reverse}"></span>
                                         </th>
                                         <th style="color:white !important; font-weight:bold;" ng-click="sort('account.name')">Account name
-                                            <span class="icon " ng-show="sortKey=='account.name'" ng-class="{'ion-arrow-up-b':reverse,'ion-arrow-down-b':!reverse}"></span>
+                                            <span class="icon " ng-show="sortKey=='account.name'" ng-class="{'uk-icon-chevron-up':reverse,'uk-icon-chevron-down':!reverse}"></span>
                                         </th>
                                         <th style="color:white !important; font-weight:bold;" class="noprint" style="margin:0 auto;text-align:center;">Update</th>
                                         <th style="color:white !important; font-weight:bold;" class="noprint" style="margin:0 auto;text-align:center;">Availability</th>
+                                        <th style="color:white !important; font-weight:bold;" class="noprint" style="margin:0 auto;text-align:center;">Recovery</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -87,7 +91,8 @@
                                         <tr dir-paginate="admin in fetched.vw_member_info |orderBy:sortKey:reverse|filter:search|itemsPerPage:5">
 
                                             <th scope="row" data-label="ID">{{admin["member_id"]}}</th>
-                                            <th scope="row" data-label="Name" contenteditable ng-model="admin['name.first']"></th>
+                                            <th scope="row" data-label="First Name" contenteditable ng-model="admin['name.first']"></th>
+                                            <th scope="row" data-label="Last Name" contenteditable ng-model="admin['name.last']"></th>
                                             <td data-label="Telephone" contenteditable ng-model="admin.telephone"></td>
                                             <td data-label="Email" contenteditable ng-model="admin.email"></td>
                                             <td data-label="Username">
@@ -113,13 +118,25 @@
                                                     <i class="fa" ng-class="( !admin.active ? 'fa-eye-slash':'fa-eye')"></i>
                                                 </button>
                                             </td>
+                                            <td>
+                                                    <button 
+                                                    title="Send Recovery Password"
+                                                    class="md-btn  md-btn-primary"
+                                                    ng-click="recover_password(admin.email)"
+                                                    >
+                                                    <i class="material-icons">&#XE0DA;</i>
+                                                    </button>
+                                            </td>
 
                                         </tr>
                                     </form>
                                 </tbody>
                             </table>
-                            <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true">
-                            </dir-pagination-controls>
+                            <dir-pagination-controls
+                            max-size="5"
+                            direction-links="true"
+                            boundary-links="true" >
+                        </dir-pagination-controls>
 
                         </div>
 
@@ -133,4 +150,8 @@
 
 
     </div>
+</div>
+
+<div ng-if="!storage.framify_user|| !data.me">
+        <div class="" ng-init="handlers.isLogedIn().then(handlers.identity).then(app.doNothing).catch(app.doNothing)"></div>
 </div>

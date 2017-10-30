@@ -639,8 +639,14 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
 
     //@ Handle The sending of welcome messages
     this.welcomeMail = function (data, destination) {
+
         return $q(function (resolve, reject) {
+
             destination = destination ? destination : '/welcome';
+
+            console.log('\nSending an email to ' + destination + '\nParameters:\n\n');
+            console.dir(data);
+
             $http.post(destination, data).success(resolve).error(reject);
         });
     };
@@ -678,284 +684,8 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     this.countSMS = function (data) {
         return Math.ceil(data.length / 160) == 0 ? 1 : Math.ceil(data.length / 160);
     };
-}])
 
-//@ The BASIC sms sending application service
-.service("sms", ['app', 'remoteAuth', '$q', function (app, remoteAuth, $q) {
-    var _this = this;
-
-    /**
-     * This angular service allows for you to easily send SMS messages conveniently using bixbyte's default SMS gateway platform
-     * 
-     * It allows the use of your *Framify SMS* android phone application to send simple SMS messages. 
-     * 
-     * You can easily extend it as you will since the socket connection to the server can be hooked to as "sms.socket"
-     */
-
-    //@ SMS BASIC APPLICATION INITIALIZATION
-
-    //@ Create a locally accessible copy of the 'sms' service
-    var sms = this;
-
-    //@ Definition of the socket object
-    this.socket;
-    var socket = this.socket;
-
-    //@ The socket connection initiator object
-    this.start = function (framify_sms_server_url) {
-
-        socket = io.connect(framify_sms_server_url || remoteAuth.url);
-
-        socket.on("connect", function () {
-            // console.log("Successfully established a connection to the framify SMS gateway");
-        });
-
-        socket.on("disconnect", function () {
-            // console.log("Dropped the framify SMS gateway connection.")
-        });
-
-        socket.on("reconnect", function () {
-            // console.log("Re-established a connection to the SMS gateway.")
-        });
-
-        return $q.resolve(app.make_response(200, "Starting the SMS gateway")).catch(function (e) {
-            // console.log("There was a problem when starting the SMS relay service.")
-            // console.dir(e)
-        });
-    };
-
-    this.stop = function () {
-
-        //@ Disconnect any existing conections
-        if (socket) {
-
-            socket.disconnect();
-            // console.log("Terminated all existing SMS gateway connections.");
-        }
-
-        //@ Nullify the existing object
-        socket = undefined;
-
-        return $q.resolve(app.make_response(200, "Stoping the SMS gateway")).catch(function (e) {
-            // console.log("There was a problem when starting the SMS relay service")
-            // console.dir(e)
-        });
-    };
-
-    //@ SEND EXPRESS SMS'
-    this.SMS = function (smsData) {
-
-        //@ Ensure that the SMS service provision gateway is set
-        if (socket) {
-
-            socket.emit("sendSMS", smsData);
-            return $q.resolve(true).catch(function (e) {
-                // console.log("Encountered an error when processing the sms function.")
-                // console.dir(e)
-            });
-
-            //@ Ask the user to initialize the sms service
-        } else {
-
-            app.alert("<font  color=red>SMS SERVICE NOT STARTED</font>", "Framify failed to execute an SMS related command.<br>Reason: <code>The SMS service provider has not been defined.</code>");
-            return $q.reject(false).catch(function (e) {
-                // console.log("Encountered an error when processing the sms function.")
-                // console.dir(e)
-            });
-        }
-    };
-
-    //@ SEND A SINGLE SMS
-    this.oneSMS = function (tel, mess, apiKey) {
-
-        //@ Ensure that the SMS service provision gateway is set
-        if (socket) {
-
-            var obj;
-            if (Array.isArray(tel)) {
-                obj = tel;
-            } else {
-                obj = {
-                    telephone: tel,
-                    message: mess,
-                    password: apiKey
-                };
-            }
-
-            socket.emit("sendSMS", obj);
-            return $q.resolve(app.make_response(200, "Queued the SMS for sending")).catch(function (e) {
-                // console.log("Encountered an error when processing the sendsms function.")
-                // console.dir(e)
-            });
-
-            //@ Ask the user to initialize the sms service
-        } else {
-
-            app.alert("<font  color=red>SMS SERVICE NOT STARTED</font>", "Framify failed to execute an SMS related command.<br>Reason: <code>The SMS service provider has not been defined.</code>");
-            return $q.reject(false).catch(function (e) {
-                // console.log("Encountered an error when processing the sms function.")
-                // console.dir(e)
-            });
-        }
-    };
-
-    //@ SEND BULK SMS MESSAGES
-    this.bulkSMS = function (contacts, data, apiKey) {
-
-        return $q(function (resolve, reject) {
-
-            //@ Ensure that the SMS service provision gateway is set
-            if (socket) {
-                (function () {
-
-                    var obj = [];
-
-                    //* Ensure that the API key has been set
-                    if (!apiKey) {
-                        app.alert("<font style='weight:bold;color:red;'>ERROR</font>", '<center>Failed to instantiate the SMS sending service before api Key definition.</center>');
-                    } else if (Array.isArray(contacts)) {
-
-                        //* handle an array of contacts
-                        contacts.forEach(function (element) {
-
-                            if (app.isTelephone(element)) {
-
-                                obj.push({
-                                    telephone: element,
-                                    message: data,
-                                    apiKey: apiKey
-                                });
-                            } else {
-
-                                app.notify('<center>Could not send an SMS message to the invalid number ' + element + '.</center>', 'danger');
-                            }
-                        }, _this);
-
-                        socket.emit("sendSMS", obj);
-                        resolve(app.make_response(200, "Queued the messages for sending."));
-                    } else {
-                        app.notify('<font style="weight:bold;color:white;">Bulk SMS error.</font><br><center>You can only use the bulk SMS service with an array of telephone contacts</center>', 'danger');
-                    }
-
-                    //@ Ask the user to initialize the sms service
-                })();
-            } else {
-
-                app.alert("<font  color=red>SMS SERVICE NOT STARTED</font>", "Framify failed to execute an SMS related command.<br>Reason: <code>The SMS service provider has not been defined.</code>");
-                reject(app.make_response(500, "The SMS service is not started."));
-            }
-        });
-    };
-
-    // //@ SAMPLE SUCCESSFUL SMS SENDING INFORMATION HANDLER
-    // this.socket.on("trueSMS", (data) => {
-    //     $scope.app.notify("The message has been conveyed.");
-    // });
-}])
-
-//@ The basic incomplete networking service
-.service("cgi", [function () {
-
-    //Handle background calls to the web server for database integration
-    this.ajax = function (data) {
-        return $.ajax({
-            method: "GET",
-            url: "/db",
-            data: data
-        });
-    };
-
-    //Handle the posting of emails via the mailgun api
-    this.mail = function (data) {
-        return $.ajax({
-            method: "POST",
-            url: "/mail",
-            data: data
-        });
-    };
-
-    //@ Handle The sending of welcome messages
-    this.welcomeMail = function (data, destination) {
-        return $q(function (resolve, reject) {
-            destination = destination ? destination : '/welcome';
-            $http.post(destination, data).success(resolve).error(reject);
-        });
-    };
-}])
-
-//@@ The Authentication service
-.service('auth', ['$http', '$localStorage', '$q', function ($http, $localStorage, $q) {
-
-    var auth = this;
-
-    auth.SetAuth = function (AuthToken) {
-
-        return $q(function (resolve, reject) {
-
-            resolve($http.defaults.headers.common.Authorization = AuthToken || $localStorage.framify_user ? $localStorage.framify_user.token : undefined);
-        });
-    };
-    auth.set_auth = auth.SetAuth;
-
-    //@ Perform User Registration
-    auth.Register = function (credentials) {
-
-        return $q(function (resolve, reject) {
-
-            $http.post('/auth/register', credentials).success(function (response) {
-
-                if (response.response == 200) {
-
-                    resolve(response.data.message);
-                } else {
-
-                    reject(response.data.message);
-                }
-            }).error(function (response) {
-                reject(JSON.stringify((response ? response.data ? response.data.message : response : response) || "Could not obtain a response from the server."));
-            });
-        });
-    };
-    auth.register = auth.Register;
-
-    //@ Perform a User Login
-    auth.Login = function (credentials) {
-
-        return $q(function (resolve, reject) {
-
-            $http.post('/auth/verify', credentials).success(function (response) {
-
-                if (response.response == 200) {
-
-                    $localStorage.framify_user = response.data.message;
-
-                    // auth.SetAuth(response.data.message.token);
-
-                    resolve(response.data.message);
-                } else {
-
-                    reject(response.data.message);
-                }
-            }).error(function (response) {
-                reject(JSON.stringify((response ? response.data ? response.data.message : response : response) || "Could not obtain a response from the server."));
-            });
-        });
-    };
-    auth.login = auth.Login;
-
-    //@ Perform A User Logout
-    auth.Logout = function () {
-
-        return $q(function (resolve, reject) {
-
-            delete $localStorage.framify_user;
-
-            // auth.SetAuth(undefined)
-            //     .then(resolve)
-            resolve();
-        });
-    };
-    auth.logout = auth.Logout;
+    return this;
 }])
 
 //@@ The Remote authentication service
@@ -995,7 +725,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
 
                 if (response.response == 200) {
 
-                    resolve(response.data.message);
+                    resolve(credentials);
                 } else {
 
                     reject(response.data.message);
@@ -1044,6 +774,16 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
         });
     };
     r_auth.logout = r_auth.Logout;
+
+    return r_auth;
+}])
+
+//@@ The Authentication service
+.service('auth', ['remoteAuth', '$http', '$localStorage', '$q', function (remoteAuth, $http, $localStorage, $q) {
+
+    Object.assign(this, remoteAuth);
+
+    return this;
 }])
 
 //@ The infobip SMS integration module
@@ -1172,7 +912,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     };
 
     return me;
-}]).run(["app", "cgi", "$rootScope", "$state", "$localStorage", "sms", "auth", "remoteAuth", "$http", "iSMS", function (app, cgi, $rootScope, $state, $localStorage, sms, auth, remoteAuth, $http, iSMS) {
+}]).run(["app", "$rootScope", "$state", "$localStorage", "auth", "remoteAuth", "$http", "iSMS", function (app, $rootScope, $state, $localStorage, auth, remoteAuth, $http, iSMS) {
 
     // $rootScope.$on('$viewContentLoaded', function() {
     //     $templateCache.removeAll();
@@ -1188,14 +928,8 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     //! INJECT THE APPLICATION'S MAIN SERVICE TO THE ROOT SCOPE SUCH THAT ALL SCOPES MAY INHERIT IT
     $rootScope.app = app;
 
-    //! INJECT THE APP BASICS SERVICE
-    $rootScope.cgi = cgi;
-
     //! SIMPLE APPLICATION BEHAVIOR SETUP
     $rootScope.frame = {};
-
-    //#! INJECT THE SMS INSTANCE INTO THE MAIN SCOPE
-    $rootScope.sms = sms;
 
     //@ INJECT THE infobip SMS sender into the root scope
     $rootScope.iSMS = iSMS;
@@ -1586,7 +1320,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
     $scope.fetch = function (table, data, cryptFields, cb) {
 
         if (Array.isArray(table)) {
-            var _ret2 = function () {
+            var _ret = function () {
 
                 var promiseArr = new Array();
 
@@ -1605,7 +1339,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
                 };
             }();
 
-            if ((typeof _ret2 === 'undefined' ? 'undefined' : _typeof(_ret2)) === "object") return _ret2.v;
+            if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
         } else {
             return $q.resolve(do_fetch(table, data, cryptFields)).catch(function (e) {
                 // console.log("Encountered an error when processing the fetch function.")
@@ -2153,6 +1887,7 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
             }).error(function (error) {
 
                 $scope.auth.Logout().then(function () {
+
                     $scope.data.me = undefined;
                     $scope.app.notify("<i class='fa  fa-exclamation-triangle'></i>&nbsp;&nbsp;Your lease has expired <br>Please Login to continue.", 'danger');
                     reject($state.go("app.login"));
@@ -2290,18 +2025,18 @@ angular.module('framify.js', ['ui.router', 'framify-paginate', 'ngStorage', 'jso
 
             // alert( $scope.data )
 
-            $scope.cgi.welcomeMail({
+            $scope.app.welcomeMail({
                 from: "Framify User Accounts <accounts@bixbyte.io>",
-                to: $scope.signup.email,
+                to: obj.email,
                 subject: "Welcome to our platform",
-                data: { name: $scope.signup["name.first"], telephone: $scope.signup.telephone, username: $scope.signup["account.name"] }
-            }).then(function (r) {
+                data: { name: obj["name.first"], telephone: obj.telephone, username: obj["account.name"] }
+            }, $scope.remoteAuth.url + '/welcome').then(function (r) {
 
-                $scope.app.alert("Welcome on board!", "<center style='font-size:1.4em;'>Thank you <font color='green'>" + $scope.signup['name.first'] + "</font>.<br><br> You are now successfully registered. </center>"); // window.location = "http://admin.infomed.co.ke";
+                $scope.app.alert("Welcome on board!", "<center style='font-size:1.4em;'>Thank you <font color='green'>" + obj['name.first'] + "</font>.<br><br> You are now successfully registered. </center>"); // window.location = "http://admin.infomed.co.ke";
                 resolve(true);
             }).catch(function (e) {
 
-                $scope.app.alert("Welcome on board!", "<center style='font-size:1.4em;'>Thank you <font color='green'>" + $scope.signup['name.first'] + "</font>.<br><br> You are now successfully registered. </center>");
+                $scope.app.alert("Welcome on board!", "<center style='font-size:1.4em;'>Thank you <font color='green'>" + obj['name.first'] + "</font>.<br><br> You are now successfully registered. </center>");
                 resolve(true);
             });
 
