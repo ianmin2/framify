@@ -267,3 +267,7 @@ Added support for angular-charts
 	=> Better fixed the "auth" service to make it a clone of the  "remoteAuth" service such that remote authentication is a first class citizen
 
 	=> Dropped the "sms" and "cgi" services in favor of the "iSMS" and "app" services respectively
+
+> ## v2.21.0
+
+	=> Added an explicit declaration for the expected bixbyte-frame version (0.21.0) in preparation for a major release
