@@ -1,8 +1,8 @@
-let router      = express.Router();
+let router              =    express.Router();
 
-const SMS = require( path.join(__dirname,'../server/sms.js') );
+const SMS               = require( path.join(__dirname,'../server/sms.js') );
 
-global.mysms = new SMS(`${config.sms.username}:${config.sms.password}`,config.sms.sender)
+global.mysms            = new SMS(`${config.sms.username}:${config.sms.password}`,config.sms.sender)
 
 const template_to_sms   = require( path.join(__dirname, 'template2sms.js') );
 
@@ -33,14 +33,16 @@ const template_to_sms   = require( path.join(__dirname, 'template2sms.js') );
 
 
 router.route("/")
-.all((req,res) => {
+.all((req,res) => 
+{
 
     res.send( make_response(200,"The SMS service is setup on this server.") );
 
-})
+});
 
 router.route("/echo")
-.all((req,res)=>{
+.all((req,res)=>
+{
 
     let pars = get_params(req);
     
@@ -48,42 +50,51 @@ router.route("/echo")
 
     res.send( make_response(200,pars) );
 
-})
+});
 
 router.route("/one")
-.all((req,res)=>{
+.all((req,res)=>
+{
 
     let params = get_params(req);
 
-    if( isDefined(params,["body"]) ){
+    if( isDefined(params,["body"]) )
+    {
 
         mysms.one( params.body ,req.whoami )
-        .then(a=>{
-            j_log(a)
-            res.send(a)
+        .then(a=>
+        {
+            j_log(a);
+            res.send(a);
         })
-        .catch(e=>{
-            j_log(e)
-            res.send(e)
-        })
+        .catch(e=>
+        {
+            j_log(e);
+            res.send(e);
+        });
 
-    }else{
-        res.send( make_response(500,"Please define the structural body of the message that you would like to send.",params) )
+    }
+    else
+    {
+        res.send( make_response(500,"Please define the structural body of the message that you would like to send.",params) );
     }
     
 
-})
+});
 
 router.route("/many")
-.all((req,res) => {
+.all((req,res) => 
+{
 
     let params = get_params(req);
 
-    if(isDefined(params,["body"])){
+    if(isDefined(params,["body"]))
+    {
 
         params.body = ( Array.isArray(params.body) ) ? params.body : [params.body];
 
-        if( (params.body[0].to.charAt(0) == "[") ){
+        if( (params.body[0].to.charAt(0) == "[") )
+        {
            
             params.body[0].to = json(params.body[0].to);
             params.body[0].to = ( params.body[0].to.length == 2 && !telRegex.test( params.body[0].to[1] ) ) ? params.body[0].to[0] : params.body[0].to;
@@ -91,64 +102,71 @@ router.route("/many")
         }
         
         mysms.many( params.body ,req.whoami )
-        .then(a=>{
-            j_log(a)
-            res.send(a)
+        .then(a=>
+        {
+            j_log(a);
+            res.send(a);
         })
-        .catch(e=>{
-            j_log(e)
-            res.send(e)
-        })
+        .catch(e=>
+        {
+            j_log(e);
+            res.send(e);
+        });
 
-        
-
-        
-
-    }else{
-        res.send( make_response(500,"Please define the structural body of the message that you would like to send.",params) )
+    }
+    else
+    {
+        res.send( make_response(500,"Please define the structural body of the message that you would like to send.",params) );
     }
 
-
-})
+});
 
 router.route("/track")
-.all((req,res) => {
+.all((req,res) => 
+{
 
     let params = get_params(req);
 
-    if( isDefined(params,["body"]) ){
+    if( isDefined(params,["body"]) )
+    {
 
         mysms.track( params.body ,req.whoami)
-        .then(a=>{
-            j_log(a)
-            res.send(a)
+        .then(a=>
+        {
+            j_log(a);
+            res.send(a);
         })
-        .catch(e=>{
-            j_log(e)
-            res.send(e)
-        })
+        .catch(e=>
+        {
+            j_log(e);
+            res.send(e);
+        });
 
-    }else{
-        res.send( make_response(500,"Please define the structural body of the message that you would like to send.",params) )
+    }
+    else
+    {
+        res.send( make_response(500,"Please define the structural body of the message that you would like to send.",params) );
     }
 
-
-})
+});
 
 
 router.route("/template")
-.all((req,res)=>{
+.all((req,res)=>
+{
 
     let params = get_params(req);
 
-    if(isDefined(params,["body"])){
+    if(isDefined(params,["body"]))
+    {
 
         let group_number;
 
         //@ Check if the to parameter is potentially an array
         params.body.to   = ( params.body.to.charAt(0) == "[" ) ? json(params.body.to) : params.body.to;
 
-        if( Array.isArray(params.body.to) ){
+        if( Array.isArray(params.body.to) )
+        {
 
             group_number    = clone(params.body.to)[1];
             params.body.to  = params.body.to[0];
@@ -156,48 +174,49 @@ router.route("/template")
             //@ PICK OUT THE DATA FOR THE GIVEN MEMBERS FROM THE DATABASE
 
             pgdb.query(`SELECT * FROM vw_group_members WHERE mem_group=$1 and mem_active=true`,[group_number])
-            .then((member_data)=>{
+            .then((member_data)=>
+            {
 
                 template_to_sms( params.body.text, member_data )
-                .then(resp => {
-
-                    //  j_log(resp)
-
+                .then(resp => 
+                {
+                 
                     //@Send the message
                     // res.send( make_response(200,resp) )
                     mysms.many( resp ,req.whoami)
-                    .then(a=>{
-                        j_log(a)
-                        res.send(a)
+                    .then(a=>
+                    {
+                        j_log(a);
+                        res.send(a);
                     })
-                    .catch(e=>{
-                        j_log(e)
-                        res.send(e)
-                    })
+                    .catch(e=>
+                    {
+                        j_log(e);
+                        res.send(e);
+                    });
 
                 })
-                .catch(err=>{
-                    j_log(err.message||err)
-                    res.send( ( err.response )  ? err :  make_response(500,err.message||err) )
-                })
-
-               
+                .catch(err=>
+                {
+                    j_log(err.message||err);
+                    res.send( ( err.response )  ? err :  make_response(500,err.message||err) );
+                });
 
             })
-            .catch(err=>{
-                j_log(err.message)
-                res.send( make_response(500,err.message) )
-            })
+            .catch(err=>
+            {
+                j_log(err.message);
+                res.send( make_response(500,err.message) );
+            });
 
-        }
+        };
 
-
-
-
-    }else{
-        res.send( make_response(500,"Please define the structural body of the message that you would like to send.",params) )
+    }
+    else
+    {
+        res.send( make_response(500,"Please define the structural body of the message that you would like to send.",params) );
     }
 
-})
+});
 
 module.exports  = router;

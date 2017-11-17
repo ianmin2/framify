@@ -25,14 +25,8 @@ Object.assign(global, require( path.join(__dirname, 'enc_dec.js') ) );
 //@ Avail the "sms_actions" method globally
 Object.assign(global, require(path.join(__dirname, 'sms_actions.js') ));
 
-//@ Define the authentication database [mongo/postgres]
-global.authMeth = "pg";
-
-//@ postgres initialization
-global.pgdb  = pgp(config.postgres);
-
-//@ Define the authentication database [mongo/postgres]
-global.authMeth = "pgsql";
+//@ Define the authentication database [mongo/sql]
+global.authMeth = "postgres";
 
 //@ Load the global postgres `$connection` object
 require(path.join(__dirname,'../db/connection'));

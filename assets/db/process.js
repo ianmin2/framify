@@ -30,7 +30,7 @@ prcs.addFunc = ( $addData ) => {
 
 		for( var i = 0; i < $keys.length; i++ ){
 			$field_names  += $keys[i]+',';
-			$field_params.push( ($values[i] || "") )
+			$field_params.push( ($values[i] || "") );
 			$field_values += "$"+(i+1)+",";
 		}
 		

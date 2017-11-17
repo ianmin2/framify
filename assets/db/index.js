@@ -1,5 +1,5 @@
 module.exports = ( req,res,callback ) => {
-
+	
 	//@Ensure that the callback has presidence over the response object
 	// res = ( callback ) ? callback : ( res.jsonp ) ? res.jsonp : res.json;
 	// res = ( callback ) ? callback : res.send;
@@ -38,40 +38,40 @@ module.exports = ( req,res,callback ) => {
 				})
 				.catch( e => { 
 					res.json( make_response(500, e.message) )
-				})
+				});
 			break;
 			
 			//# SIMPLE COUNTER FUNCTION 
 			case 'count':
 				$proc.countFunc( $_REQUEST )
 				.then(response => { 
-					res.json(response)
+					res.json(response);
 				})
 				.catch( e => { 
-					res.json( make_response(500, e.message) ) 
-				})
+					res.json( make_response(500, e.message) );
+				});
 			break;
 
 			//# SIMPLE GETTER HANDLER
 			case 'get':
 				$proc.getFunc( $_REQUEST )
 				.then(response => { 
-					res.json(response)
+					res.json(response);
 				})
 				.catch( e => { 
-					res.json( make_response(500, e.message) ) 
-				})				
+					res.json( make_response(500, e.message) );
+				});				
 			break;
 			
 			//# ADVANCED GETTER FUNCTION
 			case 'getAll':
 				$proc.getAllFunc( $_REQUEST )
 				.then(response => { 
-					res.json(response)
+					res.json(response);
 				})
 				.catch( e => { 
-					res.json( make_response(500, e.message) ) 
-				})				
+					res.json( make_response(500, e.message) );
+				});			
 			break;
 			
 			//# DELETION HANDLER
@@ -79,66 +79,66 @@ module.exports = ( req,res,callback ) => {
 	
 				$proc.delFunc( $_REQUEST )
 				.then(response => { 
-					res.json(response)
+					res.json(response);
 				})
 				.catch( e => { 
-					res.json( make_response(500, e.message) ) 
-				})				
+					res.json( make_response(500, e.message) );
+				});			
 			break;
 			
 			//# UPDATE HANDLER
 			case 'update':
 				$proc.updateFunc( $_REQUEST )
 				.then(response => { 
-					res.json(response)
+					res.json(response);
 				})
 				.catch( e => { 
-					res.json( make_response(500, e.message) ) 
-				})				
+					res.json( make_response(500, e.message) ); 
+				});				
 			break;
 			
 			//# TRUNCATE HANDLER
 			case 'truncate':
 				$proc.truncateFunc( $_REQUEST )
 				.then(response => { 
-					res.json(response)
+					res.json(response);
 				})
 				.catch( e => { 
-					res.json( make_response(500, e.message) ) 
-				})				
+					res.json( make_response(500, e.message) );
+				});			
 			break;
 			
 			//# TABLE DROP HANDLER
 			case 'drop':
 				$proc.dropFunc( $_REQUEST )
 				.then(response => { 
-					res.json(response)
+					res.json(response);
 				})
 				.catch( e => { 
-					res.json( make_response(500, e.message) ) 
-				})				
+					res.json( make_response(500, e.message) );
+				});				
 			break;
 			
 			//# PERFORM FULLY CUSTOM MANIPULATIONS
 			case 'custom':
 				$proc.customFunc( $_REQUEST )
 				.then(response => { 
-					res.json(response)
+					res.json(response);
 				})
 				.catch( e => { 
-					res.json( make_response(500, e.message) ) 
-				})				
+					res.json( make_response(500, e.message) );
+				});				
 			break;
 
 			//@ PERFORM A FULL DATABASE DATA BACKUP
 			case 'backup': 
 				$proc.bkup()
 				.then(response => { 
-					res.json(response)
+					res.json(response);
 				})
 				.catch( e => { 
-					res.json( make_response(500, e.message) ) 
-				})
+					res.json( make_response(500, e.message) ); 
+				});
 			break;
 			
 			default:
@@ -154,4 +154,4 @@ module.exports = ( req,res,callback ) => {
 	}
 
 
-}
+};

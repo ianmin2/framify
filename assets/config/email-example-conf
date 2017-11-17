@@ -1,0 +1,21 @@
+module.exports = 
+{
+  connection : 
+  {
+    service: 'gmail',
+    auth: 
+    {
+      user: 'passwordreset@example.com',
+      pass: 'YOUR_EMAIL_PASSWORD'
+    }
+  }
+  ,accounts : 
+  {
+    passwords:        "passwordreset@example.com",
+    welcome:          "accounts@example.com",
+    errors:           "errors@example.com",
+    notifications:    "noreply@example.com",
+    support:          "support@example.com"
+  }
+  
+};

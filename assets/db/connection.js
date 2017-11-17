@@ -3,7 +3,8 @@ var conn = {};
 /**
 * MAKE A WRAPPED RESPONSE 
 */ 
-conn.wrapResponse = ( $status, $message = '', $command = '' ) => {
+conn.wrapResponse = ( $status, $message = '', $command = '' ) => 
+{
 	
 	return ( make_response( $status, $message, $command ) );
 	
@@ -13,22 +14,24 @@ conn.wrapResponse = ( $status, $message = '', $command = '' ) => {
 /** 
 * THE BASIC QUERY PERFORMER 
 * */
-conn.query = ( $statement, $params ) => {
+conn.query = ( $statement, $params=[] ) => 
+{
 	
 	/* 
 		* Execute the query then fetch the returned associateive array for all values 
 		* */
 	return new Promise( (resolve,reject)=> {
 		
-		pgdb.any($statement,$params)
-		.then(data => {
-			resolve(data);
+		sqldb.query( $statement , 
+		{ bind: $params ,type: sqldb.QueryTypes.SELECT}
+		).then(data => {
+			resolve(data)
 		})
 		.catch(err=>{
 			console.log(`\n${$statement}`.yell)
 			console.log(`${err.message}\n`.err)
 			reject(err)
-		})
+		});		
 
 	}) 
 			
@@ -38,20 +41,24 @@ conn.query = ( $statement, $params ) => {
 /** 
 * THE BASIC MULTI QUERY PERFORMER 
 * */
-conn.mQuery = ( $statement, $params ) => {
+conn.mQuery = ( $statement, $params=[] ) => 
+{
 	
 	/* 
 		* Execute the query then fetch the returned associateive array for all values 
 		* */
 	return new Promise( (resolve,reject)=> {
 		
-		pgdb.any($statement,$params)
-		.then(data => {
-			resolve(data);
+		sqldb.query( $statement , 
+		{ bind: $params ,type: sqldb.QueryTypes.SELECT}
+		).then(data => {
+			resolve(data)
 		})
 		.catch(err=>{
+			console.log(`\n${$statement}`.yell)
+			console.log(`${err.message}\n`.err)
 			reject(err)
-		})
+		});	
 
 	})
 			
@@ -63,7 +70,8 @@ conn.mQuery = ( $statement, $params ) => {
 * { basic query with pre-defined conditional results }   
 * [ ideal for inserts, updates, and deletion  ]
 * */
-conn.aQuery = ( $statement, $params, $success, $failure, $scommand='', $fcommand='' ) => {
+conn.aQuery = ( $statement, $params, $success, $failure, $scommand='', $fcommand='' ) => 
+{
 	
 	return new Promise( (resolve,reject) => {
 
@@ -97,7 +105,7 @@ conn.aQuery = ( $statement, $params, $success, $failure, $scommand='', $fcommand
 	})
 
 	
-}
+};
 
 
 /** 
@@ -105,7 +113,8 @@ conn.aQuery = ( $statement, $params, $success, $failure, $scommand='', $fcommand
 * 	{ Returns all the values from the specified table field separated by the specified delimeter or as an array where none is defined } 
 * 	[ ideal for medium level queries ]
 * */
-conn.sQuery = ( $statement, $params, $dbField, $delimeter ) => {
+conn.sQuery = ( $statement, $params, $dbField, $delimeter ) => 
+{
 	
 	return new Promise( (resolve,reject)  => {
 
@@ -145,11 +154,11 @@ conn.sQuery = ( $statement, $params, $dbField, $delimeter ) => {
 };
 
 
-
 /**
 *  THE NUMBER OF ROWS ENUMERATOR
 *  */
-conn.num_rows = ( $statement, $params ) => {
+conn.num_rows = ( $statement, $params ) => 
+{
 	
 	return  new Promise( (resolve,reject) => {
 		
@@ -167,11 +176,11 @@ conn.num_rows = ( $statement, $params ) => {
 };
 
 
-
 /**
 * A SIMPLE QUERY RESULTS GENERATOR  
 */
-conn.printQueryResults = ( $statement, $params , $encoded = false ) => {
+conn.printQueryResults = ( $statement, $params , $encoded = false ) => 
+{
 	
 	if( !$encoded ){
 	
@@ -212,12 +221,12 @@ conn.printQueryResults = ( $statement, $params , $encoded = false ) => {
 };
 	
 
-
 /**
 * SIMPLE KEY => VALUE TYPE ARRAY GENERATOR
 * EXPECTS AN SQL STATEMENT, THE NAME OF THE IDENTIFIER KEY AND THE NAME OF THE VALUE KEY
 */
-conn.keyVal = ( $sql_statement, $params, $key_name, $value_name ) => {
+conn.keyVal = ( $sql_statement, $params, $key_name, $value_name ) => 
+{
 
 	return new Promise( (resolve,reject) => {
 
@@ -246,11 +255,11 @@ conn.keyVal = ( $sql_statement, $params, $key_name, $value_name ) => {
 };
 
 
-
 /**
 * THE IMPLICIT ERROR DISPLAYER
 */
-conn.error_alert = ( $error, $status = true ) => {
+conn.error_alert = ( $error, $status = true ) => 
+{
 	
 	if( $status ){
 		
@@ -263,11 +272,11 @@ conn.error_alert = ( $error, $status = true ) => {
 };
 
 
-
 /**
 * PERFORM A TABLE SPECIFIC BACKUP
 */
-conn.doStore = ( $table, $bkup_path_all = __dirname+'/backup/history' ) => {
+conn.doStore = ( $table, $bkup_path_all = __dirname+'/backup/history' ) => 
+{
 	
 	return new Promise(  (resolve,reject) => {
 
@@ -298,7 +307,7 @@ conn.doStore = ( $table, $bkup_path_all = __dirname+'/backup/history' ) => {
 				fs.unlinkSync($bkupfile);
 			} 
 
-			fs.writeFileSync($bkupfile,str(d))
+			fs.writeFileSync($bkupfile,str(d));
 
 			resolve( make_response( 200, "Backup for the table "+$table+" completed successfully." ) );
 
@@ -312,11 +321,11 @@ conn.doStore = ( $table, $bkup_path_all = __dirname+'/backup/history' ) => {
 };
 
 
-
 /**
 * PERFORM A COMPLETE [ or selective  ] BACKUP OF TABLES ( multiple ) 
 */
-conn.bkup = ( $tables = "*", $bkup_path_all = __dirname+'/backup/history' ) => {
+conn.bkup = ( $tables = "*", $bkup_path_all = __dirname+'/backup/history' ) => 
+{
 		
 	return new Promise(  (resolve,reject) => {
 
@@ -325,7 +334,7 @@ conn.bkup = ( $tables = "*", $bkup_path_all = __dirname+'/backup/history' ) => {
 		* */
 		if( $tables == '*' ){
 			
-			$q = "SELECT table_name FROM information_schema.tables WHERE table_schema='public' AND table_type='BASE TABLE'";
+			$q = "SELECT table_name FROM information_schema.tables";
 
 			conn.query( $q, [] )
 			.then( tables => {
@@ -424,11 +433,13 @@ conn.make_response 	= make_response;
 /**
 * RECURRSIVELY SEARCH IN ARRAY
 **/
-conn.inArray = ( $needle, $haystack ) => {
+conn.inArray = ( $needle, $haystack ) => 
+{
 	
 	return ( $haystack.indexOf($needle) == -1) ? false : true ;
 	
 }
+
 
 global.$connection = conn;
 
