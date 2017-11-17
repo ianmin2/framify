@@ -17,5 +17,6 @@ module.exports =
     notifications:    "Framify Newsletter <noreply@example.com>",
     support:          "Framify Support <support@example.com>"
   }
+  , recipient : "administrator@example.com"
   
 };
