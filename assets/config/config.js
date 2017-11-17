@@ -1,13 +1,15 @@
 let files = {
 	jwt_secret 		: path.join(__dirname,`jwt-secret.conf`)
-	,mongo_config 	        : path.join(__dirname,`mongo.conf`)
-	,pg_config		: path.join(__dirname,`postgres.conf`)
+	,mongo_config 	: path.join(__dirname,`mongo.conf`)
+	,sql_config		: path.join(__dirname,`sql.conf`)
 	,sms_config		: path.join(__dirname,'sms.conf')
+	,email_config	: path.join(__dirname,'email.conf')
 }
 
 
 //@ OATH SERVICE PROVIDER CONNNECTION KEYS
-exports.oauth = {
+exports.oauth = 
+{
 	"facebook" : {
 		"client_id": "",
 		"client_secret": "",
@@ -37,7 +39,7 @@ exports.oauth = {
 
 //@ MONGODB DATABASE CONNECTION PARAMETERS (.database)
 if(fs.existsSync(files.mongo_config)){
-	exports.database = require(files.mongo_config)
+	exports.database = require(files.mongo_config);
 	c_log(`\n✔`.succ + `  Loaded the user defined mongodb connection definition file`.info)
 	// j_log(exports.database)
 }else{
@@ -62,26 +64,36 @@ module.exports =
 }
 
 
-//@ POSTGRESQL DATABASE CONNECTION PARAMETERS (.postgres)
-if(fs.existsSync(files.pg_config)){
-	exports.postgres = require(files.pg_config,'utf8');
-	c_log(`\n✔`.succ + `  Loaded the user defined postgresql connection definition file`.info)
-	// j_log(exports.postgres)
+//@ SQL DATABASE CONNECTION PARAMETERS (.sql)
+if(fs.existsSync(files.sql_config)){
+	exports.sql = require(files.sql_config,'utf8');
+	c_log(`\n✔`.succ + `  Loaded the user defined sql connection definition file`.info)
+	// j_log(exports.sql)
 }else{
-	exports.postgres = {};
-	throw new Error(`\nA postgresql configuration file is required so as to achieve a connection to the postgres database`.err
-	+`\nTo do this, create a `.yell + `postgres.conf` + ` file in the `.yell+`config`+` folder of your project with the content:`.yell
+	exports.sql = {};
+	throw new Error(`\nAn sql configuration file is required so as to achieve a connection to an sql database.`.err
+	+`\nTo do this, create an `.yell + `sql.conf` + ` file in the `.yell+`config`+` folder of your project with content in the following format.`.yell
 	+`\n
 module.exports = 
 {
-	"user"		    : "PG_USERNAME"
-	,"database"	    : "PG_DATABASE_NAME"
-	,"password"	    : "pg_PASSWORD"
-	,"host"		    : "localhost"
-	,"port"		    : 5432
-	,"max"		    : 10
-	,"idleTimeoutMillis": 30000
-}
+	user        : 'YOUR_SQL_DB_USERNAME',
+	password    : 'YOUR_SQL_DB_PASSWORD',
+	database    : 'YOUR_DATABSE_NAME',
+	extras      : 
+				{
+					dialect     : 'postgres',   // mssql|postgres|mysql|sqlite
+					host        : 'localhost',
+					logging     : true,
+					pool        :
+								{
+									max     : 100, 
+									min     : 3, 
+									acquire : 30000,  
+									idle    : 10000 
+								}
+				}
+};
+/*# The "port" parameter can be added to the extras object for non default ports */
 	`);
 }
 
@@ -118,4 +130,32 @@ module.exports =
 	,"sender"	    : "SMS_SENDER_ID"
 }
 	`);
+}
+
+
+//@ EMAIL CREDENTIALS (.email)
+if(fs.existsSync(files.email_config))
+{
+	exports.email 	= require(files.email_config,'utf8');
+	c_log(`\n✔`.succ + `  Loaded the user defined email configuration file`.info)
+	// j_log(exports.email)
+}
+else
+{
+	exports.sms = {};
+	throw new Error(`\nAn email configuration file is required so as to send email messages`.err
+	+`\nTo do this, create a `.yell + `email.conf` + ` file in the `.yell+`config`+` folder of your project with the content:`.yell
+	+`\ne.g. For mail via gmail, use:`.info
+	+`\n
+module.exports = 
+{
+	service: 'gmail',
+	auth: {
+	  user: 'youremail@gmail.com',
+	  pass: 'yourpassword'
+	}
+}
+`
+	+`\nPlease visit https://nodemailer.com/about/ for information on other email configuration options\n\n`.yell
+);
 }
