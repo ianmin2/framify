@@ -11,11 +11,11 @@ module.exports =
   }
   ,accounts : 
   {
-    passwords:        "passwordreset@example.com",
-    welcome:          "accounts@example.com",
-    errors:           "errors@example.com",
-    notifications:    "noreply@example.com",
-    support:          "support@example.com"
+    passwords:        "Password Recovery <passwordreset@example.com>",
+    welcome:          "User Accounts <accounts@example.com>",
+    errors:           "Framify Errors <errors@example.com>",
+    notifications:    "Framify Newsletter <noreply@example.com>",
+    support:          "Framify Support <support@example.com>"
   }
   
 };
