@@ -16,32 +16,11 @@
 
 require('bixbyte-frame');
 
-//@ Import the main configuration file
-global.config   = require(path.join(__dirname,'../config/config'));
+//@ Load the basic server configurations
+require(path.join(__dirname,'configuration.js'));
 
-//@ Avail encrypt/decrypt methods globally
-Object.assign(global, require( path.join(__dirname, 'enc_dec.js') ) );
 
-//@ Avail the "sms_actions" method globally
-Object.assign(global, require(path.join(__dirname, 'sms_actions.js') ));
 
-//@ Define the authentication database [mongo/sql]
-global.authMeth = "postgres";
-
-//@ Load the global postgres `$connection` object
-require(path.join(__dirname,'../db/connection'));
-
-//@ Load the express middleware for `n-frame` REST database API integration
-global.apify    = require(path.join(__dirname,'../db/index'));
-
-//@ Set the application's running port [the default port is 1357]
-// app.port =  1357;
-
-//@ Import the members database schema for mongodb
-// global.member   = require(path.join(__dirname,'../schema/members'));
-
-//@ Establish a mongodb database connection
-// db("mongo", config.database);
 
 //@ THE PREVENT UNAUTHORIZED TASKS MIDDLEWARE
 global.adminOnly = function(req,res,next){
@@ -185,42 +164,30 @@ var framifySecurity = function(req, res, next) {
 //@ Inject the security middleware
 app.use( framifySecurity );
 
-/**
-* THIS FRAMEWORK SUPPPORTS MAILGUN EMAIL 
-* DEFINE YOUR API CREDENTIALS IN A FILE NAMED mailgun.conf in the config directory
-* 
-* the mailgun.conf file in the config directory should look like :
-* 
-* module.exports = {
-                    apiKey: "YOUR_MAILGUN_SPECIAL_KEY_GOES_HERE",
-                    domain: "mg.YOUR_DOMAIN.TLD"
-                };
-* 
-*/
-//@ IMPORT THE MAIL LOADER METHOD
-require(path.join(__dirname,'mail.js'));
 
-//@ SAMPLE SERVER STARTUP MONITORING MAIL TEMPLATE
-var mailData = {
-    from: `Bixbyte Server Monitor <server_monitor@bixbyte.io>`,
-    to: [], // Define the main recipient of the message
-    bcc: [], //You can BCC someone here
-    subject: `Framify Service Started at http://${myAddr}:${app.port} `,
-    text: `Hello,\n\nYour service running on ${myAddr} port ${app.port} has just been started.\n\nWe hope that you are enjoying the framify experience.\n\nSincerely:\n\tThe Framify team. `,
-    html: `<font color="gray"><u><h2>YOUR SERVICE IS UP!</u></font></h2>
-                                <br>
-                                Hello,<br><br>
-                                Your service running on  <a href="http://${myAddr}:${app.port}"> http://<b>${myAddr}</b>:<b>${app.port}</b> </a> has just been started.
-                                <br><br>
-                                We hope that you are enjoying the framify experience.
-                                <br>
-                                <h4>Sincerely:</h4>
-                                <br>
-                                <i><u>The framify team.</u></i>
-                                <br><br><br>
-                                `,
-    attachment: path.join(__dirname,'../favicon.ico')
-};
+
+
+// //@ SAMPLE SERVER STARTUP MONITORING MAIL TEMPLATE
+// var mailData = {
+//     from: connection.email.accounts.notifications,
+//     to: [], // Define the main recipient of the message
+//     bcc: [], //You can BCC someone here
+//     subject: `Framify Service Started at http://${myAddr}:${app.port} `,
+//     text: `Hello,\n\nYour service running on ${myAddr} port ${app.port} has just been started.\n\nWe hope that you are enjoying the framify experience.\n\nSincerely:\n\tThe Framify team. `,
+//     html: `<font color="gray"><u><h2>YOUR SERVICE IS UP!</u></font></h2>
+//                                 <br>
+//                                 Hello,<br><br>
+//                                 Your service running on  <a href="http://${myAddr}:${app.port}"> http://<b>${myAddr}</b>:<b>${app.port}</b> </a> has just been started.
+//                                 <br><br>
+//                                 We hope that you are enjoying the framify experience.
+//                                 <br>
+//                                 <h4>Sincerely:</h4>
+//                                 <br>
+//                                 <i><u>The framify team.</u></i>
+//                                 <br><br><br>
+//                                 `,
+//     attachment: path.join(__dirname,'../favicon.ico')
+// };
 
 //@ SEND A SAMPLE SERVICE STARTUP NOTIFICATION EMAIL BY UNCOMMENTING THE IMMEDIATE BLOCK COMMENT
 /* 
@@ -269,77 +236,40 @@ app.use("/passwords", require(path.join(__dirname,'../routes/passwords')) );
 //@ THE SMS SENDING ROUTE 
 app.use("/sms", require( path.join(__dirname,'../routes/sms') ));
 
-//@ Error Email Template
-global.errorEmail = (params) => {
-    
-    sendMail({
-        from: `Framify Errors <errors@bixbyte.io>`,
-        to: 'ianmin2@live.com',
-        subject: `Framify System error Experienced.`,
-        text: ``,
-        html: 
-        `<font color="red"><u><h2>A system error occured at http://${myAddr}:${app.port}!</u></font></h2>
-        <br>
-        Wassup,
-        <br>
-        There seems to be trouble in paradise.
-        <br><br>
-        SUMMARY:<br>
-        <font color="red">
-        ${str(params)}
-        </font>
-        <br>
-        <hr>
-        <font color="gray">It's about time for a fix buddy!</font>
-        <br><br><br>
-        `
-        })
-    .then(d => {
-        log('Error notification email sent'.yell)
-        // console.dir(d)
-    })
-    .catch(e => {
-        log(`Failed to send error notification mail!! Reason:`.err)
-        log(`${str(e)}`.yell);
-        console.dir(e)
-    })
-    
-
-};
-
-// ================================================================
-// CUSTOM
-
 app.use("/payments" ,require(path.join(__dirname,'../routes/payments')) );
-
-// EO - CUSTOM
-// ================================================================
 
 //@ LISTEN  FOR EMAILS
 app.route("/mail")
-.post(passport.authenticate('jwt', { session: false }), (req, res) => {
+.post(passport.authenticate('jwt', { session: false }), (req, res) => 
+{
 
     let params = get_params(req);
-    if (params.from) {
+    if (params.from) 
+    {
 
-        if (params.to) {
+        if (params.to) 
+        {
 
             params.to = (params.to) ? params.to.split(',') : undefined;
 
-            if (params.bcc) {
+            if (params.bcc) 
+            {
                 params.bcc = (params.bcc) ? params.bcc.split(',') : undefined;
             }
 
             sendMail(params)
-            .then(resp => {
+            .then(resp => 
+            {
                 log(`Successfully sent an email to ${params.to}.`.succ);
                 res.send(make_response(200, resp));
             })
-            .catch(err => {
+            .catch(err => 
+            {
                 log(`Failed to send an email to ${params.to}\nReason:\n`.err);
                 log(err);
-                res.status(500).json(make_response(500, err.message || err))
+                res.status(500).json(make_response(500, err.message || err));
             });
+
 
         } else {
 
@@ -347,21 +277,26 @@ app.route("/mail")
 
         }
 
-    } else {
+    } 
+    else 
+    {
         res.send(make_response(500, "Please provide a sender's  address"));
     }
 
 });
 
 app.route("/welcome")
-.post((req,res) => {
+.post((req,res) => 
+{
 
     let params = get_params(req);
-    if (params.to) {
+    if (params.to) 
+    {
         
         params.to = (params.to) ? params.to.split(',') : undefined;
 
-        if (params.bcc) {
+        if (params.bcc) 
+        {
             params.bcc = (params.bcc) ? params.bcc.split(',') : undefined;
         }
 
@@ -377,29 +312,33 @@ app.route("/welcome")
             
 
         sendMail({
-            from: "Framify User Accounts <accounts@bixbyte.io>",
+            from: config.email.accounts.welcome,
             to : params.to,
             subject: "Welcome to Framify",
             html: template,
             text: `Hello ${params.data.name},\n\nWe are glad that you have chosen to use the framify platform.\n\nYou have been recorded under the account name "${params.data.username}".\n\nYou can access the administrative portal at http://${myAddr}:${app.port}\n\nFor any assistance, feel free to write to us at support@bixbyte.io.\n\nSincerely,\nThe Framify Team.`
         })
-        .then(resp => {
+        .then(resp => 
+        {
             log(`Successfully sent an email to ${params.to}.`.succ);
             res.send(make_response(200, resp));
         })
-        .catch(err => {
+        .catch(err => 
+        {
             log(`Failed to send an email to ${params.to}\nReason:\n`.err);
             log(err);
-            res.status(500).json(make_response(500, err.message || err))
+            res.status(500).json(make_response(500, err.message || err));
         });
 
-    } else {
+    } 
+    else 
+    {
 
         res.send(make_response(500, "Please provide a recipient's email address"));
 
     }
 
-})
+});
 
 
 
