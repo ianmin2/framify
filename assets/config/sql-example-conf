@@ -1,0 +1,20 @@
+module.exports = 
+{
+    user        : 'YOUR_SQL_DB_USERNAME',
+    password    : 'YOUR_SQL_DB_PASSWORD',
+    database    : 'YOUR_DATABSE_NAME',
+    extras      : 
+                {
+                    dialect     : 'postgres',   // mssql|postgres|mysql|sqlite
+                    host        : 'localhost',
+                    logging     : true,
+                    pool        :
+                                {
+                                    max     : 100, 
+                                    min     : 3, 
+                                    acquire : 30000,  
+                                    idle    : 10000 
+                                }
+                }
+};
+/*# The "port" parameter can be added to the extras object for non default ports */

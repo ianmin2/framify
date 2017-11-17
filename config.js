@@ -1,8 +1,18 @@
 //@BASIC PROJECT REQUIREMENTS
 require("bixbyte-frame");
 
+
 //@PROJECT SPECIFIC IMPORTS
 global.wrench = require("wrench");
+
+//** GOOGLE MODULES **/    
+global.google 	            = require('googleapis');
+global.googleAuth 	        = require('google-auth-library');
+
+//** GOOGLE DRIVE CONFIGURATION
+global.SCOPES 	            = ['https://www.googleapis.com/auth/drive'];
+global.TOKEN_DIR 	        = path.join( global.home ,'.bixbyte/.framify/');
+global.TOKEN_PATH 	        = TOKEN_DIR + 'auth.json';
 
 //# BASIC DRIVE AUTHENTICATION CONFIG FILE SETUP
 app.ip = "41.89.162.4";

@@ -34,7 +34,10 @@
     "homepage": "https://github.com/ianmin2/framify#readme",
     "email": "framify@bixbyte.io",
     "dependencies": {
-        "bixbyte-frame": "*",
+        "bixbyte-frame": "0.21.0",
+        "github-api": "^2.3.0",
+        "google-auth-library": "^0.9.8",
+        "googleapis": "^13.0.0",
         "shelljs": "*",
         "wrench": "*"
     },
